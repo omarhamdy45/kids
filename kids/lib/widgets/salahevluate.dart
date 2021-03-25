@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kids/models/db.dart';
+import 'package:kids/screens/azkar.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Salahev extends StatefulWidget {
   Color color;
+  Color color1;
+  Color color2;
   String text;
   String time;
 
-  Salahev(this.text, this.time, this.color);
+  Salahev(this.text, this.time, this.color, this.color1, this.color2);
 
   @override
   _SalahevState createState() => _SalahevState();
@@ -48,7 +52,7 @@ class _SalahevState extends State<Salahev> {
                               this.widget.text,
                               style: GoogleFonts.roboto(
                                 textStyle: TextStyle(
-                                    color: Colors.black,
+                                    color: this.widget.color2,
                                     letterSpacing: .5,
                                     fontSize: 28),
                               ),
@@ -57,7 +61,8 @@ class _SalahevState extends State<Salahev> {
                           Text(this.widget.time,
                               style: GoogleFonts.roboto(
                                 textStyle: TextStyle(
-                                    color: Color.fromARGB(101, 103, 103, 1),
+                                    color: this.widget.color1,
+                                    fontWeight: FontWeight.bold,
                                     letterSpacing: .5,
                                     fontSize: 20),
                               )),
@@ -157,7 +162,10 @@ class _SalahevState extends State<Salahev> {
                             child: Column(
                               children: [
                                 Container(
-                                  margin: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.05),
+                                  margin: EdgeInsets.symmetric(
+                                      vertical:
+                                          MediaQuery.of(context).size.height *
+                                              0.05),
                                   child: Text(
                                     'How you prayed?',
                                     style: TextStyle(
@@ -267,7 +275,14 @@ class _SalahevState extends State<Salahev> {
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Theme.of(context).primaryColor)),
                   onPressed: () {
-                    Dbhandler.instance.getslider();
+                     Navigator.push(
+                                          context,
+                    PageTransition(
+                      duration: Duration(milliseconds: 600),
+                      type: PageTransitionType.fade,
+                      child: Azkar(),
+                    )
+                     );
                   },
                   child: Center(
                     child: Row(

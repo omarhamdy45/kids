@@ -10,6 +10,8 @@ class Thuhr extends StatelessWidget {
       'Thuhr',
       Provider.of<Athanprovider>(context).time.data.timings.dhuhr,
      Colors.yellow.shade400,
+      Colors.grey[700],
+      Colors.black
     );
   }
 }

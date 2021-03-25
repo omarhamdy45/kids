@@ -35,6 +35,7 @@ dependencies:
   http: ^0.12.2
   provider: ^4.3.3
   dio: ^3.0.10
+  page_indicator: ^0.3.0
 
 
 dev_dependencies:
@@ -75,6 +76,11 @@ flutter:
     - assets/images/Group 2333.png
     - assets/images/Group 705.png
     - assets/images/Group 709.png
+    -  assets/images/Group 804.png
+    -  assets/images/Group 808.png
+    -  assets/images/Group 813.png
+    -  assets/images/Group 815.png
+    -  assets/images/Group 795.png
 
 
     

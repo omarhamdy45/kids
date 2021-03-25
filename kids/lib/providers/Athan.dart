@@ -6,8 +6,7 @@ class Athanprovider with ChangeNotifier {
   Athan time;
   Future<void> fetchtimes() async {
     try {
-      time = await Dbhandler.instance.getslider();
-      print(time.data.timings.asr);
+      time = await Dbhandler.instance.gettimes();
     } catch (error) {
       print('error');
     }

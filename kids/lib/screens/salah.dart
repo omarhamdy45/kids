@@ -30,8 +30,8 @@ class Salah extends StatelessWidget {
                       left: MediaQuery.of(context).size.width * 0.04),
                   child: Card(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(5)),
+                    color: Colors.grey[100],
                     child: Container(
                       height: 36,
                       //  margin: EdgeInsets.only(right: 100),
@@ -44,6 +44,7 @@ class Salah extends StatelessWidget {
                               style: GoogleFonts.roboto(
                                 textStyle: TextStyle(
                                     color: Color.fromRGBO(204, 14, 116, 1),
+                                    fontWeight: FontWeight.bold,
                                     letterSpacing: .5,
                                     fontSize: 17),
                               ),
@@ -62,6 +63,7 @@ class Salah extends StatelessWidget {
                             'fagr 16:05',
                             style: GoogleFonts.roboto(
                               textStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
                                   color: Color.fromRGBO(60, 60, 67, 1),
                                   letterSpacing: .5,
                                   fontSize: 14),
@@ -108,7 +110,7 @@ class Salah extends StatelessWidget {
                                         'Fajr',
                                         style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
-                                              color: Colors.black,
+                                              color: Colors.white,
                                               letterSpacing: .5,
                                               fontSize: 28),
                                         ),
@@ -130,9 +132,9 @@ class Salah extends StatelessWidget {
                                     child: Text(Provider.of<Athanprovider>(context).time.data.timings.fajr,
                                         style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
-                                              color: Color.fromARGB(
-                                                  101, 103, 103, 1),
+                                              color:  Colors.white,
                                               letterSpacing: .5,
+                                              fontWeight: FontWeight.bold,
                                               fontSize: 14),
                                         )),
                                   ),
@@ -202,9 +204,9 @@ class Salah extends StatelessWidget {
                                     child: Text(Provider.of<Athanprovider>(context).time.data.timings.dhuhr,
                                         style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
-                                              color: Color.fromARGB(
-                                                  101, 103, 103, 1),
+                                              color: Colors.grey[700],
                                               letterSpacing: .5,
+                                              fontWeight: FontWeight.bold,
                                               fontSize: 14),
                                         )),
                                   ),
@@ -282,8 +284,8 @@ class Salah extends StatelessWidget {
                                     child: Text(Provider.of<Athanprovider>(context).time.data.timings.asr,
                                         style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
-                                              color: Color.fromARGB(
-                                                  101, 103, 103, 1),
+                                              color:   Colors.grey[700],
+                                              fontWeight: FontWeight.bold,
                                               letterSpacing: .5,
                                               fontSize: 14),
                                         )),
@@ -354,9 +356,9 @@ class Salah extends StatelessWidget {
                                     child: Text(Provider.of<Athanprovider>(context).time.data.timings.maghrib,
                                         style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
-                                              color: Color.fromARGB(
-                                                  101, 103, 103, 1),
+                                              color: Colors.grey[800],
                                               letterSpacing: .5,
+                                              fontWeight: FontWeight.bold,
                                               fontSize: 14),
                                         )),
                                   ),
@@ -408,7 +410,7 @@ class Salah extends StatelessWidget {
                                 top: 2,
                                 child: Container(
                                   child: Text(
-                                    'Isha',
+                                    'Ishaa',
                                     style: GoogleFonts.roboto(
                                       textStyle: TextStyle(
                                           color: Colors.white,
@@ -435,6 +437,7 @@ class Salah extends StatelessWidget {
                                       textStyle: TextStyle(
                                           color: Colors.white,
                                           letterSpacing: .5,
+                                          fontWeight: FontWeight.bold,
                                           fontSize: 14),
                                     )),
                               ),

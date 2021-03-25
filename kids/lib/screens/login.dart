@@ -186,7 +186,7 @@ class _LoginState extends State<Login> {
                                           context,
                                           PageTransition(
                                             duration:
-                                                Duration(milliseconds: 600),
+                                                Duration(milliseconds: 700),
                                             type: PageTransitionType.fade,
                                             child: Types(),
                                           ),

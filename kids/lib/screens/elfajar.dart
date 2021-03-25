@@ -11,6 +11,9 @@ class Elfajar extends StatelessWidget {
       'Fajr',
       Provider.of<Athanprovider>(context).time.data.timings.fajr,
       Colors.lightBlueAccent.shade700,
+      Colors.white,
+      Colors.white,
+
     );
   }
 }

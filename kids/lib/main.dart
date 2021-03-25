@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kids/providers/Athan.dart';
-import 'package:kids/screens/Asr.dart';
-import 'package:kids/screens/elfajar.dart';
-import 'package:kids/screens/isha.dart';
+
 import 'package:kids/screens/login.dart';
-import 'package:kids/screens/maghrib.dart';
-import 'package:kids/screens/salah.dart';
-import 'package:kids/screens/thuhr.dart';
+
 import 'package:provider/provider.dart';
 
 void main() {
