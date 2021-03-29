@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kids/providers/userprovider.dart';
 import 'package:kids/screens/types.dart';
 import 'package:kids/widgets/background.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -29,6 +31,18 @@ class _LoginState extends State<Login> {
     form = GlobalKey<FormState>();
     passwordnode = FocusNode();
     loading = false;
+  }
+
+  @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    await Provider.of<Userprovider>(context).fetchuserlocation();
+    print(Provider.of<Userprovider>(context, listen: false)
+        .location
+        .timezone
+        .split('/')
+        .first);
   }
 
   void validatetologin() async {}

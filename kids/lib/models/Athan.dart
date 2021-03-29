@@ -1,405 +1,398 @@
-// To parse this JSON data, do
-//
-//     final athan = athanFromJson(jsonString);
-
-import 'dart:convert';
-
-Athan athanFromJson(String str) => Athan.fromJson(json.decode(str));
-
-String athanToJson(Athan data) => json.encode(data.toJson());
-
 class Athan {
-    Athan({
-        this.code,
-        this.status,
-        this.data,
-    });
+  int code;
+  String status;
+  Data data;
 
-    int code;
-    String status;
-    Data data;
+  Athan({this.code, this.status, this.data});
 
-    factory Athan.fromJson(Map<String, dynamic> json) => Athan(
-        code: json["code"],
-        status: json["status"],
-        data: Data.fromJson(json["data"]),
-    );
+  Athan.fromJson(Map<String, dynamic> json) {
+    code = json['code'];
+    status = json['status'];
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+  }
 
-    Map<String, dynamic> toJson() => {
-        "code": code,
-        "status": status,
-        "data": data.toJson(),
-    };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['code'] = this.code;
+    data['status'] = this.status;
+    if (this.data != null) {
+      data['data'] = this.data.toJson();
+    }
+    return data;
+  }
 }
 
 class Data {
-    Data({
-        this.timings,
-        this.date,
-        this.meta,
-    });
+  Timings timings;
+  Date date;
+  Meta meta;
 
-    Timings timings;
-    Date date;
-    Meta meta;
+  Data({this.timings, this.date, this.meta});
 
-    factory Data.fromJson(Map<String, dynamic> json) => Data(
-        timings: Timings.fromJson(json["timings"]),
-        date: Date.fromJson(json["date"]),
-        meta: Meta.fromJson(json["meta"]),
-    );
+  Data.fromJson(Map<String, dynamic> json) {
+    timings =
+        json['timings'] != null ? new Timings.fromJson(json['timings']) : null;
+    date = json['date'] != null ? new Date.fromJson(json['date']) : null;
+    meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
+  }
 
-    Map<String, dynamic> toJson() => {
-        "timings": timings.toJson(),
-        "date": date.toJson(),
-        "meta": meta.toJson(),
-    };
-}
-
-class Date {
-    Date({
-        this.readable,
-        this.timestamp,
-        this.hijri,
-        this.gregorian,
-    });
-
-    String readable;
-    String timestamp;
-    Hijri hijri;
-    Gregorian gregorian;
-
-    factory Date.fromJson(Map<String, dynamic> json) => Date(
-        readable: json["readable"],
-        timestamp: json["timestamp"],
-        hijri: Hijri.fromJson(json["hijri"]),
-        gregorian: Gregorian.fromJson(json["gregorian"]),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "readable": readable,
-        "timestamp": timestamp,
-        "hijri": hijri.toJson(),
-        "gregorian": gregorian.toJson(),
-    };
-}
-
-class Gregorian {
-    Gregorian({
-        this.date,
-        this.format,
-        this.day,
-        this.weekday,
-        this.month,
-        this.year,
-        this.designation,
-    });
-
-    String date;
-    String format;
-    String day;
-    GregorianWeekday weekday;
-    GregorianMonth month;
-    String year;
-    Designation designation;
-
-    factory Gregorian.fromJson(Map<String, dynamic> json) => Gregorian(
-        date: json["date"],
-        format: json["format"],
-        day: json["day"],
-        weekday: GregorianWeekday.fromJson(json["weekday"]),
-        month: GregorianMonth.fromJson(json["month"]),
-        year: json["year"],
-        designation: Designation.fromJson(json["designation"]),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "date": date,
-        "format": format,
-        "day": day,
-        "weekday": weekday.toJson(),
-        "month": month.toJson(),
-        "year": year,
-        "designation": designation.toJson(),
-    };
-}
-
-class Designation {
-    Designation({
-        this.abbreviated,
-        this.expanded,
-    });
-
-    String abbreviated;
-    String expanded;
-
-    factory Designation.fromJson(Map<String, dynamic> json) => Designation(
-        abbreviated: json["abbreviated"],
-        expanded: json["expanded"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "abbreviated": abbreviated,
-        "expanded": expanded,
-    };
-}
-
-class GregorianMonth {
-    GregorianMonth({
-        this.number,
-        this.en,
-    });
-
-    int number;
-    String en;
-
-    factory GregorianMonth.fromJson(Map<String, dynamic> json) => GregorianMonth(
-        number: json["number"],
-        en: json["en"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "number": number,
-        "en": en,
-    };
-}
-
-class GregorianWeekday {
-    GregorianWeekday({
-        this.en,
-    });
-
-    String en;
-
-    factory GregorianWeekday.fromJson(Map<String, dynamic> json) => GregorianWeekday(
-        en: json["en"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "en": en,
-    };
-}
-
-class Hijri {
-    Hijri({
-        this.date,
-        this.format,
-        this.day,
-        this.weekday,
-        this.month,
-        this.year,
-        this.designation,
-        this.holidays,
-    });
-
-    String date;
-    String format;
-    String day;
-    HijriWeekday weekday;
-    HijriMonth month;
-    String year;
-    Designation designation;
-    List<dynamic> holidays;
-
-    factory Hijri.fromJson(Map<String, dynamic> json) => Hijri(
-        date: json["date"],
-        format: json["format"],
-        day: json["day"],
-        weekday: HijriWeekday.fromJson(json["weekday"]),
-        month: HijriMonth.fromJson(json["month"]),
-        year: json["year"],
-        designation: Designation.fromJson(json["designation"]),
-        holidays: List<dynamic>.from(json["holidays"].map((x) => x)),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "date": date,
-        "format": format,
-        "day": day,
-        "weekday": weekday.toJson(),
-        "month": month.toJson(),
-        "year": year,
-        "designation": designation.toJson(),
-        "holidays": List<dynamic>.from(holidays.map((x) => x)),
-    };
-}
-
-class HijriMonth {
-    HijriMonth({
-        this.number,
-        this.en,
-        this.ar,
-    });
-
-    int number;
-    String en;
-    String ar;
-
-    factory HijriMonth.fromJson(Map<String, dynamic> json) => HijriMonth(
-        number: json["number"],
-        en: json["en"],
-        ar: json["ar"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "number": number,
-        "en": en,
-        "ar": ar,
-    };
-}
-
-class HijriWeekday {
-    HijriWeekday({
-        this.en,
-        this.ar,
-    });
-
-    String en;
-    String ar;
-
-    factory HijriWeekday.fromJson(Map<String, dynamic> json) => HijriWeekday(
-        en: json["en"],
-        ar: json["ar"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "en": en,
-        "ar": ar,
-    };
-}
-
-class Meta {
-    Meta({
-        this.latitude,
-        this.longitude,
-        this.timezone,
-        this.method,
-        this.latitudeAdjustmentMethod,
-        this.midnightMode,
-        this.school,
-        this.offset,
-    });
-
-    double latitude;
-    double longitude;
-    String timezone;
-    Method method;
-    String latitudeAdjustmentMethod;
-    String midnightMode;
-    String school;
-    Map<String, int> offset;
-
-    factory Meta.fromJson(Map<String, dynamic> json) => Meta(
-        latitude: json["latitude"].toDouble(),
-        longitude: json["longitude"].toDouble(),
-        timezone: json["timezone"],
-        method: Method.fromJson(json["method"]),
-        latitudeAdjustmentMethod: json["latitudeAdjustmentMethod"],
-        midnightMode: json["midnightMode"],
-        school: json["school"],
-        offset: Map.from(json["offset"]).map((k, v) => MapEntry<String, int>(k, v)),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "latitude": latitude,
-        "longitude": longitude,
-        "timezone": timezone,
-        "method": method.toJson(),
-        "latitudeAdjustmentMethod": latitudeAdjustmentMethod,
-        "midnightMode": midnightMode,
-        "school": school,
-        "offset": Map.from(offset).map((k, v) => MapEntry<String, dynamic>(k, v)),
-    };
-}
-
-class Method {
-    Method({
-        this.id,
-        this.name,
-        this.params,
-    });
-
-    int id;
-    String name;
-    Params params;
-
-    factory Method.fromJson(Map<String, dynamic> json) => Method(
-        id: json["id"],
-        name: json["name"],
-        params: Params.fromJson(json["params"]),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "params": params.toJson(),
-    };
-}
-
-class Params {
-    Params({
-        this.fajr,
-        this.isha,
-    });
-
-    double fajr;
-    String isha;
-
-    factory Params.fromJson(Map<String, dynamic> json) => Params(
-        fajr: json["Fajr"].toDouble(),
-        isha: json["Isha"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "Fajr": fajr,
-        "Isha": isha,
-    };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.timings != null) {
+      data['timings'] = this.timings.toJson();
+    }
+    if (this.date != null) {
+      data['date'] = this.date.toJson();
+    }
+    if (this.meta != null) {
+      data['meta'] = this.meta.toJson();
+    }
+    return data;
+  }
 }
 
 class Timings {
-    Timings({
-        this.fajr,
-        this.sunrise,
-        this.dhuhr,
-        this.asr,
-        this.sunset,
-        this.maghrib,
-        this.isha,
-        this.imsak,
-        this.midnight,
-    });
+  String fajr;
+  String sunrise;
+  String dhuhr;
+  String asr;
+  String sunset;
+  String maghrib;
+  String isha;
+  String imsak;
+  String midnight;
 
-    String fajr;
-    String sunrise;
-    String dhuhr;
-    String asr;
-    String sunset;
-    String maghrib;
-    String isha;
-    String imsak;
-    String midnight;
+  Timings(
+      {this.fajr,
+      this.sunrise,
+      this.dhuhr,
+      this.asr,
+      this.sunset,
+      this.maghrib,
+      this.isha,
+      this.imsak,
+      this.midnight});
 
-    factory Timings.fromJson(Map<String, dynamic> json) => Timings(
-        fajr: json["Fajr"],
-        sunrise: json["Sunrise"],
-        dhuhr: json["Dhuhr"],
-        asr: json["Asr"],
-        sunset: json["Sunset"],
-        maghrib: json["Maghrib"],
-        isha: json["Isha"],
-        imsak: json["Imsak"],
-        midnight: json["Midnight"],
-    );
+  Timings.fromJson(Map<String, dynamic> json) {
+    fajr = json['Fajr'];
+    sunrise = json['Sunrise'];
+    dhuhr = json['Dhuhr'];
+    asr = json['Asr'];
+    sunset = json['Sunset'];
+    maghrib = json['Maghrib'];
+    isha = json['Isha'];
+    imsak = json['Imsak'];
+    midnight = json['Midnight'];
+  }
 
-    Map<String, dynamic> toJson() => {
-        "Fajr": fajr,
-        "Sunrise": sunrise,
-        "Dhuhr": dhuhr,
-        "Asr": asr,
-        "Sunset": sunset,
-        "Maghrib": maghrib,
-        "Isha": isha,
-        "Imsak": imsak,
-        "Midnight": midnight,
-    };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Fajr'] = this.fajr;
+    data['Sunrise'] = this.sunrise;
+    data['Dhuhr'] = this.dhuhr;
+    data['Asr'] = this.asr;
+    data['Sunset'] = this.sunset;
+    data['Maghrib'] = this.maghrib;
+    data['Isha'] = this.isha;
+    data['Imsak'] = this.imsak;
+    data['Midnight'] = this.midnight;
+    return data;
+  }
+}
+
+class Date {
+  String readable;
+  String timestamp;
+  Hijri hijri;
+  Gregorian gregorian;
+
+  Date({this.readable, this.timestamp, this.hijri, this.gregorian});
+
+  Date.fromJson(Map<String, dynamic> json) {
+    readable = json['readable'];
+    timestamp = json['timestamp'];
+    hijri = json['hijri'] != null ? new Hijri.fromJson(json['hijri']) : null;
+    gregorian = json['gregorian'] != null
+        ? new Gregorian.fromJson(json['gregorian'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['readable'] = this.readable;
+    data['timestamp'] = this.timestamp;
+    if (this.hijri != null) {
+      data['hijri'] = this.hijri.toJson();
+    }
+    if (this.gregorian != null) {
+      data['gregorian'] = this.gregorian.toJson();
+    }
+    return data;
+  }
+}
+
+class Hijri {
+  String date;
+  String format;
+  String day;
+  Weekday weekday;
+  Month month;
+  String year;
+  Designation designation;
+  List<Null> holidays;
+
+  Hijri(
+      {this.date,
+      this.format,
+      this.day,
+      this.weekday,
+      this.month,
+      this.year,
+      this.designation,
+      this.holidays});
+
+  Hijri.fromJson(Map<String, dynamic> json) {
+    date = json['date'];
+    format = json['format'];
+    day = json['day'];
+    weekday =
+        json['weekday'] != null ? new Weekday.fromJson(json['weekday']) : null;
+    month = json['month'] != null ? new Month.fromJson(json['month']) : null;
+    year = json['year'];
+    designation = json['designation'] != null
+        ? new Designation.fromJson(json['designation'])
+        : null;
+    if (json['holidays'] != null) {
+      holidays = new List<Null>();
+      json['holidays'].forEach((v) {
+     //   holidays.add(new Null.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['date'] = this.date;
+    data['format'] = this.format;
+    data['day'] = this.day;
+    if (this.weekday != null) {
+      data['weekday'] = this.weekday.toJson();
+    }
+    if (this.month != null) {
+      data['month'] = this.month.toJson();
+    }
+    data['year'] = this.year;
+    if (this.designation != null) {
+      data['designation'] = this.designation.toJson();
+    }
+    
+    return data;
+  }
+}
+
+class Weekday {
+  String en;
+  String ar;
+
+  Weekday({this.en, this.ar});
+
+  Weekday.fromJson(Map<String, dynamic> json) {
+    en = json['en'];
+    ar = json['ar'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['en'] = this.en;
+    data['ar'] = this.ar;
+    return data;
+  }
+}
+
+class Month {
+  int number;
+  String en;
+  String ar;
+
+  Month({this.number, this.en, this.ar});
+
+  Month.fromJson(Map<String, dynamic> json) {
+    number = json['number'];
+    en = json['en'];
+    ar = json['ar'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['number'] = this.number;
+    data['en'] = this.en;
+    data['ar'] = this.ar;
+    return data;
+  }
+}
+
+class Designation {
+  String abbreviated;
+  String expanded;
+
+  Designation({this.abbreviated, this.expanded});
+
+  Designation.fromJson(Map<String, dynamic> json) {
+    abbreviated = json['abbreviated'];
+    expanded = json['expanded'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['abbreviated'] = this.abbreviated;
+    data['expanded'] = this.expanded;
+    return data;
+  }
+}
+
+class Gregorian {
+  String date;
+  String format;
+  String day;
+  Weekday weekday;
+  Month month;
+  String year;
+  Designation designation;
+
+  Gregorian(
+      {this.date,
+      this.format,
+      this.day,
+      this.weekday,
+      this.month,
+      this.year,
+      this.designation});
+
+  Gregorian.fromJson(Map<String, dynamic> json) {
+    date = json['date'];
+    format = json['format'];
+    day = json['day'];
+    weekday =
+        json['weekday'] != null ? new Weekday.fromJson(json['weekday']) : null;
+    month = json['month'] != null ? new Month.fromJson(json['month']) : null;
+    year = json['year'];
+    designation = json['designation'] != null
+        ? new Designation.fromJson(json['designation'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['date'] = this.date;
+    data['format'] = this.format;
+    data['day'] = this.day;
+    if (this.weekday != null) {
+      data['weekday'] = this.weekday.toJson();
+    }
+    if (this.month != null) {
+      data['month'] = this.month.toJson();
+    }
+    data['year'] = this.year;
+    if (this.designation != null) {
+      data['designation'] = this.designation.toJson();
+    }
+    return data;
+  }
+}
+
+
+
+
+
+class Meta {
+  double latitude;
+  double longitude;
+  String timezone;
+  String latitudeAdjustmentMethod;
+  String midnightMode;
+  String school;
+  Offset offset;
+
+  Meta(
+      {this.latitude,
+      this.longitude,
+      this.timezone,
+      this.latitudeAdjustmentMethod,
+      this.midnightMode,
+      this.school,
+      this.offset});
+
+  Meta.fromJson(Map<String, dynamic> json) {
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+    timezone = json['timezone'];
+    latitudeAdjustmentMethod = json['latitudeAdjustmentMethod'];
+    midnightMode = json['midnightMode'];
+    school = json['school'];
+    offset =
+        json['offset'] != null ? new Offset.fromJson(json['offset']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['timezone'] = this.timezone;
+    data['latitudeAdjustmentMethod'] = this.latitudeAdjustmentMethod;
+    data['midnightMode'] = this.midnightMode;
+    data['school'] = this.school;
+    if (this.offset != null) {
+      data['offset'] = this.offset.toJson();
+    }
+    return data;
+  }
+}
+
+class Offset {
+  int imsak;
+  int fajr;
+  int sunrise;
+  int dhuhr;
+  int asr;
+  int maghrib;
+  int sunset;
+  int isha;
+  int midnight;
+
+  Offset(
+      {this.imsak,
+      this.fajr,
+      this.sunrise,
+      this.dhuhr,
+      this.asr,
+      this.maghrib,
+      this.sunset,
+      this.isha,
+      this.midnight});
+
+  Offset.fromJson(Map<String, dynamic> json) {
+    imsak = json['Imsak'];
+    fajr = json['Fajr'];
+    sunrise = json['Sunrise'];
+    dhuhr = json['Dhuhr'];
+    asr = json['Asr'];
+    maghrib = json['Maghrib'];
+    sunset = json['Sunset'];
+    isha = json['Isha'];
+    midnight = json['Midnight'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Imsak'] = this.imsak;
+    data['Fajr'] = this.fajr;
+    data['Sunrise'] = this.sunrise;
+    data['Dhuhr'] = this.dhuhr;
+    data['Asr'] = this.asr;
+    data['Maghrib'] = this.maghrib;
+    data['Sunset'] = this.sunset;
+    data['Isha'] = this.isha;
+    data['Midnight'] = this.midnight;
+    return data;
+  }
 }

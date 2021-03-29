@@ -11,6 +11,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class Salah extends StatelessWidget {
+  static const String route='/Salah';
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,51 +27,46 @@ class Salah extends StatelessWidget {
                   margin: EdgeInsets.only(
                       right: MediaQuery.of(context).size.width * 0.3,
                       top: 15,
-                      bottom: 15,
-                      left: MediaQuery.of(context).size.width * 0.04),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    color: Colors.grey[100],
-                    child: Container(
-                      height: 36,
-                      //  margin: EdgeInsets.only(right: 100),
-                      child: Row(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(left: 10),
-                            child: Text(
-                              'Next player',
-                              style: GoogleFonts.roboto(
-                                textStyle: TextStyle(
-                                    color: Color.fromRGBO(204, 14, 116, 1),
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: .5,
-                                    fontSize: 17),
-                              ),
-                            ),
-                          ),
-                          Text(
-                            ':  ',
+                      bottom: 2,
+                      left: MediaQuery.of(context).size.width * 0.01),
+                  child: Container(
+                    height: 36,
+                    //  margin: EdgeInsets.only(right: 100),
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 10),
+                          child: Text(
+                            'Next player',
                             style: GoogleFonts.roboto(
                               textStyle: TextStyle(
-                                  color: Color.fromRGBO(60, 60, 67, 1),
+                                  color: Color.fromRGBO(204, 14, 116, 1),
+                                  fontWeight: FontWeight.bold,
                                   letterSpacing: .5,
                                   fontSize: 17),
                             ),
                           ),
-                          Text(
-                            'fagr 16:05',
-                            style: GoogleFonts.roboto(
-                              textStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(60, 60, 67, 1),
-                                  letterSpacing: .5,
-                                  fontSize: 14),
-                            ),
+                        ),
+                        Text(
+                          ':  ',
+                          style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                color: Color.fromRGBO(60, 60, 67, 1),
+                                letterSpacing: .5,
+                                fontSize: 17),
                           ),
-                        ],
-                      ),
+                        ),
+                        Text(
+                          'Fajr 16:05',
+                          style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                                color: Color.fromRGBO(60, 60, 67, 1),
+                                letterSpacing: .5,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

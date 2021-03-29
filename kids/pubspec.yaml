@@ -36,7 +36,7 @@ dependencies:
   provider: ^4.3.3
   dio: ^3.0.10
   page_indicator: ^0.3.0
-
+  
 
 dev_dependencies:
   flutter_test:
@@ -70,7 +70,7 @@ flutter:
     - assets/images/ab.png
     - assets/images/Group 77.png
     - assets/images/Mask Group 1.png
-    - assets/images/Mask Group 2.png
+    - assets/images/Group 2386.png
     - assets/images/Mask Group 3.png
     - assets/images/Group 2332.png
     - assets/images/Group 2333.png
@@ -81,6 +81,7 @@ flutter:
     -  assets/images/Group 813.png
     -  assets/images/Group 815.png
     -  assets/images/Group 795.png
+    -  assets/images/Group 2318.png
 
 
     

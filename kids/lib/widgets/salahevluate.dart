@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kids/models/db.dart';
 import 'package:kids/screens/azkar.dart';
+import 'package:kids/screens/salah.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:page_transition/page_transition.dart';
@@ -26,6 +27,8 @@ class _SalahevState extends State<Salahev> {
   bool d = false;
   bool circle1 = false;
   bool circle2 = false;
+  bool done = false;
+  String salah;
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +135,7 @@ class _SalahevState extends State<Salahev> {
                     },
                     child: Column(
                       children: [
-                        Image.asset('assets/images/Mask Group 3.png'),
+                        Image.asset('assets/images/Group 2386.png'),
                         SizedBox(
                           height: 5,
                         ),
@@ -179,23 +182,41 @@ class _SalahevState extends State<Salahev> {
                                   child: Row(
                                     children: [
                                       Expanded(
-                                          child: Container(
-                                        margin: EdgeInsets.all(2),
-                                        child: CircleAvatar(
-                                          radius: 60,
-                                          backgroundColor:
-                                              Theme.of(context).primaryColor,
-                                          child: Image.asset(
-                                              'assets/images/Group 705.png'),
+                                          child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            salah = 'gam3a';
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.all(2),
+                                          child: CircleAvatar(
+                                            radius: 60,
+                                            backgroundColor:
+                                                Theme.of(context).primaryColor,
+                                            child: Image.asset(
+                                                'assets/images/Group 705.png'),
+                                          ),
                                         ),
                                       )),
                                       Expanded(
+                                          child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            salah = 'fardi';
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
                                           child: CircleAvatar(
-                                        radius: 60,
-                                        backgroundColor:
-                                            Theme.of(context).primaryColor,
-                                        child: Image.asset(
-                                            'assets/images/Group 709.png'),
+                                            radius: 60,
+                                            backgroundColor:
+                                                Theme.of(context).primaryColor,
+                                            child: Image.asset(
+                                                'assets/images/Group 709.png'),
+                                          ),
+                                        ),
                                       ))
                                     ],
                                   ),
@@ -228,7 +249,7 @@ class _SalahevState extends State<Salahev> {
                     },
                     child: Column(
                       children: [
-                        Image.asset('assets/images/Mask Group 2.png'),
+                        Image.asset('assets/images/Mask Group 3.png'),
                         SizedBox(
                           height: 5,
                         ),
@@ -265,7 +286,7 @@ class _SalahevState extends State<Salahev> {
               Container(
                 height: 35,
                 margin: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.35),
+                    horizontal: MediaQuery.of(context).size.width * 0.3),
                 child: ElevatedButton(
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -275,86 +296,52 @@ class _SalahevState extends State<Salahev> {
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Theme.of(context).primaryColor)),
                   onPressed: () {
-                     Navigator.push(
-                                          context,
-                    PageTransition(
-                      duration: Duration(milliseconds: 600),
-                      type: PageTransitionType.fade,
-                      child: Azkar(),
-                    )
-                     );
+                    print(salah);
+                    (done)
+                        ?
+                           Navigator.of(context).pop()
+                                 //     Navigator.pop(context);
+                        /* Navigator.pushReplacement(
+                            context,
+                            PageTransition(
+                              duration: Duration(milliseconds: 600),
+                              type: PageTransitionType.fade,
+                              child: Salah(),
+                            ))
+                            */
+                        : Navigator.push(
+                            context,
+                            PageTransition(
+                              duration: Duration(milliseconds: 600),
+                              type: PageTransitionType.fade,
+                              child: Azkar(),
+                            ));
+                    setState(() {
+                      done = true;
+                    });
                   },
-                  child: Center(
-                    child: Row(
-                      children: [
-                        Text(
-                          'Read',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Image.asset('assets/images/ab.png'),
-                      ],
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      (done)
+                          ? Text(
+                              'Done',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            )
+                          : Text(
+                              'Go',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                    ],
                   ),
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.04,
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.1,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            circle1 = !circle1;
-                            circle2 = false;
-                          });
-                        },
-                        child: CircleAvatar(
-                          backgroundColor: circle1
-                              ? Theme.of(context).accentColor
-                              : Theme.of(context).primaryColor,
-                          radius: 40,
-                          child: Icon(
-                            Icons.cancel,
-                            size: 40,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            circle2 = !circle2;
-                            circle1 = false;
-                          });
-                        },
-                        child: CircleAvatar(
-                          backgroundColor: circle2
-                              ? Theme.of(context).accentColor
-                              : Theme.of(context).primaryColor,
-                          radius: 40,
-                          child: Icon(
-                            Icons.check_sharp,
-                            size: 50,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
                 ),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.05,
               ),
+              /*
               Container(
                 height: 40,
                 margin: EdgeInsets.symmetric(
@@ -375,6 +362,7 @@ class _SalahevState extends State<Salahev> {
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     )),
               ),
+              */
             ],
           ),
         ));

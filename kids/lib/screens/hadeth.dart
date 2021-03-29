@@ -49,82 +49,42 @@ class Hadeth extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
+              height: MediaQuery.of(context).size.height * 0.07,
             ),
-            Container(
-              margin: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.015),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    //  mainAxisAlignment: MainAxisAlignment.sp,
-                    children: [
-                      CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Theme.of(context).primaryColor,
-                          child: Icon(
-                            Icons.play_arrow_sharp,
-                            color: Colors.white,
-                            size: 45,
-                          )),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Theme.of(context).primaryColor,
-                          child: Icon(
-                            Icons.pause_outlined,
-                            color: Colors.white,
-                            size: 45,
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      ElevatedButton(
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            )),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Theme.of(context).primaryColor)),
-                        onPressed: () {},
-                        child: Row(
-                          children: [
-                            Text(
-                              'Read',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            Image.asset('assets/images/ab.png'),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      ElevatedButton(
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            )),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Theme.of(context).primaryColor)),
-                        onPressed: () {},
+            Center(
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.015),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Theme.of(context).primaryColor,
                         child: Icon(
-                          Icons.download_sharp,
+                          Icons.play_arrow_sharp,
                           color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                          size: 45,
+                        )),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        child: Icon(
+                          Icons.pause_outlined,
+                          color: Colors.white,
+                          size: 45,
+                        )),
+                   
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height*0.1,),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.07,
+            ),
             Container(
               height: 40,
               margin: EdgeInsets.symmetric(

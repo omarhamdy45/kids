@@ -19,6 +19,7 @@ class _AzkarState extends State<Azkar> {
     super.initState();
     c = new PageController();
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -124,7 +125,6 @@ class _AzkarState extends State<Azkar> {
                               ),
                             ),
                           ),
-                          
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 20),
                             child: Row(
@@ -154,30 +154,16 @@ class _AzkarState extends State<Azkar> {
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 5),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    c.nextPage(
-                                        duration:
-                                            new Duration(milliseconds: 400),
-                                        curve: Curves.easeIn);
-                                  },
-                                  child: CircleAvatar(
-                                      backgroundColor:
-                                          Theme.of(context).primaryColor,
-                                      radius: 15,
-                                      child: Icon(
-                                        Icons.arrow_back,
-                                        color: Colors.white,
-                                      )),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    c.nextPage(
-                                        duration:
-                                            new Duration(milliseconds: 400),
-                                        curve: Curves.easeIn);
+                                    if (counter1 >= 33) {
+                                      c.nextPage(
+                                          duration:
+                                              new Duration(milliseconds: 400),
+                                          curve: Curves.easeIn);
+                                    }
                                   },
                                   child: CircleAvatar(
                                       backgroundColor:
@@ -274,7 +260,7 @@ class _AzkarState extends State<Azkar> {
                               ),
                             ),
                           ),
-                                                   Container(
+                          Container(
                             margin: EdgeInsets.symmetric(horizontal: 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -300,7 +286,6 @@ class _AzkarState extends State<Azkar> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.09,
                           ),
-                          
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 5),
                             child: Row(
@@ -324,10 +309,12 @@ class _AzkarState extends State<Azkar> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    c.nextPage(
-                                        duration:
-                                            new Duration(milliseconds: 400),
-                                        curve: Curves.easeIn);
+                                    if (counter2 >= 33) {
+                                      c.nextPage(
+                                          duration:
+                                              new Duration(milliseconds: 400),
+                                          curve: Curves.easeIn);
+                                    }
                                   },
                                   child: CircleAvatar(
                                       backgroundColor:
@@ -424,7 +411,7 @@ class _AzkarState extends State<Azkar> {
                               ),
                             ),
                           ),
-                                                   Container(
+                          Container(
                             margin: EdgeInsets.symmetric(horizontal: 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -450,7 +437,6 @@ class _AzkarState extends State<Azkar> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.09,
                           ),
-                          
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 5),
                             child: Row(
@@ -474,10 +460,9 @@ class _AzkarState extends State<Azkar> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    c.nextPage(
-                                        duration:
-                                            new Duration(milliseconds: 400),
-                                        curve: Curves.easeIn);
+                                    if (counter3 >= 33) {
+                                      Navigator.pop(context);
+                                    }
                                   },
                                   child: CircleAvatar(
                                       backgroundColor:

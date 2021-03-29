@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kids/providers/Athan.dart';
 import 'package:kids/screens/dua.dart';
 import 'package:kids/screens/hadeth.dart';
 import 'package:kids/screens/qura%60n.dart';
 import 'package:kids/widgets/ramdanitem.dart';
+import 'package:provider/provider.dart';
 
 class Ramdan extends StatefulWidget {
   @override
@@ -45,7 +47,7 @@ class _RamdanState extends State<Ramdan> {
                     Row(
                       children: [
                         Text(
-                          '8 Ramdan',
+                        Provider.of<Athanprovider>(context).time.data.date.hijri.month.number.toString() + ' '+Provider.of<Athanprovider>(context).time.data.date.hijri.month.en,
                           style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                                 color: Color.fromRGBO(167, 85, 163, 1),
