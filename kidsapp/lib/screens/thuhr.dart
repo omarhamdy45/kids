@@ -9,9 +9,10 @@ class Thuhr extends StatelessWidget {
     return Salahev(
       'Thuhr',
       Provider.of<Athanprovider>(context).time.data.timings.dhuhr,
-     Colors.yellow.shade400,
+      Colors.yellow.shade400,
       Colors.grey[700],
-      Colors.black
+      Colors.black,
+      '2'
     );
   }
 }

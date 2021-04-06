@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/providers/userprovider.dart';
@@ -7,6 +8,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
+  static const String route = 'login';
   @override
   _LoginState createState() => _LoginState();
 }
@@ -33,21 +35,37 @@ class _LoginState extends State<Login> {
     form = GlobalKey<FormState>();
     passwordnode = FocusNode();
     loading = false;
-    firstrun =true;
+    firstrun = true;
   }
 
   @override
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    await Provider.of<Userprovider>(context).fetchuserlocation();
-    setState(() {
-      firstrun=false;
-    });
-    
   }
 
-  void validatetologin() async {}
+  void validatetologin() async {
+    if (form.currentState.validate()) {
+      setState(() {
+        loading = true;
+      });
+      String error = await Provider.of<Userprovider>(context, listen: false)
+          .signInn(email, password);
+
+      if (error != null) {
+        scaffold.currentState.showSnackBar(SnackBar(
+          content: Text('invalid email'),
+          backgroundColor: Colors.red[600],
+        ));
+        setState(() {
+          loading = false;
+        });
+      } else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => Types()));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,10 +79,9 @@ class _LoginState extends State<Login> {
         }
       },
       child: Scaffold(
+          key: scaffold,
           backgroundColor: Color.fromARGB(24, 178, 223, 9),
-          body:
-        
-           Container(
+          body: Container(
             height: double.infinity,
             child: Stack(
               children: [
@@ -133,6 +150,18 @@ class _LoginState extends State<Login> {
                                     //   borderRadius: BorderRadius.all(),
                                   ),
                                 ),
+                                validator: (value) {
+                                  setState(() {
+                                    email = value;
+                                  });
+                                  if (EmailValidator.validate(email)) {
+                                    return null;
+                                  }
+                                  return 'invalid Email';
+                                },
+                                onFieldSubmitted: (value) {
+                                  passwordnode.requestFocus();
+                                },
                                 textInputAction: TextInputAction.next,
                                 keyboardType: TextInputType.emailAddress,
                               ),
@@ -169,7 +198,17 @@ class _LoginState extends State<Login> {
                                     //   borderRadius: BorderRadius.all(),
                                   ),
                                 ),
+                                validator: (value) {
+                                  setState(() {
+                                    password = value;
+                                  });
+                                  if (password.length >= 4) {
+                                    return null;
+                                  }
+                                  return 'password must contain 8 charcter at least';
+                                },
                                 textInputAction: TextInputAction.done,
+                                focusNode: passwordnode,
                                 keyboardType: TextInputType.emailAddress,
                               ),
                               SizedBox(
@@ -180,42 +219,37 @@ class _LoginState extends State<Login> {
                                 padding: EdgeInsets.only(
                                     bottom: MediaQuery.of(context).size.height *
                                         0.05),
-                                child: firstrun?Center(child: CircularProgressIndicator()): Container(
-                                  width: double.infinity,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal:
-                                          MediaQuery.of(context).size.width *
-                                              0.2),
-                                              
-                                  height:
-                                     40,
-                                  child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                          )),
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.white)),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          PageTransition(
-                                            duration:
-                                                Duration(milliseconds: 700),
-                                            type: PageTransitionType.fade,
-                                            child: Types(),
-                                          ),
-                                        );
-                                      },
-                                      child: Text(
-                                        'Login',
-                                        style: TextStyle(color: Colors.grey),
-                                      )),
-                                ),
+                                child: loading
+                                    ? Center(child: CircularProgressIndicator())
+                                    : Container(
+                                        width: double.infinity,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.2),
+                                        height: 40,
+                                        child: ElevatedButton(
+                                            style: ButtonStyle(
+                                                shape: MaterialStateProperty.all<
+                                                        RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                )),
+                                                backgroundColor:
+                                                    MaterialStateProperty.all<
+                                                        Color>(Colors.white)),
+                                            onPressed: () {
+                                              validatetologin();
+                                            },
+                                            child: Text(
+                                              'Login',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            )),
+                                      ),
                               )
                             ],
                           ),

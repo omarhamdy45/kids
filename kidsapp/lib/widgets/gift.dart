@@ -11,9 +11,10 @@ class Gift extends StatelessWidget {
   Color color3;
   Color color4;
   Color color5;
+  Color color6;
 
   Gift(this.title, this.image, this.color1, this.color2, this.color3,
-      this.color4, this.color5);
+      this.color4, this.color5,this.color6);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +28,8 @@ class Gift extends StatelessWidget {
               this.title,
               style: GoogleFonts.roboto(
                 textStyle: TextStyle(
-                    color: Color.fromRGBO(255, 72, 115, 1),
+                    color: this.color6,
+                    
                     letterSpacing: .5,
                     fontWeight: FontWeight.bold,
                     fontSize: 30),

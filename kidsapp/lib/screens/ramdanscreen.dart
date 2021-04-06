@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Athan.dart';
+import 'package:kidsapp/providers/deedprovider.dart';
+import 'package:kidsapp/providers/duaaprovider.dart';
 import 'package:kidsapp/providers/hadithprovider.dart';
+import 'package:kidsapp/providers/lanprovider.dart';
+import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/dua.dart';
 import 'package:kidsapp/screens/hadeth.dart';
 import 'package:kidsapp/screens/qura%60n.dart';
 import 'package:kidsapp/widgets/ramdanitem.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Ramdan extends StatefulWidget {
-  static const String route='/ramdan';
+  static const String route = '/ramdan';
   @override
   _RamdanState createState() => _RamdanState();
 }
@@ -24,6 +30,8 @@ class _RamdanState extends State<Ramdan> {
   bool value4 = false;
   bool value5 = false;
   bool value6 = false;
+  bool value7 = false;
+  bool value8 = false;
   bool select1 = false;
   bool select2 = false;
   bool select3 = false;
@@ -36,13 +44,19 @@ class _RamdanState extends State<Ramdan> {
     // TODO: implement initState
     super.initState();
     firstrun = true;
+   
+     Provider.of<Lanprovider>(context,
+                                          listen: false).getLan();
   }
 
   @override
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    await Provider.of<Hadithprovider>(context).fetchallhadith();
+    await Provider.of<Hadithprovider>(context, listen: false).fetchallhadith();
+    await Provider.of<Duaaprovider>(context, listen: false).fetchallduaas();
+    await Provider.of<Deedprovider>(context, listen: false).fetchalldeed();
+     
     setState(() {
       firstrun = false;
     });
@@ -68,22 +82,7 @@ class _RamdanState extends State<Ramdan> {
                           Row(
                             children: [
                               Text(
-                                Provider.of<Athanprovider>(context)
-                                        .time
-                                        .data
-                                        .date
-                                        .hijri
-                                        .month
-                                        .number
-                                        .toString() +
-                                    ' ' +
-                                    Provider.of<Athanprovider>(context)
-                                        .time
-                                        .data
-                                        .date
-                                        .hijri
-                                        .month
-                                        .en,
+                                '1' + ' ' + 'Ramdan',
                                 style: GoogleFonts.roboto(
                                   textStyle: TextStyle(
                                       color: Color.fromRGBO(167, 85, 163, 1),
@@ -98,12 +97,12 @@ class _RamdanState extends State<Ramdan> {
                           Card(
                             color: Theme.of(context).primaryColor,
                             child: Container(
-                              height: MediaQuery.of(context).size.height * 0.04,
+                              height: 50,
                               child: Center(
                                 child: Container(
                                   margin: EdgeInsets.symmetric(horizontal: 5),
                                   child: Text(
-                                    'Rest for breakfast',
+                                    'Remaining time to breakfast',
                                     style: GoogleFonts.roboto(
                                       textStyle: TextStyle(
                                           color: Colors.white,
@@ -119,7 +118,8 @@ class _RamdanState extends State<Ramdan> {
                         ],
                       )),
                   Container(
-                    margin: EdgeInsets.only(right: 50),
+                    margin: EdgeInsets.only(
+                        right: MediaQuery.of(context).size.height * 0.1),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -142,12 +142,12 @@ class _RamdanState extends State<Ramdan> {
                       ],
                     ),
                   ),
-                  Ramdanitem('Hadith of the Day', 'assets/images/Group400.png',
+                  Ramdanitem('Hadith Of The Day', 'assets/images/Group400.png',
                       Hadeth()),
                   Ramdanitem(
-                      'Deed of the Day', 'assets/images/quran.png', Quraan()),
+                      'Story Of The Day', 'assets/images/quran.png', Quraan()),
                   Ramdanitem(
-                      'Du`a of the Day', 'assets/images/duaa.png', Dua()),
+                      'Dua’ Of The Day', 'assets/images/duaa.png', Dua()),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.02,
                   ),
@@ -158,7 +158,7 @@ class _RamdanState extends State<Ramdan> {
                             horizontal:
                                 MediaQuery.of(context).size.width * 0.015),
                         child: Text(
-                          'Iftar time',
+                          ' How much you have fasted today',
                           style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                                 color: Color.fromRGBO(167, 85, 163, 1),
@@ -199,9 +199,12 @@ class _RamdanState extends State<Ramdan> {
                                   select3 = false;
                                   select4 = false;
                                 });
+                                Dbhandler.instance.ramdanstatus('no');
                               },
                               child: Text(
-                                'No',
+                                'Didn’t fast',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(color: Colors.white),
                               )),
                         ),
@@ -229,9 +232,12 @@ class _RamdanState extends State<Ramdan> {
                                   select3 = false;
                                   select4 = false;
                                 });
+                                Dbhandler.instance.ramdanstatus('thuhr');
                               },
                               child: Text(
-                                'Thohr',
+                                'Until Thuhr',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(color: Colors.white),
                               )),
                         ),
@@ -259,9 +265,12 @@ class _RamdanState extends State<Ramdan> {
                                   select3 = true;
                                   select4 = false;
                                 });
+                                Dbhandler.instance.ramdanstatus('asr');
                               },
                               child: Text(
-                                'Asr',
+                                'Until Asr',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(color: Colors.white),
                               )),
                         ),
@@ -289,9 +298,12 @@ class _RamdanState extends State<Ramdan> {
                                   select3 = false;
                                   select4 = true;
                                 });
+                                Dbhandler.instance.ramdanstatus('maghrib');
                               },
                               child: Text(
-                                'maghrib',
+                                'Until Maghrib',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(color: Colors.white),
                               )),
                         ),
@@ -343,7 +355,7 @@ class _RamdanState extends State<Ramdan> {
                                           Theme.of(context).primaryColor)),
                               onPressed: () {},
                               child: Text(
-                                'verse(s)',
+                                'Ayat',
                                 style: TextStyle(color: Colors.white),
                               )),
                         ),
@@ -365,7 +377,7 @@ class _RamdanState extends State<Ramdan> {
                                           Theme.of(context).primaryColor)),
                               onPressed: () {},
                               child: Text(
-                                'Sura',
+                                'Suwar',
                                 style: TextStyle(color: Colors.white),
                               )),
                         ),
@@ -387,7 +399,7 @@ class _RamdanState extends State<Ramdan> {
                                           Theme.of(context).primaryColor)),
                               onPressed: () {},
                               child: Text(
-                                'Guz`',
+                                'Ajza’`',
                                 style: TextStyle(color: Colors.white),
                               )),
                         ),
@@ -544,10 +556,15 @@ class _RamdanState extends State<Ramdan> {
                                             Icons.remove,
                                             color: Colors.white,
                                           ),
-                                          onTap: () {
+                                          onTap: () async {
                                             setState(() {
                                               goz2counter--;
                                             });
+                                            SharedPreferences prefs =
+                                                await SharedPreferences
+                                                    .getInstance();
+                                            prefs.setInt(
+                                                "goz2counter", goz2counter);
                                           }),
                                     ),
                                   ),
@@ -613,6 +630,8 @@ class _RamdanState extends State<Ramdan> {
                                 MediaQuery.of(context).size.width * 0.02),
                         child: Text(
                           'Daily cheak list',
+                          //  maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                                 color: Color.fromRGBO(167, 85, 163, 1),
@@ -636,20 +655,20 @@ class _RamdanState extends State<Ramdan> {
                         Expanded(
                           child: Row(
                             children: [
-                              Text('select1',
-                                  style: GoogleFonts.roboto(
-                                    textStyle: TextStyle(
-                                      color: Color.fromRGBO(125, 137, 137, 1),
-                                    ),
-                                  )),
-                              SizedBox(
-                                width: 5,
-                              ),
                               InkWell(
-                                onTap: () {
+                                onTap: () async {
                                   setState(() {
                                     value1 = !value1;
                                   });
+
+                                  await Provider.of<Lanprovider>(context,
+                                          listen: false)
+                                      .changeLan(value1);
+                                  await Dbhandler.instance
+                                      .activity('done', '1');
+                                  print(Provider.of<Lanprovider>(context,
+                                          listen: false)
+                                      .isEn);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -657,7 +676,9 @@ class _RamdanState extends State<Ramdan> {
                                       color: Theme.of(context).primaryColor),
                                   child: Padding(
                                     padding: const EdgeInsets.all(10.0),
-                                    child: value1
+                                    child: Provider.of<Lanprovider>(context,
+                                                listen: true)
+                                            .isEn
                                         ? Icon(
                                             Icons.check,
                                             size: 20.0,
@@ -671,30 +692,33 @@ class _RamdanState extends State<Ramdan> {
                                   ),
                                 ),
                               ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text('Ate Suhoor',
+                                  //      maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.roboto(
+                                    textStyle: TextStyle(
+                                      color: Color.fromRGBO(125, 137, 137, 1),
+                                    ),
+                                  )),
                             ],
                           ),
                         ),
                         Expanded(
                           child: Row(
                             children: [
-                              Text(
-                                'select1',
-                                style: GoogleFonts.roboto(
-                                  textStyle: TextStyle(
-                                      color: Color.fromRGBO(125, 137, 137, 1),
-                                      letterSpacing: .5,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
                               InkWell(
-                                onTap: () {
+                                onTap: () async {
                                   setState(() {
                                     value2 = !value2;
                                   });
+                                  await Dbhandler.instance
+                                      .activity('done', '2');
+                                  print(Provider.of<Lanprovider>(context,
+                                          listen: false)
+                                      .isEn);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -716,26 +740,46 @@ class _RamdanState extends State<Ramdan> {
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Text('select1',
-                                  style: GoogleFonts.roboto(
-                                    textStyle: TextStyle(
-                                      color: Color.fromRGBO(125, 137, 137, 1),
-                                    ),
-                                  )),
                               SizedBox(
                                 width: 5,
                               ),
+                              Text(
+                                'Gave in Sadaqah',
+                                //      maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.roboto(
+                                  textStyle: TextStyle(
+                                      color: Color.fromRGBO(125, 137, 137, 1),
+                                      letterSpacing: .5,
+                                      //               fontWeight: FontWeight.bold,
+                                      fontSize: 14),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.02),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Row(
+                            children: [
                               InkWell(
-                                onTap: () {
+                                onTap: () async {
                                   setState(() {
                                     value3 = !value3;
                                   });
+                                  await Dbhandler.instance
+                                      .activity('done', '3');
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -757,38 +801,30 @@ class _RamdanState extends State<Ramdan> {
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * 0.02),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Text('select1',
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text('Exercised',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.roboto(
                                     textStyle: TextStyle(
                                       color: Color.fromRGBO(125, 137, 137, 1),
                                     ),
                                   )),
-                              SizedBox(
-                                width: 5,
-                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Row(
+                            children: [
                               InkWell(
-                                onTap: () {
+                                onTap: () async {
                                   setState(() {
                                     value4 = !value4;
                                   });
+                                  await Dbhandler.instance
+                                      .activity('done', '4');
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -810,30 +846,46 @@ class _RamdanState extends State<Ramdan> {
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: [
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text(
-                                'select1',
+                                'Attended halaqa online/offline',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.roboto(
                                   textStyle: TextStyle(
                                       color: Color.fromRGBO(125, 137, 137, 1),
                                       letterSpacing: .5,
-                                      fontWeight: FontWeight.bold,
+                                      //            fontWeight: FontWeight.bold,
                                       fontSize: 14),
                                 ),
                               ),
-                              SizedBox(
-                                width: 5,
-                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.02),
+                    //
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Row(
+                            children: [
                               InkWell(
-                                onTap: () {
+                                onTap: () async {
                                   setState(() {
                                     value5 = !value5;
                                   });
+                                  await Dbhandler.instance
+                                      .activity('done', '5');
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -855,26 +907,30 @@ class _RamdanState extends State<Ramdan> {
                                   ),
                                 ),
                               ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text('Kind to self & others',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.roboto(
+                                    textStyle: TextStyle(
+                                      color: Color.fromRGBO(125, 137, 137, 1),
+                                    ),
+                                  )),
                             ],
                           ),
                         ),
                         Expanded(
                           child: Row(
                             children: [
-                              Text('select1',
-                                  style: GoogleFonts.roboto(
-                                    textStyle: TextStyle(
-                                      color: Color.fromRGBO(125, 137, 137, 1),
-                                    ),
-                                  )),
-                              SizedBox(
-                                width: 5,
-                              ),
                               InkWell(
-                                onTap: () {
+                                onTap: () async {
                                   setState(() {
                                     value6 = !value6;
                                   });
+                                  await Dbhandler.instance
+                                      .activity('done', '6');
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -894,6 +950,127 @@ class _RamdanState extends State<Ramdan> {
                                             color: Colors.blue,
                                           ),
                                   ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'Hosted/attended Iftar.',
+                                //      maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.roboto(
+                                  textStyle: TextStyle(
+                                      color: Color.fromRGBO(125, 137, 137, 1),
+                                      letterSpacing: .5,
+                                      //     fontWeight: FontWeight.bold,
+                                      fontSize: 14),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.02),
+                    //
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Row(
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  setState(() {
+                                    value7 = !value7;
+                                  });
+                                  await Dbhandler.instance
+                                      .activity('done', '7');
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Theme.of(context).primaryColor),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: value7
+                                        ? Icon(
+                                            Icons.check,
+                                            size: 20.0,
+                                            color: Colors.white,
+                                          )
+                                        : Icon(
+                                            Icons.check_box_outline_blank,
+                                            size: 20.0,
+                                            color: Colors.blue,
+                                          ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text('Greeted everyone with smile',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.roboto(
+                                    textStyle: TextStyle(
+                                      color: Color.fromRGBO(125, 137, 137, 1),
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  setState(() {
+                                    value8 = !value8;
+                                  });
+                                  await Dbhandler.instance
+                                      .activity('done', '8');
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Theme.of(context).primaryColor),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: value8
+                                        ? Icon(
+                                            Icons.check,
+                                            size: 20.0,
+                                            color: Colors.white,
+                                          )
+                                        : Icon(
+                                            Icons.check_box_outline_blank,
+                                            size: 20.0,
+                                            color: Colors.blue,
+                                          ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'Helped my mum and dad.',
+                                //      maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.roboto(
+                                  textStyle: TextStyle(
+                                      color: Color.fromRGBO(125, 137, 137, 1),
+                                      letterSpacing: .5,
+                                      //     fontWeight: FontWeight.bold,
+                                      fontSize: 14),
                                 ),
                               ),
                             ],
@@ -918,7 +1095,12 @@ class _RamdanState extends State<Ramdan> {
                             )),
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 Theme.of(context).accentColor)),
-                        onPressed: () {},
+                        onPressed: () async {
+                          await Dbhandler.instance.quraantracker(
+                              vercecounter.toString(),
+                              surracounter.toString(),
+                              goz2counter.toString());
+                        },
                         child: Text(
                           'Done',
                           style: TextStyle(color: Colors.white, fontSize: 18),

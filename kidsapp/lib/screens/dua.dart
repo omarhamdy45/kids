@@ -1,49 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:kidsapp/models/db.dart';
+import 'package:kidsapp/providers/duaaprovider.dart';
+import 'package:kidsapp/screens/ramdanscreen.dart';
 import 'package:kidsapp/widgets/ramdanitem.dart';
+import 'package:provider/provider.dart';
 
 class Dua extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+     int date = DateTime.now().day;
     return SafeArea(
       child: Scaffold(
         body: ListView(
           children: [
             Ramdanitem.b('Duaa of the Day', 'assets/images/duaa.png'),
-            Container(
+           Container(
               margin: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.015),
+                  horizontal: MediaQuery.of(context).size.width * 0.05),
               child: Text(
-                'أذكار الاستيقاظ من النوم',
+                Provider.of<Duaaprovider>(context, listen: false)
+                    .duaa
+                    .data[date % 13]
+                    .title,
                 textDirection: TextDirection.rtl,
                 style: TextStyle(color: Colors.black, fontSize: 16),
               ),
             ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
             Container(
               margin: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.015),
+                  horizontal: MediaQuery.of(context).size.width * 0.05),
               child: Text(
-                'الحَمْـدُ الّذي أَحْـيانا بَعْـدَ ما أَماتَـنا وَإليه النُّـشور ',
+                Provider.of<Duaaprovider>(context, listen: false)
+                    .duaa
+                    .data[date % 12]
+                    .descriptionAr,
                 textDirection: TextDirection.rtl,
                 style: TextStyle(color: Theme.of(context).accentColor),
               ),
             ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
             Container(
               margin: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.015),
+                  horizontal: MediaQuery.of(context).size.width * 0.05),
               child: Text(
-                'When waking up',
+                Provider.of<Duaaprovider>(context, listen: false)
+                    .duaa
+                    .data[date % 13]
+                    .descriptionEn,
                 textDirection: TextDirection.ltr,
-                style: TextStyle(color: Colors.black, fontSize: 16),
+                style: TextStyle(
+                    color: Theme.of(context).accentColor, fontSize: 16),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
             Container(
               margin: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.015),
+                  horizontal: MediaQuery.of(context).size.width * 0.05),
               child: Text(
-                'Praise is to Allah Who gives us life after He has caused us to die and to Him is the return.',
+                Provider.of<Duaaprovider>(context, listen: false)
+                    .duaa
+                    .data[date % 13]
+                    .descriptionFr,
                 textDirection: TextDirection.ltr,
                 style: TextStyle(color: Theme.of(context).accentColor),
               ),
@@ -51,33 +69,34 @@ class Dua extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.07,
             ),
-            Container(
-              margin: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.015),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      child: Icon(
-                        Icons.play_arrow_sharp,
-                        color: Colors.white,
-                        size: 45,
-                      )),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      child: Icon(
-                        Icons.pause_outlined,
-                        color: Colors.white,
-                        size: 45,
-                      )),
-                  
-                ],
+            Center(
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.015),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        child: Icon(
+                          Icons.play_arrow_sharp,
+                          color: Colors.white,
+                          size: 45,
+                        )),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        child: Icon(
+                          Icons.pause_outlined,
+                          color: Colors.white,
+                          size: 45,
+                        )),
+                  ],
+                ),
               ),
             ),
             SizedBox(
@@ -96,7 +115,11 @@ class Dua extends StatelessWidget {
                       )),
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Theme.of(context).accentColor)),
-                  onPressed: () {},
+                  onPressed: () async {
+                    await Dbhandler.instance.duaaread((date%13).toString(), 'read');
+                    Navigator.pushReplacementNamed(context, Ramdan.route,
+                      );
+                  },
                   child: Text(
                     'Finsh',
                     style: TextStyle(color: Colors.white, fontSize: 18),

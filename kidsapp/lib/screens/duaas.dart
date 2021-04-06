@@ -7,6 +7,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class Duaas extends StatelessWidget {
+  static const String route='duaas';
   @override
   Widget build(BuildContext context) {
     return SafeArea(

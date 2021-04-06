@@ -37,7 +37,7 @@ class Salah extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.only(left: 10),
                           child: Text(
-                            'Next player',
+                            'Next Prayer',
                             style: GoogleFonts.roboto(
                               textStyle: TextStyle(
                                   color: Color.fromRGBO(204, 14, 116, 1),
@@ -175,7 +175,7 @@ class Salah extends StatelessWidget {
                                     top: 2,
                                     child: Container(
                                       child: Text(
-                                        'Thohr',
+                                        'Thuhr',
                                         style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
                                               color: Colors.black,
@@ -327,7 +327,7 @@ class Salah extends StatelessWidget {
                                     top: 2,
                                     child: Container(
                                       child: Text(
-                                        'Maghreb',
+                                        'Maghrib',
                                         style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
                                               color: Colors.black,
@@ -365,6 +365,7 @@ class Salah extends StatelessWidget {
                                         child: Image.asset(
                                             'assets/images/Group 72.png')),
                                   ),
+                                  
                                 ],
                               ),
                             ),
@@ -406,7 +407,7 @@ class Salah extends StatelessWidget {
                                 top: 2,
                                 child: Container(
                                   child: Text(
-                                    'Ishaa',
+                                    'Isha’',
                                     style: GoogleFonts.roboto(
                                       textStyle: TextStyle(
                                           color: Colors.white,

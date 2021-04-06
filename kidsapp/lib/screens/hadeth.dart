@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kidsapp/models/Athan.dart';
+import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/hadithprovider.dart';
 import 'package:kidsapp/screens/ramdanscreen.dart';
 import 'package:kidsapp/widgets/ramdanitem.dart';
@@ -21,7 +22,7 @@ class Hadeth extends StatelessWidget {
               child: Text(
                 Provider.of<Hadithprovider>(context, listen: false)
                     .azkar
-                    .data[date % 12]
+                    .data[date % 13]
                     .title,
                 textDirection: TextDirection.rtl,
                 style: TextStyle(color: Colors.black, fontSize: 16),
@@ -47,7 +48,7 @@ class Hadeth extends StatelessWidget {
               child: Text(
                 Provider.of<Hadithprovider>(context, listen: false)
                     .azkar
-                    .data[date % 12]
+                    .data[date % 13]
                     .descriptionEn,
                 textDirection: TextDirection.ltr,
                 style: TextStyle(
@@ -61,7 +62,7 @@ class Hadeth extends StatelessWidget {
               child: Text(
                 Provider.of<Hadithprovider>(context, listen: false)
                     .azkar
-                    .data[date % 12]
+                    .data[date % 13]
                     .descriptionFr,
                 textDirection: TextDirection.ltr,
                 style: TextStyle(color: Theme.of(context).accentColor),
@@ -116,8 +117,10 @@ class Hadeth extends StatelessWidget {
                       )),
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Theme.of(context).accentColor)),
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, Ramdan.route, arguments: done);
+                  onPressed: () async {
+                    await Dbhandler.instance.hadithread((date%13).toString(), 'read');
+                    Navigator.pushReplacementNamed(context, Ramdan.route,
+                        arguments: done);
                   },
                   child: Text(
                     'Finsh',

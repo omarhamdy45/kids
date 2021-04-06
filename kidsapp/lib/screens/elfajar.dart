@@ -13,7 +13,7 @@ class Elfajar extends StatelessWidget {
       Colors.lightBlueAccent.shade700,
       Colors.white,
       Colors.white,
-
+      '1',
     );
   }
 }

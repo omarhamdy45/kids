@@ -62,15 +62,25 @@ class Data {
 
 class Azkars {
   int id;
-  String desciption;
+  String desciptionAr;
+  String desciptionEn;
+  String desciptionFr;
   String createdAt;
   String updatedAt;
 
-  Azkars({this.id, this.desciption, this.createdAt, this.updatedAt});
+  Azkars(
+      {this.id,
+      this.desciptionAr,
+      this.desciptionEn,
+      this.desciptionFr,
+      this.createdAt,
+      this.updatedAt});
 
   Azkars.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    desciption = json['desciption'];
+    desciptionAr = json['desciption_ar'];
+    desciptionEn = json['desciption_en'];
+    desciptionFr = json['desciption_fr'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -78,7 +88,9 @@ class Azkars {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['desciption'] = this.desciption;
+    data['desciption_ar'] = this.desciptionAr;
+    data['desciption_en'] = this.desciptionEn;
+    data['desciption_fr'] = this.desciptionFr;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;
