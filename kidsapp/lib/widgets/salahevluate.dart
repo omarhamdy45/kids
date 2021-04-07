@@ -109,44 +109,49 @@ class _SalahevState extends State<Salahev> {
                       });
                       await Dbhandler.instance
                           .salahevluate(this.widget.id, 'no');
-                      Dialogs.materialDialog(
-                          customView: Container(
-                            child: Gift(
-                              'Amazing',
-                              'assets/images/Group 815.png',
-                              Color.fromRGBO(34, 196, 228, 1),
-                              Colors.grey,
-                              Colors.grey,
-                              Colors.grey,
-                              Colors.grey,
-                               Color.fromRGBO(34, 196, 228, 1),
-                            ),
-                          ),
-                          titleStyle: TextStyle(
-                              color: Theme.of(context).accentColor,
-                              fontSize: 25),
-                          color: Colors.white,
-                          //    animation: 'assets/cong_example.json',
-                          context: context,
-                          actions: [
-                            Container(
-                              height: 40,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal:
-                                      MediaQuery.of(context).size.width * 0.1),
-                              child: IconsButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                },
-                                text: 'Lovely',
-                                color: Color.fromRGBO(34, 196, 228, 1),
-                                textStyle: TextStyle(color: Colors.white),
+                      if (Dbhandler.instance.cheaksalah == 200) {
+                        Dialogs.materialDialog(
+                            customView: Container(
+                              child: Gift(
+                                'Pray On Time',
+                                ' حافظ على الصلاة فى وقتها',
+                                'assets/images/Group 815.png',
+                                Colors.white,
+                                Colors.white,
+                                Colors.white,
+                                Colors.white,
+                                Colors.white,
+                                Color.fromRGBO(34, 196, 228, 1),
                               ),
                             ),
-                          ]);
+                            titleStyle: TextStyle(
+                                color: Theme.of(context).accentColor,
+                                fontSize: 25),
+                            color: Colors.white,
+                            //    animation: 'assets/cong_example.json',
+                            context: context,
+                            actions: [
+                              Container(
+                                height: 40,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal:
+                                        MediaQuery.of(context).size.width *
+                                            0.1),
+                                child: IconsButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
+                                  },
+                                  text: 'Done',
+                                  color: Color.fromRGBO(34, 196, 228, 1),
+                                  textStyle: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
+                              ),
+                            ]);
+                      }
                     },
                     child: Column(
                       children: [
@@ -201,62 +206,65 @@ class _SalahevState extends State<Salahev> {
                                         onTap: () async {
                                           await Dbhandler.instance.salahevluate(
                                               this.widget.id, 'late group');
-                                          Dialogs.materialDialog(
-                                              customView: Container(
-                                                child: Gift(
-                                                  'Amazing',
-                                                  'assets/images/Group 804.png',
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                       Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                ),
-                                              ),
-                                              titleStyle: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .accentColor,
-                                                  fontSize: 25),
-                                              color: Colors.white,
-                                              //    animation: 'assets/cong_example.json',
-                                              context: context,
-                                              actions: [
-                                                Container(
-                                                  height: 40,
-                                                  margin: EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.1),
-                                                  child: IconsButton(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    text: 'Lovely',
-                                                    color: Color.fromRGBO(
+                                          if (Dbhandler.instance.cheaksalah ==
+                                              200) {
+                                            Dialogs.materialDialog(
+                                                customView: Container(
+                                                  child: Gift(
+                                                    'Pray On Time',
+                                                    'حافظ على الصلاة فى وقتها',
+                                                    'assets/images/Group 804.png',
+                                                    Color.fromRGBO(
                                                         255, 72, 115, 1),
-                                                    textStyle: TextStyle(
-                                                        color: Colors.white),
+                                                    Color.fromRGBO(
+                                                        255, 72, 115, 1),
+                                                    Color.fromRGBO(
+                                                        255, 72, 115, 1),
+                                                    Colors.grey,
+                                                    Colors.grey,
+                                                    Color.fromRGBO(
+                                                        255, 72, 115, 1),
                                                   ),
                                                 ),
-                                              ]);
+                                                titleStyle: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .accentColor,
+                                                    fontSize: 25),
+                                                color: Colors.white,
+                                                //    animation: 'assets/cong_example.json',
+                                                context: context,
+                                                actions: [
+                                                  Container(
+                                                    height: 40,
+                                                    margin: EdgeInsets.symmetric(
+                                                        horizontal:
+                                                            MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.1),
+                                                    child: IconsButton(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      text: 'Done',
+                                                      color: Color.fromRGBO(
+                                                          255, 72, 115, 1),
+                                                      textStyle: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ]);
+                                          }
                                         },
                                         child: Container(
                                           margin: EdgeInsets.all(2),
@@ -274,62 +282,64 @@ class _SalahevState extends State<Salahev> {
                                         onTap: () async {
                                           await Dbhandler.instance.salahevluate(
                                               this.widget.id, 'late single');
-                                          Dialogs.materialDialog(
-                                              customView: Container(
-                                                child: Gift(
-                                                  'Amazing',
-                                                  'assets/images/Group 804.png',
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                         Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                ),
-                                              ),
-                                              titleStyle: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .accentColor,
-                                                  fontSize: 25),
-                                              color: Colors.white,
-                                              //    animation: 'assets/cong_example.json',
-                                              context: context,
-                                              actions: [
-                                                Container(
-                                                  height: 40,
-                                                  margin: EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.1),
-                                                  child: IconsButton(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    text: 'Lovely',
-                                                    color: Color.fromRGBO(
+                                          if (Dbhandler.instance.cheaksalah ==
+                                              200) {
+                                            Dialogs.materialDialog(
+                                                customView: Container(
+                                                  child: Gift(
+                                                    'Pray On Time',
+                                                    'حافظ على الصلاة فى وقتها',
+                                                    'assets/images/Group 813.png',
+                                                    Color.fromRGBO(
                                                         255, 72, 115, 1),
-                                                    textStyle: TextStyle(
-                                                        color: Colors.white),
+                                                    Color.fromRGBO(
+                                                        255, 72, 115, 1),
+                                                    Colors.grey,
+                                                    Colors.grey,
+                                                    Colors.grey,
+                                                    Color.fromRGBO(
+                                                        255, 72, 115, 1),
                                                   ),
                                                 ),
-                                              ]);
+                                                titleStyle: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .accentColor,
+                                                    fontSize: 25),
+                                                color: Colors.white,
+                                                //    animation: 'assets/cong_example.json',
+                                                context: context,
+                                                actions: [
+                                                  Container(
+                                                    height: 40,
+                                                    margin: EdgeInsets.symmetric(
+                                                        horizontal:
+                                                            MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.1),
+                                                    child: IconsButton(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      text: 'Done',
+                                                      color: Color.fromRGBO(
+                                                          255, 72, 115, 1),
+                                                      textStyle: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ]);
+                                          }
                                         },
                                         child: Container(
                                           child: CircleAvatar(
@@ -362,7 +372,9 @@ class _SalahevState extends State<Salahev> {
                               child: IconsButton(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
                                 text: 'cancel',
                                 color: Theme.of(context).accentColor,
                                 textStyle: TextStyle(color: Colors.white),
@@ -424,62 +436,66 @@ class _SalahevState extends State<Salahev> {
                                         onTap: () async {
                                           await Dbhandler.instance.salahevluate(
                                               this.widget.id, 'ontime group');
-                                          Dialogs.materialDialog(
-                                              customView: Container(
-                                                child: Gift(
-                                                  'Amazing',
-                                                  'assets/images/Group 804.png',
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                       Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                ),
-                                              ),
-                                              titleStyle: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .accentColor,
-                                                  fontSize: 25),
-                                              color: Colors.white,
-                                              //    animation: 'assets/cong_example.json',
-                                              context: context,
-                                              actions: [
-                                                Container(
-                                                  height: 40,
-                                                  margin: EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.1),
-                                                  child: IconsButton(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    text: 'Lovely',
-                                                    color: Color.fromRGBO(
+                                          if (Dbhandler.instance.cheaksalah ==
+                                              200) {
+                                            Dialogs.materialDialog(
+                                                customView: Container(
+                                                  child: Gift(
+                                                    'Masha’ Allah',
+                                                    'ماشاء الله',
+                                                    'assets/images/Group 804.png',
+                                                    Color.fromRGBO(
                                                         255, 72, 115, 1),
-                                                    textStyle: TextStyle(
-                                                        color: Colors.white),
+                                                    Color.fromRGBO(
+                                                        255, 72, 115, 1),
+                                                    Color.fromRGBO(
+                                                        255, 72, 115, 1),
+                                                    Color.fromRGBO(
+                                                        255, 72, 115, 1),
+                                                   Colors.grey,
+                                                    Color.fromRGBO(
+                                                        255, 72, 115, 1),
                                                   ),
                                                 ),
-                                              ]);
+                                                titleStyle: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .accentColor,
+                                                    fontSize: 25),
+                                                color: Colors.white,
+                                                //    animation: 'assets/cong_example.json',
+                                                context: context,
+                                                actions: [
+                                                  Container(
+                                                    height: 40,
+                                                    margin: EdgeInsets.symmetric(
+                                                        horizontal:
+                                                            MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.1),
+                                                    child: IconsButton(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      text: 'Done',
+                                                      color: Color.fromRGBO(
+                                                          255, 72, 115, 1),
+                                                      textStyle: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ]);
+                                          }
                                         },
                                         child: Container(
                                           margin: EdgeInsets.all(2),
@@ -497,62 +513,65 @@ class _SalahevState extends State<Salahev> {
                                         onTap: () async {
                                           await Dbhandler.instance.salahevluate(
                                               this.widget.id, 'ontime single');
-                                          Dialogs.materialDialog(
-                                              customView: Container(
-                                                child: Gift(
-                                                  'Amazing',
-                                                  'assets/images/Group 804.png',
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                        Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                ),
-                                              ),
-                                              titleStyle: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .accentColor,
-                                                  fontSize: 25),
-                                              color: Colors.white,
-                                              //    animation: 'assets/cong_example.json',
-                                              context: context,
-                                              actions: [
-                                                Container(
-                                                  height: 40,
-                                                  margin: EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.1),
-                                                  child: IconsButton(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    text: 'Lovely',
-                                                    color: Color.fromRGBO(
+                                          if (Dbhandler.instance.cheaksalah ==
+                                              200) {
+                                            Dialogs.materialDialog(
+                                                customView: Container(
+                                                  child: Gift(
+                                                    'Jazaka Allahu Khayran',
+                                                    ' جزاك الله خيرًا',
+                                                    'assets/images/Group 804.png',
+                                                    Color.fromRGBO(
                                                         255, 72, 115, 1),
-                                                    textStyle: TextStyle(
-                                                        color: Colors.white),
+                                                    Color.fromRGBO(
+                                                        255, 72, 115, 1),
+                                                    Color.fromRGBO(
+                                                        255, 72, 115, 1),
+                                                    Colors.grey,
+                                                    Colors.grey,
+                                                    Color.fromRGBO(
+                                                        255, 72, 115, 1),
                                                   ),
                                                 ),
-                                              ]);
+                                                titleStyle: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .accentColor,
+                                                    fontSize: 25),
+                                                color: Colors.white,
+                                                //    animation: 'assets/cong_example.json',
+                                                context: context,
+                                                actions: [
+                                                  Container(
+                                                    height: 40,
+                                                    margin: EdgeInsets.symmetric(
+                                                        horizontal:
+                                                            MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.1),
+                                                    child: IconsButton(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      text: 'Done',
+                                                      color: Color.fromRGBO(
+                                                          255, 72, 115, 1),
+                                                      textStyle: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ]);
+                                          }
                                         },
                                         child: Container(
                                           child: CircleAvatar(
@@ -585,7 +604,9 @@ class _SalahevState extends State<Salahev> {
                               child: IconsButton(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
                                 text: 'cancel',
                                 color: Theme.of(context).accentColor,
                                 textStyle: TextStyle(color: Colors.white),
@@ -618,10 +639,10 @@ class _SalahevState extends State<Salahev> {
               ),
               Container(
                 margin: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * 0.02)
+                        horizontal: MediaQuery.of(context).size.width * 0.015)
                     .add(EdgeInsets.symmetric(
                         vertical: MediaQuery.of(context).size.height * 0.03)),
-                child: Text('You should to read athkar after pray !',
+                child: Text('Thikr after prayer',
                     style: GoogleFonts.roboto(
                       textStyle: TextStyle(
                           color: Theme.of(context).accentColor,
@@ -632,7 +653,7 @@ class _SalahevState extends State<Salahev> {
               Container(
                 height: 35,
                 margin: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.3),
+                    horizontal: MediaQuery.of(context).size.width * 0.2),
                 child: ElevatedButton(
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -675,7 +696,7 @@ class _SalahevState extends State<Salahev> {
                                   TextStyle(color: Colors.white, fontSize: 16),
                             )
                           : Text(
-                              'Go',
+                              'Practice Thikr ',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 16),
                             ),

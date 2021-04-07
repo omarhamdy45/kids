@@ -6,6 +6,7 @@ import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 class Gift extends StatelessWidget {
   String image;
   String title;
+  String title2;
   Color color1;
   Color color2;
   Color color3;
@@ -13,7 +14,7 @@ class Gift extends StatelessWidget {
   Color color5;
   Color color6;
 
-  Gift(this.title, this.image, this.color1, this.color2, this.color3,
+  Gift(this.title,this.title2, this.image, this.color1, this.color2, this.color3,
       this.color4, this.color5,this.color6);
   @override
   Widget build(BuildContext context) {
@@ -24,15 +25,17 @@ class Gift extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(this.image),
-            Text(
-              this.title,
-              style: GoogleFonts.roboto(
-                textStyle: TextStyle(
-                    color: this.color6,
-                    
-                    letterSpacing: .5,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30),
+            Center(
+              child: Text(
+                this.title,
+                style: GoogleFonts.roboto(
+                  textStyle: TextStyle(
+                      color: this.color6,
+                      
+                      letterSpacing: .5,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                ),
               ),
             ),
             SizedBox(
@@ -40,15 +43,15 @@ class Gift extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.18),
+                  horizontal: MediaQuery.of(context).size.width * 0.1),
               child: Text(
-                'congratulates on your promtion and 3 badges ',
+               this.title2,
                 style: GoogleFonts.roboto(
                   textStyle: TextStyle(
                       color: Color.fromRGBO(153, 153, 153, 1),
                       letterSpacing: .5,
                       fontWeight: FontWeight.bold,
-                      fontSize: 14),
+                      fontSize: 20),
                 ),
               ),
             ),

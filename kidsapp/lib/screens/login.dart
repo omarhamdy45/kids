@@ -1,5 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/types.dart';
@@ -36,6 +38,18 @@ class _LoginState extends State<Login> {
     passwordnode = FocusNode();
     loading = false;
     firstrun = true;
+    _getUserLocation();
+  }
+   void _getUserLocation() async {
+    var position = await GeolocatorPlatform.instance
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    final coordinates = new Coordinates(position.latitude, position.longitude);
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+    Userprovider.city = first.adminArea;
+    Userprovider.country = first.countryName;
+    
   }
 
   @override

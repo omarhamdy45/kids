@@ -46,6 +46,8 @@ class _TypesState extends State<Types> {
     await Provider.of<Userprovider>(context, listen: false).fetchuserlocation();
     await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
 
+    print(Userprovider.city);
+
     setState(() {
       firstrun = false;
     });
@@ -53,15 +55,13 @@ class _TypesState extends State<Types> {
 
   void _getUserLocation() async {
     var position = await GeolocatorPlatform.instance
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
     final coordinates = new Coordinates(position.latitude, position.longitude);
     var addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
-    Userprovider.city=first.adminArea;
-    Userprovider.country=first.countryName;
-
-    print(first.addressLine);
+    Userprovider.city = first.adminArea;
+    Userprovider.country = first.countryName;
   }
 
   @override

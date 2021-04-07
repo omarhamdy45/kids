@@ -24,7 +24,7 @@ class Quraan extends StatelessWidget {
               child: Text(
                 Provider.of<Deedprovider>(context, listen: false)
                     .dead
-                    .data[date % 13]
+                    .data[Ramdan.day - 1]
                     .title,
                 textDirection: TextDirection.rtl,
                 style: TextStyle(color: Colors.black, fontSize: 16),
@@ -37,7 +37,7 @@ class Quraan extends StatelessWidget {
               child: Text(
                 Provider.of<Deedprovider>(context, listen: false)
                     .dead
-                    .data[date % 12]
+                    .data[Ramdan.day - 1]
                     .descriptionAr,
                 textDirection: TextDirection.rtl,
                 style: TextStyle(color: Theme.of(context).accentColor),
@@ -50,7 +50,7 @@ class Quraan extends StatelessWidget {
               child: Text(
                 Provider.of<Deedprovider>(context, listen: false)
                     .dead
-                    .data[date % 13]
+                    .data[Ramdan.day - 1]
                     .descriptionEn,
                 textDirection: TextDirection.ltr,
                 style: TextStyle(
@@ -64,7 +64,7 @@ class Quraan extends StatelessWidget {
               child: Text(
                 Provider.of<Deedprovider>(context, listen: false)
                     .dead
-                    .data[date % 13]
+                    .data[Ramdan.day - 1]
                     .descriptionFr,
                 textDirection: TextDirection.ltr,
                 style: TextStyle(color: Theme.of(context).accentColor),
@@ -121,11 +121,48 @@ class Quraan extends StatelessWidget {
                           Theme.of(context).accentColor)),
                   onPressed: () async {
                     await Dbhandler.instance
-                        .deaedread((date % 13).toString(), 'read');
-                    Navigator.pushReplacementNamed(
-                      context,
-                      Ramdan.route,
-                    );
+                        .deaedread((Ramdan.day - 1).toString(), 'read');
+                    if (Dbhandler.instance.deedreadd == 200) {
+                      Dialogs.materialDialog(
+                          customView: Container(
+                            child: Gift(
+                              'May Allah Bless You',
+                              '  بارك الله فيك',
+                              'assets/images/Group 795.png',
+                              Color.fromRGBO(255, 72, 115, 1),
+                              Color.fromRGBO(255, 72, 115, 1),
+                              Color.fromRGBO(255, 72, 115, 1),
+                              Color.fromRGBO(255, 72, 115, 1),
+                              Color.fromRGBO(255, 72, 115, 1),
+                              Color.fromRGBO(255, 72, 115, 1),
+                            ),
+                          ),
+                          titleStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 25),
+                          color: Colors.white,
+                          //    animation: 'assets/cong_example.json',
+                          context: context,
+                          actions: [
+                            Container(
+                              height: 40,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.of(context).size.width * 0.1),
+                              child: IconsButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                },
+                                text: 'Done',
+                                color: Color.fromRGBO(255, 72, 115, 1),
+                                textStyle: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ]);
+                    }
                   },
                   child: Text(
                     'Finsh',

@@ -210,6 +210,7 @@ class _DuadetailsState extends State<Duadetails> {
                                 customView: Container(
                                   child: Gift(
                                     'Amazing',
+                                    'ماشاء الله',
                                     'assets/images/Group 804.png',
                                     Color.fromRGBO(255, 72, 115, 1),
                                     Color.fromRGBO(255, 72, 115, 1),
@@ -249,7 +250,7 @@ class _DuadetailsState extends State<Duadetails> {
                                 ]);
                           },
                           child: Text(
-                            'Finsh',
+                            'Done',
                             style: TextStyle(color: Colors.white, fontSize: 18),
                           )),
                     ),

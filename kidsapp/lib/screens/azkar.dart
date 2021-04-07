@@ -58,126 +58,147 @@ class _AzkarState extends State<Azkar> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8)),
                       elevation: 5,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            color: Theme.of(context).primaryColor,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.08,
-                              child: Center(
-                                child: Text(
-                                  'Athkar After pray',
-                                  style: GoogleFonts.roboto(
-                                    textStyle: TextStyle(
-                                        color: Colors.white,
-                                        letterSpacing: .5,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25),
+                      child: SingleChildScrollView(
+                                              child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              color: Theme.of(context).primaryColor,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height * 0.08,
+                                child: Center(
+                                  child: Text(
+                                    'Athkar After pray',
+                                    style: GoogleFonts.roboto(
+                                      textStyle: TextStyle(
+                                          color: Colors.white,
+                                          letterSpacing: .5,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.05,
-                          ),
-                          Text(
-                            'سبحان الله',
-                            style: GoogleFonts.roboto(
-                              textStyle: TextStyle(
-                                  color: Theme.of(context).accentColor,
-                                  letterSpacing: .5,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 35),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.05,
                             ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02,
-                          ),
-                          Text(
-                            'Sohan Allah',
-                            style: GoogleFonts.roboto(
-                              textStyle: TextStyle(
-                                  color: Theme.of(context).accentColor,
-                                  letterSpacing: .5,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 35),
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.06,
-                          ),
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundColor: Theme.of(context).primaryColor,
-                            child: Text(
-                              '$counter1',
+                            Text(
+                              'سبحان الله',
                               style: GoogleFonts.roboto(
                                 textStyle: TextStyle(
-                                    color: Colors.white,
+                                    color: Theme.of(context).accentColor,
                                     letterSpacing: .5,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 35),
                               ),
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      counter1++;
-                                    });
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(left: 35),
-                                    child: Icon(
-                                      FontAwesomeIcons.handPointer,
-                                      size: 30,
-                                      color: Theme.of(context).accentColor,
-                                    ),
-                                  ),
-                                )
-                              ],
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.02,
                             ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.09,
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    if (counter1 >= 33) {
-                                      c.nextPage(
-                                          duration:
-                                              new Duration(milliseconds: 400),
-                                          curve: Curves.easeIn);
-                                    }
-                                  },
-                                  child: CircleAvatar(
-                                      backgroundColor:
-                                          Theme.of(context).primaryColor,
-                                      radius: 15,
-                                      child: Icon(
-                                        Icons.arrow_forward_rounded,
+                            Text(
+                              'Sohan Allah',
+                              style: GoogleFonts.roboto(
+                                textStyle: TextStyle(
+                                    color: Theme.of(context).accentColor,
+                                    letterSpacing: .5,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 35),
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.06,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (counter1 < 33) {
+                                    counter1++;
+                                  }
+                                });
+                              },
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                child: Text(
+                                  '$counter1',
+                                  style: GoogleFonts.roboto(
+                                    textStyle: TextStyle(
                                         color: Colors.white,
-                                      )),
+                                        letterSpacing: .5,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 35),
+                                  ),
                                 ),
-                              ],
+                              ),
                             ),
-                          )
-                        ],
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (counter1 < 33) {
+                                          counter1++;
+                                        }
+                                      });
+                                      if (counter1 == 33) {
+                                        c.nextPage(
+                                            duration:
+                                                new Duration(milliseconds: 400),
+                                            curve: Curves.easeIn);
+                                      }
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 35),
+                                      child: Icon(
+                                        FontAwesomeIcons.handPointer,
+                                        size: 30,
+                                        color: Theme.of(context).accentColor,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.09,
+                            ),
+                            /*
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      if (counter1 == 33) {
+                                        c.nextPage(
+                                            duration:
+                                                new Duration(milliseconds: 400),
+                                            curve: Curves.easeIn);
+                                      }
+                                    },
+                                    child: CircleAvatar(
+                                        backgroundColor:
+                                            Theme.of(context).primaryColor,
+                                        radius: 15,
+                                        child: Icon(
+                                          Icons.arrow_forward_rounded,
+                                          color: Colors.white,
+                                        )),
+                                  ),
+                                ],
+                              ),
+                            )
+                            */
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -246,17 +267,26 @@ class _AzkarState extends State<Azkar> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.06,
                           ),
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundColor: Theme.of(context).primaryColor,
-                            child: Text(
-                              '$counter2',
-                              style: GoogleFonts.roboto(
-                                textStyle: TextStyle(
-                                    color: Colors.white,
-                                    letterSpacing: .5,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 35),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (counter2 < 33) {
+                                  counter2++;
+                                }
+                              });
+                            },
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Theme.of(context).primaryColor,
+                              child: Text(
+                                '$counter2',
+                                style: GoogleFonts.roboto(
+                                  textStyle: TextStyle(
+                                      color: Colors.white,
+                                      letterSpacing: .5,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 35),
+                                ),
                               ),
                             ),
                           ),
@@ -268,8 +298,16 @@ class _AzkarState extends State<Azkar> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      counter2++;
+                                      if (counter2 < 33) {
+                                        counter2++;
+                                      }
                                     });
+                                    if (counter2 == 33) {
+                                      c.nextPage(
+                                          duration:
+                                              new Duration(milliseconds: 400),
+                                          curve: Curves.easeIn);
+                                    }
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(left: 35),
@@ -286,30 +324,15 @@ class _AzkarState extends State<Azkar> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.09,
                           ),
+                          /*
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 5),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    c.previousPage(
-                                        duration:
-                                            new Duration(milliseconds: 400),
-                                        curve: Curves.easeIn);
-                                  },
-                                  child: CircleAvatar(
-                                      backgroundColor:
-                                          Theme.of(context).primaryColor,
-                                      radius: 15,
-                                      child: Icon(
-                                        Icons.arrow_back,
-                                        color: Colors.white,
-                                      )),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    if (counter2 >= 33) {
+                                    if (counter2 == 33) {
                                       c.nextPage(
                                           duration:
                                               new Duration(milliseconds: 400),
@@ -328,6 +351,7 @@ class _AzkarState extends State<Azkar> {
                               ],
                             ),
                           )
+                          */
                         ],
                       ),
                     ),
@@ -397,17 +421,26 @@ class _AzkarState extends State<Azkar> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.06,
                           ),
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundColor: Theme.of(context).primaryColor,
-                            child: Text(
-                              '$counter3',
-                              style: GoogleFonts.roboto(
-                                textStyle: TextStyle(
-                                    color: Colors.white,
-                                    letterSpacing: .5,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 35),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (counter3 < 33) {
+                                  counter3++;
+                                }
+                              });
+                            },
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Theme.of(context).primaryColor,
+                              child: Text(
+                                '$counter3',
+                                style: GoogleFonts.roboto(
+                                  textStyle: TextStyle(
+                                      color: Colors.white,
+                                      letterSpacing: .5,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 35),
+                                ),
                               ),
                             ),
                           ),
@@ -419,8 +452,13 @@ class _AzkarState extends State<Azkar> {
                                 GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      counter3++;
+                                      if (counter3 < 33) {
+                                        counter3++;
+                                      }
                                     });
+                                    if (counter3 == 33) {
+                                      Navigator.pop(context);
+                                    }
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(left: 35),
@@ -437,45 +475,44 @@ class _AzkarState extends State<Azkar> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.09,
                           ),
+                          /*
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 5),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    c.previousPage(
-                                        duration:
-                                            new Duration(milliseconds: 400),
-                                        curve: Curves.easeIn);
-                                  },
-                                  child: CircleAvatar(
-                                      backgroundColor:
-                                          Theme.of(context).primaryColor,
-                                      radius: 15,
-                                      child: Icon(
-                                        Icons.arrow_back,
-                                        color: Colors.white,
+                                Container(
+                                  height: 40,
+                                  width: 150,
+                                  margin: EdgeInsets.symmetric(
+                                          horizontal: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.1)
+                                      .add(EdgeInsets.symmetric(vertical: 10)),
+                                  child: ElevatedButton(
+                                      style: ButtonStyle(
+                                          shape: MaterialStateProperty.all<
+                                                  RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          )),
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Theme.of(context)
+                                                      .accentColor)),
+                                      onPressed: () async {},
+                                      child: Text(
+                                        'Done',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 18),
                                       )),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    if (counter3 >= 33) {
-                                      Navigator.pop(context);
-                                    }
-                                  },
-                                  child: CircleAvatar(
-                                      backgroundColor:
-                                          Theme.of(context).primaryColor,
-                                      radius: 15,
-                                      child: Icon(
-                                        Icons.arrow_forward_rounded,
-                                        color: Colors.white,
-                                      )),
-                                ),
+                                )
                               ],
                             ),
                           )
+                          */
                         ],
                       ),
                     ),

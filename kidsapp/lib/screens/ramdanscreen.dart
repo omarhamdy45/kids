@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hijri/hijri_calendar.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Athan.dart';
 import 'package:kidsapp/providers/deedprovider.dart';
@@ -10,12 +11,16 @@ import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/dua.dart';
 import 'package:kidsapp/screens/hadeth.dart';
 import 'package:kidsapp/screens/qura%60n.dart';
+import 'package:kidsapp/widgets/gift.dart';
 import 'package:kidsapp/widgets/ramdanitem.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Ramdan extends StatefulWidget {
   static const String route = '/ramdan';
+  static var day = new HijriCalendar.now().hDay;
   @override
   _RamdanState createState() => _RamdanState();
 }
@@ -37,16 +42,29 @@ class _RamdanState extends State<Ramdan> {
   bool select3 = false;
   bool select4 = false;
   bool firstrun;
+  int hour;
+  int minute;
 
   Color color = Color.fromRGBO(62, 194, 236, 1);
+  DateTime datetime = DateTime.now();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     firstrun = true;
-   
-     Provider.of<Lanprovider>(context,
-                                          listen: false).getLan();
+    print(datetime);
+    Provider.of<Lanprovider>(context, listen: false).getLan();
+    Provider.of<Lanprovider>(context, listen: false).getLan2();
+    Provider.of<Lanprovider>(context, listen: false).getLan3();
+    Provider.of<Lanprovider>(context, listen: false).getLan4();
+    Provider.of<Lanprovider>(context, listen: false).getLan5();
+    Provider.of<Lanprovider>(context, listen: false).getLan6();
+    Provider.of<Lanprovider>(context, listen: false).getLan7();
+    Provider.of<Lanprovider>(context, listen: false).getLan8();
+    Provider.of<Lanprovider>(context, listen: false).getcounter1();
+    Provider.of<Lanprovider>(context, listen: false).getcounter2();
+    Provider.of<Lanprovider>(context, listen: false).getcounter3();
+    print(Provider.of<Lanprovider>(context, listen: false).isEn3);
   }
 
   @override
@@ -56,7 +74,21 @@ class _RamdanState extends State<Ramdan> {
     await Provider.of<Hadithprovider>(context, listen: false).fetchallhadith();
     await Provider.of<Duaaprovider>(context, listen: false).fetchallduaas();
     await Provider.of<Deedprovider>(context, listen: false).fetchalldeed();
-     
+    hour = int.parse(Provider.of<Athanprovider>(context, listen: false)
+        .time
+        .data
+        .timings
+        .maghrib
+        .split(':')
+        .first);
+    minute = int.parse(Provider.of<Athanprovider>(context, listen: false)
+        .time
+        .data
+        .timings
+        .maghrib
+        .split(':')
+        .last);
+
     setState(() {
       firstrun = false;
     });
@@ -64,6 +96,9 @@ class _RamdanState extends State<Ramdan> {
 
   @override
   Widget build(BuildContext context) {
+    var mounth = new HijriCalendar.now().getLongMonthName().toString();
+    print(hour);
+
     return SafeArea(
       child: Scaffold(
         body: firstrun
@@ -82,7 +117,7 @@ class _RamdanState extends State<Ramdan> {
                           Row(
                             children: [
                               Text(
-                                '1' + ' ' + 'Ramdan',
+                                Ramdan.day.toString() + ' ' + mounth,
                                 style: GoogleFonts.roboto(
                                   textStyle: TextStyle(
                                       color: Color.fromRGBO(167, 85, 163, 1),
@@ -119,24 +154,24 @@ class _RamdanState extends State<Ramdan> {
                       )),
                   Container(
                     margin: EdgeInsets.only(
-                        right: MediaQuery.of(context).size.height * 0.1),
+                        right: MediaQuery.of(context).size.width * 0.1),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Icon(
-                          Icons.timer_sharp,
-                          color: Color.fromRGBO(167, 85, 163, 1),
-                        ),
+                        
                         SizedBox(
                           width: 2,
                         ),
                         Text(
-                          '6:00',
+                          (24-(DateTime.now().hour  - hour + 1)).toString() +
+                           'hour'+   ':' +
+                              (minute-DateTime.now().minute + 60 ).toString()+'minute',
                           style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                                 color: Color.fromRGBO(167, 85, 163, 1),
                                 letterSpacing: .5,
-                                fontSize: 14),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
                           ),
                         ),
                       ],
@@ -242,6 +277,10 @@ class _RamdanState extends State<Ramdan> {
                               )),
                         ),
                       ),
+                    ],
+                  ),
+                  Row(
+                    children: [
                       Expanded(
                         child: Container(
                           margin: EdgeInsets.symmetric(
@@ -433,6 +472,9 @@ class _RamdanState extends State<Ramdan> {
                                             vercecounter--;
                                             print(vercecounter);
                                           });
+                                          Provider.of<Lanprovider>(context,
+                                                  listen: false)
+                                              .changecounter1(vercecounter);
                                         }),
                                   ),
                                 ),
@@ -445,7 +487,10 @@ class _RamdanState extends State<Ramdan> {
                                         backgroundColor:
                                             Theme.of(context).primaryColor,
                                         child: Text(
-                                          vercecounter.toString(),
+                                          Provider.of<Lanprovider>(context,
+                                                  listen: true)
+                                              .counter1
+                                              .toString(),
                                           style: TextStyle(color: Colors.white),
                                         ))),
                                 SizedBox(
@@ -466,6 +511,9 @@ class _RamdanState extends State<Ramdan> {
                                         setState(() {
                                           vercecounter++;
                                         });
+                                        Provider.of<Lanprovider>(context,
+                                                listen: false)
+                                            .changecounter1(vercecounter);
                                       },
                                     ),
                                   ),
@@ -495,6 +543,9 @@ class _RamdanState extends State<Ramdan> {
                                             surracounter--;
                                             print(vercecounter);
                                           });
+                                          Provider.of<Lanprovider>(context,
+                                                  listen: false)
+                                              .changecounter2(surracounter);
                                         }),
                                   ),
                                 ),
@@ -507,7 +558,10 @@ class _RamdanState extends State<Ramdan> {
                                         backgroundColor:
                                             Theme.of(context).primaryColor,
                                         child: Text(
-                                          surracounter.toString(),
+                                          Provider.of<Lanprovider>(context,
+                                                  listen: true)
+                                              .counter2
+                                              .toString(),
                                           style: TextStyle(color: Colors.white),
                                         ))),
                                 SizedBox(
@@ -529,6 +583,9 @@ class _RamdanState extends State<Ramdan> {
                                         setState(() {
                                           surracounter++;
                                         });
+                                        Provider.of<Lanprovider>(context,
+                                                listen: false)
+                                            .changecounter2(surracounter);
                                       },
                                     ),
                                   ),
@@ -560,11 +617,9 @@ class _RamdanState extends State<Ramdan> {
                                             setState(() {
                                               goz2counter--;
                                             });
-                                            SharedPreferences prefs =
-                                                await SharedPreferences
-                                                    .getInstance();
-                                            prefs.setInt(
-                                                "goz2counter", goz2counter);
+                                            Provider.of<Lanprovider>(context,
+                                                    listen: false)
+                                                .changecounter3(goz2counter);
                                           }),
                                     ),
                                   ),
@@ -580,7 +635,10 @@ class _RamdanState extends State<Ramdan> {
                                             backgroundColor:
                                                 Theme.of(context).primaryColor,
                                             child: Text(
-                                              goz2counter.toString(),
+                                              Provider.of<Lanprovider>(context,
+                                                      listen: true)
+                                                  .counter3
+                                                  .toString(),
                                               style: TextStyle(
                                                   color: Colors.white),
                                             )),
@@ -606,6 +664,9 @@ class _RamdanState extends State<Ramdan> {
                                               setState(() {
                                                 goz2counter++;
                                               });
+                                              Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .changecounter3(goz2counter);
                                             },
                                           ),
                                         ),
@@ -658,12 +719,11 @@ class _RamdanState extends State<Ramdan> {
                               InkWell(
                                 onTap: () async {
                                   setState(() {
-                                    value1 = !value1;
+                                    value1=!value1;
                                   });
-
                                   await Provider.of<Lanprovider>(context,
                                           listen: false)
-                                      .changeLan(value1);
+                                      .changeLan((value1));
                                   await Dbhandler.instance
                                       .activity('done', '1');
                                   print(Provider.of<Lanprovider>(context,
@@ -711,14 +771,14 @@ class _RamdanState extends State<Ramdan> {
                             children: [
                               InkWell(
                                 onTap: () async {
-                                  setState(() {
-                                    value2 = !value2;
-                                  });
+                                  await Provider.of<Lanprovider>(context,
+                                          listen: false)
+                                      .changeLan2((!Provider.of<Lanprovider>(
+                                              context,
+                                              listen: false)
+                                          .isEn2));
                                   await Dbhandler.instance
                                       .activity('done', '2');
-                                  print(Provider.of<Lanprovider>(context,
-                                          listen: false)
-                                      .isEn);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -726,7 +786,9 @@ class _RamdanState extends State<Ramdan> {
                                       color: Theme.of(context).primaryColor),
                                   child: Padding(
                                     padding: const EdgeInsets.all(10.0),
-                                    child: value2
+                                    child: Provider.of<Lanprovider>(context,
+                                                listen: true)
+                                            .isEn2
                                         ? Icon(
                                             Icons.check,
                                             size: 20.0,
@@ -775,9 +837,12 @@ class _RamdanState extends State<Ramdan> {
                             children: [
                               InkWell(
                                 onTap: () async {
-                                  setState(() {
-                                    value3 = !value3;
-                                  });
+                                  await Provider.of<Lanprovider>(context,
+                                          listen: false)
+                                      .changeLan3((!Provider.of<Lanprovider>(
+                                              context,
+                                              listen: false)
+                                          .isEn3));
                                   await Dbhandler.instance
                                       .activity('done', '3');
                                 },
@@ -787,7 +852,9 @@ class _RamdanState extends State<Ramdan> {
                                       color: Theme.of(context).primaryColor),
                                   child: Padding(
                                     padding: const EdgeInsets.all(10.0),
-                                    child: value3
+                                    child: Provider.of<Lanprovider>(context,
+                                                listen: true)
+                                            .isEn3
                                         ? Icon(
                                             Icons.check,
                                             size: 20.0,
@@ -820,9 +887,12 @@ class _RamdanState extends State<Ramdan> {
                             children: [
                               InkWell(
                                 onTap: () async {
-                                  setState(() {
-                                    value4 = !value4;
-                                  });
+                                  Provider.of<Lanprovider>(context,
+                                          listen: false)
+                                      .changeLan4((!Provider.of<Lanprovider>(
+                                              context,
+                                              listen: false)
+                                          .isEn4));
                                   await Dbhandler.instance
                                       .activity('done', '4');
                                 },
@@ -832,7 +902,9 @@ class _RamdanState extends State<Ramdan> {
                                       color: Theme.of(context).primaryColor),
                                   child: Padding(
                                     padding: const EdgeInsets.all(10.0),
-                                    child: value4
+                                    child: Provider.of<Lanprovider>(context,
+                                                listen: true)
+                                            .isEn4
                                         ? Icon(
                                             Icons.check,
                                             size: 20.0,
@@ -881,9 +953,12 @@ class _RamdanState extends State<Ramdan> {
                             children: [
                               InkWell(
                                 onTap: () async {
-                                  setState(() {
-                                    value5 = !value5;
-                                  });
+                                  Provider.of<Lanprovider>(context,
+                                          listen: false)
+                                      .changeLan5((!Provider.of<Lanprovider>(
+                                              context,
+                                              listen: false)
+                                          .isEn5));
                                   await Dbhandler.instance
                                       .activity('done', '5');
                                 },
@@ -893,7 +968,9 @@ class _RamdanState extends State<Ramdan> {
                                       color: Theme.of(context).primaryColor),
                                   child: Padding(
                                     padding: const EdgeInsets.all(10.0),
-                                    child: value5
+                                    child: Provider.of<Lanprovider>(context,
+                                                listen: true)
+                                            .isEn5
                                         ? Icon(
                                             Icons.check,
                                             size: 20.0,
@@ -926,9 +1003,12 @@ class _RamdanState extends State<Ramdan> {
                             children: [
                               InkWell(
                                 onTap: () async {
-                                  setState(() {
-                                    value6 = !value6;
-                                  });
+                                  Provider.of<Lanprovider>(context,
+                                          listen: false)
+                                      .changeLan6((!Provider.of<Lanprovider>(
+                                              context,
+                                              listen: false)
+                                          .isEn6));
                                   await Dbhandler.instance
                                       .activity('done', '6');
                                 },
@@ -938,7 +1018,9 @@ class _RamdanState extends State<Ramdan> {
                                       color: Theme.of(context).primaryColor),
                                   child: Padding(
                                     padding: const EdgeInsets.all(10.0),
-                                    child: value6
+                                    child: Provider.of<Lanprovider>(context,
+                                                listen: true)
+                                            .isEn6
                                         ? Icon(
                                             Icons.check,
                                             size: 20.0,
@@ -987,9 +1069,12 @@ class _RamdanState extends State<Ramdan> {
                             children: [
                               InkWell(
                                 onTap: () async {
-                                  setState(() {
-                                    value7 = !value7;
-                                  });
+                                  Provider.of<Lanprovider>(context,
+                                          listen: false)
+                                      .changeLan7(!Provider.of<Lanprovider>(
+                                              context,
+                                              listen: false)
+                                          .isEn7);
                                   await Dbhandler.instance
                                       .activity('done', '7');
                                 },
@@ -999,7 +1084,9 @@ class _RamdanState extends State<Ramdan> {
                                       color: Theme.of(context).primaryColor),
                                   child: Padding(
                                     padding: const EdgeInsets.all(10.0),
-                                    child: value7
+                                    child: Provider.of<Lanprovider>(context,
+                                                listen: true)
+                                            .isEn7
                                         ? Icon(
                                             Icons.check,
                                             size: 20.0,
@@ -1032,9 +1119,12 @@ class _RamdanState extends State<Ramdan> {
                             children: [
                               InkWell(
                                 onTap: () async {
-                                  setState(() {
-                                    value8 = !value8;
-                                  });
+                                  Provider.of<Lanprovider>(context,
+                                          listen: false)
+                                      .changeLan8(!Provider.of<Lanprovider>(
+                                              context,
+                                              listen: false)
+                                          .isEn8);
                                   await Dbhandler.instance
                                       .activity('done', '8');
                                 },
@@ -1044,7 +1134,9 @@ class _RamdanState extends State<Ramdan> {
                                       color: Theme.of(context).primaryColor),
                                   child: Padding(
                                     padding: const EdgeInsets.all(10.0),
-                                    child: value8
+                                    child: Provider.of<Lanprovider>(context,
+                                                listen: true)
+                                            .isEn8
                                         ? Icon(
                                             Icons.check,
                                             size: 20.0,
@@ -1100,6 +1192,49 @@ class _RamdanState extends State<Ramdan> {
                               vercecounter.toString(),
                               surracounter.toString(),
                               goz2counter.toString());
+                          if (Dbhandler.instance.counter == 200) {
+                            Dialogs.materialDialog(
+                                customView: Container(
+                                  child: Gift(
+                                    'Keep Moving Forward',
+                                    'دائمًا إلى الأمام',
+                                    'assets/images/Group 795.png',
+                                    Color.fromRGBO(255, 72, 115, 1),
+                                    Color.fromRGBO(255, 72, 115, 1),
+                                    Color.fromRGBO(255, 72, 115, 1),
+                                    Color.fromRGBO(255, 72, 115, 1),
+                                    Color.fromRGBO(255, 72, 115, 1),
+                                    Color.fromRGBO(255, 72, 115, 1),
+                                  ),
+                                ),
+                                titleStyle: TextStyle(
+                                    color: Theme.of(context).accentColor,
+                                    fontSize: 25),
+                                color: Colors.white,
+                                //    animation: 'assets/cong_example.json',
+                                context: context,
+                                actions: [
+                                  Container(
+                                    height: 40,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal:
+                                            MediaQuery.of(context).size.width *
+                                                0.1),
+                                    child: IconsButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                      },
+                                      text: 'Done',
+                                      color: Color.fromRGBO(255, 72, 115, 1),
+                                      textStyle: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ]);
+                          }
                         },
                         child: Text(
                           'Done',

@@ -13,12 +13,20 @@ class Dbhandler {
   Dbhandler._private();
   static Dbhandler get instance => _instance;
   Dio _dio = Dio();
+  int cheaksalah;
+  int hadithreadd;
+  int deedreadd;
+  int duaareadd;
+  int counter;
+  int azkarreadd;
+
   String mainurl = 'https://muslim-kids.royaltechni.com/api';
   Future<Athan> gettimes() async {
     String city = Userprovider.city;
     String country = Userprovider.country;
     String zone = Userprovider.timezone;
     String method;
+
     if (zone == 'Europe') {
       method = '3';
     }
@@ -51,7 +59,7 @@ class Dbhandler {
     String url =
         'http://api.aladhan.com/v1/timingsByCity?city=$city&country=$country&method=$method';
     Response response = await _dio.get(url);
-     print(response.data);
+    print(response.data);
     return Athan.fromJson(response.data);
   }
 
@@ -134,7 +142,8 @@ class Dbhandler {
           'category_id': categoryid,
         },
       );
-      //   print(response.body);
+      azkarreadd=response.statusCode;
+         print(response.body);
     } catch (eroor) {
       print(eroor);
     }
@@ -156,7 +165,8 @@ class Dbhandler {
           'status': status,
         },
       );
-      //   print(response.body);
+      hadithreadd = response.statusCode;
+      print(response.statusCode);
     } catch (eroor) {
       print(eroor);
     }
@@ -178,6 +188,7 @@ class Dbhandler {
           'status': status,
         },
       );
+      duaareadd = response.statusCode;
       //     print(response.body);
     } catch (eroor) {
       print(eroor);
@@ -200,6 +211,7 @@ class Dbhandler {
           'status': status,
         },
       );
+      deedreadd = response.statusCode;
       //   print(response.body);
     } catch (eroor) {
       print(eroor);
@@ -222,6 +234,7 @@ class Dbhandler {
           'status': status,
         },
       );
+      cheaksalah = response.statusCode;
       //    print(response.body);
     } catch (eroor) {
       print(eroor);
@@ -281,6 +294,7 @@ class Dbhandler {
         },
         body: {'countOfAya': aya, 'countOfSoura': soura, 'countOfGoza': goz},
       );
+      counter=response.statusCode;
       print(response.body);
     } catch (eroor) {
       print(eroor);

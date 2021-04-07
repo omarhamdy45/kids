@@ -10,8 +10,30 @@ import 'package:kidsapp/widgets/background.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
-class Salah extends StatelessWidget {
-  static const String route='/Salah';
+class Salah extends StatefulWidget {
+  static const String route = '/Salah';
+
+  @override
+  _SalahState createState() => _SalahState();
+}
+
+class _SalahState extends State<Salah> {
+  String salah;
+  int hour;
+  int hour1;
+  /*
+String getnextprayer(){
+   int datetime=DateTime.now().hour;
+   if( int.parse(Provider.of<Athanprovider>(context, listen: false).time.data.timings.maghrib)-datetime<int.parse(Provider.of<Athanprovider>(context, listen: false).time.data.timings.isha)-datetime)
+   setState(() {
+     salah=Maghrib
+   });
+  
+}
+*/
+  
+  
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,10 +79,10 @@ class Salah extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Fajr 16:05',
+                          'fajr' + '16:05',
                           style: GoogleFonts.roboto(
                             textStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.bold,
                                 color: Color.fromRGBO(60, 60, 67, 1),
                                 letterSpacing: .5,
                                 fontSize: 14),
@@ -92,8 +114,8 @@ class Salah extends StatelessWidget {
                             height: 176,
                             width: double.infinity,
                             decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.white, width: 3)),
+                                border:
+                                    Border.all(color: Colors.white, width: 3)),
                             child: Container(
                               color: Colors.lightBlueAccent.shade700,
                               child: Stack(
@@ -125,10 +147,15 @@ class Salah extends StatelessWidget {
                                   Positioned(
                                     right: 10,
                                     top: 50,
-                                    child: Text(Provider.of<Athanprovider>(context).time.data.timings.fajr,
+                                    child: Text(
+                                        Provider.of<Athanprovider>(context)
+                                            .time
+                                            .data
+                                            .timings
+                                            .fajr,
                                         style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
-                                              color:  Colors.white,
+                                              color: Colors.white,
                                               letterSpacing: .5,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 14),
@@ -197,7 +224,12 @@ class Salah extends StatelessWidget {
                                   Positioned(
                                     right: 10,
                                     top: 50,
-                                    child: Text(Provider.of<Athanprovider>(context).time.data.timings.dhuhr,
+                                    child: Text(
+                                        Provider.of<Athanprovider>(context)
+                                            .time
+                                            .data
+                                            .timings
+                                            .dhuhr,
                                         style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
                                               color: Colors.grey[700],
@@ -277,10 +309,15 @@ class Salah extends StatelessWidget {
                                   Positioned(
                                     right: 10,
                                     top: 50,
-                                    child: Text(Provider.of<Athanprovider>(context).time.data.timings.asr,
+                                    child: Text(
+                                        Provider.of<Athanprovider>(context)
+                                            .time
+                                            .data
+                                            .timings
+                                            .asr,
                                         style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
-                                              color:   Colors.grey[700],
+                                              color: Colors.grey[700],
                                               fontWeight: FontWeight.bold,
                                               letterSpacing: .5,
                                               fontSize: 14),
@@ -349,7 +386,12 @@ class Salah extends StatelessWidget {
                                   Positioned(
                                     right: 10,
                                     top: 50,
-                                    child: Text(Provider.of<Athanprovider>(context).time.data.timings.maghrib,
+                                    child: Text(
+                                        Provider.of<Athanprovider>(context)
+                                            .time
+                                            .data
+                                            .timings
+                                            .maghrib,
                                         style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
                                               color: Colors.grey[800],
@@ -365,7 +407,6 @@ class Salah extends StatelessWidget {
                                         child: Image.asset(
                                             'assets/images/Group 72.png')),
                                   ),
-                                  
                                 ],
                               ),
                             ),
@@ -429,7 +470,12 @@ class Salah extends StatelessWidget {
                               Positioned(
                                 right: 10,
                                 top: 50,
-                                child: Text(Provider.of<Athanprovider>(context).time.data.timings.isha,
+                                child: Text(
+                                    Provider.of<Athanprovider>(context)
+                                        .time
+                                        .data
+                                        .timings
+                                        .isha,
                                     style: GoogleFonts.roboto(
                                       textStyle: TextStyle(
                                           color: Colors.white,

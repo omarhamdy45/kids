@@ -3,14 +3,16 @@ import 'package:kidsapp/models/Athan.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/hadithprovider.dart';
 import 'package:kidsapp/screens/ramdanscreen.dart';
+import 'package:kidsapp/widgets/gift.dart';
 import 'package:kidsapp/widgets/ramdanitem.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:provider/provider.dart';
 
 class Hadeth extends StatelessWidget {
   bool done = true;
   @override
   Widget build(BuildContext context) {
-    int date = DateTime.now().day;
     return SafeArea(
       child: Scaffold(
         body: ListView(
@@ -22,7 +24,7 @@ class Hadeth extends StatelessWidget {
               child: Text(
                 Provider.of<Hadithprovider>(context, listen: false)
                     .azkar
-                    .data[date % 13]
+                    .data[Ramdan.day - 1]
                     .title,
                 textDirection: TextDirection.rtl,
                 style: TextStyle(color: Colors.black, fontSize: 16),
@@ -35,7 +37,7 @@ class Hadeth extends StatelessWidget {
               child: Text(
                 Provider.of<Hadithprovider>(context, listen: false)
                     .azkar
-                    .data[date % 12]
+                    .data[Ramdan.day - 1]
                     .descriptionAr,
                 textDirection: TextDirection.rtl,
                 style: TextStyle(color: Theme.of(context).accentColor),
@@ -48,7 +50,7 @@ class Hadeth extends StatelessWidget {
               child: Text(
                 Provider.of<Hadithprovider>(context, listen: false)
                     .azkar
-                    .data[date % 13]
+                    .data[Ramdan.day - 1]
                     .descriptionEn,
                 textDirection: TextDirection.ltr,
                 style: TextStyle(
@@ -62,7 +64,7 @@ class Hadeth extends StatelessWidget {
               child: Text(
                 Provider.of<Hadithprovider>(context, listen: false)
                     .azkar
-                    .data[date % 13]
+                    .data[Ramdan.day - 1]
                     .descriptionFr,
                 textDirection: TextDirection.ltr,
                 style: TextStyle(color: Theme.of(context).accentColor),
@@ -118,9 +120,49 @@ class Hadeth extends StatelessWidget {
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Theme.of(context).accentColor)),
                   onPressed: () async {
-                    await Dbhandler.instance.hadithread((date%13).toString(), 'read');
-                    Navigator.pushReplacementNamed(context, Ramdan.route,
-                        arguments: done);
+                    await Dbhandler.instance
+                        .hadithread((Ramdan.day - 1).toString(), 'read');
+                    if (Dbhandler.instance.hadithreadd == 200) {
+                      Dialogs.materialDialog(
+                          customView: Container(
+                            child: Gift(
+                              'May Allah Bless You',
+                              '  بارك الله فيك',
+                              'assets/images/Group 795.png',
+                              Color.fromRGBO(255, 72, 115, 1),
+                              Color.fromRGBO(255, 72, 115, 1),
+                              Color.fromRGBO(255, 72, 115, 1),
+                              Color.fromRGBO(255, 72, 115, 1),
+                              Color.fromRGBO(255, 72, 115, 1),
+                              Color.fromRGBO(255, 72, 115, 1),
+                            ),
+                          ),
+                          titleStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 25),
+                          color: Colors.white,
+                          //    animation: 'assets/cong_example.json',
+                          context: context,
+                          actions: [
+                            Container(
+                              height: 40,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.of(context).size.width * 0.1),
+                              child: IconsButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                },
+                                text: 'Done',
+                                color:  Color.fromRGBO(255, 72, 115, 1),
+                                textStyle: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ]);
+                    }
                   },
                   child: Text(
                     'Finsh',
