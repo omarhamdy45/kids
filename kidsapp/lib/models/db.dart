@@ -19,6 +19,7 @@ class Dbhandler {
   int duaareadd;
   int counter;
   int azkarreadd;
+  int ramdanstatuss;
 
   String mainurl = 'https://muslim-kids.royaltechni.com/api';
   Future<Athan> gettimes() async {
@@ -115,14 +116,14 @@ class Dbhandler {
 
   Future<User> signIn(String email, String password) async {
     String url = '$mainurl/login';
-    Response response = await _dio.post(
+    Response response = (await _dio.post(
       url,
       data: {
-        'email': email,
+        'name': email,
         'password': password,
       },
-    );
-    //  print(response.data);
+    ));
+    print(response.data);
     return User.fromjson(response.data);
   }
 
@@ -142,8 +143,8 @@ class Dbhandler {
           'category_id': categoryid,
         },
       );
-      azkarreadd=response.statusCode;
-         print(response.body);
+      azkarreadd = response.statusCode;
+      print(response.body);
     } catch (eroor) {
       print(eroor);
     }
@@ -212,7 +213,7 @@ class Dbhandler {
         },
       );
       deedreadd = response.statusCode;
-      //   print(response.body);
+        print(response.body);
     } catch (eroor) {
       print(eroor);
     }
@@ -257,6 +258,7 @@ class Dbhandler {
         },
       );
       print(response.body);
+      ramdanstatuss = response.statusCode;
     } catch (eroor) {
       print(eroor);
     }
@@ -294,7 +296,7 @@ class Dbhandler {
         },
         body: {'countOfAya': aya, 'countOfSoura': soura, 'countOfGoza': goz},
       );
-      counter=response.statusCode;
+      counter = response.statusCode;
       print(response.body);
     } catch (eroor) {
       print(eroor);

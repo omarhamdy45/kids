@@ -1,12 +1,14 @@
-import 'package:email_validator/email_validator.dart';
+
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/types.dart';
 import 'package:kidsapp/widgets/background.dart';
-import 'package:page_transition/page_transition.dart';
+
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
@@ -40,7 +42,8 @@ class _LoginState extends State<Login> {
     firstrun = true;
     _getUserLocation();
   }
-   void _getUserLocation() async {
+
+  void _getUserLocation() async {
     var position = await GeolocatorPlatform.instance
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
     final coordinates = new Coordinates(position.latitude, position.longitude);
@@ -49,24 +52,21 @@ class _LoginState extends State<Login> {
     var first = addresses.first;
     Userprovider.city = first.adminArea;
     Userprovider.country = first.countryName;
-    
   }
 
-  @override
-  void didChangeDependencies() async {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-  }
+  
 
   void validatetologin() async {
     if (form.currentState.validate()) {
       setState(() {
         loading = true;
       });
+
       String error = await Provider.of<Userprovider>(context, listen: false)
           .signInn(email, password);
 
       if (error != null) {
+        // ignore: deprecated_member_use
         scaffold.currentState.showSnackBar(SnackBar(
           content: Text('invalid email'),
           backgroundColor: Colors.red[600],
@@ -168,7 +168,7 @@ class _LoginState extends State<Login> {
                                   setState(() {
                                     email = value;
                                   });
-                                  if (EmailValidator.validate(email)) {
+                                  if (email.length >= 4) {
                                     return null;
                                   }
                                   return 'invalid Email';
@@ -255,8 +255,11 @@ class _LoginState extends State<Login> {
                                                 backgroundColor:
                                                     MaterialStateProperty.all<
                                                         Color>(Colors.white)),
-                                            onPressed: () {
+                                            onPressed: () async {
                                               validatetologin();
+                                              Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .savedate();
                                             },
                                             child: Text(
                                               'Login',

@@ -3,7 +3,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
 import 'package:kidsapp/widgets/duadetails.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class Duaas extends StatelessWidget {

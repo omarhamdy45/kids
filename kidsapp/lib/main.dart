@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 import 'package:kidsapp/providers/Athan.dart';
@@ -20,7 +18,6 @@ import 'package:kidsapp/widgets/duadetails.dart';
 import 'package:provider/provider.dart';
 
 void main() {
- 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => Athanprovider(),
@@ -78,21 +75,3 @@ class MyApp extends StatelessWidget {
         });
   }
 }
-/*
-void onStart() {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  final audioPlayer = AudioPlayer();
-
-  String url =
-      "https://www.mediacollege.com/downloads/sound-effects/nature/forest/rainforest-ambient.mp3";
-
-  audioPlayer.onPlayerStateChanged.listen((event) {
-    if (event == AudioPlayerState.COMPLETED) {
-      audioPlayer.play(url); // repeat
-    }
-  });
-
-  audioPlayer.play(url);
-}
-*/

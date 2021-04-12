@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kidsapp/models/Categories.dart';
-import 'package:kidsapp/models/azkar.dart';
 import 'package:kidsapp/models/catgoriess.dart';
 import 'package:kidsapp/models/db.dart';
 

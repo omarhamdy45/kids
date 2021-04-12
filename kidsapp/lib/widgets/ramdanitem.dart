@@ -9,7 +9,6 @@ class Ramdanitem extends StatelessWidget {
 
 //  Ramdanitem(this.title, this.image);
   Ramdanitem(this.title, this.image, this.widget);
-  Ramdanitem.b(this.title, this.image);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

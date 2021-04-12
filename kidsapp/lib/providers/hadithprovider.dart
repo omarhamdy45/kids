@@ -8,8 +8,9 @@ class Hadithprovider with ChangeNotifier {
  Future<void> fetchallhadith() async {
     try {
     azkar = await Dbhandler.instance.getallhadith();
+    print(azkar.data[1].descriptionAr);
     } catch (error) {
-      print('errorrr');
+      print('errorrrrrrrrrrrrrr');
     }
   }
 

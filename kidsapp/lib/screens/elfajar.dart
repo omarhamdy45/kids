@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/providers/Athan.dart';
 import 'package:kidsapp/widgets/salahevluate.dart';
 import 'package:provider/provider.dart';

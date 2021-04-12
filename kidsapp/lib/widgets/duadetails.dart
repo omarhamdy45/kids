@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/models/Categories.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
-import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/duaas.dart';
 import 'package:kidsapp/widgets/gift.dart';
 import 'package:material_dialogs/material_dialogs.dart';
@@ -19,16 +18,16 @@ class Duadetails extends StatefulWidget {
 
 class _DuadetailsState extends State<Duadetails> {
   bool firstrun;
+  bool loading;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     firstrun = true;
+    loading = false;
   }
 
   @override
   void didChangeDependencies() async {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     Data azkar = ModalRoute.of(context).settings.arguments as Data;
     await Provider.of<Azkarprovider>(context).fetchazkarbyid(azkar.id);
@@ -194,65 +193,83 @@ class _DuadetailsState extends State<Duadetails> {
                               horizontal:
                                   MediaQuery.of(context).size.width * 0.3)
                           .add(EdgeInsets.symmetric(vertical: 10)),
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
+                      child: loading
+                          ? Center(child: CircularProgressIndicator())
+                          : ElevatedButton(
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  )),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Theme.of(context).accentColor)),
+                              onPressed: () async {
+                                setState(() {
+                                  loading = true;
+                                });
+                                await Dbhandler.instance
+                                    .azkarread('read', azkar.id.toString());
+                                setState(() {
+                                  loading = false;
+                                });
+                                if (Dbhandler.instance.azkarreadd == 200)
+                                  Dialogs.materialDialog(
+                                      customView: Container(
+                                        child: Gift(
+                                          'Amazing',
+                                          'ماشاء الله',
+                                          'assets/images/Group 804.png',
+                                          Colors.white,
+                                          Colors.white,
+                                          Color.fromRGBO(255, 72, 115, 1),
+                                          Colors.white,
+                                          Colors.white,
+                                          Color.fromRGBO(255, 72, 115, 1),
+                                        ),
+                                      ),
+                                      titleStyle: TextStyle(
+                                          color: Theme.of(context).accentColor,
+                                          fontSize: 25),
+                                      color: Colors.white,
+                                      //    animation: 'assets/cong_example.json',
+                                      context: context,
+                                      actions: [
+                                        Container(
+                                          height: 40,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.1),
+                                          child: IconsButton(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                              Navigator.pushReplacementNamed(
+                                                  context, Duaas.route);
+                                            },
+                                            text: 'Lovely',
+                                            color:
+                                                Color.fromRGBO(255, 72, 115, 1),
+                                            textStyle:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ]);
+                                else {
+                                  Navigator.pushReplacementNamed(
+                                      context, Duaas.route);
+                                }
+                              },
+                              child: Text(
+                                'Done',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
                               )),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Theme.of(context).accentColor)),
-                          onPressed: () async {
-                            await Dbhandler.instance
-                                .azkarread('read', azkar.id.toString());
-                            Dialogs.materialDialog(
-                                customView: Container(
-                                  child: Gift(
-                                    'Amazing',
-                                    'ماشاء الله',
-                                    'assets/images/Group 804.png',
-                                    Color.fromRGBO(255, 72, 115, 1),
-                                    Color.fromRGBO(255, 72, 115, 1),
-                                    Color.fromRGBO(255, 72, 115, 1),
-                                    Color.fromRGBO(255, 72, 115, 1),
-                                    Color.fromRGBO(255, 72, 115, 1),
-                                      Color.fromRGBO(255, 72, 115, 1),
-                                  ),
-                                ),
-                                titleStyle: TextStyle(
-                                    color: Theme.of(context).accentColor,
-                                    fontSize: 25),
-                                color: Colors.white,
-                                //    animation: 'assets/cong_example.json',
-                                context: context,
-                                actions: [
-                                  Container(
-                                    height: 40,
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal:
-                                            MediaQuery.of(context).size.width *
-                                                0.1),
-                                    child: IconsButton(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                        Navigator.pushReplacementNamed(
-                                            context, Duaas.route);
-                                      },
-                                      text: 'Lovely',
-                                      color: Color.fromRGBO(255, 72, 115, 1),
-                                      textStyle: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ]);
-                          },
-                          child: Text(
-                            'Done',
-                            style: TextStyle(color: Colors.white, fontSize: 18),
-                          )),
                     ),
                   ],
                 ),

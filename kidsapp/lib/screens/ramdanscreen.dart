@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hijri/hijri_calendar.dart';
+import 'package:intl/intl.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Athan.dart';
 import 'package:kidsapp/providers/deedprovider.dart';
 import 'package:kidsapp/providers/duaaprovider.dart';
 import 'package:kidsapp/providers/hadithprovider.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
-import 'package:kidsapp/providers/userprovider.dart';
+
 import 'package:kidsapp/screens/dua.dart';
 import 'package:kidsapp/screens/hadeth.dart';
 import 'package:kidsapp/screens/qura%60n.dart';
@@ -16,7 +17,6 @@ import 'package:kidsapp/widgets/ramdanitem.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Ramdan extends StatefulWidget {
   static const String route = '/ramdan';
@@ -44,15 +44,16 @@ class _RamdanState extends State<Ramdan> {
   bool firstrun;
   int hour;
   int minute;
+  int hour1;
+  int min;
+  int hours;
 
   Color color = Color.fromRGBO(62, 194, 236, 1);
   DateTime datetime = DateTime.now();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     firstrun = true;
-    print(datetime);
     Provider.of<Lanprovider>(context, listen: false).getLan();
     Provider.of<Lanprovider>(context, listen: false).getLan2();
     Provider.of<Lanprovider>(context, listen: false).getLan3();
@@ -64,16 +65,6 @@ class _RamdanState extends State<Ramdan> {
     Provider.of<Lanprovider>(context, listen: false).getcounter1();
     Provider.of<Lanprovider>(context, listen: false).getcounter2();
     Provider.of<Lanprovider>(context, listen: false).getcounter3();
-    print(Provider.of<Lanprovider>(context, listen: false).isEn3);
-  }
-
-  @override
-  void didChangeDependencies() async {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    await Provider.of<Hadithprovider>(context, listen: false).fetchallhadith();
-    await Provider.of<Duaaprovider>(context, listen: false).fetchallduaas();
-    await Provider.of<Deedprovider>(context, listen: false).fetchalldeed();
     hour = int.parse(Provider.of<Athanprovider>(context, listen: false)
         .time
         .data
@@ -88,7 +79,30 @@ class _RamdanState extends State<Ramdan> {
         .maghrib
         .split(':')
         .last);
+  }
 
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    await Provider.of<Hadithprovider>(context, listen: false).fetchallhadith();
+    await Provider.of<Duaaprovider>(context, listen: false).fetchallduaas();
+    await Provider.of<Deedprovider>(context, listen: false).fetchalldeed();
+    var format = DateFormat("HH:mm");
+    var one = format.parse("$hour:$minute");
+    var two = format.parse("${datetime.hour}:${datetime.minute}");
+    if (two.isBefore(one)) {
+      var five = one.difference(two);
+      print(five.toString().length);
+      min = (five.toString().length == 14)
+          ? int.parse(five.toString().substring(2, 4))
+          : int.parse(five.toString().substring(3, 5));
+      hours = int.parse(five.toString().split(':').first);
+    } else {
+      var four = two.difference(one);
+      print(four);
+      min = 60 - int.parse(four.toString().substring(2, 4));
+      hours = 23 - int.parse(four.toString().split(':').first);
+    }
     setState(() {
       firstrun = false;
     });
@@ -154,18 +168,19 @@ class _RamdanState extends State<Ramdan> {
                       )),
                   Container(
                     margin: EdgeInsets.only(
-                        right: MediaQuery.of(context).size.width * 0.1),
+                        right: MediaQuery.of(context).size.width * 0.09),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        
                         SizedBox(
                           width: 2,
                         ),
                         Text(
-                          (24-(DateTime.now().hour  - hour + 1)).toString() +
-                           'hour'+   ':' +
-                              (minute-DateTime.now().minute + 60 ).toString()+'minute',
+                          hours.toString() +
+                              'hour' +
+                              ':' +
+                              min.toString() +
+                              'minute',
                           style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                                 color: Color.fromRGBO(167, 85, 163, 1),
@@ -330,14 +345,15 @@ class _RamdanState extends State<Ramdan> {
                                       MaterialStateProperty.all<Color>(select4
                                           ? Theme.of(context).accentColor
                                           : color)),
-                              onPressed: () {
+                              onPressed: () async {
                                 setState(() {
                                   select1 = false;
                                   select2 = false;
                                   select3 = false;
                                   select4 = true;
                                 });
-                                Dbhandler.instance.ramdanstatus('maghrib');
+                                await Dbhandler.instance
+                                    .ramdanstatus('maghrib');
                               },
                               child: Text(
                                 'Until Maghrib',
@@ -718,17 +734,14 @@ class _RamdanState extends State<Ramdan> {
                             children: [
                               InkWell(
                                 onTap: () async {
-                                  setState(() {
-                                    value1=!value1;
-                                  });
                                   await Provider.of<Lanprovider>(context,
                                           listen: false)
-                                      .changeLan((value1));
+                                      .changeLan((!Provider.of<Lanprovider>(
+                                              context,
+                                              listen: false)
+                                          .isEn));
                                   await Dbhandler.instance
                                       .activity('done', '1');
-                                  print(Provider.of<Lanprovider>(context,
-                                          listen: false)
-                                      .isEn);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -1199,11 +1212,11 @@ class _RamdanState extends State<Ramdan> {
                                     'Keep Moving Forward',
                                     'دائمًا إلى الأمام',
                                     'assets/images/Group 795.png',
+                                    Colors.white,
                                     Color.fromRGBO(255, 72, 115, 1),
                                     Color.fromRGBO(255, 72, 115, 1),
                                     Color.fromRGBO(255, 72, 115, 1),
-                                    Color.fromRGBO(255, 72, 115, 1),
-                                    Color.fromRGBO(255, 72, 115, 1),
+                                    Colors.white,
                                     Color.fromRGBO(255, 72, 115, 1),
                                   ),
                                 ),
@@ -1234,6 +1247,8 @@ class _RamdanState extends State<Ramdan> {
                                     ),
                                   ),
                                 ]);
+                          } else {
+                            Navigator.of(context).pop();
                           }
                         },
                         child: Text(

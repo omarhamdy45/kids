@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:geocoder/model.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/location.dart';
 import 'package:kidsapp/models/user.dart';
@@ -12,7 +15,7 @@ class Userprovider with ChangeNotifier {
   static String timezone;
   static String sd;
   static int score = 0;
-  
+
   Future<void> saverUserData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString('token', currentUser.token);
@@ -31,7 +34,6 @@ class Userprovider with ChangeNotifier {
   Future<String> signInn(String email, String password) async {
     try {
       currentUser = await Dbhandler.instance.signIn(email, password);
-      //await clearuserdata();
       await saverUserData();
       return null;
     } catch (error) {
@@ -49,15 +51,29 @@ class Userprovider with ChangeNotifier {
       return false;
     }
   }
-
+/*
   Future<void> fetchuserlocation() async {
     try {
       location = await Dbhandler.instance.getlocation();
-     // country = location.country;
-     // city = location.city;
-     // timezone = location.timezone.split('/').first;
+      // country = location.country;
+      // city = location.city;
+      // timezone = location.timezone.split('/').first;
     } catch (error) {
       print('errorrr');
     }
   }
+}
+*/
+
+Future<void> getUserLocation() async {
+  var position = await GeolocatorPlatform.instance
+      .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+  final coordinates = new Coordinates(position.latitude, position.longitude);
+  var addresses =
+      await Geocoder.local.findAddressesFromCoordinates(coordinates);
+
+  var first = addresses.first;
+  Userprovider.city = first.adminArea;
+  Userprovider.country = first.countryName;
+}
 }

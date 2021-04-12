@@ -11,8 +11,8 @@ class User {
         this.id = json['user']['id'],
         this.email = json['user']['email'];
   User.fromPrefs(SharedPreferences prefs)
-      : this.token = prefs.get('token'),
-        this.name = prefs.get('name'),
-        this.email = prefs.get('email');
+      : this.token = prefs.get('token');
+       // this.name = prefs.get('name'),
+     //   this.email = prefs.get('email');
       //  this.id =int.parse(prefs.get('id'),);
 }

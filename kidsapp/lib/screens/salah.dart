@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:kidsapp/providers/Athan.dart';
 import 'package:kidsapp/screens/Asr.dart';
 import 'package:kidsapp/screens/elfajar.dart';
@@ -20,19 +21,95 @@ class Salah extends StatefulWidget {
 class _SalahState extends State<Salah> {
   String salah;
   int hour;
-  int hour1;
-  /*
-String getnextprayer(){
-   int datetime=DateTime.now().hour;
-   if( int.parse(Provider.of<Athanprovider>(context, listen: false).time.data.timings.maghrib)-datetime<int.parse(Provider.of<Athanprovider>(context, listen: false).time.data.timings.isha)-datetime)
-   setState(() {
-     salah=Maghrib
-   });
-  
-}
-*/
-  
-  
+  var hour1;
+  bool firstrun;
+  var duhr;
+  var asr;
+  var maghrib;
+  var isha;
+  var fajr;
+  String time;
+  DateTime datetime = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+
+    var format = DateFormat("HH:mm");
+    hour1 = format.parse("${datetime.hour}:${datetime.minute}");
+    maghrib = format.parse(Provider.of<Athanprovider>(context, listen: false)
+        .time
+        .data
+        .timings
+        .maghrib);
+
+    isha = format.parse(Provider.of<Athanprovider>(context, listen: false)
+        .time
+        .data
+        .timings
+        .isha);
+    fajr = format.parse(Provider.of<Athanprovider>(context, listen: false)
+        .time
+        .data
+        .timings
+        .fajr);
+    duhr = format.parse(Provider.of<Athanprovider>(context, listen: false)
+        .time
+        .data
+        .timings
+        .dhuhr);
+    asr = format.parse(Provider.of<Athanprovider>(context, listen: false)
+        .time
+        .data
+        .timings
+        .asr);
+    print(hour1);
+    print(duhr);
+    print(fajr);
+    print(isha);
+    print(asr);
+    print(maghrib);
+    if (hour1.isAfter(isha) || hour1.isBefore(fajr)) {
+      salah = 'Fajr';
+      time = Provider.of<Athanprovider>(context, listen: false)
+          .time
+          .data
+          .timings
+          .fajr;
+    }
+    if (hour1.isAfter(fajr) && hour1.isBefore(duhr)) {
+      salah = 'duhr';
+      time = Provider.of<Athanprovider>(context, listen: false)
+          .time
+          .data
+          .timings
+          .dhuhr;
+    }
+    if (hour1.isAfter(duhr) && hour1.isBefore(asr)) {
+      salah = 'Asr';
+      time = Provider.of<Athanprovider>(context, listen: false)
+          .time
+          .data
+          .timings
+          .asr;
+    }
+    if (hour1.isAfter(asr) && hour1.isBefore(maghrib)) {
+      salah = 'maghrib';
+      time = Provider.of<Athanprovider>(context, listen: false)
+          .time
+          .data
+          .timings
+          .maghrib;
+    }
+    if (hour1.isAfter(maghrib) && hour1.isBefore(isha)) {
+      time = Provider.of<Athanprovider>(context, listen: false)
+          .time
+          .data
+          .timings
+          .isha;
+      salah = 'isha';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +147,7 @@ String getnextprayer(){
                           ),
                         ),
                         Text(
-                          ':  ',
+                          ': ',
                           style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                                 color: Color.fromRGBO(60, 60, 67, 1),
@@ -79,13 +156,13 @@ String getnextprayer(){
                           ),
                         ),
                         Text(
-                          'fajr' + '16:05',
+                          salah + ' ' + time,
                           style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromRGBO(60, 60, 67, 1),
                                 letterSpacing: .5,
-                                fontSize: 14),
+                                fontSize: 16),
                           ),
                         ),
                       ],
@@ -99,7 +176,7 @@ String getnextprayer(){
                     children: [
                       Expanded(
                         child: GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             Navigator.push(
                               context,
                               PageTransition(

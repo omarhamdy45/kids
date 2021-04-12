@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:geocoder/geocoder.dart';
-import 'package:geolocator/geolocator.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/providers/Athan.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
-import 'package:kidsapp/providers/hadithprovider.dart';
+import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/duaas.dart';
 import 'package:kidsapp/screens/login.dart';
@@ -27,41 +25,34 @@ class _TypesState extends State<Types> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     firstrun = true;
-    Userprovider.sd =
-        Provider.of<Userprovider>(context, listen: false).currentUser.token;
-    _getUserLocation();
+    Userprovider.sd = Provider.of<Userprovider>(context, listen: false)
+        .currentUser
+        .token
+        .toString();
   }
 
   @override
   void didChangeDependencies() async {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
     // await Provider.of<Azkarprovider>(context, listen: false).fetchallazkar();
     await Provider.of<Azkarprovider>(context, listen: false)
         .fetchallcatgories();
-    await Provider.of<Userprovider>(context, listen: false).fetchuserlocation();
+    await Provider.of<Userprovider>(context, listen: false).getUserLocation();
     await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
+    await Provider.of<Lanprovider>(context, listen: false).getdate();
 
-    print(Userprovider.city);
-
+    print(Provider.of<Lanprovider>(context, listen: false).time);
+    if (DateTime.now().day.toString() !=
+        Provider.of<Lanprovider>(context, listen: false).time) {
+      Provider.of<Lanprovider>(context, listen: false).cleardata();
+    }
+    Provider.of<Lanprovider>(context, listen: false).savedate();
     setState(() {
       firstrun = false;
     });
-  }
-
-  void _getUserLocation() async {
-    var position = await GeolocatorPlatform.instance
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-    final coordinates = new Coordinates(position.latitude, position.longitude);
-    var addresses =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
-    Userprovider.city = first.adminArea;
-    Userprovider.country = first.countryName;
   }
 
   @override
@@ -105,10 +96,13 @@ class _TypesState extends State<Types> {
                                               fontSize: 24)),
                                     ),
                                     GestureDetector(
-                                      onTap: () {
-                                        Provider.of<Userprovider>(context,
+                                      onTap: () async{
+                                     await   Provider.of<Userprovider>(context,
                                                 listen: false)
                                             .clearuserdata();
+                                    await    Provider.of<Lanprovider>(context,
+                                                listen: false)
+                                            .cleardata();
                                         Navigator.of(context)
                                             .pushReplacementNamed(Login.route);
                                       },

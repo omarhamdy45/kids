@@ -8,9 +8,9 @@ class Deedprovider with ChangeNotifier {
  Future<void> fetchalldeed() async {
     try {
     dead = await Dbhandler.instance.getalldeed();
-    
+    print(dead.data[0].title);
     } catch (error) {
-      print('errorrr');
+      print('errorrrrr');
     }
   }
 
