@@ -118,7 +118,7 @@ class _SalahevState extends State<Salahev> {
                         print(a);
                       });
                       await Dbhandler.instance
-                          .salahevluate(this.widget.id, 'no');
+                          .salahevluate(this.widget.id, 'no','0');
                       if (Dbhandler.instance.cheaksalah == 200) {
                         Dialogs.materialDialog(
                             customView: Container(
@@ -244,7 +244,7 @@ class _SalahevState extends State<Salahev> {
                                           child: GestureDetector(
                                         onTap: () async {
                                           await Dbhandler.instance.salahevluate(
-                                              this.widget.id, 'late group');
+                                              this.widget.id, 'late group','1');
                                           if (Dbhandler.instance.cheaksalah ==
                                               200) {
                                             Dialogs.materialDialog(
@@ -364,7 +364,7 @@ class _SalahevState extends State<Salahev> {
                                           child: GestureDetector(
                                         onTap: () async {
                                           await Dbhandler.instance.salahevluate(
-                                              this.widget.id, 'late single');
+                                              this.widget.id, 'late single','1');
                                           if (Dbhandler.instance.cheaksalah ==
                                               200) {
                                             Dialogs.materialDialog(
@@ -562,7 +562,7 @@ class _SalahevState extends State<Salahev> {
                                           child: GestureDetector(
                                         onTap: () async {
                                           await Dbhandler.instance.salahevluate(
-                                              this.widget.id, 'ontime group');
+                                              this.widget.id, 'ontime group','1');
                                           if (Dbhandler.instance.cheaksalah ==
                                               200) {
                                             Dialogs.materialDialog(
@@ -683,7 +683,7 @@ class _SalahevState extends State<Salahev> {
                                           child: GestureDetector(
                                         onTap: () async {
                                           await Dbhandler.instance.salahevluate(
-                                              this.widget.id, 'ontime single');
+                                              this.widget.id, 'ontime single','1');
                                           if (Dbhandler.instance.cheaksalah ==
                                               200) {
                                             Dialogs.materialDialog(

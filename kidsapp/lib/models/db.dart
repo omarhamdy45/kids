@@ -5,6 +5,7 @@ import 'package:kidsapp/models/Categories.dart';
 import 'package:kidsapp/models/Hadith.dart';
 import 'package:kidsapp/models/catgoriess.dart';
 import 'package:kidsapp/models/location.dart';
+import 'package:kidsapp/models/score.dart';
 import 'package:kidsapp/models/user.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 
@@ -213,13 +214,13 @@ class Dbhandler {
         },
       );
       deedreadd = response.statusCode;
-        print(response.body);
+      print(response.body);
     } catch (eroor) {
       print(eroor);
     }
   }
 
-  Future<void> salahevluate(String salahid, String status) async {
+  Future<void> salahevluate(String salahid, String status,String zekr) async {
     String url = '$mainurl/salah_status';
     final String tokenn = Userprovider.sd;
 
@@ -233,6 +234,7 @@ class Dbhandler {
         body: {
           'salah_id': salahid,
           'status': status,
+          'StatusOfZkr':zekr,
         },
       );
       cheaksalah = response.statusCode;
@@ -301,5 +303,16 @@ class Dbhandler {
     } catch (eroor) {
       print(eroor);
     }
+  }
+
+  Future<Score> getscore() async {
+    String url = '$mainurl/score';
+    final String tokenn = Userprovider.sd;
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+
+    Response response = await _dio.get(
+      url);
+    print(response.data);
+    return Score.fromJson(response.data);
   }
 }

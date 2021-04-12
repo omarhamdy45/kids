@@ -41,6 +41,7 @@ class _TypesState extends State<Types> {
     await Provider.of<Azkarprovider>(context, listen: false)
         .fetchallcatgories();
     await Provider.of<Userprovider>(context, listen: false).getUserLocation();
+    await Provider.of<Userprovider>(context, listen: false).fetchscore();
     await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
     await Provider.of<Lanprovider>(context, listen: false).getdate();
 
@@ -57,6 +58,7 @@ class _TypesState extends State<Types> {
 
   @override
   Widget build(BuildContext context) {
+  
     return SafeArea(
       child: Scaffold(
           backgroundColor: Colors.white,
@@ -87,7 +89,7 @@ class _TypesState extends State<Types> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Score:' + Userprovider.score.toString(),
+                                      'Score:' + Provider.of<Userprovider>(context).score.totalScore.toString(),
                                       style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
                                               color:

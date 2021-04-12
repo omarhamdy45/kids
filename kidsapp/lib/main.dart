@@ -7,6 +7,7 @@ import 'package:kidsapp/providers/duaaprovider.dart';
 import 'package:kidsapp/providers/hadithprovider.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
+import 'package:kidsapp/screens/azkar.dart';
 import 'package:kidsapp/screens/duaas.dart';
 import 'package:kidsapp/screens/login.dart';
 import 'package:kidsapp/screens/splash.dart';
@@ -72,6 +73,7 @@ class MyApp extends StatelessWidget {
           Ramdan.route: (context) => Ramdan(),
           Duadetails.route: (context) => Duadetails(),
           Duaas.route: (context) => Duaas(),
+          Azkar.route: (context) => Azkar(),
         });
   }
 }

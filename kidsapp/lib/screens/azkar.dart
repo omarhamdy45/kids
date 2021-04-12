@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kidsapp/screens/salah.dart';
 import 'package:page_indicator/page_indicator.dart';
 
 class Azkar extends StatefulWidget {
+  static const String route = 'azkar';
   @override
   _AzkarState createState() => _AzkarState();
 }
@@ -28,6 +30,7 @@ class _AzkarState extends State<Azkar> {
 
   @override
   Widget build(BuildContext context) {
+     String id = ModalRoute.of(context).settings.arguments as String;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -414,7 +417,8 @@ class _AzkarState extends State<Azkar> {
                                       }
                                     });
                                     if (counter3 == 33) {
-                                      Navigator.pop(context);
+                                     
+                                     
                                     }
                                   },
                                   child: Container(
@@ -432,44 +436,6 @@ class _AzkarState extends State<Azkar> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.09,
                           ),
-                          /*
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: 40,
-                                  width: 150,
-                                  margin: EdgeInsets.symmetric(
-                                          horizontal: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.1)
-                                      .add(EdgeInsets.symmetric(vertical: 10)),
-                                  child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                          )),
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Theme.of(context)
-                                                      .accentColor)),
-                                      onPressed: () async {},
-                                      child: Text(
-                                        'Done',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 18),
-                                      )),
-                                )
-                              ],
-                            ),
-                          )
-                          */
                         ],
                       ),
                     ),

@@ -4,6 +4,7 @@ import 'package:geocoder/model.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/location.dart';
+import 'package:kidsapp/models/score.dart';
 import 'package:kidsapp/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,7 +15,16 @@ class Userprovider with ChangeNotifier {
   static String city;
   static String timezone;
   static String sd;
-  static int score = 0;
+
+  Score score;
+
+  Future<Score> fetchscore() async {
+    try {
+      score = await Dbhandler.instance.getscore();
+    } catch (error) {
+      print('erroe');
+    }
+  }
 
   Future<void> saverUserData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -65,15 +75,15 @@ class Userprovider with ChangeNotifier {
 }
 */
 
-Future<void> getUserLocation() async {
-  var position = await GeolocatorPlatform.instance
-      .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-  final coordinates = new Coordinates(position.latitude, position.longitude);
-  var addresses =
-      await Geocoder.local.findAddressesFromCoordinates(coordinates);
+  Future<void> getUserLocation() async {
+    var position = await GeolocatorPlatform.instance
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    final coordinates = new Coordinates(position.latitude, position.longitude);
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
 
-  var first = addresses.first;
-  Userprovider.city = first.adminArea;
-  Userprovider.country = first.countryName;
-}
+    var first = addresses.first;
+    Userprovider.city = first.adminArea;
+    Userprovider.country = first.countryName;
+  }
 }
