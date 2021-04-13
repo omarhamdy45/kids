@@ -12,6 +12,7 @@ import 'package:page_transition/page_transition.dart';
 
 // ignore: must_be_immutable
 class Salahev extends StatefulWidget {
+  
   Color color;
   Color color1;
   Color color2;

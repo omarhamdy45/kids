@@ -38,14 +38,13 @@ class _TypesState extends State<Types> {
     super.didChangeDependencies();
 
     // await Provider.of<Azkarprovider>(context, listen: false).fetchallazkar();
-    await Provider.of<Azkarprovider>(context, listen: false)
-        .fetchallcatgories();
+
     await Provider.of<Userprovider>(context, listen: false).getUserLocation();
     await Provider.of<Userprovider>(context, listen: false).fetchscore();
     await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
+    await Provider.of<Azkarprovider>(context, listen: false)
+        .fetchallcatgories();
     await Provider.of<Lanprovider>(context, listen: false).getdate();
-
-    print(Provider.of<Lanprovider>(context, listen: false).time);
     if (DateTime.now().day.toString() !=
         Provider.of<Lanprovider>(context, listen: false).time) {
       Provider.of<Lanprovider>(context, listen: false).cleardata();
@@ -58,7 +57,6 @@ class _TypesState extends State<Types> {
 
   @override
   Widget build(BuildContext context) {
-  
     return SafeArea(
       child: Scaffold(
           backgroundColor: Colors.white,
@@ -89,7 +87,11 @@ class _TypesState extends State<Types> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Score:' + Provider.of<Userprovider>(context).score.totalScore.toString(),
+                                      'Score:' +
+                                          Provider.of<Userprovider>(context)
+                                              .score
+                                              .totalScore
+                                              .toString(),
                                       style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
                                               color:
@@ -98,11 +100,11 @@ class _TypesState extends State<Types> {
                                               fontSize: 24)),
                                     ),
                                     GestureDetector(
-                                      onTap: () async{
-                                     await   Provider.of<Userprovider>(context,
+                                      onTap: () async {
+                                        await Provider.of<Userprovider>(context,
                                                 listen: false)
                                             .clearuserdata();
-                                    await    Provider.of<Lanprovider>(context,
+                                        await Provider.of<Lanprovider>(context,
                                                 listen: false)
                                             .cleardata();
                                         Navigator.of(context)

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:kidsapp/models/Athan.dart';
@@ -23,22 +25,19 @@ class Dbhandler {
   int ramdanstatuss;
 
   String mainurl = 'https://muslim-kids.royaltechni.com/api';
+
   Future<Athan> gettimes() async {
     String city = Userprovider.city;
     String country = Userprovider.country;
     String zone = Userprovider.timezone;
     String method;
-
     if (zone == 'Europe') {
       method = '3';
     }
     if (zone == 'North America') {
       method = '2';
     }
-    if (country == 'MAKKAH') {
-      method = '4';
-    }
-    if (country == 'United Arab Emirates') {
+    if (country == 'MAKKAH' || country == 'United Arab Emirates') {
       method = '4';
     }
     if (country == 'Iran') {
@@ -51,18 +50,16 @@ class Dbhandler {
         country == 'Malaysia') {
       method = '5';
     }
-    if (country == 'Pakistan' ||
-        country == 'Afganistan' ||
-        country == 'Bangladesh' ||
-        country == 'India') {
-      method = '1';
-    }
-
+    
     String url =
         'http://api.aladhan.com/v1/timingsByCity?city=$city&country=$country&method=$method';
-    Response response = await _dio.get(url);
-    print(response.data);
-    return Athan.fromJson(response.data);
+    try {
+      http.Response response = await http.get(Uri.parse(url));
+      print(response.statusCode);
+      return Athan.fromJson(json.decode(response.body));
+    } catch (eroor) {
+      print(eroor);
+    }
   }
 
   Future<Location> getlocation() async {
@@ -80,10 +77,10 @@ class Dbhandler {
     return Azkarr.fromJson(response.data);
   }
   */
+
   Future<Categories> getallcategries() async {
     String url = '$mainurl/categories';
     Response response = await _dio.get(url);
-    print(response.data);
     return Categories.fromJson(response.data);
   }
 
@@ -134,7 +131,7 @@ class Dbhandler {
 
     try {
       http.Response response = await http.post(
-        url,
+        Uri.parse(url),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $tokenn',
@@ -157,7 +154,7 @@ class Dbhandler {
 
     try {
       http.Response response = await http.post(
-        url,
+        Uri.parse(url),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $tokenn',
@@ -180,7 +177,7 @@ class Dbhandler {
 
     try {
       http.Response response = await http.post(
-        url,
+        Uri.parse(url),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $tokenn',
@@ -203,7 +200,7 @@ class Dbhandler {
 
     try {
       http.Response response = await http.post(
-        url,
+        Uri.parse(url),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $tokenn',
@@ -220,13 +217,13 @@ class Dbhandler {
     }
   }
 
-  Future<void> salahevluate(String salahid, String status,String zekr) async {
+  Future<void> salahevluate(String salahid, String status, String zekr) async {
     String url = '$mainurl/salah_status';
     final String tokenn = Userprovider.sd;
 
     try {
       http.Response response = await http.post(
-        url,
+        Uri.parse(url),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $tokenn',
@@ -234,7 +231,7 @@ class Dbhandler {
         body: {
           'salah_id': salahid,
           'status': status,
-          'StatusOfZkr':zekr,
+          'StatusOfZkr': zekr,
         },
       );
       cheaksalah = response.statusCode;
@@ -250,7 +247,7 @@ class Dbhandler {
 
     try {
       http.Response response = await http.post(
-        url,
+        Uri.parse(url),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $tokenn',
@@ -272,7 +269,7 @@ class Dbhandler {
 
     try {
       http.Response response = await http.post(
-        url,
+        Uri.parse(url),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $tokenn',
@@ -291,7 +288,7 @@ class Dbhandler {
 
     try {
       http.Response response = await http.post(
-        url,
+        Uri.parse(url),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $tokenn',
@@ -310,8 +307,7 @@ class Dbhandler {
     final String tokenn = Userprovider.sd;
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
 
-    Response response = await _dio.get(
-      url);
+    Response response = await _dio.get(url);
     print(response.data);
     return Score.fromJson(response.data);
   }

@@ -61,27 +61,24 @@ class Userprovider with ChangeNotifier {
       return false;
     }
   }
-/*
+
   Future<void> fetchuserlocation() async {
     try {
       location = await Dbhandler.instance.getlocation();
-      // country = location.country;
+      country = location.country;
       // city = location.city;
-      // timezone = location.timezone.split('/').first;
+      timezone = location.timezone.split('/').first;
     } catch (error) {
       print('errorrr');
     }
   }
-}
-*/
 
   Future<void> getUserLocation() async {
     var position = await GeolocatorPlatform.instance
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
     final coordinates = new Coordinates(position.latitude, position.longitude);
     var addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
-
     var first = addresses.first;
     Userprovider.city = first.adminArea;
     Userprovider.country = first.countryName;

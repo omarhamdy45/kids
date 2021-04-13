@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
@@ -25,7 +24,6 @@ class _LoginState extends State<Login> {
   FocusNode passwordnode;
   bool loading;
   GlobalKey<ScaffoldState> scaffold;
-  bool firstrun;
 
   @override
   void initState() {
@@ -39,22 +37,7 @@ class _LoginState extends State<Login> {
     form = GlobalKey<FormState>();
     passwordnode = FocusNode();
     loading = false;
-    firstrun = true;
-    _getUserLocation();
   }
-
-  void _getUserLocation() async {
-    var position = await GeolocatorPlatform.instance
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-    final coordinates = new Coordinates(position.latitude, position.longitude);
-    var addresses =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
-    Userprovider.city = first.adminArea;
-    Userprovider.country = first.countryName;
-  }
-
-  
 
   void validatetologin() async {
     if (form.currentState.validate()) {

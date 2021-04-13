@@ -8,7 +8,7 @@ class Duaaprovider with ChangeNotifier {
  Future<void> fetchallduaas() async {
     try {
     duaa = await Dbhandler.instance.getallduuas();
-   print(duaa.data[0].descriptionFr);
+  
     } catch (error) {
       print('errorrrrrrrrrrrrrrr');
     }

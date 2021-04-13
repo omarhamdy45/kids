@@ -4,7 +4,7 @@ import 'package:kidsapp/models/catgoriess.dart';
 import 'package:kidsapp/models/db.dart';
 
 class Azkarprovider with ChangeNotifier {
- // Azkarr azkar;
+  // Azkarr azkar;
   Categories categories;
   Categoriess categoriess;
 
@@ -15,13 +15,12 @@ class Azkarprovider with ChangeNotifier {
       print('errorrrrrr');
     }
   }
-  
 
   Future<void> fetchallcatgories() async {
     try {
       categories = await Dbhandler.instance.getallcategries();
     } catch (error) {
-      print('errorrr');
+      print('errorrrr');
     }
   }
 }

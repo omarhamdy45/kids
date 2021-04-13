@@ -47,6 +47,7 @@ class _RamdanState extends State<Ramdan> {
   int hour1;
   int min;
   int hours;
+  bool loading;
 
   Color color = Color.fromRGBO(62, 194, 236, 1);
   DateTime datetime = DateTime.now();
@@ -54,6 +55,7 @@ class _RamdanState extends State<Ramdan> {
   void initState() {
     super.initState();
     firstrun = true;
+    loading = false;
     Provider.of<Lanprovider>(context, listen: false).getLan();
     Provider.of<Lanprovider>(context, listen: false).getLan2();
     Provider.of<Lanprovider>(context, listen: false).getLan3();
@@ -1192,69 +1194,84 @@ class _RamdanState extends State<Ramdan> {
                     margin: EdgeInsets.symmetric(
                             horizontal: MediaQuery.of(context).size.width * 0.3)
                         .add(EdgeInsets.symmetric(vertical: 10)),
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            )),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Theme.of(context).accentColor)),
-                        onPressed: () async {
-                          await Dbhandler.instance.quraantracker(
-                              vercecounter.toString(),
-                              surracounter.toString(),
-                              goz2counter.toString());
-                          if (Dbhandler.instance.counter == 200) {
-                            Dialogs.materialDialog(
-                                customView: Container(
-                                  child: Gift(
-                                    'Keep Moving Forward',
-                                    'دائمًا إلى الأمام',
-                                    'assets/images/Group 795.png',
-                                    Colors.white,
-                                    Color.fromRGBO(255, 72, 115, 1),
-                                    Color.fromRGBO(255, 72, 115, 1),
-                                    Color.fromRGBO(255, 72, 115, 1),
-                                    Colors.white,
-                                    Color.fromRGBO(255, 72, 115, 1),
-                                  ),
-                                ),
-                                titleStyle: TextStyle(
-                                    color: Theme.of(context).accentColor,
-                                    fontSize: 25),
-                                color: Colors.white,
-                                //    animation: 'assets/cong_example.json',
-                                context: context,
-                                actions: [
-                                  Container(
-                                    height: 40,
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal:
-                                            MediaQuery.of(context).size.width *
-                                                0.1),
-                                    child: IconsButton(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                        Navigator.of(context).pop();
-                                      },
-                                      text: 'Done',
-                                      color: Color.fromRGBO(255, 72, 115, 1),
-                                      textStyle: TextStyle(color: Colors.white),
+                    child: loading
+                        ? Center(child: CircularProgressIndicator())
+                        : ElevatedButton(
+                            style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                )),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Theme.of(context).accentColor)),
+                            onPressed: () async {
+                              setState(() {
+                                loading = true;
+                              });
+                             
+                              await Dbhandler.instance.quraantracker(
+                                  vercecounter.toString(),
+                                  surracounter.toString(),
+                                  goz2counter.toString());
+                              setState(() {
+                                loading = false;
+                              });
+                              if (Dbhandler.instance.counter == 200) {
+                                Dialogs.materialDialog(
+                                    customView: Container(
+                                      child: Gift(
+                                        'Keep Moving Forward',
+                                        'دائمًا إلى الأمام',
+                                        'assets/images/Group 795.png',
+                                        Colors.white,
+                                        Color.fromRGBO(255, 72, 115, 1),
+                                        Color.fromRGBO(255, 72, 115, 1),
+                                        Color.fromRGBO(255, 72, 115, 1),
+                                        Colors.white,
+                                        Color.fromRGBO(255, 72, 115, 1),
+                                      ),
                                     ),
-                                  ),
-                                ]);
-                          } else {
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        child: Text(
-                          'Done',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        )),
+                                    titleStyle: TextStyle(
+                                        color: Theme.of(context).accentColor,
+                                        fontSize: 25),
+                                    color: Colors.white,
+                                    //    animation: 'assets/cong_example.json',
+                                    context: context,
+                                    actions: [
+                                      Container(
+                                        height: 40,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1),
+                                        child: IconsButton(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                            Navigator.of(context).pop();
+                                          },
+                                          text: 'Done',
+                                          color:
+                                              Color.fromRGBO(255, 72, 115, 1),
+                                          textStyle:
+                                              TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ]);
+                              } else {
+                                Navigator.of(context).pop();
+                              }
+                            },
+                            child: Text(
+                              'Done',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                            )),
                   ),
                 ],
               ),

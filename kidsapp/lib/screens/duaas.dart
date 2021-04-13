@@ -6,7 +6,7 @@ import 'package:kidsapp/widgets/duadetails.dart';
 import 'package:provider/provider.dart';
 
 class Duaas extends StatelessWidget {
-  static const String route='duaas';
+  static const String route = 'duaas';
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,14 +57,14 @@ class Duaas extends StatelessWidget {
                     Provider.of<Azkarprovider>(context).categories.data.length,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
-                  final azakar= Provider.of<Azkarprovider>(context)
-                              .categories
-                              .data[index];
-                              
+                  final azakar = Provider.of<Azkarprovider>(context)
+                      .categories
+                      .data[index];
+
                   return GestureDetector(
                     onTap: () {
                       Navigator.popAndPushNamed(context, Duadetails.route,
-                          arguments:azakar);
+                          arguments: azakar);
                     },
                     child: Container(
                       height: 165,
@@ -75,8 +75,11 @@ class Duaas extends StatelessWidget {
                               height: 138,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                  'assets/images/Group 2318.png',
+                                child: Image.network(
+                                  Provider.of<Azkarprovider>(context)
+                                      .categories
+                                      .data[index]
+                                      .image,
                                   fit: BoxFit.cover,
                                 ),
                               )),

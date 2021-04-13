@@ -30,7 +30,7 @@ class _AzkarState extends State<Azkar> {
 
   @override
   Widget build(BuildContext context) {
-     String id = ModalRoute.of(context).settings.arguments as String;
+    String id = ModalRoute.of(context).settings.arguments as String;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -417,8 +417,8 @@ class _AzkarState extends State<Azkar> {
                                       }
                                     });
                                     if (counter3 == 33) {
-                                     
-                                     
+                                      Navigator.pop(context);
+                                      
                                     }
                                   },
                                   child: Container(

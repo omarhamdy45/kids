@@ -19,7 +19,7 @@ class Categoriess {
 class Data {
   int id;
   String title;
-  Null image;
+  String image;
   List<Azkars> azkars;
   String createdAt;
   String updatedAt;

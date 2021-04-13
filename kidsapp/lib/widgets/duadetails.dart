@@ -75,8 +75,11 @@ class _DuadetailsState extends State<Duadetails> {
                                 width: 2,
                                 color: Theme.of(context).accentColor)),
                         height: 190,
-                        child: Image.asset(
-                          'assets/images/Group 2318.png',
+                        child: Image.network(
+                          Provider.of<Azkarprovider>(context)
+                              .categoriess
+                              .data
+                              .image,
                           fit: BoxFit.cover,
                         )),
                     SizedBox(
