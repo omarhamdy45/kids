@@ -122,6 +122,22 @@ class _RamdanState extends State<Ramdan> {
             : ListView(
                 children: [
                   Container(
+                  margin: EdgeInsets.only(top: 10, left: 3),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.arrow_back_outlined,
+                          size: 35,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                  Container(
                       margin: EdgeInsets.only(
                           left: MediaQuery.of(context).size.width * 0.02,
                           top: 7,

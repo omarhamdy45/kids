@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:geocoder/geocoder.dart';
-import 'package:geocoder/model.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/location.dart';
 import 'package:kidsapp/models/score.dart';
 import 'package:kidsapp/models/user.dart';
+
+
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class Userprovider with ChangeNotifier {
   User currentUser;
-  Location location;
+  Locationn location;
   static String country;
   static String city;
   static String timezone;
   static String sd;
-
   Score score;
 
   Future<Score> fetchscore() async {
@@ -76,11 +77,11 @@ class Userprovider with ChangeNotifier {
   Future<void> getUserLocation() async {
     var position = await GeolocatorPlatform.instance
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
-    final coordinates = new Coordinates(position.latitude, position.longitude);
-    var addresses =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
-    Userprovider.city = first.adminArea;
-    Userprovider.country = first.countryName;
+    
+    var placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+    
+    var first = placemarks.first;
+    Userprovider.city =  first.administrativeArea;
+    Userprovider.country = first.country;
   }
 }

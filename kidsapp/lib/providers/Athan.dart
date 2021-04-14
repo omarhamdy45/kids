@@ -8,7 +8,7 @@ class Athanprovider with ChangeNotifier {
     try {
       time = await Dbhandler.instance.gettimes();
     } catch (error) {
-      print('error');
+      print('errorrrr');
     }
   }
 }

@@ -63,12 +63,7 @@ class _SalahState extends State<Salah> {
         .data
         .timings
         .asr);
-    print(hour1);
-    print(duhr);
-    print(fajr);
-    print(isha);
-    print(asr);
-    print(maghrib);
+   
     if (hour1.isAfter(isha) || hour1.isBefore(fajr)) {
       salah = 'Fajr';
       time = Provider.of<Athanprovider>(context, listen: false)
@@ -111,6 +106,7 @@ class _SalahState extends State<Salah> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -122,6 +118,22 @@ class _SalahState extends State<Salah> {
             children: [
               Background(),
               ListView(children: [
+                Container(
+                  margin: EdgeInsets.only(top: 10, left: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.arrow_back_outlined,
+                          size: 35,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
                 Container(
                   margin: EdgeInsets.only(
                       right: MediaQuery.of(context).size.width * 0.3,

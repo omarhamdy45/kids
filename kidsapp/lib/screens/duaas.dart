@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
 import 'package:kidsapp/widgets/duadetails.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/widgets.dart';
+
+
 
 class Duaas extends StatelessWidget {
   static const String route = 'duaas';
@@ -15,38 +18,19 @@ class Duaas extends StatelessWidget {
         body: ListView(
           children: [
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 8)
-                  .add(EdgeInsets.only(top: 5)),
-              child: TextFormField(
-                maxLines: 1,
-                style: TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  contentPadding:
-                      new EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
-                  fillColor: Colors.grey.shade200,
-                  filled: true,
-                  errorStyle: TextStyle(color: Colors.redAccent[900]),
-                  hintText: '    Search',
-                  hintStyle: GoogleFonts.sourceSerifPro(
-                    textStyle: TextStyle(
-                        color: Colors.grey, letterSpacing: .5, fontSize: 17),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                      width: 1,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-
-                    borderSide: BorderSide(width: 1, color: Colors.white),
-                    //   borderRadius: BorderRadius.all(),
-                  ),
+              margin: EdgeInsets.only(top: 15, left: 10,bottom: 8),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.arrow_back_outlined,
+                      size: 35,
+                    )
+                  ],
                 ),
-                textInputAction: TextInputAction.done,
-                keyboardType: TextInputType.emailAddress,
               ),
             ),
             Container(
@@ -83,6 +67,7 @@ class Duaas extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                               )),
+                        
                           SizedBox(
                             height: 5,
                           ),

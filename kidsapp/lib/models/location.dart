@@ -1,4 +1,4 @@
-class Location {
+class Locationn {
   String status;
   String country;
   String countryCode;
@@ -14,7 +14,7 @@ class Location {
   String as;
   String query;
 
-  Location(
+  Locationn(
       {this.status,
       this.country,
       this.countryCode,
@@ -30,7 +30,7 @@ class Location {
       this.as,
       this.query});
 
-  Location.fromJson(Map<String, dynamic> json) {
+  Locationn.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     country = json['country'];
     countryCode = json['countryCode'];

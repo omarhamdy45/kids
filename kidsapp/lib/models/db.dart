@@ -1,7 +1,7 @@
 import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'dart:async';
 import 'package:kidsapp/models/Athan.dart';
 import 'package:kidsapp/models/Categories.dart';
 import 'package:kidsapp/models/Hadith.dart';
@@ -31,29 +31,20 @@ class Dbhandler {
     String country = Userprovider.country;
     String zone = Userprovider.timezone;
     String method;
-    if (zone == 'Europe') {
-      method = '3';
-    }
-    if (zone == 'North America') {
-      method = '2';
-    }
+   
+
     if (country == 'MAKKAH' || country == 'United Arab Emirates') {
       method = '4';
-    }
-    if (country == 'Iran') {
-      method = '7';
-    }
-
-    if (country == 'Egypt' ||
+    } else if (country == 'Egypt' ||
         country == 'Syria' ||
         country == 'Lebanon' ||
         country == 'Malaysia') {
       method = '5';
     }
-    
-    String url =
-        'http://api.aladhan.com/v1/timingsByCity?city=$city&country=$country&method=$method';
+
     try {
+       String url =
+        'https://api.aladhan.com/v1/timingsByCity?city=$city&country=$country&method=$method';
       http.Response response = await http.get(Uri.parse(url));
       print(response.statusCode);
       return Athan.fromJson(json.decode(response.body));
@@ -62,11 +53,11 @@ class Dbhandler {
     }
   }
 
-  Future<Location> getlocation() async {
+  Future<Locationn> getlocation() async {
     String url = 'http://ip-api.com/json';
     Response response = await _dio.get(url);
     //  print(response.data);
-    return Location.fromJson(response.data);
+    return Locationn.fromJson(response.data);
   }
 
 /*
@@ -235,7 +226,8 @@ class Dbhandler {
         },
       );
       cheaksalah = response.statusCode;
-      //    print(response.body);
+      print(response.body);
+      print(response.statusCode);
     } catch (eroor) {
       print(eroor);
     }

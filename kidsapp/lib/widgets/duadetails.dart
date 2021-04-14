@@ -50,6 +50,22 @@ class _DuadetailsState extends State<Duadetails> {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
+                    Container(
+              margin: EdgeInsets.only(top: 15, left: 10,bottom: 8),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.arrow_back_outlined,
+                      size: 35,
+                    )
+                  ],
+                ),
+              ),
+            ),
                     Center(
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 30),
