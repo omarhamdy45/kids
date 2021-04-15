@@ -12,6 +12,7 @@ class Thuhr extends StatelessWidget {
       Colors.yellow.shade400,
       Colors.grey[700],
       Colors.black,
+      Colors.black,
       '2'
     );
   }

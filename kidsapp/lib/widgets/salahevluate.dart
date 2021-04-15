@@ -18,8 +18,10 @@ class Salahev extends StatefulWidget {
   String text;
   String time;
   String id;
+  Color color3;
+  
 
-  Salahev(this.text, this.time, this.color, this.color1, this.color2, this.id);
+  Salahev(this.text, this.time, this.color, this.color1, this.color2, this.color3,this.id);
 
   @override
   _SalahevState createState() => _SalahevState();
@@ -66,6 +68,7 @@ class _SalahevState extends State<Salahev> {
                           child: Icon(
                             Icons.arrow_back_outlined,
                             size: 35,
+                            color: this.widget.color3,
                            
                           ),
                         )
@@ -79,22 +82,7 @@ class _SalahevState extends State<Salahev> {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Container(
-                  margin: EdgeInsets.only(top: 10, left: 10),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.arrow_back_outlined,
-                          size: 35,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                    
                     Positioned(
                       bottom: MediaQuery.of(context).size.height * 0.1,
                       right: 25,

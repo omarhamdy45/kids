@@ -543,6 +543,8 @@ class _AzkarState extends State<Azkar> {
                                                           .pop();
                                                       Navigator.of(context)
                                                           .pop();
+                                                          Navigator.of(context)
+                                                          .pop();
                                                     },
                                                     text: 'Done',
                                                     color: Color.fromRGBO(
