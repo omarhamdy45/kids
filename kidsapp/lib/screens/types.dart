@@ -85,8 +85,10 @@ class _TypesState extends State<Types> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Score:' +
-                                          Provider.of<Userprovider>(context)
+                                      Provider.of<Userprovider>(context)
+                                              .score
+                                              .totalScore
+                                              .toString()==null?'-':  'Score:'+ Provider.of<Userprovider>(context)
                                               .score
                                               .totalScore
                                               .toString(),

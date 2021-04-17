@@ -220,7 +220,7 @@ class Dbhandler {
       );
       cheaksalah = response.statusCode;
      // print(response.body);
-     // print(response.statusCode);
+      print(response.statusCode);
     } catch (eroor) {
       print(eroor);
     }

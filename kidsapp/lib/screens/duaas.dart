@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,8 +6,6 @@ import 'package:kidsapp/providers/azkarprovider.dart';
 import 'package:kidsapp/widgets/duadetails.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/widgets.dart';
-
-
 
 class Duaas extends StatelessWidget {
   static const String route = 'duaas';
@@ -18,7 +17,7 @@ class Duaas extends StatelessWidget {
         body: ListView(
           children: [
             Container(
-              margin: EdgeInsets.only(top: 15, left: 10,bottom: 8),
+              margin: EdgeInsets.only(top: 15, left: 10, bottom: 8),
               child: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -59,15 +58,14 @@ class Duaas extends StatelessWidget {
                               height: 138,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: Image.network(
-                                  Provider.of<Azkarprovider>(context)
-                                      .categories
-                                      .data[index]
-                                      .image,
-                                  fit: BoxFit.cover,
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                       Provider.of<Azkarprovider>(context)
+                                  .categories
+                                  .data[index]
+                                  .image,
                                 ),
                               )),
-                        
                           SizedBox(
                             height: 5,
                           ),

@@ -44,7 +44,7 @@ dependencies:
   hijri: ^2.0.3
   intl: any
   geocoding: ^2.0.0
- 
+  cached_network_image: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -75,21 +75,16 @@ flutter:
     - assets/images/duaa.png
     - assets/images/moshaf.png
     - assets/images/bal.png
-    - assets/images/ab.png
     - assets/images/Group 77.png
     - assets/images/Mask Group 1.png
     - assets/images/Group 2386.png
     - assets/images/Mask Group 3.png
-    - assets/images/Group 2332.png
-    - assets/images/Group 2333.png
     - assets/images/Group 705.png
     - assets/images/Group 709.png
     -  assets/images/Group 804.png
-    -  assets/images/Group 808.png
     -  assets/images/Group 813.png
     -  assets/images/Group 815.png
     -  assets/images/Group 795.png
-    -  assets/images/Group 2318.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
