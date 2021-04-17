@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/models/Categories.dart';
@@ -51,21 +52,21 @@ class _DuadetailsState extends State<Duadetails> {
                   shrinkWrap: true,
                   children: [
                     Container(
-              margin: EdgeInsets.only(top: 15, left: 10,bottom: 8),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.arrow_back_outlined,
-                      size: 35,
-                    )
-                  ],
-                ),
-              ),
-            ),
+                      margin: EdgeInsets.only(top: 15, left: 10, bottom: 8),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_back_outlined,
+                              size: 35,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                     Center(
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 30),
@@ -82,22 +83,20 @@ class _DuadetailsState extends State<Duadetails> {
                       ),
                     ),
                     Container(
-                        //  width: MediaQuery.of(context).size.width * 0.1,
-                        margin: EdgeInsets.symmetric(
-                            horizontal:
-                                MediaQuery.of(context).size.width * 0.2),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 2,
-                                color: Theme.of(context).accentColor)),
-                        height: 190,
-                        child: Image.network(
-                          Provider.of<Azkarprovider>(context)
-                              .categoriess
-                              .data
-                              .image,
-                          fit: BoxFit.cover,
-                        )),
+                      margin: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.2),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 2, color: Theme.of(context).accentColor)),
+                      height: 190,
+                      child: CachedNetworkImage(
+                        imageUrl: Provider.of<Azkarprovider>(context)
+                            .categoriess
+                            .data
+                            .image,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
