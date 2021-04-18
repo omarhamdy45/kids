@@ -36,9 +36,6 @@ class _AzkarState extends State<Azkar> {
   @override
   Widget build(BuildContext context) {
     List list = ModalRoute.of(context).settings.arguments as List;
-    print(list[0]);
-    print(list[1]);
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,

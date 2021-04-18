@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Athan.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
@@ -31,17 +31,29 @@ class _TypesState extends State<Types> {
         .currentUser
         .token
         .toString();
-    
   }
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
+
     await Provider.of<Userprovider>(context, listen: false).getUserLocation();
     await Provider.of<Userprovider>(context, listen: false).fetchscore();
     await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
+    if( Dbhandler.instance.athancheak!=200){
+       await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
+    }
+    if( Dbhandler.instance.athancheak!=200){
+       await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
+    }
+    if( Dbhandler.instance.athancheak!=200){
+       await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
+    }
+    if( Dbhandler.instance.athancheak!=200){
+       await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
+    }
     await Provider.of<Azkarprovider>(context, listen: false)
-       .fetchallcatgories();
+        .fetchallcatgories();
     await Provider.of<Lanprovider>(context, listen: false).getdate();
     if (DateTime.now().day.toString() !=
         Provider.of<Lanprovider>(context, listen: false).time) {
@@ -86,12 +98,16 @@ class _TypesState extends State<Types> {
                                   children: [
                                     Text(
                                       Provider.of<Userprovider>(context)
-                                              .score
-                                              .totalScore
-                                              .toString()==null?'-':  'Score:'+ Provider.of<Userprovider>(context)
-                                              .score
-                                              .totalScore
-                                              .toString(),
+                                                  .score
+                                                  .totalScore
+                                                  .toString() ==
+                                              null
+                                          ? '-'
+                                          : 'Score:' +
+                                              Provider.of<Userprovider>(context)
+                                                  .score
+                                                  .totalScore
+                                                  .toString(),
                                       style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
                                               color:

@@ -34,7 +34,10 @@ class _SalahState extends State<Salah> {
   @override
   void initState() {
     super.initState();
+    getnextprayer();
+  }
 
+  void getnextprayer() {
     var format = DateFormat("HH:mm");
     hour1 = format.parse("${datetime.hour}:${datetime.minute}");
     maghrib = format.parse(Provider.of<Athanprovider>(context, listen: false)
@@ -42,7 +45,6 @@ class _SalahState extends State<Salah> {
         .data
         .timings
         .maghrib);
-
     isha = format.parse(Provider.of<Athanprovider>(context, listen: false)
         .time
         .data
@@ -63,7 +65,7 @@ class _SalahState extends State<Salah> {
         .data
         .timings
         .asr);
-   
+
     if (hour1.isAfter(isha) || hour1.isBefore(fajr)) {
       salah = 'Fajr';
       time = Provider.of<Athanprovider>(context, listen: false)
@@ -105,7 +107,6 @@ class _SalahState extends State<Salah> {
       salah = 'isha';
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

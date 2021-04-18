@@ -75,13 +75,13 @@ class Userprovider with ChangeNotifier {
   }
 
   Future<void> getUserLocation() async {
+
     var position = await GeolocatorPlatform.instance
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.medium);
-    
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     var placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-    
     var first = placemarks.first;
     Userprovider.city =  first.administrativeArea;
     Userprovider.country = first.country;
+    
   }
 }

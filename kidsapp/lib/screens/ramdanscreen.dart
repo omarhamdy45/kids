@@ -113,8 +113,6 @@ class _RamdanState extends State<Ramdan> {
   @override
   Widget build(BuildContext context) {
     var mounth = new HijriCalendar.now().getLongMonthName().toString();
-    print(hour);
-
     return SafeArea(
       child: Scaffold(
         body: firstrun

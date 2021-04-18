@@ -23,6 +23,7 @@ class Dbhandler {
   int counter;
   int azkarreadd;
   int ramdanstatuss;
+  int athancheak;
 
   String mainurl = 'https://muslim-kids.royaltechni.com/api';
 
@@ -31,7 +32,6 @@ class Dbhandler {
     String country = Userprovider.country;
     String zone = Userprovider.timezone;
     String method;
-   
 
     if (country == 'MAKKAH' || country == 'United Arab Emirates') {
       method = '4';
@@ -43,10 +43,12 @@ class Dbhandler {
     }
 
     try {
-       String url =
-        'https://api.aladhan.com/v1/timingsByCity?city=$city&country=$country&method=$method';
+      String url =
+          'https://api.aladhan.com/v1/timingsByCity?city=$city&country=$country&method=$method';
+   
       http.Response response = await http.get(Uri.parse(url));
-     // print(response.statusCode);
+      athancheak=response.statusCode;
+      print(response.statusCode);
       return Athan.fromJson(json.decode(response.body));
     } catch (eroor) {
       print(eroor);
@@ -59,8 +61,6 @@ class Dbhandler {
     //  print(response.data);
     return Locationn.fromJson(response.data);
   }
-
-
 
   Future<Categories> getallcategries() async {
     String url = '$mainurl/categories';
@@ -78,21 +78,21 @@ class Dbhandler {
   Future<Hadith> getallhadith() async {
     String url = '$mainurl/hadith';
     Response response = await _dio.get(url);
-   
+
     return Hadith.fromJson(response.data);
   }
 
   Future<Hadith> getallduuas() async {
     String url = '$mainurl/duaa';
     Response response = await _dio.get(url);
-  
+
     return Hadith.fromJson(response.data);
   }
 
   Future<Hadith> getalldeed() async {
     String url = '$mainurl/deed';
     Response response = await _dio.get(url);
-   
+
     return Hadith.fromJson(response.data);
   }
 
@@ -105,7 +105,7 @@ class Dbhandler {
         'password': password,
       },
     ));
-   // print(response.data);
+    // print(response.data);
     return User.fromjson(response.data);
   }
 
@@ -126,7 +126,6 @@ class Dbhandler {
         },
       );
       azkarreadd = response.statusCode;
-     
     } catch (eroor) {
       print(eroor);
     }
@@ -149,7 +148,7 @@ class Dbhandler {
         },
       );
       hadithreadd = response.statusCode;
-    //  print(response.statusCode);
+      //  print(response.statusCode);
     } catch (eroor) {
       print(eroor);
     }
@@ -195,7 +194,7 @@ class Dbhandler {
         },
       );
       deedreadd = response.statusCode;
-    //  print(response.body);
+      //  print(response.body);
     } catch (eroor) {
       print(eroor);
     }
@@ -219,7 +218,7 @@ class Dbhandler {
         },
       );
       cheaksalah = response.statusCode;
-     // print(response.body);
+      // print(response.body);
       print(response.statusCode);
     } catch (eroor) {
       print(eroor);
@@ -241,7 +240,7 @@ class Dbhandler {
           'status': status,
         },
       );
-    //  print(response.body);
+      //  print(response.body);
       ramdanstatuss = response.statusCode;
     } catch (eroor) {
       print(eroor);
@@ -261,7 +260,7 @@ class Dbhandler {
         },
         body: {'activity_id': activityid, 'status': status},
       );
-    //  print(response.body);
+      //  print(response.body);
     } catch (eroor) {
       print(eroor);
     }
@@ -281,7 +280,7 @@ class Dbhandler {
         body: {'countOfAya': aya, 'countOfSoura': soura, 'countOfGoza': goz},
       );
       counter = response.statusCode;
-   //   print(response.body);
+      //   print(response.body);
     } catch (eroor) {
       print(eroor);
     }
@@ -293,7 +292,7 @@ class Dbhandler {
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
 
     Response response = await _dio.get(url);
-   // print(response.data);
+    // print(response.data);
     return Score.fromJson(response.data);
   }
 }
