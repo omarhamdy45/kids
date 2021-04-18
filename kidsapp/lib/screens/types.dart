@@ -20,6 +20,7 @@ class Types extends StatefulWidget {
 
 class _TypesState extends State<Types> {
   bool firstrun;
+  int i;
   String currentPostion;
   // LatLng currentPostion;
 
@@ -40,17 +41,8 @@ class _TypesState extends State<Types> {
     await Provider.of<Userprovider>(context, listen: false).getUserLocation();
     await Provider.of<Userprovider>(context, listen: false).fetchscore();
     await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
-    if( Dbhandler.instance.athancheak!=200){
-       await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
-    }
-    if( Dbhandler.instance.athancheak!=200){
-       await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
-    }
-    if( Dbhandler.instance.athancheak!=200){
-       await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
-    }
-    if( Dbhandler.instance.athancheak!=200){
-       await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
+    while (Dbhandler.instance.athancheak != 200) {
+      await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
     }
     await Provider.of<Azkarprovider>(context, listen: false)
         .fetchallcatgories();
