@@ -6,9 +6,7 @@ import 'package:kidsapp/models/location.dart';
 import 'package:kidsapp/models/score.dart';
 import 'package:kidsapp/models/user.dart';
 
-
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class Userprovider with ChangeNotifier {
   User currentUser;
@@ -17,6 +15,7 @@ class Userprovider with ChangeNotifier {
   static String city;
   static String timezone;
   static String sd;
+  static String done;
   Score score;
 
   Future<Score> fetchscore() async {
@@ -75,13 +74,17 @@ class Userprovider with ChangeNotifier {
   }
 
   Future<void> getUserLocation() async {
-
-    var position = await GeolocatorPlatform.instance
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    var placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-    var first = placemarks.first;
-    Userprovider.city =  first.administrativeArea;
-    Userprovider.country = first.country;
-    
+    try {
+      var position = await GeolocatorPlatform.instance
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      var placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+      var first = placemarks.first;
+      Userprovider.city = first.administrativeArea;
+      Userprovider.country = first.country;
+      Userprovider.done = 'true';
+    } catch (err) {
+      return false;
+    }
   }
 }

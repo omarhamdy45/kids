@@ -39,19 +39,29 @@ class _TypesState extends State<Types> {
     super.didChangeDependencies();
 
     await Provider.of<Userprovider>(context, listen: false).getUserLocation();
-    await Provider.of<Userprovider>(context, listen: false).fetchscore();
-    await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
-    while (Dbhandler.instance.athancheak != 200) {
+    if (Userprovider.done == 'true') {
+      await Provider.of<Userprovider>(context, listen: false).fetchscore();
       await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
+      while (Dbhandler.instance.athancheak != 200) {
+        await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
+      }
+      await Provider.of<Azkarprovider>(context, listen: false)
+          .fetchallcatgories();
+      await Provider.of<Lanprovider>(context, listen: false).getdate();
+      if (DateTime.now().day.toString() !=
+          Provider.of<Lanprovider>(context, listen: false).time) {
+        Provider.of<Lanprovider>(context, listen: false).cleardata();
+      }
+      Provider.of<Lanprovider>(context, listen: false).savedate();
+
+      await Provider.of<Azkarprovider>(context, listen: false)
+          .fetchallcatgories();
     }
-    await Provider.of<Azkarprovider>(context, listen: false)
-        .fetchallcatgories();
-    await Provider.of<Lanprovider>(context, listen: false).getdate();
-    if (DateTime.now().day.toString() !=
-        Provider.of<Lanprovider>(context, listen: false).time) {
-      Provider.of<Lanprovider>(context, listen: false).cleardata();
+    if (Userprovider.done != 'true') {
+      await Provider.of<Azkarprovider>(context, listen: false)
+          .fetchallcatgories();
     }
-    Provider.of<Lanprovider>(context, listen: false).savedate();
+
     setState(() {
       firstrun = false;
     });
@@ -71,192 +81,250 @@ class _TypesState extends State<Types> {
                     ? Center(child: CircularProgressIndicator())
                     : Center(
                         child: Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical:
-                                  MediaQuery.of(context).size.height * 0.03),
-                          child: ListView(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: MediaQuery.of(context).size.width *
-                                        0.02,
-                                    right: MediaQuery.of(context).size.width *
-                                        0.02,
-                                    bottom: MediaQuery.of(context).size.height *
-                                        0.07),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      Provider.of<Userprovider>(context)
-                                                  .score
-                                                  .totalScore
-                                                  .toString() ==
-                                              null
-                                          ? '-'
-                                          : 'Score:' +
-                                              Provider.of<Userprovider>(context)
-                                                  .score
-                                                  .totalScore
-                                                  .toString(),
-                                      style: GoogleFonts.roboto(
+                            margin: EdgeInsets.symmetric(
+                                vertical:
+                                    MediaQuery.of(context).size.height * 0.03),
+                            child:   (Userprovider.done == 'true')? ListView(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(
+                                      left: MediaQuery.of(context).size.width *
+                                          0.02,
+                                      right: MediaQuery.of(context).size.width *
+                                          0.02,
+                                      bottom:
+                                          MediaQuery.of(context).size.height *
+                                              0.07),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        Provider.of<Userprovider>(context)
+                                                    .score
+                                                    .totalScore
+                                                    .toString() ==
+                                                null
+                                            ? '-'
+                                            : 'Score:' +
+                                                Provider.of<Userprovider>(
+                                                        context)
+                                                    .score
+                                                    .totalScore
+                                                    .toString(),
+                                        style: GoogleFonts.roboto(
+                                            textStyle: TextStyle(
+                                                color: Color.fromRGBO(
+                                                    60, 60, 67, 1),
+                                                letterSpacing: .5,
+                                                fontSize: 24)),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await Provider.of<Userprovider>(
+                                                  context,
+                                                  listen: false)
+                                              .clearuserdata();
+                                          await Provider.of<Lanprovider>(
+                                                  context,
+                                                  listen: false)
+                                              .cleardata();
+                                          Navigator.of(context)
+                                              .pushReplacementNamed(
+                                                  Login.route);
+                                        },
+                                        child: Icon(
+                                          Icons.logout,
+                                          size: 35,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        duration: Duration(milliseconds: 600),
+                                        type: PageTransitionType.fade,
+                                        child: Ramdan(),
+                                      ),
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor:
+                                            Color.fromRGBO(254, 222, 133, 1),
+                                        radius: 60,
+                                        child: Container(
+                                          margin: EdgeInsets.all(10),
+                                          child: Image.asset(
+                                            'assets/images/ramdan.png',
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 7,
+                                      ),
+                                      Text(
+                                        'Ramdan',
+                                        style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
                                               color:
                                                   Color.fromRGBO(60, 60, 67, 1),
                                               letterSpacing: .5,
-                                              fontSize: 24)),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        await Provider.of<Userprovider>(context,
-                                                listen: false)
-                                            .clearuserdata();
-                                        await Provider.of<Lanprovider>(context,
-                                                listen: false)
-                                            .cleardata();
-                                        Navigator.of(context)
-                                            .pushReplacementNamed(Login.route);
-                                      },
-                                      child: Icon(
-                                        Icons.logout,
-                                        size: 35,
-                                      ),
-                                    ),
-                                  ],
+                                              fontSize: 24),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    PageTransition(
-                                      duration: Duration(milliseconds: 600),
-                                      type: PageTransitionType.fade,
-                                      child: Ramdan(),
-                                    ),
-                                  );
-                                },
-                                child: Column(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor:
-                                          Color.fromRGBO(254, 222, 133, 1),
-                                      radius: 60,
-                                      child: Container(
-                                        margin: EdgeInsets.all(10),
-                                        child: Image.asset(
-                                          'assets/images/ramdan.png',
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.07,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        duration: Duration(milliseconds: 800),
+                                        type: PageTransitionType.fade,
+                                        child: Salah(),
+                                      ),
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor:
+                                            Color.fromRGBO(254, 222, 133, 1),
+                                        radius: 60,
+                                        child: Container(
+                                          margin: EdgeInsets.all(10),
+                                          child: Image.asset(
+                                              'assets/images/salah.png'),
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 7,
-                                    ),
-                                    Text(
-                                      'Ramdan',
-                                      style: GoogleFonts.roboto(
-                                        textStyle: TextStyle(
-                                            color:
-                                                Color.fromRGBO(60, 60, 67, 1),
-                                            letterSpacing: .5,
-                                            fontSize: 24),
+                                      SizedBox(
+                                        height: 7,
                                       ),
-                                    )
-                                  ],
+                                      Text(
+                                        'Salah',
+                                        style: GoogleFonts.roboto(
+                                          textStyle: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(60, 60, 67, 1),
+                                              letterSpacing: .5,
+                                              fontSize: 24),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    PageTransition(
-                                      duration: Duration(milliseconds: 800),
-                                      type: PageTransitionType.fade,
-                                      child: Salah(),
-                                    ),
-                                  );
-                                },
-                                child: Column(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor:
-                                          Color.fromRGBO(254, 222, 133, 1),
-                                      radius: 60,
-                                      child: Container(
-                                        margin: EdgeInsets.all(10),
-                                        child: Image.asset(
-                                            'assets/images/salah.png'),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 7,
-                                    ),
-                                    Text(
-                                      'Salah',
-                                      style: GoogleFonts.roboto(
-                                        textStyle: TextStyle(
-                                            color:
-                                                Color.fromRGBO(60, 60, 67, 1),
-                                            letterSpacing: .5,
-                                            fontSize: 24),
-                                      ),
-                                    )
-                                  ],
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.07,
                                 ),
-                              ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    PageTransition(
-                                      duration: Duration(milliseconds: 600),
-                                      type: PageTransitionType.fade,
-                                      child: Duaas(),
-                                    ),
-                                  );
-                                },
-                                child: Column(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor:
-                                          Color.fromRGBO(254, 222, 133, 1),
-                                      radius: 60,
-                                      child: Container(
-                                        margin: EdgeInsets.all(10),
-                                        child: Image.asset(
-                                          'assets/images/dua-hands.png',
-                                          fit: BoxFit.fitWidth,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        duration: Duration(milliseconds: 600),
+                                        type: PageTransitionType.fade,
+                                        child: Duaas(),
+                                      ),
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor:
+                                            Color.fromRGBO(254, 222, 133, 1),
+                                        radius: 60,
+                                        child: Container(
+                                          margin: EdgeInsets.all(10),
+                                          child: Image.asset(
+                                            'assets/images/dua-hands.png',
+                                            fit: BoxFit.fitWidth,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 7,
-                                    ),
-                                    Text(
-                                      'Duas',
-                                      style: GoogleFonts.roboto(
-                                        textStyle: TextStyle(
-                                            color:
-                                                Color.fromRGBO(60, 60, 67, 1),
-                                            letterSpacing: .5,
-                                            fontSize: 24),
+                                      SizedBox(
+                                        height: 7,
                                       ),
-                                    )
-                                  ],
+                                      Text(
+                                        'Duas',
+                                        style: GoogleFonts.roboto(
+                                          textStyle: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(60, 60, 67, 1),
+                                              letterSpacing: .5,
+                                              fontSize: 24),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            )
+                            :
+                             Column(
+                            children: [
+                              Center(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        duration: Duration(milliseconds: 600),
+                                        type: PageTransitionType.fade,
+                                        child: Duaas(),
+                                      ),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height*0.3),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundColor:
+                                              Color.fromRGBO(254, 222, 133, 1),
+                                          radius: 60,
+                                          child: Container(
+                                            margin: EdgeInsets.all(10),
+                                            child: Image.asset(
+                                              'assets/images/dua-hands.png',
+                                              fit: BoxFit.fitWidth,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 7,
+                                        ),
+                                        Text(
+                                          'Duas',
+                                          style: GoogleFonts.roboto(
+                                            textStyle: TextStyle(
+                                                color:
+                                                    Color.fromRGBO(60, 60, 67, 1),
+                                                letterSpacing: .5,
+                                                fontSize: 24),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               )
                             ],
-                          ),
-                        ),
+                          )
+                            ),
                       ),
               ],
             ),

@@ -59,6 +59,7 @@ class Duaas extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: CachedNetworkImage(
+                                fit: BoxFit.cover,
                                   imageUrl:
                                        Provider.of<Azkarprovider>(context)
                                   .categories
