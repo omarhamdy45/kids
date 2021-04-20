@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/models/Categories.dart';
@@ -32,7 +33,6 @@ class _DuadetailsState extends State<Duadetails> {
     super.didChangeDependencies();
     Data azkar = ModalRoute.of(context).settings.arguments as Data;
     await Provider.of<Azkarprovider>(context).fetchazkarbyid(azkar.id);
-    print(azkar.id);
     setState(() {
       firstrun = false;
     });
@@ -55,7 +55,7 @@ class _DuadetailsState extends State<Duadetails> {
                       margin: EdgeInsets.only(top: 15, left: 10, bottom: 8),
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.pop(context);
+                          Navigator.of(context).pop();
                         },
                         child: Row(
                           children: [
@@ -265,10 +265,11 @@ class _DuadetailsState extends State<Duadetails> {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
-                                            onPressed: () {
+                                            onPressed: () async {
                                               Navigator.of(context).pop();
-                                              Navigator.pushReplacementNamed(
-                                                  context, Duaas.route);
+                                              await Navigator
+                                                  .pushReplacementNamed(
+                                                      context, Duaas.route);
                                             },
                                             text: 'Lovely',
                                             color:

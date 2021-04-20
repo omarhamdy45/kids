@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/models/db.dart';
-import 'package:kidsapp/screens/salah.dart';
 import 'package:kidsapp/widgets/error.dart';
 import 'package:kidsapp/widgets/gift.dart';
 import 'package:material_dialogs/material_dialogs.dart';

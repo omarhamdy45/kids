@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/screens/azkar.dart';
 import 'package:kidsapp/widgets/error.dart';
 import 'package:kidsapp/widgets/gift.dart';
-
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
-import 'package:page_transition/page_transition.dart';
 
 // ignore: must_be_immutable
 class Salahev extends StatefulWidget {

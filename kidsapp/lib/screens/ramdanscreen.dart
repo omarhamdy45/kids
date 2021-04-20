@@ -12,6 +12,7 @@ import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/screens/dua.dart';
 import 'package:kidsapp/screens/hadeth.dart';
 import 'package:kidsapp/screens/qura%60n.dart';
+import 'package:kidsapp/screens/types.dart';
 import 'package:kidsapp/widgets/gift.dart';
 import 'package:kidsapp/widgets/ramdanitem.dart';
 import 'package:material_dialogs/material_dialogs.dart';
@@ -101,7 +102,6 @@ class _RamdanState extends State<Ramdan> {
       hours = int.parse(five.toString().split(':').first);
     } else {
       var four = two.difference(one);
-      print(four);
       min = 60 - int.parse(four.toString().substring(2, 4));
       hours = 23 - int.parse(four.toString().split(':').first);
     }
@@ -120,21 +120,24 @@ class _RamdanState extends State<Ramdan> {
             : ListView(
                 children: [
                   Container(
-                  margin: EdgeInsets.only(top: 10, left: 3),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.arrow_back_outlined,
-                          size: 35,
-                        )
-                      ],
+                    margin: EdgeInsets.only(top: 10, left: 3),
+                    child: GestureDetector(
+                      onTap: () async {
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
+                        await Navigator.pushReplacementNamed(
+                            context, Types.route);
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.arrow_back_outlined,
+                            size: 35,
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
                   Container(
                       margin: EdgeInsets.only(
                           left: MediaQuery.of(context).size.width * 0.02,
@@ -501,8 +504,8 @@ class _RamdanState extends State<Ramdan> {
                                         ),
                                         onTap: () {
                                           setState(() {
-                                            vercecounter--;
-                                            print(vercecounter);
+                                            if (vercecounter > 0)
+                                              vercecounter--;
                                           });
                                           Provider.of<Lanprovider>(context,
                                                   listen: false)
@@ -572,8 +575,8 @@ class _RamdanState extends State<Ramdan> {
                                         ),
                                         onTap: () {
                                           setState(() {
-                                            surracounter--;
-                                            print(vercecounter);
+                                            if (surracounter > 0)
+                                              surracounter--;
                                           });
                                           Provider.of<Lanprovider>(context,
                                                   listen: false)
@@ -647,7 +650,8 @@ class _RamdanState extends State<Ramdan> {
                                           ),
                                           onTap: () async {
                                             setState(() {
-                                              goz2counter--;
+                                              if (goz2counter > 0)
+                                                goz2counter--;
                                             });
                                             Provider.of<Lanprovider>(context,
                                                     listen: false)
@@ -1224,7 +1228,7 @@ class _RamdanState extends State<Ramdan> {
                               setState(() {
                                 loading = true;
                               });
-                             
+
                               await Dbhandler.instance.quraantracker(
                                   vercecounter.toString(),
                                   surracounter.toString(),
@@ -1265,9 +1269,12 @@ class _RamdanState extends State<Ramdan> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10)),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                            Navigator.of(context).pop();
+                                          onPressed: () async {
+                                            Navigator.of(context).popUntil(
+                                                (route) => route.isFirst);
+                                            await Navigator
+                                                .pushReplacementNamed(
+                                                    context, Types.route);
                                           },
                                           text: 'Done',
                                           color:

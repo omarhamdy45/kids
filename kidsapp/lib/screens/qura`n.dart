@@ -3,7 +3,6 @@ import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/deedprovider.dart';
 import 'package:kidsapp/screens/ramdanscreen.dart';
 import 'package:kidsapp/widgets/gift.dart';
-import 'package:kidsapp/widgets/ramdanitem.dart';
 import 'package:kidsapp/widgets/ramdanitem2.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';

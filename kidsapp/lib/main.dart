@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Splash();
             } else if (snapshot.data == true) {
-              return Types();
+              return Splash();
             } else {
               return Login();
             }
@@ -74,6 +74,7 @@ class MyApp extends StatelessWidget {
           Duadetails.route: (context) => Duadetails(),
           Duaas.route: (context) => Duaas(),
           Azkar.route: (context) => Azkar(),
+          Types.route: (context) => Types(),
         });
   }
 }

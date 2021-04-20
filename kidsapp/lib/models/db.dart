@@ -30,7 +30,6 @@ class Dbhandler {
   Future<Athan> gettimes() async {
     String city = Userprovider.city;
     String country = Userprovider.country;
-    String zone = Userprovider.timezone;
     String method;
 
     if (country == 'MAKKAH' || country == 'United Arab Emirates') {

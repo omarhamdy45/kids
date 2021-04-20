@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
+import 'package:kidsapp/screens/types.dart';
 import 'package:kidsapp/widgets/duadetails.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/widgets.dart';
@@ -19,8 +20,9 @@ class Duaas extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(top: 15, left: 10, bottom: 8),
               child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
+                onTap: () async {
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                  await Navigator.pushReplacementNamed(context, Types.route);
                 },
                 child: Row(
                   children: [
@@ -46,7 +48,7 @@ class Duaas extends StatelessWidget {
 
                   return GestureDetector(
                     onTap: () {
-                      Navigator.popAndPushNamed(context, Duadetails.route,
+                      Navigator.pushNamed(context, Duadetails.route,
                           arguments: azakar);
                     },
                     child: Container(
@@ -57,14 +59,18 @@ class Duaas extends StatelessWidget {
                           Container(
                               height: 138,
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(6),
                                 child: CachedNetworkImage(
-                                fit: BoxFit.cover,
-                                  imageUrl:
-                                       Provider.of<Azkarprovider>(context)
-                                  .categories
-                                  .data[index]
-                                  .image,
+                                  fit: BoxFit.fill,
+                                  imageUrl: Provider.of<Azkarprovider>(context)
+                                      .categories
+                                      .data[index]
+                                      .image,
+                                  placeholder: (context, url) => Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      new Icon(Icons.error),
                                 ),
                               )),
                           SizedBox(

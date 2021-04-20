@@ -166,6 +166,7 @@ class _LoginState extends State<Login> {
                               ),
                               TextFormField(
                                 maxLines: 1,
+                                obscureText: true,
                                 style: TextStyle(color: Colors.black),
                                 decoration: InputDecoration(
                                   contentPadding: new EdgeInsets.symmetric(
@@ -197,7 +198,7 @@ class _LoginState extends State<Login> {
                                   setState(() {
                                     password = value;
                                   });
-                                  if (password.length >= 4) {
+                                  if (password.length >= 8) {
                                     return null;
                                   }
                                   return 'password must contain 8 charcter at least';

@@ -7,6 +7,7 @@ import 'package:kidsapp/screens/elfajar.dart';
 import 'package:kidsapp/screens/isha.dart';
 import 'package:kidsapp/screens/maghrib.dart';
 import 'package:kidsapp/screens/thuhr.dart';
+import 'package:kidsapp/screens/types.dart';
 import 'package:kidsapp/widgets/background.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -122,8 +123,10 @@ class _SalahState extends State<Salah> {
                 Container(
                   margin: EdgeInsets.only(top: 10, left: 10),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
+                    onTap: () async {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                      await Navigator.pushReplacementNamed(
+                          context, Types.route);
                     },
                     child: Row(
                       children: [

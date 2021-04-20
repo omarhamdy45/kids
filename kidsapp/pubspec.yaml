@@ -44,6 +44,8 @@ dependencies:
   intl: any
   geocoding: ^2.0.0
   cached_network_image: ^3.0.0
+  connectivity: ^3.0.3
+  animated_splash_screen: any
   
 
 dev_dependencies:
@@ -86,6 +88,7 @@ flutter:
     -  assets/images/Group 813.png
     -  assets/images/Group 815.png
     -  assets/images/Group 795.png
+    -  assets/images/bss.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
