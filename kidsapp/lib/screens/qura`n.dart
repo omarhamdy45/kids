@@ -1,5 +1,7 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:kidsapp/models/db.dart';
+import 'package:kidsapp/providers/azkarprovider.dart';
 import 'package:kidsapp/providers/deedprovider.dart';
 import 'package:kidsapp/screens/ramdanscreen.dart';
 import 'package:kidsapp/widgets/gift.dart';
@@ -16,10 +18,14 @@ class Quraan extends StatefulWidget {
 class _QuraanState extends State<Quraan> {
   int date = DateTime.now().day;
   bool loading;
+  bool play;
+  AudioPlayer advancedPlayer;
   @override
   void initState() {
     super.initState();
     loading = false;
+    advancedPlayer = AudioPlayer();
+    play = false;
   }
 
   @override
@@ -91,14 +97,35 @@ class _QuraanState extends State<Quraan> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Theme.of(context).primaryColor,
-                        child: Icon(
-                          Icons.play_arrow_sharp,
-                          color: Colors.white,
-                          size: 45,
-                        )),
+                    GestureDetector(
+                      onTap: () async {
+                        setState(() {
+                          play = !play;
+                        });
+                        play
+                            ? await advancedPlayer.play(
+                                Provider.of<Deedprovider>(context,
+                                        listen: false)
+                                    .dead
+                                    .data[Ramdan.day - 1]
+                                    .audio)
+                            : await advancedPlayer.pause();
+                      },
+                      child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: play
+                              ? Icon(
+                                  Icons.pause_outlined,
+                                  color: Colors.white,
+                                  size: 45,
+                                )
+                              : Icon(
+                                  Icons.play_arrow_sharp,
+                                  color: Colors.white,
+                                  size: 45,
+                                )),
+                    ),
                     SizedBox(
                       width: 15,
                     ),
@@ -106,7 +133,7 @@ class _QuraanState extends State<Quraan> {
                         radius: 30,
                         backgroundColor: Theme.of(context).primaryColor,
                         child: Icon(
-                          Icons.pause_outlined,
+                          Icons.stop,
                           color: Colors.white,
                           size: 45,
                         )),

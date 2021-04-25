@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,16 +22,20 @@ class Duadetails extends StatefulWidget {
 class _DuadetailsState extends State<Duadetails> {
   bool firstrun;
   bool loading;
+  bool play;
+  AudioPlayer advancedPlayer;
   @override
   void initState() {
     super.initState();
     firstrun = true;
     loading = false;
+    play = false;
   }
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
+    advancedPlayer = AudioPlayer();
     Data azkar = ModalRoute.of(context).settings.arguments as Data;
     await Provider.of<Azkarprovider>(context).fetchazkarbyid(azkar.id);
     setState(() {
@@ -181,25 +186,55 @@ class _DuadetailsState extends State<Duadetails> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CircleAvatar(
-                            radius: 30,
-                            backgroundColor: Theme.of(context).primaryColor,
-                            child: Icon(
-                              Icons.play_arrow_sharp,
-                              color: Colors.white,
-                              size: 45,
-                            )),
+                        GestureDetector(
+                          onTap: () async {
+                            setState(() {
+                              play = !play;
+                            });
+                            play
+                                ? await advancedPlayer.play(
+                                    Provider.of<Azkarprovider>(context,
+                                            listen: false)
+                                        .categoriess
+                                        .data
+                                        .azkars[0]
+                                        .audio)
+                                : await advancedPlayer.pause();
+                          },
+                          child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Theme.of(context).primaryColor,
+                              child: play
+                                  ? Icon(
+                                      Icons.pause_outlined,
+                                      color: Colors.white,
+                                      size: 45,
+                                    )
+                                  : Icon(
+                                      Icons.play_arrow_sharp,
+                                      color: Colors.white,
+                                      size: 45,
+                                    )),
+                        ),
                         SizedBox(
                           width: 15,
                         ),
-                        CircleAvatar(
-                            radius: 30,
-                            backgroundColor: Theme.of(context).primaryColor,
-                            child: Icon(
-                              Icons.pause_outlined,
-                              color: Colors.white,
-                              size: 45,
-                            )),
+                        GestureDetector(
+                          onTap: () async {
+                            await advancedPlayer.stop();
+                            setState(() {
+                              play = false;
+                            });
+                          },
+                          child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Theme.of(context).primaryColor,
+                              child: Icon(
+                                Icons.stop,
+                                color: Colors.white,
+                                size: 45,
+                              )),
+                        )
                       ],
                     ),
                     SizedBox(

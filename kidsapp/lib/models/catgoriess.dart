@@ -65,6 +65,7 @@ class Azkars {
   String desciptionAr;
   String desciptionEn;
   String desciptionFr;
+  String audio;
   String createdAt;
   String updatedAt;
 
@@ -73,6 +74,7 @@ class Azkars {
       this.desciptionAr,
       this.desciptionEn,
       this.desciptionFr,
+      this.audio,
       this.createdAt,
       this.updatedAt});
 
@@ -81,6 +83,7 @@ class Azkars {
     desciptionAr = json['desciption_ar'];
     desciptionEn = json['desciption_en'];
     desciptionFr = json['desciption_fr'];
+    audio = json['audio'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -91,6 +94,7 @@ class Azkars {
     data['desciption_ar'] = this.desciptionAr;
     data['desciption_en'] = this.desciptionEn;
     data['desciption_fr'] = this.desciptionFr;
+    data['audio'] = this.audio;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

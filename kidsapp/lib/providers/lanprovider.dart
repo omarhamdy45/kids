@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kidsapp/models/Athan.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Lanprovider with ChangeNotifier {
@@ -12,6 +14,7 @@ class Lanprovider with ChangeNotifier {
   bool isEn8 = false;
   bool status = false;
   String time;
+  String fajr,duhr,asr,maghrib,isha;
   int counter1 = 0;
   int counter2 = 0;
   int counter3 = 0;
@@ -165,6 +168,7 @@ class Lanprovider with ChangeNotifier {
     prefs.setString("time", time);
   }
 
+
   getdate() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     time = prefs.get("time") ?? 0;
@@ -185,4 +189,6 @@ class Lanprovider with ChangeNotifier {
     prefs.remove('counter2');
     prefs.remove('counter3');
   }
+  
+
 }

@@ -77,7 +77,7 @@ class _AzkarState extends State<Azkar> {
                                 height: 80,
                                 child: Center(
                                   child: Text(
-                                    'Athkar After pray',
+                                    'Thikr after prayer',
                                     style: GoogleFonts.roboto(
                                       textStyle: TextStyle(
                                           color: Colors.white,
@@ -106,7 +106,7 @@ class _AzkarState extends State<Azkar> {
                               height: MediaQuery.of(context).size.height * 0.02,
                             ),
                             Text(
-                              'Sohan Allah',
+                              'Subhana Allah',
                               style: GoogleFonts.roboto(
                                 textStyle: TextStyle(
                                     color: Theme.of(context).accentColor,
@@ -209,7 +209,7 @@ class _AzkarState extends State<Azkar> {
                               height: MediaQuery.of(context).size.height * 0.08,
                               child: Center(
                                 child: Text(
-                                  'Athkar After pray',
+                                  'Thikr after prayer ',
                                   style: GoogleFonts.roboto(
                                     textStyle: TextStyle(
                                         color: Colors.white,
@@ -238,7 +238,7 @@ class _AzkarState extends State<Azkar> {
                             height: MediaQuery.of(context).size.height * 0.02,
                           ),
                           Text(
-                            'Elhamdollah',
+                            'Alhamdulillah',
                             style: GoogleFonts.roboto(
                               textStyle: TextStyle(
                                   color: Theme.of(context).accentColor,
@@ -340,7 +340,7 @@ class _AzkarState extends State<Azkar> {
                               height: MediaQuery.of(context).size.height * 0.08,
                               child: Center(
                                 child: Text(
-                                  'Athkar After pray',
+                                  'Thikr after prayer',
                                   style: GoogleFonts.roboto(
                                     textStyle: TextStyle(
                                         color: Colors.white,
@@ -369,7 +369,7 @@ class _AzkarState extends State<Azkar> {
                             height: MediaQuery.of(context).size.height * 0.02,
                           ),
                           Text(
-                            ' Allah akbr',
+                            'Allahu Akbar',
                             style: GoogleFonts.roboto(
                               textStyle: TextStyle(
                                   color: Theme.of(context).accentColor,

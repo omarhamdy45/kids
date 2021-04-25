@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/duaaprovider.dart';
@@ -15,10 +16,14 @@ class Dua extends StatefulWidget {
 
 class _DuaState extends State<Dua> {
   bool loading;
+  bool play;
+  AudioPlayer advancedPlayer;
   @override
   void initState() {
     super.initState();
     loading = false;
+    advancedPlayer = AudioPlayer();
+    play = false;
   }
 
   @override
@@ -90,25 +95,54 @@ class _DuaState extends State<Dua> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Theme.of(context).primaryColor,
-                        child: Icon(
-                          Icons.play_arrow_sharp,
-                          color: Colors.white,
-                          size: 45,
-                        )),
+                    GestureDetector(
+                      onTap: () async {
+                        setState(() {
+                          play = !play;
+                        });
+                        play
+                            ? await advancedPlayer.play(
+                                Provider.of<Duaaprovider>(context,
+                                        listen: false)
+                                    .duaa
+                                    .data[Ramdan.day - 1]
+                                    .audio)
+                            : await advancedPlayer.pause();
+                      },
+                      child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: play
+                              ? Icon(
+                                  Icons.pause_outlined,
+                                  color: Colors.white,
+                                  size: 45,
+                                )
+                              : Icon(
+                                  Icons.play_arrow_sharp,
+                                  color: Colors.white,
+                                  size: 45,
+                                )),
+                    ),
                     SizedBox(
                       width: 15,
                     ),
-                    CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Theme.of(context).primaryColor,
-                        child: Icon(
-                          Icons.pause_outlined,
-                          color: Colors.white,
-                          size: 45,
-                        )),
+                    GestureDetector(
+                          onTap: () async {
+                            await advancedPlayer.stop();
+                            setState(() {
+                              play = false;
+                            });
+                          },
+                          child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Theme.of(context).primaryColor,
+                              child: Icon(
+                                Icons.stop,
+                                color: Colors.white,
+                                size: 45,
+                              )),
+                        )
                   ],
                 ),
               ),

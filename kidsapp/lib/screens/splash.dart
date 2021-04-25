@@ -11,23 +11,33 @@ class Splash extends StatelessWidget {
         body: Container(
       height: double.infinity,
       child: Stack(children: [
-        Container(color: Colors.red,child: Background(),),
-          AnimatedSplashScreen(
-              duration: 1000,
-              animationDuration: Duration(milliseconds: 1500),
-              curve: Curves.easeOutCubic,
-              splash: CircleAvatar(
-                radius: 200,
-                child: Image.asset('assets/images/bss.png',fit: BoxFit.cover,)),
-              splashIconSize: 200,
-              nextScreen: Types(),
-              splashTransition: SplashTransition.rotationTransition,
-              pageTransitionType: PageTransitionType.fade,
-              backgroundColor: Colors.transparent,)
-      
+        Container(
+          color: Colors.red,
+          child: Background(),
+        ),
+        AnimatedSplashScreen(
+          duration: 1000,
+          animationDuration: Duration(milliseconds: 1500),
+          curve: Curves.easeOutCubic,
+          splash: Column(
+            children: [
+              CircleAvatar(
+                  radius: 150,
+                  child: Image.asset(
+                    'assets/images/bss.png',
+                    fit: BoxFit.cover,
+                  )),
+              
+              
+            ],
+          ),
+          splashIconSize: 500,
+          nextScreen: Types(),
+          splashTransition: SplashTransition.rotationTransition,
+          pageTransitionType: PageTransitionType.fade,
+          backgroundColor: Colors.transparent,
+        ),
       ]),
     ));
-
-    
   }
 }

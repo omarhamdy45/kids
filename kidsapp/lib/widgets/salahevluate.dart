@@ -121,7 +121,7 @@ class _SalahevState extends State<Salahev> {
                         horizontal: MediaQuery.of(context).size.width * 0.02)
                     .add(EdgeInsets.symmetric(
                         vertical: MediaQuery.of(context).size.height * 0.03)),
-                child: Text('Prayer time ?',
+                child: Text('When did you pray?',
                     style: GoogleFonts.roboto(
                       textStyle: TextStyle(
                           color: Theme.of(context).accentColor,
@@ -221,7 +221,7 @@ class _SalahevState extends State<Salahev> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text('No',
+                        Text('I didn’t pray',
                             style: GoogleFonts.roboto(
                               textStyle: TextStyle(
                                   color: (a)
@@ -466,7 +466,7 @@ class _SalahevState extends State<Salahev> {
                         SizedBox(
                           height: 5,
                         ),
-                        Text('on time',
+                        Text('On Time',
                             style: GoogleFonts.roboto(
                               textStyle: TextStyle(
                                   color: (d)

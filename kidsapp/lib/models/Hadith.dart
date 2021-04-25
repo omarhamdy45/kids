@@ -36,6 +36,7 @@ class Data {
   String descriptionAr;
   String descriptionEn;
   String descriptionFr;
+  String audio;
   String createdAt;
   String updatedAt;
 
@@ -44,6 +45,7 @@ class Data {
       this.descriptionAr,
       this.descriptionEn,
       this.descriptionFr,
+      this.audio,
       this.createdAt,
       this.updatedAt});
 
@@ -52,6 +54,7 @@ class Data {
     descriptionAr = json['description_ar'];
     descriptionEn = json['description_en'];
     descriptionFr = json['description_fr'];
+    audio = json['audio'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -62,6 +65,7 @@ class Data {
     data['description_ar'] = this.descriptionAr;
     data['description_en'] = this.descriptionEn;
     data['description_fr'] = this.descriptionFr;
+    data['audio'] = this.audio;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

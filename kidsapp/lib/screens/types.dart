@@ -58,10 +58,7 @@ class _TypesState extends State<Types> {
     if (cheak == false) {
       await Provider.of<Userprovider>(context, listen: false).getUserLocation();
       if (Userprovider.done == 'true') {
-        //  await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
         await Provider.of<Userprovider>(context, listen: false).fetchscore();
-        await Provider.of<Azkarprovider>(context, listen: false)
-            .fetchallcatgories();
         await Provider.of<Lanprovider>(context, listen: false).getdate();
         if (DateTime.now().day.toString() !=
             Provider.of<Lanprovider>(context, listen: false).time) {
@@ -72,10 +69,7 @@ class _TypesState extends State<Types> {
           await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
         }
       }
-      if (Userprovider.done != 'true') {
-        await Provider.of<Azkarprovider>(context, listen: false)
-            .fetchallcatgories();
-      }
+      
     }
     setState(() {
       firstrun = false;
