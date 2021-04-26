@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Athan.dart';
-import 'package:kidsapp/providers/azkarprovider.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/duaas.dart';

@@ -44,6 +44,13 @@ class _DuadetailsState extends State<Duadetails> {
   }
 
   @override
+  void dispose() {
+    advancedPlayer.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Data azkar = ModalRoute.of(context).settings.arguments as Data;
     return SafeArea(

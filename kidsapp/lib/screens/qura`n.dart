@@ -129,14 +129,22 @@ class _QuraanState extends State<Quraan> {
                     SizedBox(
                       width: 15,
                     ),
-                    CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Theme.of(context).primaryColor,
-                        child: Icon(
-                          Icons.stop,
-                          color: Colors.white,
-                          size: 45,
-                        )),
+                    GestureDetector(
+                          onTap: () async {
+                            await advancedPlayer.stop();
+                            setState(() {
+                              play = false;
+                            });
+                          },
+                          child: CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Theme.of(context).primaryColor,
+                              child: Icon(
+                                Icons.stop,
+                                color: Colors.white,
+                                size: 45,
+                              )),
+                        )
                   ],
                 ),
               ),
