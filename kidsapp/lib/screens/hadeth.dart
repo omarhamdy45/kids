@@ -26,6 +26,12 @@ class _HadethState extends State<Hadeth> {
     advancedPlayer = AudioPlayer();
     play = false;
   }
+  @override
+    void dispose() {
+      advancedPlayer.dispose();
+      // TODO: implement dispose
+      super.dispose();
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +115,12 @@ class _HadethState extends State<Hadeth> {
                                     .data[Ramdan.day - 1]
                                     .audio)
                             : await advancedPlayer.pause();
+                             advancedPlayer.onPlayerCompletion.listen((event) {
+                              advancedPlayer.stop();
+                              setState(() {
+                                play = false;
+                              });
+                            });
                       },
                       child: CircleAvatar(
                           radius: 30,

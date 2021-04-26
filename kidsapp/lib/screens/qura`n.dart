@@ -27,7 +27,12 @@ class _QuraanState extends State<Quraan> {
     advancedPlayer = AudioPlayer();
     play = false;
   }
-
+@override
+  void dispose() {
+    advancedPlayer.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -110,6 +115,12 @@ class _QuraanState extends State<Quraan> {
                                     .data[Ramdan.day - 1]
                                     .audio)
                             : await advancedPlayer.pause();
+                             advancedPlayer.onPlayerCompletion.listen((event) {
+                              advancedPlayer.stop();
+                              setState(() {
+                                play = false;
+                              });
+                            });
                       },
                       child: CircleAvatar(
                           radius: 30,

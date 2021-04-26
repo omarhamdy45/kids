@@ -27,6 +27,13 @@ class _DuaState extends State<Dua> {
   }
 
   @override
+  void dispose() {
+    advancedPlayer.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -105,9 +112,15 @@ class _DuaState extends State<Dua> {
                                 Provider.of<Duaaprovider>(context,
                                         listen: false)
                                     .duaa
-                                    .data[Ramdan.day - 1]
+                                    .data[0]
                                     .audio)
                             : await advancedPlayer.pause();
+                        advancedPlayer.onPlayerCompletion.listen((event) {
+                          advancedPlayer.stop();
+                          setState(() {
+                            play = false;
+                          });
+                        });
                       },
                       child: CircleAvatar(
                           radius: 30,
@@ -128,21 +141,21 @@ class _DuaState extends State<Dua> {
                       width: 15,
                     ),
                     GestureDetector(
-                          onTap: () async {
-                            await advancedPlayer.stop();
-                            setState(() {
-                              play = false;
-                            });
-                          },
-                          child: CircleAvatar(
-                              radius: 30,
-                              backgroundColor: Theme.of(context).primaryColor,
-                              child: Icon(
-                                Icons.stop,
-                                color: Colors.white,
-                                size: 45,
-                              )),
-                        )
+                      onTap: () async {
+                        await advancedPlayer.stop();
+                        setState(() {
+                          play = false;
+                        });
+                      },
+                      child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: Icon(
+                            Icons.stop,
+                            color: Colors.white,
+                            size: 45,
+                          )),
+                    )
                   ],
                 ),
               ),
