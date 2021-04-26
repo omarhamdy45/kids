@@ -207,6 +207,12 @@ class _DuadetailsState extends State<Duadetails> {
                                         .azkars[0]
                                         .audio)
                                 : await advancedPlayer.pause();
+                            advancedPlayer.onPlayerCompletion.listen((event) {
+                              advancedPlayer.stop();
+                              setState(() {
+                                play = false;
+                              });
+                            });
                           },
                           child: CircleAvatar(
                               radius: 30,
@@ -228,7 +234,7 @@ class _DuadetailsState extends State<Duadetails> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                            await advancedPlayer.stop();
+                            advancedPlayer.stop();
                             setState(() {
                               play = false;
                             });
