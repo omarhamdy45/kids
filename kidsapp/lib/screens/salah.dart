@@ -116,432 +116,88 @@ class _SalahState extends State<Salah> {
         //  backgroundColor: Colors.white,
         body: Container(
           height: double.infinity,
-          child: Stack(
-            children: [
-              Background(),
-              ListView(children: [
-                Container(
-                  margin: EdgeInsets.only(top: 10, left: 10),
-                  child: GestureDetector(
-                    onTap: () async {
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                      await Navigator.pushReplacementNamed(
-                          context, Types.route);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.arrow_back_outlined,
-                          size: 35,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      right: MediaQuery.of(context).size.width * 0.3,
-                      top: 15,
-                      bottom: 2,
-                      left: MediaQuery.of(context).size.width * 0.01),
-                  child: Container(
-                    height: 36,
-                    //  margin: EdgeInsets.only(right: 100),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: Text(
-                            'Next Prayer',
-                            style: GoogleFonts.roboto(
-                              textStyle: TextStyle(
-                                  color: Color.fromRGBO(204, 14, 116, 1),
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: .5,
-                                  fontSize: 17),
-                            ),
-                          ),
-                        ),
-                        Text(
-                          ': ',
-                          style: GoogleFonts.roboto(
-                            textStyle: TextStyle(
-                                color: Color.fromRGBO(60, 60, 67, 1),
-                                letterSpacing: .5,
-                                fontSize: 17),
-                          ),
-                        ),
-                        Text(
-                          salah + ' ' + time,
-                          style: GoogleFonts.roboto(
-                            textStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(60, 60, 67, 1),
-                                letterSpacing: .5,
-                                fontSize: 16),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).size.height * 0.02),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () async {
-                            Navigator.push(
-                              context,
-                              PageTransition(
-                                duration: Duration(milliseconds: 600),
-                                type: PageTransitionType.fade,
-                                child: Elfajar(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            height: 176,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.white, width: 3)),
-                            child: Container(
-                              color: Colors.lightBlueAccent.shade700,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 10,
-                                    top: 2,
-                                    child: Container(
-                                      child: Text(
-                                        'Fajr',
-                                        style: GoogleFonts.roboto(
-                                          textStyle: TextStyle(
-                                              color: Colors.white,
-                                              letterSpacing: .5,
-                                              fontSize: 28),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    right: 10,
-                                    top: 8,
-                                    child: Container(
-                                        child: CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      radius: 10,
-                                    )),
-                                  ),
-                                  Positioned(
-                                    right: 10,
-                                    top: 50,
-                                    child: Text(
-                                        Provider.of<Athanprovider>(context)
-                                            .time
-                                            .data
-                                            .timings
-                                            .fajr,
-                                        style: GoogleFonts.roboto(
-                                          textStyle: TextStyle(
-                                              color: Colors.white,
-                                              letterSpacing: .5,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14),
-                                        )),
-                                  ),
-                                  Positioned(
-                                    left: 0,
-                                    bottom: 0,
-                                    child: Container(
-                                        child: Image.asset(
-                                            'assets/images/Group 72.png')),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+          child: ListView(children: [
+            Container(
+              margin: EdgeInsets.only(
+                  right: MediaQuery.of(context).size.width * 0.3,
+                  top: 15,
+                  bottom: 2,
+                  left: MediaQuery.of(context).size.width * 0.01),
+              child: Container(
+                height: 36,
+                //  margin: EdgeInsets.only(right: 100),
+                child: Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 10),
+                      child: Text(
+                        'Next Prayer',
+                        style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                              color: Color.fromRGBO(204, 14, 116, 1),
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: .5,
+                              fontSize: 17),
                         ),
                       ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              PageTransition(
-                                duration: Duration(milliseconds: 600),
-                                type: PageTransitionType.fade,
-                                child: Thuhr(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 5),
-                            height: 176,
-                            //  color: Color.fromARGB(239, 239, 149, 1),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.white, width: 3)),
-                            child: Container(
-                              color: Colors.yellow.shade200,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 10,
-                                    top: 2,
-                                    child: Container(
-                                      child: Text(
-                                        'Thuhr',
-                                        style: GoogleFonts.roboto(
-                                          textStyle: TextStyle(
-                                              color: Colors.black,
-                                              letterSpacing: .5,
-                                              fontSize: 28),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    right: 10,
-                                    top: 7,
-                                    child: Container(
-                                        child: CircleAvatar(
-                                      backgroundColor: Colors.yellow[200],
-                                      radius: 10,
-                                    )),
-                                  ),
-                                  Positioned(
-                                    right: 10,
-                                    top: 50,
-                                    child: Text(
-                                        Provider.of<Athanprovider>(context)
-                                            .time
-                                            .data
-                                            .timings
-                                            .dhuhr,
-                                        style: GoogleFonts.roboto(
-                                          textStyle: TextStyle(
-                                              color: Colors.grey[700],
-                                              letterSpacing: .5,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14),
-                                        )),
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    left: 0,
-                                    child: Container(
-                                        child: Image.asset(
-                                            'assets/images/Group 72.png')),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).size.height * 0.02),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              PageTransition(
-                                duration: Duration(milliseconds: 600),
-                                type: PageTransitionType.fade,
-                                child: Asr(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            height: 176,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.white, width: 3)),
-                            child: Container(
-                              color: Colors.yellow.shade600,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 10,
-                                    top: 2,
-                                    child: Container(
-                                      child: Text(
-                                        'Asr',
-                                        style: GoogleFonts.roboto(
-                                          textStyle: TextStyle(
-                                              color: Colors.black,
-                                              letterSpacing: .5,
-                                              fontSize: 28),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    right: 10,
-                                    top: 5,
-                                    child: Container(
-                                        child: CircleAvatar(
-                                      backgroundColor: Colors.yellowAccent[400],
-                                      radius: 18,
-                                    )),
-                                  ),
-                                  Positioned(
-                                    right: 10,
-                                    top: 50,
-                                    child: Text(
-                                        Provider.of<Athanprovider>(context)
-                                            .time
-                                            .data
-                                            .timings
-                                            .asr,
-                                        style: GoogleFonts.roboto(
-                                          textStyle: TextStyle(
-                                              color: Colors.grey[700],
-                                              fontWeight: FontWeight.bold,
-                                              letterSpacing: .5,
-                                              fontSize: 14),
-                                        )),
-                                  ),
-                                  Positioned(
-                                    left: 0,
-                                    bottom: 0,
-                                    child: Container(
-                                        child: Image.asset(
-                                            'assets/images/Group 72.png')),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                    ),
+                    Text(
+                      ': ',
+                      style: GoogleFonts.roboto(
+                        textStyle: TextStyle(
+                            color: Color.fromRGBO(60, 60, 67, 1),
+                            letterSpacing: .5,
+                            fontSize: 17),
                       ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              PageTransition(
-                                duration: Duration(milliseconds: 600),
-                                type: PageTransitionType.fade,
-                                child: Maghrib(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 5),
-                            height: 176,
-                            //  color: Color.fromARGB(239, 239, 149, 1),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.white, width: 3)),
-                            child: Container(
-                              color: Colors.grey[400],
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 10,
-                                    top: 2,
-                                    child: Container(
-                                      child: Text(
-                                        'Maghrib',
-                                        style: GoogleFonts.roboto(
-                                          textStyle: TextStyle(
-                                              color: Colors.black,
-                                              letterSpacing: .5,
-                                              fontSize: 28),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    right: 10,
-                                    top: 10,
-                                    child: Container(
-                                        child: CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      radius: 8,
-                                    )),
-                                  ),
-                                  Positioned(
-                                    right: 10,
-                                    top: 50,
-                                    child: Text(
-                                        Provider.of<Athanprovider>(context)
-                                            .time
-                                            .data
-                                            .timings
-                                            .maghrib,
-                                        style: GoogleFonts.roboto(
-                                          textStyle: TextStyle(
-                                              color: Colors.grey[800],
-                                              letterSpacing: .5,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14),
-                                        )),
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    left: 0,
-                                    child: Container(
-                                        child: Image.asset(
-                                            'assets/images/Group 72.png')),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                    Text(
+                      salah + ' ' + time,
+                      style: GoogleFonts.roboto(
+                        textStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromRGBO(60, 60, 67, 1),
+                            letterSpacing: .5,
+                            fontSize: 16),
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  margin: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).size.height * 0.02),
-                  child: Center(
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.02),
+              child: Row(
+                children: [
+                  Expanded(
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         Navigator.push(
                           context,
                           PageTransition(
                             duration: Duration(milliseconds: 600),
                             type: PageTransitionType.fade,
-                            child: Isha(),
+                            child: Elfajar(),
                           ),
                         );
                       },
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        margin: EdgeInsets.symmetric(horizontal: 7),
+                        margin: EdgeInsets.symmetric(horizontal: 10),
                         height: 176,
-                        //  color: Color.fromARGB(239, 239, 149, 1),
+                        width: double.infinity,
                         decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white, width: 3)),
+                            border:
+                                Border.all(color: Colors.white, width: 3)),
                         child: Container(
-                          color: Colors.black,
+                          color: Colors.lightBlueAccent.shade700,
                           child: Stack(
-                            fit: StackFit.expand,
                             children: [
                               Positioned(
                                 left: 10,
                                 top: 2,
                                 child: Container(
                                   child: Text(
-                                    'Isha’',
+                                    'Fajr',
                                     style: GoogleFonts.roboto(
                                       textStyle: TextStyle(
                                           color: Colors.white,
@@ -553,11 +209,11 @@ class _SalahState extends State<Salah> {
                               ),
                               Positioned(
                                 right: 10,
-                                top: 6,
+                                top: 8,
                                 child: Container(
                                     child: CircleAvatar(
                                   backgroundColor: Colors.white,
-                                  radius: 15,
+                                  radius: 10,
                                 )),
                               ),
                               Positioned(
@@ -568,10 +224,87 @@ class _SalahState extends State<Salah> {
                                         .time
                                         .data
                                         .timings
-                                        .isha,
+                                        .fajr,
                                     style: GoogleFonts.roboto(
                                       textStyle: TextStyle(
                                           color: Colors.white,
+                                          letterSpacing: .5,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14),
+                                    )),
+                              ),
+                              Positioned(
+                                left: 0,
+                                bottom: 0,
+                                child: Container(
+                                    child: Image.asset(
+                                        'assets/images/Group 72.png')),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            duration: Duration(milliseconds: 600),
+                            type: PageTransitionType.fade,
+                            child: Thuhr(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 5),
+                        height: 176,
+                        //  color: Color.fromARGB(239, 239, 149, 1),
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.white, width: 3)),
+                        child: Container(
+                          color: Colors.yellow.shade400,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                left: 10,
+                                top: 2,
+                                child: Container(
+                                  child: Text(
+                                    'Thuhr',
+                                    style: GoogleFonts.roboto(
+                                      textStyle: TextStyle(
+                                          color: Colors.black,
+                                          letterSpacing: .5,
+                                          fontSize: 28),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                right: 10,
+                                top: 7,
+                                child: Container(
+                                    child: CircleAvatar(
+                                  backgroundColor: Colors.yellow[200],
+                                  radius: 10,
+                                )),
+                              ),
+                              Positioned(
+                                right: 10,
+                                top: 50,
+                                child: Text(
+                                    Provider.of<Athanprovider>(context)
+                                        .time
+                                        .data
+                                        .timings
+                                        .dhuhr,
+                                    style: GoogleFonts.roboto(
+                                      textStyle: TextStyle(
+                                          color: Colors.grey[700],
                                           letterSpacing: .5,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14),
@@ -589,11 +322,255 @@ class _SalahState extends State<Salah> {
                         ),
                       ),
                     ),
+                  )
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.02),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            duration: Duration(milliseconds: 600),
+                            type: PageTransitionType.fade,
+                            child: Asr(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        height: 176,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.white, width: 3)),
+                        child: Container(
+                          color: Colors.yellow.shade600,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                left: 10,
+                                top: 2,
+                                child: Container(
+                                  child: Text(
+                                    'Asr',
+                                    style: GoogleFonts.roboto(
+                                      textStyle: TextStyle(
+                                          color: Colors.black,
+                                          letterSpacing: .5,
+                                          fontSize: 28),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                right: 10,
+                                top: 5,
+                                child: Container(
+                                    child: CircleAvatar(
+                                  backgroundColor: Colors.yellowAccent[400],
+                                  radius: 18,
+                                )),
+                              ),
+                              Positioned(
+                                right: 10,
+                                top: 50,
+                                child: Text(
+                                    Provider.of<Athanprovider>(context)
+                                        .time
+                                        .data
+                                        .timings
+                                        .asr,
+                                    style: GoogleFonts.roboto(
+                                      textStyle: TextStyle(
+                                          color: Colors.grey[700],
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: .5,
+                                          fontSize: 14),
+                                    )),
+                              ),
+                              Positioned(
+                                left: 0,
+                                bottom: 0,
+                                child: Container(
+                                    child: Image.asset(
+                                        'assets/images/Group 72.png')),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            duration: Duration(milliseconds: 600),
+                            type: PageTransitionType.fade,
+                            child: Maghrib(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 5),
+                        height: 176,
+                        //  color: Color.fromARGB(239, 239, 149, 1),
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.white, width: 3)),
+                        child: Container(
+                          color: Colors.grey[400],
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                left: 10,
+                                top: 2,
+                                child: Container(
+                                  child: Text(
+                                    'Maghrib',
+                                    style: GoogleFonts.roboto(
+                                      textStyle: TextStyle(
+                                          color: Colors.black,
+                                          letterSpacing: .5,
+                                          fontSize: 28),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                right: 10,
+                                top: 10,
+                                child: Container(
+                                    child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 8,
+                                )),
+                              ),
+                              Positioned(
+                                right: 10,
+                                top: 50,
+                                child: Text(
+                                    Provider.of<Athanprovider>(context)
+                                        .time
+                                        .data
+                                        .timings
+                                        .maghrib,
+                                    style: GoogleFonts.roboto(
+                                      textStyle: TextStyle(
+                                          color: Colors.grey[800],
+                                          letterSpacing: .5,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14),
+                                    )),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                left: 0,
+                                child: Container(
+                                    child: Image.asset(
+                                        'assets/images/Group 72.png')),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.02),
+              child: Center(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                        duration: Duration(milliseconds: 600),
+                        type: PageTransitionType.fade,
+                        child: Isha(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    margin: EdgeInsets.symmetric(horizontal: 7),
+                    height: 176,
+                    //  color: Color.fromARGB(239, 239, 149, 1),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 3)),
+                    child: Container(
+                      color: Colors.black,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Positioned(
+                            left: 10,
+                            top: 2,
+                            child: Container(
+                              child: Text(
+                                'Isha’',
+                                style: GoogleFonts.roboto(
+                                  textStyle: TextStyle(
+                                      color: Colors.white,
+                                      letterSpacing: .5,
+                                      fontSize: 28),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            right: 10,
+                            top: 6,
+                            child: Container(
+                                child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 15,
+                            )),
+                          ),
+                          Positioned(
+                            right: 10,
+                            top: 50,
+                            child: Text(
+                                Provider.of<Athanprovider>(context)
+                                    .time
+                                    .data
+                                    .timings
+                                    .isha,
+                                style: GoogleFonts.roboto(
+                                  textStyle: TextStyle(
+                                      color: Colors.white,
+                                      letterSpacing: .5,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14),
+                                )),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            child: Container(
+                                child: Image.asset(
+                                    'assets/images/Group 72.png')),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ])
-            ],
-          ),
+              ),
+            ),
+          ]),
         ),
       ),
     );

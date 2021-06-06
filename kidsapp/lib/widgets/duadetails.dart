@@ -1,8 +1,8 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/Categories.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
@@ -198,21 +198,25 @@ class _DuadetailsState extends State<Duadetails> {
                             setState(() {
                               play = !play;
                             });
+                            await advancedPlayer.setUrl(
+                                Provider.of<Azkarprovider>(context,
+                                        listen: false)
+                                    .categoriess
+                                    .data
+                                    .azkars[0]
+                                    .audio);
                             play
-                                ? await advancedPlayer.play(
-                                    Provider.of<Azkarprovider>(context,
-                                            listen: false)
-                                        .categoriess
-                                        .data
-                                        .azkars[0]
-                                        .audio)
+                                ? await advancedPlayer.play()
                                 : await advancedPlayer.pause();
+
+                            /*
                             advancedPlayer.onPlayerCompletion.listen((event) {
                               advancedPlayer.stop();
                               setState(() {
                                 play = false;
                               });
                             });
+                            */
                           },
                           child: CircleAvatar(
                               radius: 30,

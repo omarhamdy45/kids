@@ -1,5 +1,6 @@
-import 'package:audioplayers/audioplayers.dart';
+
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/duaaprovider.dart';
 import 'package:kidsapp/screens/ramdanscreen.dart';
@@ -107,20 +108,32 @@ class _DuaState extends State<Dua> {
                         setState(() {
                           play = !play;
                         });
-                        play
-                            ? await advancedPlayer.play(
+                         await advancedPlayer.setUrl(
                                 Provider.of<Duaaprovider>(context,
                                         listen: false)
                                     .duaa
                                     .data[0]
-                                    .audio)
-                            : await advancedPlayer.pause();
-                        advancedPlayer.onPlayerCompletion.listen((event) {
+                                    .audio);
+                        play
+                            ?
+                            advancedPlayer.play():
+                            advancedPlayer.pause();
+                            
+                             
+                             await advancedPlayer.pause();
+                             setState(() {
+                            play = false;
+                          });
+                             /*
+                        advancedPlayer.((event) {
                           advancedPlayer.stop();
                           setState(() {
                             play = false;
                           });
                         });
+                        */
+
+                      
                       },
                       child: CircleAvatar(
                           radius: 30,

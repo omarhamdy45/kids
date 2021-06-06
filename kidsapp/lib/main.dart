@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:kidsapp/providers/Athan.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
@@ -6,19 +7,25 @@ import 'package:kidsapp/providers/deedprovider.dart';
 import 'package:kidsapp/providers/duaaprovider.dart';
 import 'package:kidsapp/providers/hadithprovider.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
+import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/azkar.dart';
 import 'package:kidsapp/screens/duaas.dart';
 import 'package:kidsapp/screens/login.dart';
+import 'package:kidsapp/screens/soura.dart';
+import 'package:kidsapp/screens/sours.dart';
 import 'package:kidsapp/screens/splash.dart';
 import 'package:kidsapp/screens/ramdanscreen.dart';
 import 'package:kidsapp/screens/salah.dart';
 import 'package:kidsapp/screens/types.dart';
+import 'package:kidsapp/widgets/background.dart';
 import 'package:kidsapp/widgets/duadetails.dart';
 
 import 'package:provider/provider.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor:Colors.transparent));
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => Athanprovider(),
@@ -41,6 +48,9 @@ void main() {
     ChangeNotifierProvider(
       create: (context) => Lanprovider(),
     ),
+    ChangeNotifierProvider(
+      create: (context) => Quraanprovider(),
+    ),
   ], child: MyApp()));
 }
 
@@ -51,7 +61,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Islamiccity',
         theme: ThemeData(
-          primaryColor: Color.fromRGBO(62, 194, 236, 1),
+          primaryColor: Color.fromRGBO(184, 95, 143, 1),
           accentColor: Color.fromRGBO(167, 85, 163, 1),
         ),
         home: FutureBuilder(
@@ -75,6 +85,8 @@ class MyApp extends StatelessWidget {
           Duaas.route: (context) => Duaas(),
           Azkar.route: (context) => Azkar(),
           Types.route: (context) => Types(),
+          Surz.route: (context) => Surz(),
+          Soura.route: (context) => Soura(),
         });
   }
 }

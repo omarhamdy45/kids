@@ -30,9 +30,11 @@ class _DuaasState extends State<Duaas> {
     super.didChangeDependencies();
     await Provider.of<Azkarprovider>(context, listen: false)
         .fetchallcatgories();
-    setState(() {
-      firstrun = false;
-    });
+    if (mounted) {
+      setState(() {
+        firstrun = false;
+      });
+    }
   }
 
   @override
@@ -45,28 +47,9 @@ class _DuaasState extends State<Duaas> {
             : ListView(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 15, left: 10, bottom: 8),
-                    child: GestureDetector(
-                      onTap: () async {
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
-                        await Navigator.pushReplacementNamed(
-                            context, Types.route);
-                      },
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.arrow_back_outlined,
-                            size: 35,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
                     child: StaggeredGridView.countBuilder(
                       shrinkWrap: true,
-                      crossAxisCount: 4,
+                      crossAxisCount: 3,
                       itemCount: Provider.of<Azkarprovider>(context)
                           .categories
                           .data
@@ -88,7 +71,7 @@ class _DuaasState extends State<Duaas> {
                             child: Column(
                               children: [
                                 Container(
-                                    height: 138,
+                                    height: 118,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(6),
                                       child: CachedNetworkImage(
@@ -109,13 +92,13 @@ class _DuaasState extends State<Duaas> {
                                   height: 5,
                                 ),
                                 Container(
-                                  height: 22,
+                                  height: 42,
                                   child: Text(
                                     Provider.of<Azkarprovider>(context)
                                         .categories
                                         .data[index]
                                         .title,
-                                    maxLines: 1,
+                                    maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: GoogleFonts.roboto(
                                       textStyle: TextStyle(
@@ -131,7 +114,7 @@ class _DuaasState extends State<Duaas> {
                         );
                       },
                       staggeredTileBuilder: (int index) =>
-                          new StaggeredTile.fit(2),
+                          new StaggeredTile.fit(1),
                       mainAxisSpacing: 2.0,
                       crossAxisSpacing: 2.0,
                     ),

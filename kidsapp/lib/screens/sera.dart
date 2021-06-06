@@ -1,5 +1,6 @@
-import 'package:audioplayers/audioplayers.dart';
+
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
 import 'package:kidsapp/providers/deedprovider.dart';
@@ -10,12 +11,12 @@ import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:provider/provider.dart';
 
-class Quraan extends StatefulWidget {
+class Sera extends StatefulWidget {
   @override
-  _QuraanState createState() => _QuraanState();
+  _SeraState createState() => _SeraState();
 }
 
-class _QuraanState extends State<Quraan> {
+class _SeraState extends State<Sera> {
   int date = DateTime.now().day;
   bool loading;
   bool play;
@@ -107,20 +108,24 @@ class _QuraanState extends State<Quraan> {
                         setState(() {
                           play = !play;
                         });
-                        play
-                            ? await advancedPlayer.play(
+                         await advancedPlayer.setUrl(
                                 Provider.of<Deedprovider>(context,
                                         listen: false)
                                     .dead
                                     .data[Ramdan.day - 1]
-                                    .audio)
+                                    .audio);
+                        play
+                            ? await advancedPlayer.play(
+                                )
                             : await advancedPlayer.pause();
+                            /*
                              advancedPlayer.onPlayerCompletion.listen((event) {
                               advancedPlayer.stop();
                               setState(() {
                                 play = false;
                               });
                             });
+                            */
                       },
                       child: CircleAvatar(
                           radius: 30,

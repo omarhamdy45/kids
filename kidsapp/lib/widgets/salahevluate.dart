@@ -58,18 +58,21 @@ class _SalahevState extends State<Salahev> {
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 10,left: 5),
-                          child: Icon(
-                            Icons.arrow_back_outlined,
-                            size: 35,
-                            color: this.widget.color3,
-                           
-                          ),
-                        )
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Container(
+                          
+                            child: Icon(
+                              Icons.arrow_back_outlined,
+                              size: 35,
+                              color: this.widget.color3,
+                             
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -28,7 +28,7 @@ class Ramdanitem extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.2,
         child: Card(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          color: Theme.of(context).primaryColor,
+          color: Color.fromRGBO(62, 194, 236, 1),
           child: Container(
             margin: EdgeInsets.only(left: 7),
             child: Row(

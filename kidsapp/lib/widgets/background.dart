@@ -11,7 +11,7 @@ class Background extends StatelessWidget {
         Container(
           decoration: new BoxDecoration(
             image: new DecorationImage(
-              image: new ExactAssetImage('assets/images/weather.png'),
+              image: new ExactAssetImage('assets/images/weather.jpeg'),
               fit: BoxFit.cover,
             ),
           ),
@@ -19,7 +19,7 @@ class Background extends StatelessWidget {
             filter: new ImageFilter.blur(sigmaX: 0.0, sigmaY: 0.0),
             child: new Container(
               decoration: new BoxDecoration(
-                  color: Color.fromRGBO(17, 180, 228, 1).withOpacity(0.35)),
+                  color: Color.fromRGBO(17, 180, 228, 1).withOpacity(0.0)),
             ),
           ),
         ),

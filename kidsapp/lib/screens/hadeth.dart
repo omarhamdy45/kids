@@ -1,5 +1,6 @@
-import 'package:audioplayers/audioplayers.dart';
+
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/hadithprovider.dart';
@@ -107,20 +108,24 @@ class _HadethState extends State<Hadeth> {
                         setState(() {
                           play = !play;
                         });
-                        play
-                            ? await advancedPlayer.play(
+                        await advancedPlayer.setUrl(
                                 Provider.of<Hadithprovider>(context,
                                         listen: false)
                                     .azkar
                                     .data[Ramdan.day - 1]
-                                    .audio)
+                                    .audio);
+                        play
+                            ? await advancedPlayer.play(
+                                )
                             : await advancedPlayer.pause();
+                            /*
                              advancedPlayer.onPlayerCompletion.listen((event) {
                               advancedPlayer.stop();
                               setState(() {
                                 play = false;
                               });
                             });
+                            */
                       },
                       child: CircleAvatar(
                           radius: 30,

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Athan.dart';
@@ -8,6 +9,7 @@ import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/duaas.dart';
 import 'package:kidsapp/screens/login.dart';
+import 'package:kidsapp/screens/quraan.dart';
 import 'package:kidsapp/screens/ramdanscreen.dart';
 import 'package:kidsapp/screens/salah.dart';
 import 'package:kidsapp/widgets/background.dart';
@@ -20,23 +22,30 @@ class Types extends StatefulWidget {
   _TypesState createState() => _TypesState();
 }
 
-class _TypesState extends State<Types> {
+class _TypesState extends State<Types> with TickerProviderStateMixin {
   bool firstrun;
   int i;
   String currentPostion;
   bool cheak;
   GlobalKey<ScaffoldState> scaffold;
-  // LatLng currentPostion;
+  TabController tabController;
 
   @override
   void initState() {
     super.initState();
-    scaffold = GlobalKey<ScaffoldState>();
+    tabController = TabController(length: 4, vsync: this);
     firstrun = true;
     Userprovider.sd = Provider.of<Userprovider>(context, listen: false)
         .currentUser
         .token
         .toString();
+  }
+
+  Future<bool> _onWillPop() async {
+    print("on will pop");
+    if (tabController.index == 0) {
+      await SystemNavigator.pop();
+    }
   }
 
   Future<void> cheaknetwork() async {
@@ -57,7 +66,7 @@ class _TypesState extends State<Types> {
     if (cheak == false) {
       await Provider.of<Userprovider>(context, listen: false).getUserLocation();
       if (Userprovider.done == 'true') {
-        await Provider.of<Userprovider>(context, listen: false).fetchscore();
+        // await Provider.of<Userprovider>(context, listen: false).fetchscore();
         await Provider.of<Lanprovider>(context, listen: false).getdate();
         if (DateTime.now().day.toString() !=
             Provider.of<Lanprovider>(context, listen: false).time) {
@@ -68,316 +77,159 @@ class _TypesState extends State<Types> {
           await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
         }
       }
-      
+    //  print(Provider.of<Userprovider>(context, listen: false).score.totalScore);
     }
-    setState(() {
-      firstrun = false;
-    });
+    if (mounted) {
+      setState(() {
+        firstrun = false;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          key: scaffold,
-          backgroundColor: Colors.white,
-          body: Container(
-            height: MediaQuery.of(context).size.height,
-            child: Stack(
-              children: [
-                Background(),
-                firstrun
-                    ? Center(child: CircularProgressIndicator())
-                    : cheak
-                        ? Center(
-                            child: Text(
-                              'cheak internet',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          )
-                        : Center(
-                            child: Container(
-                                margin: EdgeInsets.symmetric(
-                                    vertical:
-                                        MediaQuery.of(context).size.height *
-                                            0.03),
-                                child: (Userprovider.done == 'true')
-                                    ? ListView(
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(
-                                                left: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.02,
-                                                right: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.02,
-                                                bottom: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.07),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  Provider.of<Userprovider>(
-                                                                  context)
-                                                              .score
-                                                              .totalScore
-                                                              .toString() ==
-                                                          null
-                                                      ? '-'
-                                                      : 'Score:' +
-                                                          Provider.of<Userprovider>(
-                                                                  context)
-                                                              .score
-                                                              .totalScore
-                                                              .toString(),
-                                                  style: GoogleFonts.roboto(
-                                                      textStyle: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              60, 60, 67, 1),
-                                                          letterSpacing: .5,
-                                                          fontSize: 24)),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    await Provider.of<
-                                                                Userprovider>(
-                                                            context,
-                                                            listen: false)
-                                                        .clearuserdata();
-                                                    await Provider.of<
-                                                                Lanprovider>(
-                                                            context,
-                                                            listen: false)
-                                                        .cleardata();
-                                                    Navigator.of(context)
-                                                        .pushReplacementNamed(
-                                                            Login.route);
-                                                  },
-                                                  child: Icon(
-                                                    Icons.logout,
-                                                    size: 35,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () async {
-                                              await Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                  duration: Duration(
-                                                      milliseconds: 600),
-                                                  type: PageTransitionType.fade,
-                                                  child: Ramdan(),
-                                                ),
-                                              );
-                                            },
-                                            child: Column(
-                                              children: [
-                                                CircleAvatar(
-                                                  backgroundColor:
-                                                      Color.fromRGBO(
-                                                          254, 222, 133, 1),
-                                                  radius: 60,
-                                                  child: Container(
-                                                    margin: EdgeInsets.all(10),
-                                                    child: Image.asset(
-                                                      'assets/images/ramdan.png',
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 7,
-                                                ),
-                                                Text(
-                                                  'Ramdan',
-                                                  style: GoogleFonts.roboto(
-                                                    textStyle: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            60, 60, 67, 1),
-                                                        letterSpacing: .5,
-                                                        fontSize: 24),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.07,
-                                          ),
-                                          GestureDetector(
-                                            onTap: () async {
-                                              await Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                  duration: Duration(
-                                                      milliseconds: 800),
-                                                  type: PageTransitionType.fade,
-                                                  child: Salah(),
-                                                ),
-                                              );
-                                            },
-                                            child: Column(
-                                              children: [
-                                                CircleAvatar(
-                                                  backgroundColor:
-                                                      Color.fromRGBO(
-                                                          254, 222, 133, 1),
-                                                  radius: 60,
-                                                  child: Container(
-                                                    margin: EdgeInsets.all(10),
-                                                    child: Image.asset(
-                                                        'assets/images/salah.png'),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 7,
-                                                ),
-                                                Text(
-                                                  'Salah',
-                                                  style: GoogleFonts.roboto(
-                                                    textStyle: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            60, 60, 67, 1),
-                                                        letterSpacing: .5,
-                                                        fontSize: 24),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.07,
-                                          ),
-                                          GestureDetector(
-                                            onTap: () async {
-                                              await Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                  duration: Duration(
-                                                      milliseconds: 600),
-                                                  type: PageTransitionType.fade,
-                                                  child: Duaas(),
-                                                ),
-                                              );
-                                            },
-                                            child: Column(
-                                              children: [
-                                                CircleAvatar(
-                                                  backgroundColor:
-                                                      Color.fromRGBO(
-                                                          254, 222, 133, 1),
-                                                  radius: 60,
-                                                  child: Container(
-                                                    margin: EdgeInsets.all(10),
-                                                    child: Image.asset(
-                                                      'assets/images/dua-hands.png',
-                                                      fit: BoxFit.fitWidth,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 7,
-                                                ),
-                                                Text(
-                                                  'Duas',
-                                                  style: GoogleFonts.roboto(
-                                                    textStyle: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            60, 60, 67, 1),
-                                                        letterSpacing: .5,
-                                                        fontSize: 24),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      )
-                                    : Column(
-                                        children: [
-                                          Center(
-                                            child: GestureDetector(
-                                              onTap: () async {
-                                                await Navigator.push(
-                                                  context,
-                                                  PageTransition(
-                                                    duration: Duration(
-                                                        milliseconds: 600),
-                                                    type:
-                                                        PageTransitionType.fade,
-                                                    child: Duaas(),
-                                                  ),
-                                                );
-                                              },
-                                              child: Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: MediaQuery.of(context)
-                                                            .size
-                                                            .height *
-                                                        0.3),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    CircleAvatar(
-                                                      backgroundColor:
-                                                          Color.fromRGBO(
-                                                              254, 222, 133, 1),
-                                                      radius: 60,
-                                                      child: Container(
-                                                        margin:
-                                                            EdgeInsets.all(10),
-                                                        child: Image.asset(
-                                                          'assets/images/dua-hands.png',
-                                                          fit: BoxFit.fitWidth,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 7,
-                                                    ),
-                                                    Text(
-                                                      'Duas',
-                                                      style: GoogleFonts.roboto(
-                                                        textStyle: TextStyle(
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    60,
-                                                                    60,
-                                                                    67,
-                                                                    1),
-                                                            letterSpacing: .5,
-                                                            fontSize: 24),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      )),
-                          ),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: DefaultTabController(
+        length: 4,
+        child: Scaffold(
+            appBar: AppBar(
+              toolbarHeight: 140,
+              title: Text(
+                'Kids Duas',
+                style: GoogleFonts.roboto(
+                  letterSpacing: 0.5,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              actions: [
+                GestureDetector(
+                  onTap: () async {
+                    await Provider.of<Userprovider>(context, listen: false)
+                        .clearuserdata();
+                    await Provider.of<Lanprovider>(context, listen: false)
+                        .cleardata();
+                    Navigator.of(context).pushReplacementNamed(Login.route);
+                  },
+                  child: Container(
+                      margin: EdgeInsets.all(5),
+                      child: Icon(
+                        Icons.logout,
+                        size: 35,
+                      )),
+                )
               ],
+              backgroundColor: Theme.of(context).primaryColor,
+              bottom: TabBar(
+                controller: tabController,
+                indicatorColor: Colors.white,
+                tabs: [
+                  Container(
+                    height: 60,
+                    child: Tab(
+                        icon: FittedBox(
+                            child: Column(
+                      children: [
+                        Image.asset('assets/images/salah.png'),
+                        SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          'Salah',
+                          style: GoogleFonts.roboto(
+                            letterSpacing: 0.5,
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ))),
+                  ),
+                  Container(
+                    height: 60,
+                    child: Tab(
+                        icon: FittedBox(
+                            child: Column(
+                      children: [
+                        Image.asset('assets/images/azkar.png'),
+                        SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          'Azkar',
+                          style: GoogleFonts.roboto(
+                            letterSpacing: 0.5,
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ))),
+                  ),
+                  Container(
+                    height: 60,
+                    child: Tab(
+                        icon: FittedBox(
+                            child: Column(
+                      children: [
+                        Image.asset('assets/images/ramadan.png'),
+                        SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          'Ramdan',
+                          style: GoogleFonts.roboto(
+                            letterSpacing: 0.5,
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ))),
+                  ),
+                  Container(
+                    height: 60,
+                    child: Tab(
+                        icon: FittedBox(
+                            child: Column(
+                      children: [
+                        Image.asset('assets/images/quraan.png'),
+                        SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          'Quraan',
+                          style: GoogleFonts.roboto(
+                            letterSpacing: 0.5,
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ))),
+                  ),
+                ],
+                indicatorWeight: 4,
+                enableFeedback: false,
+              ),
             ),
-          )),
+            body: firstrun
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : TabBarView(
+                    controller: tabController,
+                    children: [Salah(), Duaas(), Ramdan(), Quraan()],
+                  )),
+      ),
     );
   }
 }
