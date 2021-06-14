@@ -1,8 +1,8 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/Categories.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
@@ -24,6 +24,7 @@ class _DuadetailsState extends State<Duadetails> {
   bool loading;
   bool play;
   AudioPlayer advancedPlayer;
+
   @override
   void initState() {
     super.initState();
@@ -107,6 +108,11 @@ class _DuadetailsState extends State<Duadetails> {
                             .data
                             .image,
                         fit: BoxFit.cover,
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            new Icon(Icons.error),
                       ),
                     ),
                     SizedBox(
@@ -198,7 +204,8 @@ class _DuadetailsState extends State<Duadetails> {
                             setState(() {
                               play = !play;
                             });
-                            await advancedPlayer.setUrl(
+
+                            await advancedPlayer.play(
                                 Provider.of<Azkarprovider>(context,
                                         listen: false)
                                     .categoriess
@@ -206,17 +213,15 @@ class _DuadetailsState extends State<Duadetails> {
                                     .azkars[0]
                                     .audio);
                             play
-                                ? await advancedPlayer.play()
+                                ? await advancedPlayer.resume()
                                 : await advancedPlayer.pause();
 
-                            /*
                             advancedPlayer.onPlayerCompletion.listen((event) {
                               advancedPlayer.stop();
                               setState(() {
                                 play = false;
                               });
                             });
-                            */
                           },
                           child: CircleAvatar(
                               radius: 30,
@@ -319,9 +324,7 @@ class _DuadetailsState extends State<Duadetails> {
                                                     BorderRadius.circular(10)),
                                             onPressed: () async {
                                               Navigator.of(context).pop();
-                                              await Navigator
-                                                  .pushReplacementNamed(
-                                                      context, Duaas.route);
+                                              Navigator.of(context).pop();
                                             },
                                             text: 'Lovely',
                                             color:
@@ -332,8 +335,7 @@ class _DuadetailsState extends State<Duadetails> {
                                         ),
                                       ]);
                                 else {
-                                  Navigator.pushReplacementNamed(
-                                      context, Duaas.route);
+                                  Navigator.of(context).pop();
                                 }
                               },
                               child: Text(

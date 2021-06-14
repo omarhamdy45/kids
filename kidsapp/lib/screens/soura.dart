@@ -1,5 +1,4 @@
 //import 'package:audioplayers/audioplayers.dart';
-import 'dart:ffi';
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:kidsapp/models/PageManger.dart';
+
 import 'package:kidsapp/models/ayah.dart';
 import 'package:kidsapp/models/sour.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
@@ -24,20 +23,26 @@ class Soura extends StatefulWidget {
 class _SouraState extends State<Soura> {
   bool checkBoxValue = false;
   bool firstrun;
-  List<String> audios = [];
-
+  List<int> audios = [];
+  List<String> audioss = [];
   List<ObjectClass> demoData;
   // AudioPlayer advancedPlayer;
   AudioPlayer player2;
+  AudioPlayer player3;
   bool play;
   Color textcolor1 = Colors.black;
   Color textcolor2 = Colors.blue[600];
   Verses played;
   bool ayaplayed;
   List<double> speed = [1, 0.5, 1.5];
-  int i = 0;
-
-  PageManager _pageManager;
+  bool playlist;
+  ScrollController _scrollController;
+  int j;
+  int s = 0;
+  bool finsh;
+  dynamic postion;
+  int k;
+  bool fromplaylist;
 
   @override
   void didChangeDependencies() async {
@@ -49,6 +54,7 @@ class _SouraState extends State<Soura> {
     demoData = List.generate(80, (i) {
       return ObjectClass(
         checked: false,
+        playlist: false,
       );
     });
     await Provider.of<Quraanprovider>(context, listen: false)
@@ -64,23 +70,33 @@ class _SouraState extends State<Soura> {
     // TODO: implement initState
     super.initState();
     player2 = AudioPlayer();
-    _pageManager = PageManager();
+    player3 = AudioPlayer();
+    finsh = false;
+    _scrollController = ScrollController();
+    playlist = false;
     firstrun = true;
     play = false;
     ayaplayed = false;
+    fromplaylist = false;
+  }
+
+  void stop() async {
+    await player2.stop();
+    setState(() {
+      ayaplayed = false;
+    });
   }
 
   @override
   void dispose() {
     player2.dispose();
-    _pageManager.dispose();
+    _scrollController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(audios);
     Data arg = ModalRoute.of(context).settings.arguments as Data;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
@@ -126,46 +142,105 @@ class _SouraState extends State<Soura> {
                                 borderRadius: BorderRadius.circular(12),
                                 color: Colors.white,
                               ),
-                              height: 52,
+                              height: 40,
                               width: MediaQuery.of(context).size.width * 0.5,
                               child: Center(
                                   child: Text(
-                                'PLaylist',
-                                style: GoogleFonts.roboto(fontSize: 20),
+                                audios.isNotEmpty
+                                    ? 'verce ' +
+                                        (audios[0]).toString() +
+                                        ' - ' +
+                                        audios.last.toString()
+                                    : 'PLaylist',
+                                style: GoogleFonts.roboto(fontSize: 16),
                               )),
                             ),
                             SizedBox(
                               width: 10,
                             ),
                             GestureDetector(
-                                onTap: () async {
-                                  /*
-                                  print(audios.length);
-                                  setState(() {
-                                    play = !play;
-                                  });
+                              onTap: () async {
+                                print(audios);
 
-                                  for (int i = 0; i < audios.length; ++i) {
-                                    final audio = audios[i];
-                                    await player2.setUrl(audio);
-                                    print(audio);
-                                    play
-                                        ? await player2.play()
-                                        : await player2.pause();
-                                    play
-                                        ? await player2.pause()
-                                        : await player2.stop();
-                                  }
+                                setState(() {
+                                  playlist = !playlist;
+                                  ayaplayed = true;
+                                  play = true;
+                                  fromplaylist = true;
+                                });
+                                for (int i = audios.first - 1;
+                                    i < audios.last;
+                                    i++) {
+                                  audioss.add(Provider.of<Quraanprovider>(
+                                          context,
+                                          listen: false)
+                                      .ayah
+                                      .data
+                                      .verses[i]
+                                      .audio
+                                      .primary);
+
+                                  player2.setAudioSource(
+                                    // Loop child 4 times
+                                    LoopingAudioSource(
+                                      count: 2,
+                                      // Play children one after the other
+                                      child: ConcatenatingAudioSource(
+                                        children: [
+                                          // Play a regular media file
+                                          ProgressiveAudioSource(
+                                              Uri.parse(audioss[i])),
+                                          // Play a DASH stream
+
+                                          // Play a segment of the child
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }
+                                player2.play();
+/*
+                                for (int i = audios.first - 1;
+                                    i < audios.last;
+                                    i++) {
+                                  await player2.stop();
+
+                                  await player2.setUrl(
+                                      Provider.of<Quraanprovider>(context,
+                                              listen: false)
+                                          .ayah
+                                          .data
+                                          .verses[i]
+                                          .audio
+                                          .primary);
+
                                   setState(() {
-                                    play = false;
+                                    demoData[i].textcolor1 =
+                                        Theme.of(context).primaryColor;
                                   });
-                                  */
-                                },
-                                child: Icon(
-                                  FontAwesomeIcons.playCircle,
-                                  color: Colors.white,
-                                  size: 45,
-                                ))
+                                  print(i);
+                                  playlist
+                                      ? await player2.play()
+                                      : await player2.pause();
+                                  setState(() {
+                                    demoData[i].textcolor1 = Colors.black;
+                                  });
+                                }
+*/
+                                setState(() {
+                                  playlist = false;
+                                });
+                              },
+                              child: Icon(
+                                playlist
+                                    ? FontAwesomeIcons.pauseCircle
+                                    : FontAwesomeIcons.playCircle,
+                                color: audios.isEmpty
+                                    ? Colors.white
+                                    : Colors.yellow,
+                                size: 45,
+                              ),
+                            ),
                           ],
                         )
                       ],
@@ -182,6 +257,7 @@ class _SouraState extends State<Soura> {
                             child: CircularProgressIndicator(),
                           )
                         : ListView.builder(
+                            controller: _scrollController,
                             itemCount: Provider.of<Quraanprovider>(context,
                                     listen: false)
                                 .ayah
@@ -195,13 +271,12 @@ class _SouraState extends State<Soura> {
                                   setState(() {
                                     demoData[index].textcolor1 =
                                         Theme.of(context).primaryColor;
-
                                     for (int j = 0; j < index; j++) {
                                       demoData[j].textcolor1 = Colors.black;
                                     }
-
                                     ayaplayed = true;
                                     play = true;
+                                    audios.clear();
                                   });
 
                                   await player2.setUrl(
@@ -213,20 +288,12 @@ class _SouraState extends State<Soura> {
                                           .audio
                                           .primary);
                                   await player2.play();
-
-                                  setState(() {
-                                    played = Provider.of<Quraanprovider>(
-                                            context,
-                                            listen: false)
-                                        .ayah
-                                        .data
-                                        .verses[index];
-                                  });
                                 },
                                 onTap: () async {
                                   setState(() {
                                     play = false;
                                     player2.stop();
+                                    demoData[index].textcolor1 = Colors.black;
                                   });
                                 },
                                 child: Container(
@@ -256,7 +323,7 @@ class _SouraState extends State<Soura> {
                                                       .arab,
                                                   textDirection:
                                                       TextDirection.rtl,
-                                                  style: GoogleFonts.roboto(
+                                                  style: GoogleFonts.amiri(
                                                     textStyle: TextStyle(
                                                         color: demoData[index]
                                                             .textcolor1,
@@ -269,18 +336,86 @@ class _SouraState extends State<Soura> {
                                           ),
                                           Column(
                                             children: [
-                                              CircleAvatar(
-                                                radius: 16,
-                                                backgroundColor: Colors.black,
-                                                child: CircleAvatar(
-                                                  radius: 15,
-                                                  backgroundColor:
-                                                      Theme.of(context)
-                                                          .primaryColor,
-                                                  child: Text(
-                                                    (1 + index).toString(),
-                                                    style: TextStyle(
-                                                        color: Colors.white),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    demoData[index].playlist =
+                                                        !demoData[index]
+                                                            .playlist;
+                                                  });
+                                                  if (demoData[index]
+                                                      .playlist) {
+                                                    audios.add((1 + index));
+                                                    audios.sort();
+                                                  } else {
+                                                    // audios.remove((1 + index));
+                                                    if (audios.first ==
+                                                        audios.last) {
+                                                      audios.clear();
+                                                    }
+
+                                                    if (1 + index ==
+                                                        audios.last) {
+                                                      audios
+                                                          .add(audios.last - 1);
+                                                      audios
+                                                          .remove((1 + index));
+                                                      audios.sort();
+                                                    }
+                                                    if (1 + index ==
+                                                        audios.first) {
+                                                      audios.add(
+                                                          audios.first + 1);
+                                                      audios
+                                                          .remove((1 + index));
+                                                      audios.sort();
+                                                    }
+                                                  }
+
+                                                  for (int i = audios[0];
+                                                      i < audios.last - 1;
+                                                      i++) {
+                                                    demoData[i].playlist = true;
+                                                  }
+
+                                                  print(audios);
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      color: demoData[index]
+                                                                  .playlist &&
+                                                              audios.isNotEmpty
+                                                          ? Colors.grey
+                                                          : Theme.of(context)
+                                                              .primaryColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                  child: Stack(
+                                                    children: [
+                                                      Image.asset(
+                                                        'assets/images/hexa.png',
+                                                        width: 30,
+                                                        height: 30,
+                                                      ),
+                                                      Positioned(
+                                                        bottom: 5,
+                                                        left: 0,
+                                                        right: 0,
+                                                        top: 5,
+                                                        child: Container(
+                                                          child: FittedBox(
+                                                            child: Text(
+                                                              (1 + index)
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -369,19 +504,15 @@ class _SouraState extends State<Soura> {
                                     var position = positionData.position;
                                     if (position > duration) {
                                       position = duration;
-
-                                      position = Duration.zero;
-                                      player2.stop();
+                                      // position = Duration.zero;
+                                      stop();
                                     }
-
-                                    ayaplayed = false;
 
                                     var bufferedPosition =
                                         positionData.bufferedPosition;
                                     if (bufferedPosition > duration) {
                                       bufferedPosition = duration;
                                     }
-
                                     return ProgressBar(
                                       thumbRadius: 12,
                                       progressBarColor:
@@ -390,9 +521,6 @@ class _SouraState extends State<Soura> {
                                       progress: position,
                                       buffered: bufferedPosition,
                                       total: duration,
-                                      onSeek: (duration) {
-                                        player2.seek(duration);
-                                      },
                                     );
                                   },
                                 );
@@ -401,50 +529,6 @@ class _SouraState extends State<Soura> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                IconButton(
-                                    // color: Colors.white,
-                                    onPressed: () async {
-                                      await player2.seek(Duration(seconds: 3));
-                                    },
-                                    icon: Icon(Icons.timer_3_select,
-                                        color: Colors.black)),
-                                GestureDetector(
-                                  onTap: () async {
-                                    // print(player2.duration);
-
-                                    setState(() {
-                                      ayaplayed = !ayaplayed;
-                                    });
-
-                                    ayaplayed
-                                        ? await player2.play()
-                                        : await player2.pause();
-                                  },
-                                  child: ayaplayed
-                                      ? Icon(
-                                          FontAwesomeIcons.pauseCircle,
-                                          color: Colors.black,
-                                          size: 45,
-                                        )
-                                      : Icon(
-                                          FontAwesomeIcons.playCircle,
-                                          color: Colors.black,
-                                          size: 45,
-                                        ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                GestureDetector(
-                                  onTap: () async {
-                                    await player2.stop();
-                                  },
-                                  child: Icon(
-                                    FontAwesomeIcons.stopCircle,
-                                    color: Colors.black,
-                                    size: 45,
-                                  ),
-                                ),
                                 StreamBuilder<LoopMode>(
                                   stream: player2.loopModeStream,
                                   builder: (context, snapshot) {
@@ -477,11 +561,48 @@ class _SouraState extends State<Soura> {
                                   },
                                 ),
                                 GestureDetector(
+                                  onTap: () async {
+                                    // print(player2.duration);
+                                    setState(() {
+                                      ayaplayed = !ayaplayed;
+                                    });
+
+                                    ayaplayed
+                                        ? await player2.play()
+                                        : await player2.pause();
+                                    print(ayaplayed);
+                                  },
+                                  child: ayaplayed
+                                      ? Icon(
+                                          FontAwesomeIcons.pauseCircle,
+                                          color: Colors.black,
+                                          size: 45,
+                                        )
+                                      : Icon(
+                                          FontAwesomeIcons.playCircle,
+                                          color: Colors.black,
+                                          size: 45,
+                                        ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    stop();
+                                  },
+                                  child: Icon(
+                                    FontAwesomeIcons.stopCircle,
+                                    color: Colors.black,
+                                    size: 45,
+                                  ),
+                                ),
+                                GestureDetector(
                                     onTap: () async {
                                       setState(() {
-                                        i < 2 ? ++i : i = 0;
+                                        s < 2 ? ++s : s = 0;
                                       });
-                                      await player2.setSpeed(speed[i]);
+                                      await player2.setSpeed(speed[s]);
                                     },
                                     child: CircleAvatar(
                                       backgroundColor: Colors.grey,
@@ -489,7 +610,7 @@ class _SouraState extends State<Soura> {
                                         margin: EdgeInsets.all(2),
                                         color: Colors.transparent,
                                         child: Text(
-                                          speed[i].toString(),
+                                          speed[s].toString(),
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 16),
@@ -497,7 +618,7 @@ class _SouraState extends State<Soura> {
                                       ),
                                     ))
                               ],
-                            ),
+                            )
                           ],
                         ),
                       ),
@@ -514,9 +635,11 @@ class _SouraState extends State<Soura> {
 class ObjectClass {
   bool checked;
   Color textcolor1 = Colors.black;
+  bool playlist;
   ObjectClass({
     this.checked,
     this.textcolor1,
+    this.playlist,
   });
 }
 

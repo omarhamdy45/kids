@@ -17,6 +17,32 @@ class Duaas extends StatefulWidget {
 
 class _DuaasState extends State<Duaas> {
   bool firstrun;
+  /*
+  List<String> images = [
+    'assets/images/besmallah.png',
+    'assets/images/SALAAM.png',
+    'assets/images/3alikom el SALAM.png',
+    'assets/images/thanking.png',
+    'assets/images/sleep boy.png',
+    'assets/images/wake up boy.png',
+    'assets/images/meal.png',
+    'assets/images/wear.png',
+    'assets/images/toilet.png',
+    'assets/images/toilet away.png',
+    'assets/images/end of majlis.png',
+    'assets/images/home 2.png',
+    'assets/images/home 1.png',
+    'assets/images/masged1.png',
+    'assets/images/masged2.png',
+    'assets/images/masged3.png',
+    'assets/images/wodo2.png',
+    'assets/images/market.png',
+    'assets/images/travel.png',
+    'assets/images/morning remembrance.png',
+    'assets/images/azaan.png',
+    'assets/images/mirror.png'
+  ];
+  */
   @override
   void initState() {
     // TODO: implement initState

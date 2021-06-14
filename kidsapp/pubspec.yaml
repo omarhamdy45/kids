@@ -46,14 +46,17 @@ dependencies:
   cached_network_image: ^3.0.0
   connectivity: ^3.0.3
   animated_splash_screen: any
-  #audioplayers: any
+  audioplayers: ^0.19.0
   audio_video_progress_bar: ^0.4.0
- 
+  percent_indicator: ^2.1.9+1
   expansion_card: ^0.1.0
-  sleek_circular_slider: ^2.0.0
+ # sleek_circular_slider: ^2.0.0
   just_audio: ^0.7.5
   audio_session: ^0.1.2
   rxdart: ^0.27.1
+
+  
+
   
   
 
@@ -75,29 +78,29 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/Group400.png
-    - assets/images/Group 39.png
-    - assets/images/Group 72.png
-    - assets/images/weather.jpeg
-    - assets/images/quran.png
-    - assets/images/duaa.png
-    - assets/images/moshaf.png
-    - assets/images/bal.png
-    - assets/images/Group 77.png
-    - assets/images/Mask Group 1.png
-    - assets/images/Group 2386.png
-    - assets/images/Mask Group 3.png
-    - assets/images/Group 705.png
-    - assets/images/Group 709.png
-    - assets/images/Group 804.png
-    - assets/images/Group 813.png
-    - assets/images/Group 815.png
-    - assets/images/Group 795.png
-    - assets/images/bss.png
-    -  assets/images/salah.png
-    -  assets/images/azkar.png
-    -  assets/images/ramadan.png
-    -  assets/images/quraan.png
+    - assets/images/
+   # - assets/images/Group 39.png
+   # - assets/images/Group 72.png
+   # - assets/images/weather.jpeg
+   # - assets/images/quran.png
+   # - assets/images/duaa.png
+   # - assets/images/moshaf.png
+   # - assets/images/bal.png
+   # - assets/images/Group 77.png
+   # - assets/images/Mask Group 1.png
+   # - assets/images/Group 2386.png
+   # - assets/images/Mask Group 3.png
+   # - assets/images/Group 705.png
+   # - assets/images/Group 709.png
+   # - assets/images/Group 804.png
+   # - assets/images/Group 813.png
+   # - assets/images/Group 815.png
+   # - assets/images/Group 795.png
+   # - assets/images/bss.png
+   # -  assets/images/salah.png
+   # -  assets/images/azkar.png
+   # -  assets/images/ramadan.png
+   # -  assets/images/quraan.png
 
 
 

@@ -49,6 +49,10 @@ class _RamdanState extends State<Ramdan> {
   int min;
   int hours;
   bool loading;
+  int year;
+  int mon;
+  int day;
+  int ramdany;
 
   Color color = Color.fromRGBO(62, 194, 236, 1);
   DateTime datetime = DateTime.now();
@@ -105,28 +109,42 @@ class _RamdanState extends State<Ramdan> {
       min = 60 - int.parse(four.toString().substring(2, 4));
       hours = 23 - int.parse(four.toString().split(':').first);
     }
-    if (mounted) {
-      setState(() {
-        firstrun = false;
-      });
-    }
+    if (!mounted) return;
+    setState(() {
+      firstrun = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     var mounth = new HijriCalendar.now().getLongMonthName().toString();
+
+    mon = HijriCalendar.now().hMonth;
+    day = HijriCalendar.now().hDay;
+    year = HijriCalendar.now().hYear;
+    if (HijriCalendar.now().isBefore(year + 1, 09, 01)) {
+      if (HijriCalendar.now().hMonth < 09) {
+        ramdany = year;
+      } else {
+        ramdany = year + 1;
+      }
+    }
+    var a = DateTime.utc(year, mon, day);
+    var b = DateTime.utc(ramdany, 09, 01);
+    var c = b.difference(a).inDays;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body:mounth != 'Ramadan'
-                ? Center(
-                    child: Container(
-                      child: Text('Ramdan soon'),
-                    ),
-                  )
-                : firstrun
-            ? Center(child: CircularProgressIndicator())
-            :  ListView(
+        body: mounth != 'Ramadan'
+            ? Center(
+                child: Container(
+                  child: Text('$c days left to Ramadan'),
+                ),
+              )
+            : firstrun
+                ? Center(child: CircularProgressIndicator())
+                : ListView(
                     children: [
                       Container(
                           margin: EdgeInsets.only(

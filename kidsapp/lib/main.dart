@@ -64,7 +64,9 @@ class MyApp extends StatelessWidget {
           primaryColor: Color.fromRGBO(184, 95, 143, 1),
           accentColor: Color.fromRGBO(167, 85, 163, 1),
         ),
-        home: FutureBuilder(
+        home:
+        
+         FutureBuilder(
           future:
               Provider.of<Userprovider>(context, listen: false).isLoggedIn(),
           builder: (context, snapshot) {
@@ -77,6 +79,7 @@ class MyApp extends StatelessWidget {
             }
           },
         ),
+        
         routes: {
           Login.route: (context) => Login(),
           Salah.route: (context) => Salah(),

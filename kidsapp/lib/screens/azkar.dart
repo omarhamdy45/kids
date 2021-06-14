@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/models/db.dart';
-import 'package:kidsapp/widgets/error.dart';
 import 'package:kidsapp/widgets/gift.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+
 import 'package:page_indicator/page_indicator.dart';
 
 class Azkar extends StatefulWidget {
@@ -19,11 +19,13 @@ class _AzkarState extends State<Azkar> {
   int counter2 = 0;
   int counter3 = 0;
   PageController c;
+  bool loading;
 
   @override
   void initState() {
     super.initState();
     c = new PageController();
+    loading = false;
   }
 
   @override
@@ -34,7 +36,6 @@ class _AzkarState extends State<Azkar> {
 
   @override
   Widget build(BuildContext context) {
-    List list = ModalRoute.of(context).settings.arguments as List;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -51,7 +52,6 @@ class _AzkarState extends State<Azkar> {
                 size: Size(30, 5), cornerSize: Size.square(20)),
             child: PageView(
               controller: c,
-              physics: new NeverScrollableScrollPhysics(),
               children: [
                 Center(
                   child: Container(
@@ -388,154 +388,7 @@ class _AzkarState extends State<Azkar> {
                                   counter3++;
                                 }
                               });
-                              if (counter3 == 33) {
-                                await Dbhandler.instance
-                                    .salahevluate(list[1], list[0], '1');
-
-                                if (Dbhandler.instance.cheaksalah == 200) {
-                                  if (list[0] == 'late group' ||
-                                      list[0] == 'late single') {
-                                    Dialogs.materialDialog(
-                                        customView: Container(
-                                          child: Gift(
-                                            'Pray On Time',
-                                            'حافظ على الصلاة فى وقتها',
-                                            'assets/images/Group 804.png',
-                                            Color.fromRGBO(255, 72, 115, 1),
-                                            Color.fromRGBO(255, 72, 115, 1),
-                                            Color.fromRGBO(255, 72, 115, 1),
-                                            (list[0] == 'late group')
-                                                ? Color.fromRGBO(
-                                                    255, 72, 115, 1)
-                                                : Colors.grey,
-                                            Colors.grey,
-                                            Color.fromRGBO(255, 72, 115, 1),
-                                          ),
-                                        ),
-                                        titleStyle: TextStyle(
-                                            color:
-                                                Theme.of(context).accentColor,
-                                            fontSize: 25),
-                                        color: Colors.white,
-                                        //    animation: 'assets/cong_example.json',
-                                        context: context,
-                                        actions: [
-                                          Container(
-                                            height: 40,
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal:
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .width *
-                                                        0.1),
-                                            child: IconsButton(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                Navigator.of(context).pop();
-                                                Navigator.of(context).pop();
-                                              },
-                                              text: 'Done',
-                                              color: Color.fromRGBO(
-                                                  255, 72, 115, 1),
-                                              textStyle: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                        ]);
-                                  } else {
-                                    Dialogs.materialDialog(
-                                        customView: Container(
-                                          child: Gift(
-                                            'Masha’ Allah',
-                                            'ماشاء الله',
-                                            'assets/images/Group 795.png',
-                                            Color.fromRGBO(255, 72, 115, 1),
-                                            Color.fromRGBO(255, 72, 115, 1),
-                                            Color.fromRGBO(255, 72, 115, 1),
-                                            Color.fromRGBO(255, 72, 115, 1),
-                                            (list[0] == 'ontime group')
-                                                ? Color.fromRGBO(
-                                                    255, 72, 115, 1)
-                                                : Colors.grey,
-                                            Color.fromRGBO(255, 72, 115, 1),
-                                          ),
-                                        ),
-                                        titleStyle: TextStyle(
-                                            color:
-                                                Theme.of(context).accentColor,
-                                            fontSize: 25),
-                                        color: Colors.white,
-                                        //    animation: 'assets/cong_example.json',
-                                        context: context,
-                                        actions: [
-                                          Container(
-                                            height: 40,
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal:
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .width *
-                                                        0.1),
-                                            child: IconsButton(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                Navigator.of(context).pop();
-                                                Navigator.of(context).pop();
-                                              },
-                                              text: 'Done',
-                                              color: Color.fromRGBO(
-                                                  255, 72, 115, 1),
-                                              textStyle: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                        ]);
-                                  }
-                                } else if (Dbhandler.instance.cheaksalah !=
-                                    200) {
-                                  Dialogs.materialDialog(
-                                      customView: Container(child: Eroorr()),
-                                      titleStyle: TextStyle(
-                                          color: Theme.of(context).accentColor,
-                                          fontSize: 25),
-                                      color: Colors.white,
-                                      //    animation: 'assets/cong_example.json',
-                                      context: context,
-                                      actions: [
-                                        Container(
-                                          height: 40,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.1),
-                                          child: IconsButton(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10)),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                              Navigator.of(context).pop();
-                                              Navigator.of(context).pop();
-                                            },
-                                            text: 'Done',
-                                            color:
-                                                Color.fromRGBO(255, 72, 115, 1),
-                                            textStyle:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                      ]);
-                                }
-                              }
+                              if (counter3 == 33) {}
                             },
                             child: CircleAvatar(
                               radius: 30,
@@ -564,175 +417,7 @@ class _AzkarState extends State<Azkar> {
                                         counter3++;
                                       }
                                     });
-                                    if (counter3 == 33) {
-                                      await Dbhandler.instance
-                                          .salahevluate(list[1], list[0], '1');
-                                      if (Dbhandler.instance.cheaksalah ==
-                                          200) {
-                                        if (list[0] == 'late group' ||
-                                            list[0] == 'late single') {
-                                          Dialogs.materialDialog(
-                                              customView: Container(
-                                                child: Gift(
-                                                  'Pray On Time',
-                                                  'حافظ على الصلاة فى وقتها',
-                                                  'assets/images/Group 795.png',
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  (list[0] == 'late group')
-                                                      ? Color.fromRGBO(
-                                                          255, 72, 115, 1)
-                                                      : Colors.grey,
-                                                  Colors.grey,
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                ),
-                                              ),
-                                              titleStyle: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .accentColor,
-                                                  fontSize: 25),
-                                              color: Colors.white,
-                                              context: context,
-                                              actions: [
-                                                Container(
-                                                  height: 40,
-                                                  margin: EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.1),
-                                                  child: IconsButton(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    text: 'Done',
-                                                    color: Color.fromRGBO(
-                                                        255, 72, 115, 1),
-                                                    textStyle: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                ),
-                                              ]);
-                                        } else {
-                                          Dialogs.materialDialog(
-                                              customView: Container(
-                                                child: Gift(
-                                                  'Masha’ Allah',
-                                                  'ماشاء الله',
-                                                  'assets/images/Group 795.png',
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  (list[0] == 'ontime group')
-                                                      ? Color.fromRGBO(
-                                                          255, 72, 115, 1)
-                                                      : Colors.grey,
-                                                  Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                ),
-                                              ),
-                                              titleStyle: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .accentColor,
-                                                  fontSize: 25),
-                                              color: Colors.white,
-                                              //    animation: 'assets/cong_example.json',
-                                              context: context,
-                                              actions: [
-                                                Container(
-                                                  height: 40,
-                                                  margin: EdgeInsets.symmetric(
-                                                      horizontal:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.1),
-                                                  child: IconsButton(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    text: 'Done',
-                                                    color: Color.fromRGBO(
-                                                        255, 72, 115, 1),
-                                                    textStyle: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                ),
-                                              ]);
-                                        }
-                                      } else {
-                                        Dialogs.materialDialog(
-                                            customView:
-                                                Container(child: Eroorr()),
-                                            titleStyle: TextStyle(
-                                                color: Theme.of(context)
-                                                    .accentColor,
-                                                fontSize: 25),
-                                            color: Colors.white,
-                                            //    animation: 'assets/cong_example.json',
-                                            context: context,
-                                            actions: [
-                                              Container(
-                                                height: 40,
-                                                margin: EdgeInsets.symmetric(
-                                                    horizontal:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.1),
-                                                child: IconsButton(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10)),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                    Navigator.of(context).pop();
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  text: 'Done',
-                                                  color: Color.fromRGBO(
-                                                      255, 72, 115, 1),
-                                                  textStyle: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                            ]);
-                                      }
-                                    }
+                                    if (counter3 == 33) {}
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(left: 35),
@@ -747,7 +432,90 @@ class _AzkarState extends State<Azkar> {
                             ),
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.09,
+                            height: MediaQuery.of(context).size.height * 0.06,
+                          ),
+                          Container(
+                            height: 40,
+                            margin: EdgeInsets.symmetric(
+                                    horizontal:
+                                        MediaQuery.of(context).size.width * 0.3)
+                                .add(EdgeInsets.symmetric(vertical: 10)),
+                            child: loading
+                                ? Center(child: CircularProgressIndicator())
+                                : ElevatedButton(
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        )),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Theme.of(context).accentColor)),
+                                    onPressed: () async {
+                                      setState(() {
+                                        loading = true;
+                                      });
+                                      await Dbhandler.instance
+                                          .azkaraftersalah('read');
+                                      setState(() {
+                                        loading = false;
+                                      });
+
+                                      Dialogs.materialDialog(
+                                          customView: Container(
+                                            child: Gift(
+                                              'Amazing',
+                                              'ماشاء الله',
+                                              'assets/images/Group 804.png',
+                                              Colors.white,
+                                              Colors.white,
+                                              Color.fromRGBO(255, 72, 115, 1),
+                                              Colors.white,
+                                              Colors.white,
+                                              Color.fromRGBO(255, 72, 115, 1),
+                                            ),
+                                          ),
+                                          titleStyle: TextStyle(
+                                              color:
+                                                  Theme.of(context).accentColor,
+                                              fontSize: 25),
+                                          color: Colors.white,
+                                          //    animation: 'assets/cong_example.json',
+                                          context: context,
+                                          actions: [
+                                            Container(
+                                              height: 40,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.2),
+                                              child: IconsButton(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                                onPressed: () async {
+                                                  Navigator.of(context).pop();
+                                                  Navigator.of(context).pop();
+                                                },
+                                                text: 'Lovely',
+                                                color: Color.fromRGBO(
+                                                    255, 72, 115, 1),
+                                                textStyle: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          ]);
+                                    },
+                                    child: Text(
+                                      'Done',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 18),
+                                    )),
                           ),
                         ],
                       ),

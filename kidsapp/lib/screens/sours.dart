@@ -9,8 +9,8 @@ import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/widgets/duadetails.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class Surz extends StatefulWidget {
   static const String route = 'Surz';
@@ -34,6 +34,24 @@ class _SurzState extends State<Surz> {
       body: ListView(
         children: [
           Container(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Container(
+                      child: Icon(Icons.arrow_back_outlined,
+                          size: 35, color: Colors.black),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Container(
             margin: EdgeInsets.only(top: 30),
             child: StaggeredGridView.countBuilder(
               shrinkWrap: true,
@@ -48,9 +66,7 @@ class _SurzState extends State<Surz> {
                       // or pushReplacement, if you need that
                       context,
                       FadeInRoute(
-                          routeName: Soura.route,
-                          page: Soura(),
-                          argument: arg),
+                          routeName: Soura.route, page: Soura(), argument: arg),
                     );
                   },
                   child: Container(
@@ -59,7 +75,7 @@ class _SurzState extends State<Surz> {
                     //  color: Theme.of(context).primaryColor,
                     decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(20)),
+                        borderRadius: BorderRadius.circular(15)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -99,6 +115,24 @@ class _SurzState extends State<Surz> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
+                        Padding(
+      padding: EdgeInsets.all(5.0),
+      child: new LinearPercentIndicator(
+        width: MediaQuery.of(context).size.width * 0.27,
+        animation: true,
+        lineHeight: 10.0,
+        animationDuration: 1000,
+        percent: 0.0,
+        // center: Text("80.0%"),
+        linearStrokeCap: LinearStrokeCap.roundAll,
+        progressColor: Colors.amber,
+        backgroundColor: Colors.grey[300],
+      
+       
+      ),
+    )
+
+                       
                       ],
                     ),
                   ),

@@ -12,8 +12,7 @@ import 'package:kidsapp/screens/login.dart';
 import 'package:kidsapp/screens/quraan.dart';
 import 'package:kidsapp/screens/ramdanscreen.dart';
 import 'package:kidsapp/screens/salah.dart';
-import 'package:kidsapp/widgets/background.dart';
-import 'package:page_transition/page_transition.dart';
+
 import 'package:provider/provider.dart';
 
 class Types extends StatefulWidget {
@@ -33,6 +32,8 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    scaffold = GlobalKey<ScaffoldState>();
+    cheaknetwork();
     tabController = TabController(length: 4, vsync: this);
     firstrun = true;
     Userprovider.sd = Provider.of<Userprovider>(context, listen: false)
@@ -52,38 +53,40 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        cheak = false;
+        cheak = true;
       }
     } on SocketException catch (_) {
-      cheak = true;
+      scaffold.currentState.showSnackBar(SnackBar(
+        content: Text('Cheak Netwok'),
+        backgroundColor: Colors.red[600],
+      ));
+      cheak = false;
     }
   }
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    await cheaknetwork();
-    if (cheak == false) {
-      await Provider.of<Userprovider>(context, listen: false).getUserLocation();
-      if (Userprovider.done == 'true') {
-        // await Provider.of<Userprovider>(context, listen: false).fetchscore();
-        await Provider.of<Lanprovider>(context, listen: false).getdate();
-        if (DateTime.now().day.toString() !=
-            Provider.of<Lanprovider>(context, listen: false).time) {
-          Provider.of<Lanprovider>(context, listen: false).cleardata();
-        }
-        Provider.of<Lanprovider>(context, listen: false).savedate();
-        while (Dbhandler.instance.athancheak != 200) {
-          await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
-        }
+
+    await Provider.of<Userprovider>(context, listen: false).getUserLocation();
+    if (Userprovider.done == 'true') {
+      await Provider.of<Userprovider>(context, listen: false).fetchscore();
+      await Provider.of<Lanprovider>(context, listen: false).getdate();
+      if (DateTime.now().day.toString() !=
+          Provider.of<Lanprovider>(context, listen: false).time) {
+        Provider.of<Lanprovider>(context, listen: false).cleardata();
       }
-    //  print(Provider.of<Userprovider>(context, listen: false).score.totalScore);
+      Provider.of<Lanprovider>(context, listen: false).savedate();
+      while (Dbhandler.instance.athancheak != 200) {
+        await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
+      }
     }
-    if (mounted) {
-      setState(() {
-        firstrun = false;
-      });
-    }
+    print(Provider.of<Userprovider>(context, listen: false).score.totalScore);
+
+    if (!mounted) return;
+    setState(() {
+      cheak ? firstrun = false : firstrun = true;
+    });
   }
 
   @override
@@ -99,17 +102,34 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
       child: DefaultTabController(
         length: 4,
         child: Scaffold(
+            key: scaffold,
             appBar: AppBar(
               toolbarHeight: 140,
-              title: Text(
-                'Kids Duas',
-                style: GoogleFonts.roboto(
-                  letterSpacing: 0.5,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
+              title: firstrun
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.star,
+                            color: Colors.amberAccent,
+                          ),
+                          Text(
+                            Provider.of<Userprovider>(context, listen: false)
+                                .score
+                                .totalScore
+                                .toString(),
+                            style: GoogleFonts.roboto(
+                              letterSpacing: 0.5,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
               actions: [
                 GestureDetector(
                   onTap: () async {

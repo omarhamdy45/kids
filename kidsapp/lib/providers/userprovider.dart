@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hijri/hijri_calendar.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/location.dart';
 import 'package:kidsapp/models/score.dart';
@@ -17,7 +18,7 @@ class Userprovider with ChangeNotifier {
   static String sd;
   static String done;
   Score score;
-
+ 
   Future<Score> fetchscore() async {
     try {
       score = await Dbhandler.instance.getscore();

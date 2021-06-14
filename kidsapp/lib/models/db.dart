@@ -317,4 +317,23 @@ class Dbhandler {
     return Ayah.fromJson(
         convert.jsonDecode(response.body) as Map<String, dynamic>);
   }
+
+  Future<void> azkaraftersalah(String status) async {
+    String url = '$mainurl/azkar_salah_status';
+    final String tokenn = Userprovider.sd;
+
+    try {
+      http.Response response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $tokenn',
+        },
+        body: {'status': status},
+      );
+      //  print(response.body);
+    } catch (eroor) {
+      print(eroor);
+    }
+  }
 }
