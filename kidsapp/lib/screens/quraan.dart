@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:expansion_card/expansion_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/screens/sours.dart';

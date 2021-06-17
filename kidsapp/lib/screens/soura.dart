@@ -1,5 +1,7 @@
 //import 'package:audioplayers/audioplayers.dart';
 
+import 'dart:math';
+
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +12,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/ayah.dart';
 import 'package:kidsapp/models/sour.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
+import 'package:kidsapp/widgets/Controlsbuttons.dart';
 
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -179,54 +182,28 @@ class _SouraState extends State<Soura> {
                                       .verses[i]
                                       .audio
                                       .primary);
-
-                                  player2.setAudioSource(
-                                    // Loop child 4 times
-                                    LoopingAudioSource(
-                                      count: 2,
-                                      // Play children one after the other
-                                      child: ConcatenatingAudioSource(
-                                        children: [
-                                          // Play a regular media file
-                                          ProgressiveAudioSource(
-                                              Uri.parse(audioss[i])),
-                                          // Play a DASH stream
-
-                                          // Play a segment of the child
-                                        ],
-                                      ),
-                                    ),
-                                  );
                                 }
-                                player2.play();
-/*
-                                for (int i = audios.first - 1;
-                                    i < audios.last;
-                                    i++) {
-                                  await player2.stop();
+                                audioss = audioss.toSet().toList();
+                                await player2.setAudioSource(
+                                  ConcatenatingAudioSource(
+                                    children: [
+                                      for (var i in audioss)
+                                        AudioSource.uri(Uri.parse(i)),
+                                    ],
+                                  ),
+                                  // Playback will be prepared to start from track1.mp3
+                                  initialIndex: 0,
 
-                                  await player2.setUrl(
-                                      Provider.of<Quraanprovider>(context,
-                                              listen: false)
-                                          .ayah
-                                          .data
-                                          .verses[i]
-                                          .audio
-                                          .primary);
+                                  preload: true,
 
-                                  setState(() {
-                                    demoData[i].textcolor1 =
-                                        Theme.of(context).primaryColor;
-                                  });
-                                  print(i);
-                                  playlist
-                                      ? await player2.play()
-                                      : await player2.pause();
-                                  setState(() {
-                                    demoData[i].textcolor1 = Colors.black;
-                                  });
-                                }
-*/
+                                  // default
+                                  // Playback will be prepared to start from position zero.
+                                  // initialPosition: Duration.zero, // default
+                                );
+
+                                await player2.play();
+                                // audioss.clear();
+
                                 setState(() {
                                   playlist = false;
                                 });
@@ -486,18 +463,9 @@ class _SouraState extends State<Soura> {
                               ],
                             ),
                             StreamBuilder<Duration>(
-                              stream: player2.durationStream,
-                              builder: (context, snapshot) {
-                                final duration = snapshot.data ?? Duration.zero;
-                                return StreamBuilder<PositionData>(
-                                  stream: Rx.combineLatest2<Duration, Duration,
-                                          PositionData>(
-                                      player2.positionStream,
-                                      player2.bufferedPositionStream,
-                                      (position, bufferedPosition) =>
-                                          PositionData(
-                                              position, bufferedPosition)),
-                                  builder: (context, snapshot) {
+                                stream: player2.durationStream,
+                                builder: (context, snapshot) {
+                                  /*
                                     final positionData = snapshot.data ??
                                         PositionData(
                                             Duration.zero, Duration.zero);
@@ -513,112 +481,47 @@ class _SouraState extends State<Soura> {
                                     if (bufferedPosition > duration) {
                                       bufferedPosition = duration;
                                     }
-                                    return ProgressBar(
-                                      thumbRadius: 12,
-                                      progressBarColor:
-                                          Theme.of(context).primaryColor,
-                                      thumbColor: Theme.of(context).accentColor,
-                                      progress: position,
-                                      buffered: bufferedPosition,
-                                      total: duration,
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                StreamBuilder<LoopMode>(
-                                  stream: player2.loopModeStream,
-                                  builder: (context, snapshot) {
-                                    final loopMode =
-                                        snapshot.data ?? LoopMode.off;
-                                    const icons = [
-                                      Icon(
-                                        Icons.repeat,
-                                        color: Colors.black,
-                                        size: 40,
-                                      ),
-                                      Icon(Icons.repeat,
-                                          color:
-                                              Color.fromRGBO(184, 95, 143, 1),
-                                          size: 40),
-                                    ];
-                                    const cycleModes = [
-                                      LoopMode.off,
-                                      LoopMode.all,
-                                    ];
-                                    final index = cycleModes.indexOf(loopMode);
-                                    return IconButton(
-                                      icon: icons[index],
-                                      onPressed: () {
-                                        player2.setLoopMode(cycleModes[
-                                            (cycleModes.indexOf(loopMode) + 1) %
-                                                cycleModes.length]);
-                                      },
-                                    );
-                                  },
-                                ),
-                                GestureDetector(
-                                  onTap: () async {
-                                    // print(player2.duration);
-                                    setState(() {
-                                      ayaplayed = !ayaplayed;
-                                    });
-
-                                    ayaplayed
-                                        ? await player2.play()
-                                        : await player2.pause();
-                                    print(ayaplayed);
-                                  },
-                                  child: ayaplayed
-                                      ? Icon(
-                                          FontAwesomeIcons.pauseCircle,
-                                          color: Colors.black,
-                                          size: 45,
-                                        )
-                                      : Icon(
-                                          FontAwesomeIcons.playCircle,
-                                          color: Colors.black,
-                                          size: 45,
-                                        ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                GestureDetector(
-                                  onTap: () async {
-                                    stop();
-                                  },
-                                  child: Icon(
-                                    FontAwesomeIcons.stopCircle,
-                                    color: Colors.black,
-                                    size: 45,
-                                  ),
-                                ),
-                                GestureDetector(
-                                    onTap: () async {
-                                      setState(() {
-                                        s < 2 ? ++s : s = 0;
-                                      });
-                                      await player2.setSpeed(speed[s]);
+                                    */
+                                  final duration =
+                                      snapshot.data ?? Duration.zero;
+                                  return StreamBuilder<PositionData>(
+                                    stream: Rx.combineLatest2<Duration,
+                                            Duration, PositionData>(
+                                        player2.positionStream,
+                                        player2.bufferedPositionStream,
+                                        (position, bufferedPosition) =>
+                                            PositionData(
+                                                position, bufferedPosition)),
+                                    builder: (context, snapshot) {
+                                      final positionData = snapshot.data ??
+                                          PositionData(
+                                              Duration.zero, Duration.zero);
+                                      var position = positionData.position;
+                                      if (position > duration) {
+                                        position = duration;
+                                       
+                                      }
+                                      var bufferedPosition =
+                                          positionData.bufferedPosition;
+                                      if (bufferedPosition > duration) {
+                                        bufferedPosition = duration;
+                                      }
+                                      return ProgressBar(
+                                          thumbRadius: 12,
+                                          progressBarColor:
+                                              Theme.of(context).primaryColor,
+                                          thumbColor:
+                                              Theme.of(context).accentColor,
+                                          progress: position,
+                                          buffered: bufferedPosition,
+                                          total: duration,
+                                          onSeek: (duration) {
+                                            player2.seek(duration);
+                                          });
                                     },
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.grey,
-                                      child: Container(
-                                        margin: EdgeInsets.all(2),
-                                        color: Colors.transparent,
-                                        child: Text(
-                                          speed[s].toString(),
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16),
-                                        ),
-                                      ),
-                                    ))
-                              ],
-                            )
+                                  );
+                                }),
+                            ControlButtons(player2),
                           ],
                         ),
                       ),
@@ -643,9 +546,11 @@ class ObjectClass {
   });
 }
 
+
+
 class PositionData {
-  final Duration position;
-  final Duration bufferedPosition;
+   Duration position;
+   Duration bufferedPosition;
 
   PositionData(this.position, this.bufferedPosition);
 }
