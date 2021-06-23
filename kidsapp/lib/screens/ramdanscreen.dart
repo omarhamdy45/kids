@@ -10,7 +10,7 @@ import 'package:kidsapp/providers/hadithprovider.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 
 import 'package:kidsapp/screens/dua.dart';
-import 'package:kidsapp/screens/hadeth.dart';
+import 'package:kidsapp/screens/hadethramdan.dart';
 import 'package:kidsapp/screens/sera.dart';
 import 'package:kidsapp/screens/types.dart';
 import 'package:kidsapp/widgets/gift.dart';

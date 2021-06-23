@@ -1,5 +1,6 @@
 //import 'package:audioplayers/audioplayers.dart';
 
+import 'dart:async';
 import 'dart:math';
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
@@ -10,15 +11,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'package:kidsapp/models/ayah.dart';
+import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/sour.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
+import 'package:kidsapp/screens/record.dart';
+import 'package:kidsapp/screens/sours.dart';
 import 'package:kidsapp/widgets/Controlsbuttons.dart';
 
 import 'package:provider/provider.dart';
+import 'package:record/record.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Soura extends StatefulWidget {
   static const String route = '/Soura';
+  static String souranum;
+  static String juznum;
+  static String souraname;
   @override
   _SouraState createState() => _SouraState();
 }
@@ -46,6 +55,8 @@ class _SouraState extends State<Soura> {
   dynamic postion;
   int k;
   bool fromplaylist;
+  int juz;
+  List<int> ayasaved = [];
 
   @override
   void didChangeDependencies() async {
@@ -62,6 +73,23 @@ class _SouraState extends State<Soura> {
     });
     await Provider.of<Quraanprovider>(context, listen: false)
         .fetchayat(arg.number);
+    await Provider.of<Quraanprovider>(context, listen: false)
+        .fetchayacheak(arg.number);
+    for (int i = 0;
+        i <
+            Provider.of<Quraanprovider>(context, listen: false)
+                .ayacheak
+                .result
+                .length;
+        i++) {
+      ayasaved.add(Provider.of<Quraanprovider>(context, listen: false)
+          .ayacheak
+          .result[i]
+          .numberOfVerse);
+    }
+    for (int i = 0; i < ayasaved.length; i++) {
+      demoData[i].checked = true;
+    }
     if (!mounted) return;
     setState(() {
       firstrun = false;
@@ -98,13 +126,18 @@ class _SouraState extends State<Soura> {
     super.dispose();
   }
 
+  Future<bool> _onWillPop() async {
+    print("on will pop");
+
+    Navigator.of(context).pop();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     Data arg = ModalRoute.of(context).settings.arguments as Data;
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-      ),
+    return WillPopScope(
+      onWillPop: _onWillPop,
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Container(
@@ -234,6 +267,7 @@ class _SouraState extends State<Soura> {
                             child: CircularProgressIndicator(),
                           )
                         : ListView.builder(
+                            shrinkWrap: true,
                             controller: _scrollController,
                             itemCount: Provider.of<Quraanprovider>(context,
                                     listen: false)
@@ -242,6 +276,19 @@ class _SouraState extends State<Soura> {
                                 .verses
                                 .length,
                             itemBuilder: (context, index) {
+                              Soura.souranum = arg.number.toString();
+                              Soura.souraname = arg.name.toString();
+                              if (arg.number > 77 && arg.number < 114) {
+                                juz = 30;
+                              }
+                              if (arg.number > 66 && arg.number < 77) {
+                                juz = 29;
+                              }
+                              if (arg.number > 57 && arg.number < 66) {
+                                juz = 28;
+                              }
+                              Soura.juznum = juz.toString();
+
                               return Center(
                                   child: GestureDetector(
                                 onDoubleTap: () async {
@@ -399,19 +446,33 @@ class _SouraState extends State<Soura> {
                                               Checkbox(
                                                   value:
                                                       demoData[index].checked,
-                                                  splashRadius: 10,
+                                                  // demoData[index].checked,
+                                                  splashRadius: 2,
                                                   hoverColor: Colors.blueAccent,
                                                   activeColor: Theme.of(context)
                                                       .primaryColor,
-                                                  onChanged: (bool newValue) {
+                                                  onChanged:
+                                                      (bool newValue) async {
                                                     setState(() {
                                                       demoData[index].checked =
                                                           newValue;
                                                     });
+
+                                                    await Dbhandler.instance
+                                                        .ayasave(
+                                                            arg.number
+                                                                .toString(),
+                                                            (index + 1)
+                                                                .toString(),
+                                                            arg.name,
+                                                            juz.toString());
                                                   }),
                                             ],
                                           ),
                                         ],
+                                      ),
+                                      MyAppp(
+                                        index: (index+1).toString(),
                                       ),
                                       SizedBox(
                                         height: 10,
@@ -419,9 +480,6 @@ class _SouraState extends State<Soura> {
                                       Divider(
                                         height: 1,
                                         color: Colors.grey[300],
-                                      ),
-                                      SizedBox(
-                                        height: 10,
                                       ),
                                     ],
                                   ),
@@ -465,23 +523,6 @@ class _SouraState extends State<Soura> {
                             StreamBuilder<Duration>(
                                 stream: player2.durationStream,
                                 builder: (context, snapshot) {
-                                  /*
-                                    final positionData = snapshot.data ??
-                                        PositionData(
-                                            Duration.zero, Duration.zero);
-                                    var position = positionData.position;
-                                    if (position > duration) {
-                                      position = duration;
-                                      // position = Duration.zero;
-                                      stop();
-                                    }
-
-                                    var bufferedPosition =
-                                        positionData.bufferedPosition;
-                                    if (bufferedPosition > duration) {
-                                      bufferedPosition = duration;
-                                    }
-                                    */
                                   final duration =
                                       snapshot.data ?? Duration.zero;
                                   return StreamBuilder<PositionData>(
@@ -499,7 +540,6 @@ class _SouraState extends State<Soura> {
                                       var position = positionData.position;
                                       if (position > duration) {
                                         position = duration;
-                                       
                                       }
                                       var bufferedPosition =
                                           positionData.bufferedPosition;
@@ -546,11 +586,9 @@ class ObjectClass {
   });
 }
 
-
-
 class PositionData {
-   Duration position;
-   Duration bufferedPosition;
+  Duration position;
+  Duration bufferedPosition;
 
   PositionData(this.position, this.bufferedPosition);
 }

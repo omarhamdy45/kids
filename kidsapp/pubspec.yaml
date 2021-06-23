@@ -52,11 +52,11 @@ dependencies:
   #expansion_card: ^0.1.0
  # sleek_circular_slider: ^2.0.0
   animated_splash_screen: any
- 
+  record: ^1.0.3
   just_audio: ^0.7.0
   audio_session: ^0.1.2
   rxdart: ^0.27.1
-
+  flutter_html: ^1.3.0
   
 
   

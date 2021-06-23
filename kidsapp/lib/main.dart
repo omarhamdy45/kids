@@ -10,8 +10,10 @@ import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/azkar.dart';
+import 'package:kidsapp/screens/dialyhadith.dart';
 import 'package:kidsapp/screens/duaas.dart';
 import 'package:kidsapp/screens/login.dart';
+import 'package:kidsapp/screens/record.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/screens/sours.dart';
 import 'package:kidsapp/screens/splash.dart';
@@ -25,7 +27,7 @@ import 'package:provider/provider.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor:Colors.transparent));
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => Athanprovider(),
@@ -64,9 +66,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Color.fromRGBO(184, 95, 143, 1),
           accentColor: Color.fromRGBO(167, 85, 163, 1),
         ),
-        home:
-        
-         FutureBuilder(
+        home: FutureBuilder(
           future:
               Provider.of<Userprovider>(context, listen: false).isLoggedIn(),
           builder: (context, snapshot) {
@@ -79,7 +79,6 @@ class MyApp extends StatelessWidget {
             }
           },
         ),
-        
         routes: {
           Login.route: (context) => Login(),
           Salah.route: (context) => Salah(),
@@ -88,6 +87,7 @@ class MyApp extends StatelessWidget {
           Duaas.route: (context) => Duaas(),
           Azkar.route: (context) => Azkar(),
           Types.route: (context) => Types(),
+          Dialyhadith.route: (context) => Dialyhadith(),
           Surz.route: (context) => Surz(),
           Soura.route: (context) => Soura(),
         });

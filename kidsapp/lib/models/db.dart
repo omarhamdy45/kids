@@ -1,12 +1,17 @@
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'dart:async';
 import 'package:kidsapp/models/Athan.dart';
 import 'package:kidsapp/models/Categories.dart';
 import 'package:kidsapp/models/Hadith.dart';
+import 'package:kidsapp/models/ayacheak.dart';
 import 'package:kidsapp/models/ayah.dart';
+import 'package:kidsapp/models/ayasaves.dart';
 import 'package:kidsapp/models/catgoriess.dart';
+import 'package:kidsapp/models/dialyhadith.dart';
 import 'package:kidsapp/models/sour.dart';
 import 'package:kidsapp/models/location.dart';
 import 'package:kidsapp/models/score.dart';
@@ -15,6 +20,9 @@ import 'package:kidsapp/providers/userprovider.dart';
 import 'dart:convert' as convert;
 
 import 'package:http/http.dart' as http;
+import 'package:kidsapp/screens/dialyhadith.dart';
+
+import 'guz2save.dart';
 
 class Dbhandler {
   static Dbhandler _instance = Dbhandler._private();
@@ -29,6 +37,7 @@ class Dbhandler {
   int azkarreadd;
   int ramdanstatuss;
   int athancheak;
+  int dialyhadith;
 
   String mainurl = 'https://muslim-kids.royaltechni.com/api';
 
@@ -335,5 +344,145 @@ class Dbhandler {
     } catch (eroor) {
       print(eroor);
     }
+  }
+
+  Future<void> Dialyhadithstatus(String status, String hadithid) async {
+    String url = '$mainurl/dailyhadith_status';
+    final String tokenn = Userprovider.sd;
+    try {
+      http.Response response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $tokenn',
+        },
+        body: {
+          'status': status,
+          'dailyhadith_id': hadithid,
+        },
+      );
+      dialyhadith = response.statusCode;
+    } catch (eroor) {
+      print(eroor);
+    }
+  }
+
+  Future<void> hadithrecord(String status, String hadithid, File file) async {
+    String url = '$mainurl/dailyhadith_status';
+    final String tokenn = Userprovider.sd;
+    String fileName = file.path.split('/').last;
+    FormData data = FormData.fromMap({
+      "audio": await MultipartFile.fromFile(
+        file.path,
+        filename: fileName,
+      ),
+      'status': status,
+      'dailyhadith_id': hadithid,
+    });
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+    _dio.options.headers["Accept"] = "application/json";
+    Response response = await _dio.post(
+      url,
+      data: data,
+    );
+    print(response.data);
+    print(response.statusCode);
+  }
+
+  Future<void> ayasave(
+      String soraid, String ayaid, String surah, String juza) async {
+    String url = '$mainurl/quran_saves';
+    final String tokenn = Userprovider.sd;
+
+    try {
+      http.Response response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $tokenn',
+        },
+        body: {
+          'quran_number': soraid,
+          'numberOfVerse': ayaid,
+          'surah': surah,
+          'juza': juza,
+        },
+      );
+      print(response.body);
+    } catch (eroor) {
+      print(eroor);
+    }
+  }
+
+  Future<void> ayarecord(
+      String soraid, String ayaid, String surah, String juza, File file) async {
+    String url = '$mainurl/quran_saves';
+    final String tokenn = Userprovider.sd;
+    String fileName = file.path.split('/').last;
+    FormData data = FormData.fromMap({
+      "audio": await MultipartFile.fromFile(
+        file.path,
+        filename: fileName,
+      ),
+      'quran_number': soraid,
+      'numberOfVerse': ayaid,
+      'surah': surah,
+      'juza': juza,
+    });
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+    _dio.options.headers["Accept"] = "application/json";
+    Response response = await _dio.post(
+      url,
+      data: data,
+    );
+    print(response.data);
+    print(response.statusCode);
+  }
+
+  Future<Ayasaves> getayasaves(int id) async {
+    String url = '$mainurl/numberOfSaves/$id';
+    final String tokenn = Userprovider.sd;
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+
+    Response response = await _dio.get(url);
+    print(response.data);
+    return Ayasaves.fromJson(response.data);
+  }
+
+  Future<Ayacheak> getayacheak(int id) async {
+    String url = '$mainurl/allOfVerseSave/$id';
+    final String tokenn = Userprovider.sd;
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+
+    Response response = await _dio.get(url);
+    print(response.data);
+    return Ayacheak.fromJson(response.data);
+  }
+
+  Future<Ayasaves> getallOfVerseSave(int id) async {
+    String url = '$mainurl/allOfVerseSave/$id';
+    final String tokenn = Userprovider.sd;
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+
+    Response response = await _dio.get(url);
+    print(response.data);
+    return Ayasaves.fromJson(response.data);
+  }
+
+  Future<Juz2save> getguzsaved() async {
+    String url = '$mainurl/numberOfAllJuzaSaves';
+    final String tokenn = Userprovider.sd;
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+
+    Response response = await _dio.get(url);
+    print(response.data);
+    return Juz2save.fromJson(response.data);
+  }
+
+  Future<Dailyhadith> getdialyhadith() async {
+    String url = '$mainurl/dailyhadith';
+    Response response = await _dio.get(url);
+    print(response.data);
+    return Dailyhadith.fromJson(response.data);
   }
 }

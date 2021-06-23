@@ -8,6 +8,7 @@ import 'package:kidsapp/providers/Athan.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/duaas.dart';
+import 'package:kidsapp/screens/hadithsection.dart';
 import 'package:kidsapp/screens/login.dart';
 import 'package:kidsapp/screens/quraan.dart';
 import 'package:kidsapp/screens/ramdanscreen.dart';
@@ -34,7 +35,7 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
     super.initState();
     scaffold = GlobalKey<ScaffoldState>();
     cheaknetwork();
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 5, vsync: this);
     firstrun = true;
     Userprovider.sd = Provider.of<Userprovider>(context, listen: false)
         .currentUser
@@ -100,7 +101,7 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: DefaultTabController(
-        length: 4,
+        length: 5,
         child: Scaffold(
             key: scaffold,
             appBar: AppBar(
@@ -149,11 +150,14 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
               ],
               backgroundColor: Theme.of(context).primaryColor,
               bottom: TabBar(
+
                 controller: tabController,
                 indicatorColor: Colors.white,
+                isScrollable: true,
                 tabs: [
                   Container(
                     height: 60,
+                    width: MediaQuery.of(context).size.width*0.2,
                     child: Tab(
                         icon: FittedBox(
                             child: Column(
@@ -175,7 +179,9 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                   ),
                   Container(
                     height: 60,
+                     width: MediaQuery.of(context).size.width*0.2,
                     child: Tab(
+                      
                         icon: FittedBox(
                             child: Column(
                       children: [
@@ -195,6 +201,7 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                     ))),
                   ),
                   Container(
+                     width: MediaQuery.of(context).size.width*0.2,
                     height: 60,
                     child: Tab(
                         icon: FittedBox(
@@ -216,6 +223,7 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                     ))),
                   ),
                   Container(
+                     width: MediaQuery.of(context).size.width*0.2,
                     height: 60,
                     child: Tab(
                         icon: FittedBox(
@@ -236,6 +244,28 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                       ],
                     ))),
                   ),
+                  Container(
+                     width: MediaQuery.of(context).size.width*0.2,
+                    height: 60,
+                    child: Tab(
+                        icon: FittedBox(
+                            child: Column(
+                      children: [
+                        Image.asset('assets/images/hadith.png'),
+                        SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          'Hadith',
+                          style: GoogleFonts.roboto(
+                            letterSpacing: 0.5,
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ))),
+                  ),
                 ],
                 indicatorWeight: 4,
                 enableFeedback: false,
@@ -247,7 +277,13 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                   )
                 : TabBarView(
                     controller: tabController,
-                    children: [Salah(), Duaas(), Ramdan(), Quraan()],
+                    children: [
+                      Salah(),
+                      Duaas(),
+                      Ramdan(),
+                      Quraan(),
+                      Hadithsection()
+                    ],
                   )),
       ),
     );

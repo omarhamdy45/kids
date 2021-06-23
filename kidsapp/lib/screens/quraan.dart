@@ -19,6 +19,7 @@ class _QuraanState extends State<Quraan> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     await Provider.of<Quraanprovider>(context, listen: false).fetchsour();
+    await Provider.of<Quraanprovider>(context, listen: false).fetchjuz2saaves();
     if (!mounted) return;
     setState(() {
       firstrun = false;
@@ -34,7 +35,6 @@ class _QuraanState extends State<Quraan> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
@@ -47,15 +47,15 @@ class _QuraanState extends State<Quraan> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                    final List<int> arg=[77,114];
-                          Navigator.push(
-                              // or pushReplacement, if you need that
-                              context,
-                              FadeInRoute(
-                                  routeName: Surz.route,
-                                  page: Surz(),
-                                  argument: arg),
-                            );
+                        final List<int> arg = [77, 114, 30];
+                        Navigator.push(
+                          // or pushReplacement, if you need that
+                          context,
+                          FadeInRoute(
+                              routeName: Surz.route,
+                              page: Surz(),
+                              argument: arg),
+                        );
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 7).add(
@@ -102,50 +102,59 @@ class _QuraanState extends State<Quraan> {
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    VerticalDivider(
-                                      width: 2,
-                                      endIndent: 10,
-                                      indent: 10,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 20,
-                                          backgroundColor: Colors.grey[100],
-                                          child: CircleAvatar(
-                                              radius: 19,
-                                              backgroundColor: Theme.of(context)
-                                                  .primaryColor,
-                                              child: Icon(
-                                                Icons.check_sharp,
-                                                color: Colors.white,
-                                              )),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.symmetric(
-                                            horizontal: 20,
-                                          ).add(EdgeInsets.only(top: 10)),
-                                          child: Text(
-                                            '0/564',
-                                            style: GoogleFonts.roboto(
-                                              textStyle: TextStyle(
+                                Container(
+                                  width: MediaQuery.of(context).size.width*0.35,
+                                  child: Row(
+                                    children: [
+                                      VerticalDivider(
+                                        width: 2,
+                                        endIndent: 10,
+                                        indent: 10,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 20,
+                                            backgroundColor: Colors.grey[100],
+                                            child: CircleAvatar(
+                                                radius: 19,
+                                                backgroundColor: Theme.of(context)
+                                                    .primaryColor,
+                                                child: Icon(
+                                                  Icons.check_sharp,
                                                   color: Colors.white,
-                                                  letterSpacing: .5,
-                                                  fontSize: 20),
+                                                )),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                              horizontal: 20,
+                                            ).add(EdgeInsets.only(top: 10)),
+                                            child: Text(
+                                              Provider.of<Quraanprovider>(context,
+                                                          listen: false)
+                                                      .juz2save
+                                                      .result[0]
+                                                      .numberOfVersrRead
+                                                      .toString() +
+                                                  '/564',
+                                              style: GoogleFonts.roboto(
+                                                textStyle: TextStyle(
+                                                    color: Colors.white,
+                                                    letterSpacing: .5,
+                                                    fontSize: 20),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -155,15 +164,15 @@ class _QuraanState extends State<Quraan> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        final List<int> arg=[66,77];
-                          Navigator.push(
-                              // or pushReplacement, if you need that
-                              context,
-                              FadeInRoute(
-                                  routeName: Surz.route,
-                                  page: Surz(),
-                                  argument: arg),
-                            );
+                        final List<int> arg = [66, 77, 29];
+                        Navigator.push(
+                          // or pushReplacement, if you need that
+                          context,
+                          FadeInRoute(
+                              routeName: Surz.route,
+                              page: Surz(),
+                              argument: arg),
+                        );
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 7).add(
@@ -210,50 +219,59 @@ class _QuraanState extends State<Quraan> {
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    VerticalDivider(
-                                      width: 2,
-                                      endIndent: 10,
-                                      indent: 10,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 20,
-                                          backgroundColor: Colors.grey[100],
-                                          child: CircleAvatar(
-                                              radius: 19,
-                                              backgroundColor: Theme.of(context)
-                                                  .primaryColor,
-                                              child: Icon(
-                                                Icons.check_sharp,
-                                                color: Colors.white,
-                                              )),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.symmetric(
-                                            horizontal: 20,
-                                          ).add(EdgeInsets.only(top: 10)),
-                                          child: Text(
-                                            '0/431',
-                                            style: GoogleFonts.roboto(
-                                              textStyle: TextStyle(
+                                Container(
+                                     width: MediaQuery.of(context).size.width*0.35,
+                                  child: Row(
+                                    children: [
+                                      VerticalDivider(
+                                        width: 2,
+                                        endIndent: 10,
+                                        indent: 10,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 20,
+                                            backgroundColor: Colors.grey[100],
+                                            child: CircleAvatar(
+                                                radius: 19,
+                                                backgroundColor: Theme.of(context)
+                                                    .primaryColor,
+                                                child: Icon(
+                                                  Icons.check_sharp,
                                                   color: Colors.white,
-                                                  letterSpacing: .5,
-                                                  fontSize: 20),
+                                                )),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                              horizontal: 20,
+                                            ).add(EdgeInsets.only(top: 10)),
+                                            child: Text(
+                                              Provider.of<Quraanprovider>(context,
+                                                          listen: false)
+                                                      .juz2save
+                                                      .result[1]
+                                                      .numberOfVersrRead
+                                                      .toString() +
+                                                  '/431',
+                                              style: GoogleFonts.roboto(
+                                                textStyle: TextStyle(
+                                                    color: Colors.white,
+                                                    letterSpacing: .5,
+                                                    fontSize: 20),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -263,15 +281,16 @@ class _QuraanState extends State<Quraan> {
                     ),
                     GestureDetector(
                       onTap: () {
-                           final List<int> arg=[57,66];
-                          Navigator.push(
-                              // or pushReplacement, if you need that
-                              context,
-                              FadeInRoute(
-                                  routeName: Surz.route,
-                                  page: Surz(),
-                                  argument: arg),
-                            );
+                        final List<int> arg = [57, 66, 28];
+                        
+                        Navigator.push(
+                          // or pushReplacement, if you need that
+                          context,
+                          FadeInRoute(
+                              routeName: Surz.route,
+                              page: Surz(),
+                              argument: arg),
+                        );
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 7).add(
@@ -318,50 +337,59 @@ class _QuraanState extends State<Quraan> {
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    VerticalDivider(
-                                      width: 2,
-                                      endIndent: 10,
-                                      indent: 10,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 20,
-                                          backgroundColor: Colors.grey[100],
-                                          child: CircleAvatar(
-                                              radius: 19,
-                                              backgroundColor: Theme.of(context)
-                                                  .primaryColor,
-                                              child: Icon(
-                                                Icons.check_sharp,
-                                                color: Colors.white,
-                                              )),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.symmetric(
-                                            horizontal: 20,
-                                          ).add(EdgeInsets.only(top: 10)),
-                                          child: Text(
-                                            '0/137',
-                                            style: GoogleFonts.roboto(
-                                              textStyle: TextStyle(
+                                Container(
+                                     width: MediaQuery.of(context).size.width*0.35,
+                                  child: Row(
+                                    children: [
+                                      VerticalDivider(
+                                        width: 2,
+                                        endIndent: 10,
+                                        indent: 10,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 20,
+                                            backgroundColor: Colors.grey[100],
+                                            child: CircleAvatar(
+                                                radius: 19,
+                                                backgroundColor: Theme.of(context)
+                                                    .primaryColor,
+                                                child: Icon(
+                                                  Icons.check_sharp,
                                                   color: Colors.white,
-                                                  letterSpacing: .5,
-                                                  fontSize: 20),
+                                                )),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.symmetric(
+                                              horizontal: 20,
+                                            ).add(EdgeInsets.only(top: 10)),
+                                            child: Text(
+                                              Provider.of<Quraanprovider>(context,
+                                                          listen: false)
+                                                      .juz2save
+                                                      .result[2]
+                                                      .numberOfVersrRead
+                                                      .toString() +
+                                                  '/137',
+                                              style: GoogleFonts.roboto(
+                                                textStyle: TextStyle(
+                                                    color: Colors.white,
+                                                    letterSpacing: .5,
+                                                    fontSize: 20),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
