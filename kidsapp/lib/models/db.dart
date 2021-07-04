@@ -54,14 +54,13 @@ class Dbhandler {
         country == 'Malaysia') {
       method = '5';
     }
-
     try {
       String url =
           'https://api.aladhan.com/v1/timingsByCity?city=$city&country=$country&method=$method';
 
       http.Response response = await http.get(Uri.parse(url));
       athancheak = response.statusCode;
-      print(response.statusCode);
+
       return Athan.fromJson(json.decode(response.body));
     } catch (eroor) {
       print(eroor);
@@ -231,7 +230,6 @@ class Dbhandler {
         },
       );
       cheaksalah = response.statusCode;
-      // print(response.body);
       print(response.statusCode);
     } catch (eroor) {
       print(eroor);
@@ -305,7 +303,7 @@ class Dbhandler {
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
 
     Response response = await _dio.get(url);
-    print(response.data);
+
     return Score.fromJson(response.data);
   }
 
@@ -321,8 +319,7 @@ class Dbhandler {
     String url = 'https://api.quran.sutanlab.id/surah/$id';
 
     var response = await http.get(Uri.parse(url));
-    print(response.body);
-    print(response.statusCode);
+
     return Ayah.fromJson(
         convert.jsonDecode(response.body) as Map<String, dynamic>);
   }
@@ -385,12 +382,10 @@ class Dbhandler {
       url,
       data: data,
     );
-    print(response.data);
-    print(response.statusCode);
   }
 
-  Future<void> ayasave(
-      String soraid, String ayaid, String surah, String juza) async {
+  Future<void> ayasave(String soraid, String ayaid, String surah, String juza,
+      String status) async {
     String url = '$mainurl/quran_saves';
     final String tokenn = Userprovider.sd;
 
@@ -406,9 +401,10 @@ class Dbhandler {
           'numberOfVerse': ayaid,
           'surah': surah,
           'juza': juza,
+          'status': status,
         },
       );
-      print(response.body);
+      print(response.statusCode);
     } catch (eroor) {
       print(eroor);
     }
@@ -428,6 +424,7 @@ class Dbhandler {
       'numberOfVerse': ayaid,
       'surah': surah,
       'juza': juza,
+      'status': 'read',
     });
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
     _dio.options.headers["Accept"] = "application/json";
@@ -435,8 +432,6 @@ class Dbhandler {
       url,
       data: data,
     );
-    print(response.data);
-    print(response.statusCode);
   }
 
   Future<Ayasaves> getayasaves(int id) async {
@@ -445,7 +440,7 @@ class Dbhandler {
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
 
     Response response = await _dio.get(url);
-    print(response.data);
+
     return Ayasaves.fromJson(response.data);
   }
 
@@ -455,7 +450,7 @@ class Dbhandler {
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
 
     Response response = await _dio.get(url);
-    print(response.data);
+
     return Ayacheak.fromJson(response.data);
   }
 
@@ -465,7 +460,7 @@ class Dbhandler {
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
 
     Response response = await _dio.get(url);
-    print(response.data);
+
     return Ayasaves.fromJson(response.data);
   }
 
@@ -475,14 +470,13 @@ class Dbhandler {
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
 
     Response response = await _dio.get(url);
-    print(response.data);
+
     return Juz2save.fromJson(response.data);
   }
 
   Future<Dailyhadith> getdialyhadith() async {
     String url = '$mainurl/dailyhadith';
     Response response = await _dio.get(url);
-    print(response.data);
     return Dailyhadith.fromJson(response.data);
   }
 }

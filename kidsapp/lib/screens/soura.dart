@@ -17,6 +17,7 @@ import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/screens/record.dart';
 import 'package:kidsapp/screens/sours.dart';
 import 'package:kidsapp/widgets/Controlsbuttons.dart';
+import 'package:kidsapp/widgets/sourarecord.dart';
 
 import 'package:provider/provider.dart';
 import 'package:record/record.dart';
@@ -88,8 +89,12 @@ class _SouraState extends State<Soura> {
           .numberOfVerse);
     }
     for (int i = 0; i < ayasaved.length; i++) {
-      demoData[i].checked = true;
+      int b = ayasaved.elementAt(i);
+
+      demoData[b - 1].checked = true;
+      print(demoData[0].checked);
     }
+
     if (!mounted) return;
     setState(() {
       firstrun = false;
@@ -135,6 +140,7 @@ class _SouraState extends State<Soura> {
 
   @override
   Widget build(BuildContext context) {
+    print(ayasaved);
     Data arg = ModalRoute.of(context).settings.arguments as Data;
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -170,88 +176,98 @@ class _SouraState extends State<Soura> {
                             ),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Colors.white,
-                              ),
-                              height: 40,
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              child: Center(
-                                  child: Text(
-                                audios.isNotEmpty
-                                    ? 'verce ' +
-                                        (audios[0]).toString() +
-                                        ' - ' +
-                                        audios.last.toString()
-                                    : 'PLaylist',
-                                style: GoogleFonts.roboto(fontSize: 16),
-                              )),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                print(audios);
-
-                                setState(() {
-                                  playlist = !playlist;
-                                  ayaplayed = true;
-                                  play = true;
-                                  fromplaylist = true;
-                                });
-                                for (int i = audios.first - 1;
-                                    i < audios.last;
-                                    i++) {
-                                  audioss.add(Provider.of<Quraanprovider>(
-                                          context,
-                                          listen: false)
-                                      .ayah
-                                      .data
-                                      .verses[i]
-                                      .audio
-                                      .primary);
-                                }
-                                audioss = audioss.toSet().toList();
-                                await player2.setAudioSource(
-                                  ConcatenatingAudioSource(
-                                    children: [
-                                      for (var i in audioss)
-                                        AudioSource.uri(Uri.parse(i)),
-                                    ],
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.white,
                                   ),
-                                  // Playback will be prepared to start from track1.mp3
-                                  initialIndex: 0,
-
-                                  preload: true,
-
-                                  // default
-                                  // Playback will be prepared to start from position zero.
-                                  // initialPosition: Duration.zero, // default
-                                );
-
-                                await player2.play();
-                                // audioss.clear();
-
-                                setState(() {
-                                  playlist = false;
-                                });
-                              },
-                              child: Icon(
-                                playlist
-                                    ? FontAwesomeIcons.pauseCircle
-                                    : FontAwesomeIcons.playCircle,
-                                color: audios.isEmpty
-                                    ? Colors.white
-                                    : Colors.yellow,
-                                size: 45,
-                              ),
+                                  height: 40,
+                                  width: MediaQuery.of(context).size.width * 0.5,
+                                  child: Center(
+                                      child: Text(
+                                    audios.isNotEmpty
+                                        ? 'verce ' +
+                                            (audios[0]).toString() +
+                                            ' - ' +
+                                            audios.last.toString()
+                                        : 'PLaylist',
+                                    style: GoogleFonts.roboto(fontSize: 16),
+                                  )),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    print(audios);
+                        
+                                    setState(() {
+                                      playlist = !playlist;
+                                      ayaplayed = true;
+                                      play = true;
+                                      fromplaylist = true;
+                                    });
+                                    for (int i = audios.first - 1;
+                                        i < audios.last;
+                                        i++) {
+                                      audioss.add(Provider.of<Quraanprovider>(
+                                              context,
+                                              listen: false)
+                                          .ayah
+                                          .data
+                                          .verses[i]
+                                          .audio
+                                          .primary);
+                                    }
+                                    audioss = audioss.toSet().toList();
+                                    await player2.setAudioSource(
+                                      ConcatenatingAudioSource(
+                                        children: [
+                                          for (var i in audioss)
+                                            AudioSource.uri(Uri.parse(i)),
+                                        ],
+                                      ),
+                                      // Playback will be prepared to start from track1.mp3
+                                      initialIndex: 0,
+                        
+                                     
+                        
+                                      // default
+                                      // Playback will be prepared to start from position zero.
+                                      // initialPosition: Duration.zero, // default
+                                    );
+                        
+                                    await player2.play();
+                                    // audioss.clear();
+                        
+                                    setState(() {
+                                      playlist = false;
+                                    });
+                                  },
+                                  child: Icon(
+                                    playlist
+                                        ? FontAwesomeIcons.pauseCircle
+                                        : FontAwesomeIcons.playCircle,
+                                    color: audios.isEmpty
+                                        ? Colors.white
+                                        : Colors.yellow,
+                                    size: 45,
+                                  ),
+                                ),
+                                Container(
+                                  width: 200,
+                                  color: Theme.of(context).primaryColor,
+                                  child: Sourarecord()),
+                              ],
                             ),
-                          ],
+                          ),
                         )
                       ],
                     ),
@@ -302,7 +318,6 @@ class _SouraState extends State<Soura> {
                                     play = true;
                                     audios.clear();
                                   });
-
                                   await player2.setUrl(
                                       Provider.of<Quraanprovider>(context,
                                               listen: false)
@@ -321,7 +336,7 @@ class _SouraState extends State<Soura> {
                                   });
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.all(8),
+                                margin: EdgeInsets.only(bottom: play?22:1,left: 5,right: 5),
                                   child: Column(
                                     children: [
                                       Row(
@@ -331,32 +346,87 @@ class _SouraState extends State<Soura> {
                                           Expanded(
                                             flex: 8,
                                             child: Container(
-                                              constraints: BoxConstraints(
-                                                  maxHeight: double.infinity,
-                                                  maxWidth: double.infinity),
-                                              child: Container(
-                                                margin: EdgeInsets.all(10),
-                                                child: Text(
-                                                  Provider.of<Quraanprovider>(
-                                                          context,
-                                                          listen: false)
-                                                      .ayah
-                                                      .data
-                                                      .verses[index]
-                                                      .text
-                                                      .arab,
-                                                  textDirection:
-                                                      TextDirection.rtl,
-                                                  style: GoogleFonts.amiri(
-                                                    textStyle: TextStyle(
-                                                        color: demoData[index]
-                                                            .textcolor1,
-                                                        letterSpacing: .5,
-                                                        fontSize: 22),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                                            
+                                                constraints: BoxConstraints(
+                                                    maxHeight: double.infinity,
+                                                    maxWidth: double.infinity),
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                       margin: EdgeInsets.only(top: 10),
+                                                      child: Text(
+                                                        Provider.of<Quraanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .ayah
+                                                            .data
+                                                            .verses[index]
+                                                            .text
+                                                            .arab,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style:
+                                                            GoogleFonts.amiri(
+                                                          textStyle: TextStyle(
+                                                              color: demoData[
+                                                                      index]
+                                                                  .textcolor1,
+                                                              letterSpacing: .5,
+                                                              fontSize: 22),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+        
+                                                      child: Text(
+                                                        Provider.of<Quraanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .ayah
+                                                            .data
+                                                            .verses[index]
+                                                            .text
+                                                            .transliteration
+                                                            .en,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style:
+                                                            GoogleFonts.amiri(
+                                                          textStyle: TextStyle(
+                                                              color: demoData[
+                                                                      index]
+                                                                  .textcolor1,
+                                                              letterSpacing: .5,
+                                                              fontSize: 22),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                    
+                                                      child: Text(
+                                                        Provider.of<Quraanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .ayah
+                                                            .data
+                                                            .verses[index]
+                                                            .translation
+                                                            .en,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style:
+                                                            GoogleFonts.amiri(
+                                                          textStyle: TextStyle(
+                                                              color: demoData[
+                                                                      index]
+                                                                  .textcolor1,
+                                                              letterSpacing: .5,
+                                                              fontSize: 22),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
                                           ),
                                           Column(
                                             children: [
@@ -457,25 +527,36 @@ class _SouraState extends State<Soura> {
                                                       demoData[index].checked =
                                                           newValue;
                                                     });
-
-                                                    await Dbhandler.instance
-                                                        .ayasave(
-                                                            arg.number
-                                                                .toString(),
-                                                            (index + 1)
-                                                                .toString(),
-                                                            arg.name,
-                                                            juz.toString());
+                                                    print(demoData[index]
+                                                        .checked);
+                                                    !demoData[index].checked
+                                                        ? await Dbhandler
+                                                            .instance
+                                                            .ayasave(
+                                                                arg.number
+                                                                    .toString(),
+                                                                (index + 1)
+                                                                    .toString(),
+                                                                arg.name,
+                                                                juz.toString(),
+                                                                'no')
+                                                        : await Dbhandler
+                                                            .instance
+                                                            .ayasave(
+                                                                arg.number
+                                                                    .toString(),
+                                                                (index + 1)
+                                                                    .toString(),
+                                                                arg.name,
+                                                                juz.toString(),
+                                                                'read');
                                                   }),
                                             ],
                                           ),
                                         ],
                                       ),
                                       MyAppp(
-                                        index: (index+1).toString(),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
+                                        index: (index + 1).toString(),
                                       ),
                                       Divider(
                                         height: 1,

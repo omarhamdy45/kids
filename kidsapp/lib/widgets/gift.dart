@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class Gift extends StatelessWidget {
   String image;
   String title;
@@ -13,8 +12,8 @@ class Gift extends StatelessWidget {
   Color color5;
   Color color6;
 
-  Gift(this.title,this.title2, this.image, this.color1, this.color2, this.color3,
-      this.color4, this.color5,this.color6);
+  Gift(this.title, this.title2, this.image, this.color1, this.color2,
+      this.color3, this.color4, this.color5, this.color6);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,7 +29,6 @@ class Gift extends StatelessWidget {
                 style: GoogleFonts.roboto(
                   textStyle: TextStyle(
                       color: this.color6,
-                      
                       letterSpacing: .5,
                       fontWeight: FontWeight.bold,
                       fontSize: 20),
@@ -44,7 +42,8 @@ class Gift extends StatelessWidget {
               margin: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width * 0.1),
               child: Text(
-               this.title2,
+                this.title2,
+                textAlign: TextAlign.center,
                 style: GoogleFonts.roboto(
                   textStyle: TextStyle(
                       color: Color.fromRGBO(153, 153, 153, 1),

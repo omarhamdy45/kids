@@ -120,18 +120,6 @@ class _SurzState extends State<Surz> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
-                                    //     margin: EdgeInsets.only(top: 5),
-                                    child: Text(
-                                      list[i].numberOfAyahs.toString(),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.roboto(
-                                          fontSize: 18,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  Container(
                                     margin: EdgeInsets.only(left: 2, right: 2),
                                     child: Text(
                                       list[i].englishName,
@@ -156,7 +144,32 @@ class _SurzState extends State<Surz> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.all(5.0),
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          Provider.of<Quraanprovider>(context,
+                                                  listen: false)
+                                              .ayasaves
+                                              .result[i]
+                                              .numberOfVersrRead
+                                              .toString(),
+                                          style: GoogleFonts.roboto(
+                                              color: Colors.white),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          list[i].numberOfAyahs.toString(),
+                                          style: GoogleFonts.roboto(
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                            horizontal: 5)
+                                        .add(EdgeInsets.only(bottom: 5)),
                                     child: new LinearPercentIndicator(
                                       width: MediaQuery.of(context).size.width *
                                           0.27,

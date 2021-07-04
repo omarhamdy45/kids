@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
+import 'package:kidsapp/models/Athan.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Athan.dart';
 import 'package:kidsapp/providers/deedprovider.dart';
@@ -14,6 +15,7 @@ import 'package:kidsapp/screens/hadethramdan.dart';
 import 'package:kidsapp/screens/sera.dart';
 import 'package:kidsapp/screens/types.dart';
 import 'package:kidsapp/widgets/gift.dart';
+import 'package:kidsapp/widgets/ramdancounte.dart';
 import 'package:kidsapp/widgets/ramdanitem.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
@@ -119,29 +121,11 @@ class _RamdanState extends State<Ramdan> {
   Widget build(BuildContext context) {
     var mounth = new HijriCalendar.now().getLongMonthName().toString();
 
-    mon = HijriCalendar.now().hMonth;
-    day = HijriCalendar.now().hDay;
-    year = HijriCalendar.now().hYear;
-    if (HijriCalendar.now().isBefore(year + 1, 09, 01)) {
-      if (HijriCalendar.now().hMonth < 09) {
-        ramdany = year;
-      } else {
-        ramdany = year + 1;
-      }
-    }
-    var a = DateTime.utc(year, mon, day);
-    var b = DateTime.utc(ramdany, 09, 01);
-    var c = b.difference(a).inDays;
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
         body: mounth != 'Ramadan'
-            ? Center(
-                child: Container(
-                  child: Text('$c days left to Ramadan'),
-                ),
-              )
+            ? Ramdancount()
             : firstrun
                 ? Center(child: CircularProgressIndicator())
                 : ListView(

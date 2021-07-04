@@ -1,5 +1,6 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:rxdart/rxdart.dart';
@@ -16,10 +17,23 @@ class Iconsplay extends StatefulWidget {
 class _IconsplayState extends State<Iconsplay> {
   AudioPlayer advancedPlayer;
   @override
+  void dispose() {
+    advancedPlayer.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   void initState() {
     advancedPlayer = AudioPlayer();
     // TODO: implement initState
     super.initState();
+  }
+
+  Future<bool> _onWillPop() async {
+    print("on will pop");
+    advancedPlayer.stop();
+    Navigator.pop(context);
   }
 
   @override
@@ -74,7 +88,6 @@ class _IconsplayState extends State<Iconsplay> {
                                   if (position > duration) {
                                     position = duration;
                                     advancedPlayer.stop();
-                                 
                                   }
 
                                   var bufferedPosition =
@@ -103,17 +116,20 @@ class _IconsplayState extends State<Iconsplay> {
                       ],
                     )
                   ];
-                  return AlertDialog(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16)),
-                    content: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20)),
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        children: children2,
+                  return WillPopScope(
+                    onWillPop: _onWillPop,
+                    child: AlertDialog(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16)),
+                      content: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          children: children2,
+                        ),
                       ),
                     ),
                   );

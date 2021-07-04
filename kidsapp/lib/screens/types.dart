@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:android_alarm_manager/android_alarm_manager.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,6 +20,7 @@ import 'package:provider/provider.dart';
 
 class Types extends StatefulWidget {
   static const String route = 'types';
+  static AudioPlayer player2;
   @override
   _TypesState createState() => _TypesState();
 }
@@ -29,10 +32,17 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
   bool cheak;
   GlobalKey<ScaffoldState> scaffold;
   TabController tabController;
+  AudioPlayer player2;
+  int alarmId = 1;
+   void fireAlarmm() async {
+    await Types.player2.play(
+        'https://muslim-kids.royaltechni.com/public/assets/audio/dailyhadiths/-1624717661.mp3');
+  }
 
   @override
   void initState() {
     super.initState();
+    player2 = AudioPlayer();
     scaffold = GlobalKey<ScaffoldState>();
     cheaknetwork();
     tabController = TabController(length: 5, vsync: this);
@@ -47,6 +57,8 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
     print("on will pop");
     if (tabController.index == 0) {
       await SystemNavigator.pop();
+    } else {
+      tabController.index = 0;
     }
   }
 
@@ -116,16 +128,21 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                             Icons.star,
                             color: Colors.amberAccent,
                           ),
-                          Text(
-                            Provider.of<Userprovider>(context, listen: false)
-                                .score
-                                .totalScore
-                                .toString(),
-                            style: GoogleFonts.roboto(
-                              letterSpacing: 0.5,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                          GestureDetector(
+                            onTap: () async {
+                              fireAlarmm();
+                            },
+                            child: Text(
+                              Provider.of<Userprovider>(context, listen: false)
+                                  .score
+                                  .totalScore
+                                  .toString(),
+                              style: GoogleFonts.roboto(
+                                letterSpacing: 0.5,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ],
@@ -150,14 +167,13 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
               ],
               backgroundColor: Theme.of(context).primaryColor,
               bottom: TabBar(
-
                 controller: tabController,
                 indicatorColor: Colors.white,
                 isScrollable: true,
                 tabs: [
                   Container(
                     height: 60,
-                    width: MediaQuery.of(context).size.width*0.2,
+                    width: MediaQuery.of(context).size.width * 0.2,
                     child: Tab(
                         icon: FittedBox(
                             child: Column(
@@ -179,9 +195,8 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                   ),
                   Container(
                     height: 60,
-                     width: MediaQuery.of(context).size.width*0.2,
+                    width: MediaQuery.of(context).size.width * 0.2,
                     child: Tab(
-                      
                         icon: FittedBox(
                             child: Column(
                       children: [
@@ -201,7 +216,7 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                     ))),
                   ),
                   Container(
-                     width: MediaQuery.of(context).size.width*0.2,
+                    width: MediaQuery.of(context).size.width * 0.2,
                     height: 60,
                     child: Tab(
                         icon: FittedBox(
@@ -223,7 +238,7 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                     ))),
                   ),
                   Container(
-                     width: MediaQuery.of(context).size.width*0.2,
+                    width: MediaQuery.of(context).size.width * 0.2,
                     height: 60,
                     child: Tab(
                         icon: FittedBox(
@@ -245,7 +260,7 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                     ))),
                   ),
                   Container(
-                     width: MediaQuery.of(context).size.width*0.2,
+                    width: MediaQuery.of(context).size.width * 0.2,
                     height: 60,
                     child: Tab(
                         icon: FittedBox(

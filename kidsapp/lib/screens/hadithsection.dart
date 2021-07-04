@@ -79,42 +79,47 @@ class _HadithsectionState extends State<Hadithsection> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    child: Text(
-                                      'Hadith ${index + 1}',
-                                      style: GoogleFonts.roboto(
-                                        textStyle: TextStyle(
-                                            color: Colors.white,
-                                            letterSpacing: .5,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 25),
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.65,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        'Hadith ${index + 1}',
+                                        style: GoogleFonts.roboto(
+                                          textStyle: TextStyle(
+                                              color: Colors.white,
+                                              letterSpacing: .5,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Container(
-                                    child: Text(
-                                      Provider.of<Hadithprovider>(context,
-                                              listen: false)
-                                          .dailyhadith
-                                          .data[index]
-                                          .title,
-                                      style: GoogleFonts.roboto(
-                                        textStyle: TextStyle(
-                                            color: Colors.white,
-                                            letterSpacing: .5,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 25),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        Provider.of<Hadithprovider>(context,
+                                                listen: false)
+                                            .dailyhadith
+                                            .data[index]
+                                            .title,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.roboto(
+                                          textStyle: TextStyle(
+                                              color: Colors.white,
+                                              letterSpacing: .5,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               Container(
                                 width: MediaQuery.of(context).size.width * 0.25,

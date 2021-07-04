@@ -20,6 +20,7 @@ class _ControlButtonsState extends State<ControlButtons> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
+       
         StreamBuilder<LoopMode>(
           stream: widget.player.loopModeStream,
           builder: (context, snapshot) {
@@ -53,7 +54,10 @@ class _ControlButtonsState extends State<ControlButtons> {
         StreamBuilder<SequenceState>(
           stream: widget.player.sequenceStateStream,
           builder: (context, snapshot) => IconButton(
-            icon: Icon(Icons.skip_previous,size: 40,),
+            icon: Icon(
+              Icons.skip_previous,
+              size: 40,
+            ),
             onPressed:
                 widget.player.hasPrevious ? widget.player.seekToPrevious : null,
           ),
@@ -105,11 +109,13 @@ class _ControlButtonsState extends State<ControlButtons> {
         StreamBuilder<SequenceState>(
           stream: widget.player.sequenceStateStream,
           builder: (context, snapshot) => IconButton(
-            icon: Icon(Icons.skip_next,size: 40,),
+            icon: Icon(
+              Icons.skip_next,
+              size: 40,
+            ),
             onPressed: widget.player.hasNext ? widget.player.seekToNext : null,
           ),
         ),
-        
         SizedBox(
           width: 5,
         ),

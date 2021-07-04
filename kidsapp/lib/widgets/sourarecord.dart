@@ -12,18 +12,18 @@ import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:rxdart/rxdart.dart';
 
-class AudioRecorder extends StatefulWidget {
+class AudioRecord extends StatefulWidget {
   final String path;
   final VoidCallback onStop;
   static bool dialy = false;
   final String url;
-  const AudioRecorder({this.path, this.onStop, this.url});
+  const AudioRecord({this.path, this.onStop, this.url});
 
   @override
-  _AudioRecorderState createState() => _AudioRecorderState();
+  _AudioRecordState createState() => _AudioRecordState();
 }
 
-class _AudioRecorderState extends State<AudioRecorder> {
+class _AudioRecordState extends State<AudioRecord> {
   bool _isRecording = false;
   bool _isPaused = false;
   int _recordDuration = 0;
@@ -53,13 +53,13 @@ class _AudioRecorderState extends State<AudioRecorder> {
           height: 50,
           width: double.infinity,
           child: Row(
-            mainAxisAlignment: AudioRecorder.dialy
+            mainAxisAlignment: AudioRecord.dialy
                 ? MainAxisAlignment.center
                 : MainAxisAlignment.start,
             children: <Widget>[
               _buildRecordStopControl(),
               const SizedBox(width: 20),
-              AudioRecorder.dialy ? Iconsplay(this.widget.url) : Container(),
+              AudioRecord.dialy ? Iconsplay(this.widget.url) : Container(),
               const SizedBox(width: 20),
               // _buildPauseResumeControl(),
 
@@ -76,11 +76,11 @@ class _AudioRecorderState extends State<AudioRecorder> {
     Color color;
 
     if (_isRecording || _isPaused) {
-      icon = Icon(Icons.stop, color: Colors.black, size: 30);
+      icon = Icon(Icons.stop, color: Colors.white, size: 30);
       color = Theme.of(context).primaryColor.withOpacity(0.1);
     } else {
       final theme = Theme.of(context);
-      icon = Icon(Icons.mic, color: Colors.red, size: 30);
+      icon = Icon(Icons.mic, color: Colors.white, size: 30);
       color = theme.primaryColor.withOpacity(0.1);
     }
 
@@ -111,7 +111,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
 
     return Text(
       '$minutes : $seconds',
-      style: TextStyle(color: Theme.of(context).primaryColor),
+      style: TextStyle(color:Colors.white),
     );
   }
 
@@ -162,18 +162,18 @@ class _AudioRecorderState extends State<AudioRecorder> {
   }
 }
 
-class MyAppp extends StatefulWidget {
+class Sourarecord extends StatefulWidget {
   static bool dialy;
   final String url;
   final String index;
   final hadithid;
-  const MyAppp({this.url, this.index, this.hadithid});
+  const Sourarecord({this.url, this.index, this.hadithid});
 
   @override
-  _MyApppState createState() => _MyApppState();
+  _SourarecordState createState() => _SourarecordState();
 }
 
-class _MyApppState extends State<MyAppp> {
+class _SourarecordState extends State<Sourarecord> {
   bool showPlayer = false;
   String path;
   AudioPlayer advancedPlayer;
@@ -223,24 +223,13 @@ class _MyApppState extends State<MyAppp> {
                                         child: Icon(
                                           Icons.send,
                                           size: 30,
-                                          color: Colors.blue,
+                                          color: Colors.white,
                                         )),
                                     onTap: () async {
                                       setState(() {
                                         loading = true;
                                       });
-                                      AudioRecorder.dialy
-                                          ? await Dbhandler.instance
-                                              .hadithrecord(
-                                                  'read',
-                                                  hadithid.toString(),
-                                                  File(path))
-                                          : await Dbhandler.instance.ayarecord(
-                                              Soura.souranum,
-                                              ayanum,
-                                              Soura.souraname,
-                                              Soura.juznum,
-                                              File(path));
+                                     
 
                                       setState(() {
                                         loading = false;
@@ -265,7 +254,7 @@ class _MyApppState extends State<MyAppp> {
                                   child: Icon(
                                     Icons.mic,
                                     size: 30,
-                                    color: Colors.red,
+                                    color: Colors.white,
                                   )),
                               onTap: () {
                                 setState(() {
@@ -282,7 +271,7 @@ class _MyApppState extends State<MyAppp> {
                       ],
                     );
                   } else {
-                    return AudioRecorder(
+                    return AudioRecord(
                       path: snapshot.data,
                       url: this.widget.url,
                       onStop: () {
