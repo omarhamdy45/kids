@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:android_alarm_manager/android_alarm_manager.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kidsapp/models/ayah.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Athan.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
@@ -21,6 +24,7 @@ import 'package:provider/provider.dart';
 class Types extends StatefulWidget {
   static const String route = 'types';
   static AudioPlayer player2;
+  static bool alarm = true;
   @override
   _TypesState createState() => _TypesState();
 }
@@ -33,17 +37,13 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
   GlobalKey<ScaffoldState> scaffold;
   TabController tabController;
   AudioPlayer player2;
-  int alarmId = 1;
-   void fireAlarmm() async {
-    await Types.player2.play(
-        'https://muslim-kids.royaltechni.com/public/assets/audio/dailyhadiths/-1624717661.mp3');
-  }
 
   @override
   void initState() {
     super.initState();
     player2 = AudioPlayer();
     scaffold = GlobalKey<ScaffoldState>();
+    // final assetsAudioPlayer = AssetsAudioPlayer();
     cheaknetwork();
     tabController = TabController(length: 5, vsync: this);
     firstrun = true;
@@ -51,6 +51,9 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
         .currentUser
         .token
         .toString();
+    setState(() {
+      Types.alarm = false;
+    });
   }
 
   Future<bool> _onWillPop() async {
@@ -93,8 +96,9 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
       while (Dbhandler.instance.athancheak != 200) {
         await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
       }
+      // await Provider.of<Athanprovider>(context, listen: false).getLan();
+
     }
-    print(Provider.of<Userprovider>(context, listen: false).score.totalScore);
 
     if (!mounted) return;
     setState(() {
@@ -110,6 +114,12 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    int year = DateTime.now().year;
+    int day = DateTime.now().day;
+    int mounth = DateTime.now().month;
+    int nexthour;
+    int nextminute;
+
     return WillPopScope(
       onWillPop: _onWillPop,
       child: DefaultTabController(
@@ -130,7 +140,12 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              fireAlarmm();
+                              AssetsAudioPlayer.newPlayer().open(
+                                Audio("assets/audios/azan1.mp3"),
+                                autoStart: true,
+                                //  autoPlay: true,
+                                showNotification: true,
+                              );
                             },
                             child: Text(
                               Provider.of<Userprovider>(context, listen: false)
@@ -205,7 +220,7 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                           height: 3,
                         ),
                         Text(
-                          'Azkar',
+                          'Athkar',
                           style: GoogleFonts.roboto(
                             letterSpacing: 0.5,
                             fontSize: 15,
@@ -249,7 +264,7 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                           height: 3,
                         ),
                         Text(
-                          'Quraan',
+                          'Qur`an',
                           style: GoogleFonts.roboto(
                             letterSpacing: 0.5,
                             fontSize: 18,

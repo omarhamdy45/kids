@@ -5,13 +5,40 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Athanprovider with ChangeNotifier {
   Athan time;
-  String fajr, duhr, asr, maghrib, isha;
+
+  static String fajrtime, asrtime, duhrtime, ishatime, maghribtime;
+
   Future<void> fetchtimes() async {
     try {
       time = await Dbhandler.instance.gettimes();
+
+      //   fajrtime = int.parse(time.data.timings.fajr.split(':').last);
+      
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("fajrtime", time.data.timings.fajr);
+      prefs.setString("asrtime", time.data.timings.asr);
+      prefs.setString("durtime", time.data.timings.dhuhr);
+      prefs.setString("maghribtime", time.data.timings.maghrib);
+      prefs.setString("ishatime", time.data.timings.isha);
+    
+      /*
+      prefs.setString("fajrtime", time.data.timings.fajr);
+      prefs.setString("fajrtime", time.data.timings.fajr);
+      prefs.setString("fajrtime", time.data.timings.fajr);
+      */
     } catch (error) {
-      print('errorrrr');
+      print('errorrrrrr');
     }
+  }
+
+  getLan() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Athanprovider.fajrtime = prefs.getString("fajrtime");
+    Athanprovider.asrtime = prefs.getString("asrtime");
+    Athanprovider.duhrtime = prefs.getString("durtime");
+    Athanprovider.maghribtime = prefs.getString("maghribtime");
+    Athanprovider.ishatime = prefs.getString("ishatime");
+    notifyListeners();
   }
 /*
   savedsalah() async {

@@ -189,7 +189,8 @@ class _SouraState extends State<Soura> {
                                     color: Colors.white,
                                   ),
                                   height: 40,
-                                  width: MediaQuery.of(context).size.width * 0.5,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
                                   child: Center(
                                       child: Text(
                                     audios.isNotEmpty
@@ -207,7 +208,7 @@ class _SouraState extends State<Soura> {
                                 GestureDetector(
                                   onTap: () async {
                                     print(audios);
-                        
+
                                     setState(() {
                                       playlist = !playlist;
                                       ayaplayed = true;
@@ -236,17 +237,15 @@ class _SouraState extends State<Soura> {
                                       ),
                                       // Playback will be prepared to start from track1.mp3
                                       initialIndex: 0,
-                        
-                                     
-                        
+
                                       // default
                                       // Playback will be prepared to start from position zero.
                                       // initialPosition: Duration.zero, // default
                                     );
-                        
+
                                     await player2.play();
                                     // audioss.clear();
-                        
+
                                     setState(() {
                                       playlist = false;
                                     });
@@ -262,9 +261,9 @@ class _SouraState extends State<Soura> {
                                   ),
                                 ),
                                 Container(
-                                  width: 200,
-                                  color: Theme.of(context).primaryColor,
-                                  child: Sourarecord()),
+                                    width: 200,
+                                    color: Theme.of(context).primaryColor,
+                                    child: Sourarecord()),
                               ],
                             ),
                           ),
@@ -336,224 +335,235 @@ class _SouraState extends State<Soura> {
                                   });
                                 },
                                 child: Container(
-                                margin: EdgeInsets.only(bottom: play?22:1,left: 5,right: 5),
+                                  margin: EdgeInsets.only(
+                                      bottom: play ? 22 : 1, left: 2, right: 5),
                                   child: Column(
                                     children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Expanded(
-                                            flex: 8,
-                                            child: Container(
-                                            
-                                                constraints: BoxConstraints(
-                                                    maxHeight: double.infinity,
-                                                    maxWidth: double.infinity),
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                       margin: EdgeInsets.only(top: 10),
-                                                      child: Text(
-                                                        Provider.of<Quraanprovider>(
-                                                                context,
-                                                                listen: false)
-                                                            .ayah
-                                                            .data
-                                                            .verses[index]
-                                                            .text
-                                                            .arab,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style:
-                                                            GoogleFonts.amiri(
-                                                          textStyle: TextStyle(
-                                                              color: demoData[
-                                                                      index]
-                                                                  .textcolor1,
-                                                              letterSpacing: .5,
-                                                              fontSize: 22),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
-        
-                                                      child: Text(
-                                                        Provider.of<Quraanprovider>(
-                                                                context,
-                                                                listen: false)
-                                                            .ayah
-                                                            .data
-                                                            .verses[index]
-                                                            .text
-                                                            .transliteration
-                                                            .en,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style:
-                                                            GoogleFonts.amiri(
-                                                          textStyle: TextStyle(
-                                                              color: demoData[
-                                                                      index]
-                                                                  .textcolor1,
-                                                              letterSpacing: .5,
-                                                              fontSize: 22),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                    
-                                                      child: Text(
-                                                        Provider.of<Quraanprovider>(
-                                                                context,
-                                                                listen: false)
-                                                            .ayah
-                                                            .data
-                                                            .verses[index]
-                                                            .translation
-                                                            .en,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style:
-                                                            GoogleFonts.amiri(
-                                                          textStyle: TextStyle(
-                                                              color: demoData[
-                                                                      index]
-                                                                  .textcolor1,
-                                                              letterSpacing: .5,
-                                                              fontSize: 22),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )),
-                                          ),
-                                          Column(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    demoData[index].playlist =
-                                                        !demoData[index]
-                                                            .playlist;
-                                                  });
-                                                  if (demoData[index]
-                                                      .playlist) {
-                                                    audios.add((1 + index));
-                                                    audios.sort();
-                                                  } else {
-                                                    // audios.remove((1 + index));
-                                                    if (audios.first ==
-                                                        audios.last) {
-                                                      audios.clear();
-                                                    }
-
-                                                    if (1 + index ==
-                                                        audios.last) {
-                                                      audios
-                                                          .add(audios.last - 1);
-                                                      audios
-                                                          .remove((1 + index));
-                                                      audios.sort();
-                                                    }
-                                                    if (1 + index ==
-                                                        audios.first) {
-                                                      audios.add(
-                                                          audios.first + 1);
-                                                      audios
-                                                          .remove((1 + index));
-                                                      audios.sort();
-                                                    }
-                                                  }
-
-                                                  for (int i = audios[0];
-                                                      i < audios.last - 1;
-                                                      i++) {
-                                                    demoData[i].playlist = true;
-                                                  }
-
-                                                  print(audios);
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      color: demoData[index]
-                                                                  .playlist &&
-                                                              audios.isNotEmpty
-                                                          ? Colors.grey
-                                                          : Theme.of(context)
-                                                              .primaryColor,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20)),
-                                                  child: Stack(
+                                      Container(
+                                        margin: EdgeInsets.only(left: 5),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Expanded(
+                                              flex: 8,
+                                              child: Container(
+                                                  constraints: BoxConstraints(
+                                                      maxHeight:
+                                                          double.infinity,
+                                                      maxWidth:
+                                                          double.infinity),
+                                                  child: Column(
                                                     children: [
-                                                      Image.asset(
-                                                        'assets/images/hexa.png',
-                                                        width: 30,
-                                                        height: 30,
-                                                      ),
-                                                      Positioned(
-                                                        bottom: 5,
-                                                        left: 0,
-                                                        right: 0,
-                                                        top: 5,
-                                                        child: Container(
-                                                          child: FittedBox(
-                                                            child: Text(
-                                                              (1 + index)
-                                                                  .toString(),
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white),
-                                                            ),
+                                                      Container(
+                                                        margin: EdgeInsets.only(
+                                                            top: 10),
+                                                        child: Text(
+                                                          Provider.of<Quraanprovider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .ayah
+                                                              .data
+                                                              .verses[index]
+                                                              .text
+                                                              .arab,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style:
+                                                              GoogleFonts.amiri(
+                                                            textStyle: TextStyle(
+                                                                color: demoData[
+                                                                        index]
+                                                                    .textcolor1,
+                                                                letterSpacing:
+                                                                    .5,
+                                                                fontSize: 22),
                                                           ),
                                                         ),
-                                                      )
+                                                      ),
+                                                      Container(
+                                                        child: Text(
+                                                          Provider.of<Quraanprovider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .ayah
+                                                              .data
+                                                              .verses[index]
+                                                              .text
+                                                              .transliteration
+                                                              .en,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style:
+                                                              GoogleFonts.amiri(
+                                                            textStyle: TextStyle(
+                                                                color: demoData[
+                                                                        index]
+                                                                    .textcolor1,
+                                                                letterSpacing:
+                                                                    .5,
+                                                                fontSize: 22),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        child: Text(
+                                                          Provider.of<Quraanprovider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .ayah
+                                                              .data
+                                                              .verses[index]
+                                                              .translation
+                                                              .en,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style:
+                                                              GoogleFonts.amiri(
+                                                            textStyle: TextStyle(
+                                                                color: demoData[
+                                                                        index]
+                                                                    .textcolor1,
+                                                                letterSpacing:
+                                                                    .5,
+                                                                fontSize: 22),
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ],
+                                                  )),
+                                            ),
+                                            Column(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      demoData[index].playlist =
+                                                          !demoData[index]
+                                                              .playlist;
+                                                    });
+                                                    if (demoData[index]
+                                                        .playlist) {
+                                                      audios.add((1 + index));
+                                                      audios.sort();
+                                                    } else {
+                                                      // audios.remove((1 + index));
+                                                      if (audios.first ==
+                                                          audios.last) {
+                                                        audios.clear();
+                                                      }
+
+                                                      if (1 + index ==
+                                                          audios.last) {
+                                                        audios.add(
+                                                            audios.last - 1);
+                                                        audios.remove(
+                                                            (1 + index));
+                                                        audios.sort();
+                                                      }
+                                                      if (1 + index ==
+                                                          audios.first) {
+                                                        audios.add(
+                                                            audios.first + 1);
+                                                        audios.remove(
+                                                            (1 + index));
+                                                        audios.sort();
+                                                      }
+                                                    }
+
+                                                    for (int i = audios[0];
+                                                        i < audios.last - 1;
+                                                        i++) {
+                                                      demoData[i].playlist =
+                                                          true;
+                                                    }
+
+                                                    print(audios);
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: demoData[index]
+                                                                    .playlist &&
+                                                                audios
+                                                                    .isNotEmpty
+                                                            ? Colors.grey
+                                                            : Theme.of(context)
+                                                                .primaryColor,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20)),
+                                                    child: Stack(
+                                                      children: [
+                                                        Image.asset(
+                                                          'assets/images/hexa.png',
+                                                          width: 30,
+                                                          height: 30,
+                                                        ),
+                                                        Positioned(
+                                                          bottom: 5,
+                                                          left: 0,
+                                                          right: 0,
+                                                          top: 5,
+                                                          child: Container(
+                                                            child: FittedBox(
+                                                              child: Text(
+                                                                (1 + index)
+                                                                    .toString(),
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              Checkbox(
-                                                  value:
-                                                      demoData[index].checked,
-                                                  // demoData[index].checked,
-                                                  splashRadius: 2,
-                                                  hoverColor: Colors.blueAccent,
-                                                  activeColor: Theme.of(context)
-                                                      .primaryColor,
-                                                  onChanged:
-                                                      (bool newValue) async {
-                                                    setState(() {
-                                                      demoData[index].checked =
-                                                          newValue;
-                                                    });
-                                                    print(demoData[index]
-                                                        .checked);
-                                                    !demoData[index].checked
-                                                        ? await Dbhandler
-                                                            .instance
-                                                            .ayasave(
-                                                                arg.number
-                                                                    .toString(),
-                                                                (index + 1)
-                                                                    .toString(),
-                                                                arg.name,
-                                                                juz.toString(),
-                                                                'no')
-                                                        : await Dbhandler
-                                                            .instance
-                                                            .ayasave(
-                                                                arg.number
-                                                                    .toString(),
-                                                                (index + 1)
-                                                                    .toString(),
-                                                                arg.name,
-                                                                juz.toString(),
-                                                                'read');
-                                                  }),
-                                            ],
-                                          ),
-                                        ],
+                                                Checkbox(
+                                                    value:
+                                                        demoData[index].checked,
+                                                    // demoData[index].checked,
+                                                    splashRadius: 2,
+                                                    hoverColor:
+                                                        Colors.blueAccent,
+                                                    activeColor:
+                                                        Theme.of(context)
+                                                            .primaryColor,
+                                                    onChanged:
+                                                        (bool newValue) async {
+                                                      setState(() {
+                                                        demoData[index]
+                                                            .checked = newValue;
+                                                      });
+                                                      print(demoData[index]
+                                                          .checked);
+                                                      !demoData[index]
+                                                              .checked
+                                                          ? await Dbhandler.instance.ayasave(
+                                                              arg.number
+                                                                  .toString(),
+                                                              (index +
+                                                                      1)
+                                                                  .toString(),
+                                                              arg.name,
+                                                              juz.toString(),
+                                                              'no')
+                                                          : await Dbhandler
+                                                              .instance
+                                                              .ayasave(
+                                                                  arg.number
+                                                                      .toString(),
+                                                                  (index + 1)
+                                                                      .toString(),
+                                                                  arg.name,
+                                                                  juz.toString(),
+                                                                  'read');
+                                                    }),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       MyAppp(
                                         index: (index + 1).toString(),

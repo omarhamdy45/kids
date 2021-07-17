@@ -89,13 +89,13 @@ class _LoginState extends State<Login> {
                         margin: EdgeInsets.only(
                             top: MediaQuery.of(context).size.height * 0.07),
                         child: Text(
-                          'Kid Duas',
+                          'Islamic Treasures',
                           style: GoogleFonts.roboto(
                             textStyle: TextStyle(
                                 color: Colors.white,
                                 letterSpacing: .5,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 73),
+                                fontSize: 40),
                           ),
                         ),
                       ),
@@ -103,7 +103,7 @@ class _LoginState extends State<Login> {
                         child: Container(
                           margin: EdgeInsets.only(
                               top: MediaQuery.of(context).size.height * 0.07),
-                          child: Image.asset('assets/images/Group 39.png'),
+                          child: Image.asset('assets/images/bss.png',height: 250,width: 250,),
                         ),
                       ),
                       SizedBox(

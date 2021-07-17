@@ -57,11 +57,12 @@ class Dbhandler {
     try {
       String url =
           'https://api.aladhan.com/v1/timingsByCity?city=$city&country=$country&method=$method';
-
+      print(url);
       http.Response response = await http.get(Uri.parse(url));
       athancheak = response.statusCode;
+     // print(response.body);
 
-      return Athan.fromJson(json.decode(response.body));
+      return Athan.fromJson(json.decode(response.body) as Map<String, dynamic>);
     } catch (eroor) {
       print(eroor);
     }
@@ -303,6 +304,7 @@ class Dbhandler {
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
 
     Response response = await _dio.get(url);
+    print(response.statusCode);
 
     return Score.fromJson(response.data);
   }

@@ -8,12 +8,13 @@
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
   <uses-permission android:name="android.permission.WAKE_LOCK"/>
   <!-- Optional, you'll have to check this permission by yourself. --> 
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-   
+  
    <application
-        android:label="Treasures"
+    android:name=".Application"
+        android:label="Islamic Treasures"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
+
         <service
     android:name="io.flutter.plugins.androidalarmmanager.AlarmService"
     android:permission="android.permission.BIND_JOB_SERVICE"
@@ -28,7 +29,16 @@
         <action android:name="android.intent.action.BOOT_COMPLETED"/>
     </intent-filter>
 </receiver>
+<receiver
+      android:name=".MyRadarReceiver"
+      android:enabled="true"
+      android:exported="false">
+        <intent-filter>
+            <action android:name="io.radar.sdk.RECEIVED" />
+        </intent-filter>
+    </receiver>
         <activity
+        android:showWhenLocked="true" android:turnScreenOn="true"
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"

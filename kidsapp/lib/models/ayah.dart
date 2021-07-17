@@ -176,7 +176,7 @@ class Tafsir {
 class PreBismillah {
   Textt text;
   Transliteration translation;
-  Audio audio;
+  Audioo audio;
 
   PreBismillah({this.text, this.translation, this.audio});
 
@@ -185,7 +185,7 @@ class PreBismillah {
     translation = json['translation'] != null
         ? new Transliteration.fromJson(json['translation'])
         : null;
-    audio = json['audio'] != null ? new Audio.fromJson(json['audio']) : null;
+    audio = json['audio'] != null ? new Audioo.fromJson(json['audio']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -226,12 +226,12 @@ class Textt {
   }
 }
 
-class Audio {
+class Audioo {
   String primary;
   
-  Audio({this.primary,});
+  Audioo({this.primary,});
 
-  Audio.fromJson(Map<String, dynamic> json) {
+  Audioo.fromJson(Map<String, dynamic> json) {
     primary = json['primary'];
    
   }
@@ -246,7 +246,7 @@ class Audio {
 class Verses {
   Textt text;
   Transliteration translation;
-  Audio audio;
+  Audioo audio;
   
   Verses({this.text, this.translation, this.audio,});
 
@@ -255,7 +255,7 @@ class Verses {
     translation = json['translation'] != null
         ? new Transliteration.fromJson(json['translation'])
         : null;
-    audio = json['audio'] != null ? new Audio.fromJson(json['audio']) : null;
+    audio = json['audio'] != null ? new Audioo.fromJson(json['audio']) : null;
    
   }
 

@@ -11,9 +11,11 @@ class Lanprovider with ChangeNotifier {
   bool isEn7 = false;
   bool isEn8 = false;
   bool status = false;
+  int t = 5;
   String time;
-  String fajr,duhr,asr,maghrib,isha;
+  String fajr, duhr, asr, maghrib, isha;
   int counter1 = 0;
+  int ts = 0;
   int counter2 = 0;
   int counter3 = 0;
   changeLan(bool lan) async {
@@ -39,6 +41,19 @@ class Lanprovider with ChangeNotifier {
   getLan2() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     isEn2 = prefs.getBool("isEn2") ?? false;
+    notifyListeners();
+  }
+
+  changeLan10(int lan) async {
+    t = lan;
+    notifyListeners();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt("t", t);
+  }
+
+  getLa10() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    t = prefs.getInt("t");
     notifyListeners();
   }
 
@@ -166,7 +181,6 @@ class Lanprovider with ChangeNotifier {
     prefs.setString("time", time);
   }
 
-
   getdate() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     time = prefs.get("time") ?? 0;
@@ -187,6 +201,19 @@ class Lanprovider with ChangeNotifier {
     prefs.remove('counter2');
     prefs.remove('counter3');
   }
-  
 
+  bool isguz2 = true;
+
+  changeselect(bool lan) async {
+    isguz2 = lan;
+    notifyListeners();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("isguz2", isEn);
+  }
+
+  getselcet() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isEn = prefs.getBool("isguz2") ?? true;
+    notifyListeners();
+  }
 }

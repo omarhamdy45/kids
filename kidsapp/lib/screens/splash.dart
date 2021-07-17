@@ -5,6 +5,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 
 class Splash extends StatelessWidget {
+  static bool alarm = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,8 +28,6 @@ class Splash extends StatelessWidget {
                     'assets/images/bss.png',
                     fit: BoxFit.cover,
                   )),
-              
-              
             ],
           ),
           splashIconSize: 500,

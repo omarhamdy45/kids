@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/models/sour.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
+import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/widgets/duadetails.dart';
@@ -20,7 +21,8 @@ class Surz extends StatefulWidget {
 }
 
 class _SurzState extends State<Surz> {
-  List<Data> list;
+  List<Data> list = [];
+  List<Data> listt = [];
   int i;
 
   @override
@@ -35,8 +37,11 @@ class _SurzState extends State<Surz> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     List<int> arg = ModalRoute.of(context).settings.arguments as List<int>;
-    await Provider.of<Quraanprovider>(context, listen: false)
-        .fetchayasave(arg[2]);
+    if (Provider.of<Lanprovider>(context, listen: false).isguz2 == true) {
+      await Provider.of<Quraanprovider>(context, listen: false)
+          .fetchayasave(arg[2]);
+    }
+
     if (!mounted) return;
     setState(() {
       Surz.firstrun = false;
@@ -45,17 +50,26 @@ class _SurzState extends State<Surz> {
 
   Future<bool> _onWillPop() async {
     print("on will pop");
-
+    listt.clear();
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     List<int> arg = ModalRoute.of(context).settings.arguments as List<int>;
-    list = [
-      for (i = arg[1] - 1; i > arg[0] - 1; i--)
-        Provider.of<Quraanprovider>(context).sour.data[i]
-    ];
+    print(Provider.of<Lanprovider>(context, listen: false).isguz2);
+    Provider.of<Lanprovider>(context, listen: false).isguz2 == true
+        ? list = [
+            for (i = arg[1] - 1; i > arg[0] - 1; i--)
+              Provider.of<Quraanprovider>(context).sour.data[i]
+          ]
+        : arg.forEach((element) {
+            print(element);
+
+            listt.add(
+                Provider.of<Quraanprovider>(context).sour.data[element - 1]);
+          });
+
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -71,7 +85,7 @@ class _SurzState extends State<Surz> {
                     Container(
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.pop(context);
+                          _onWillPop();
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -93,12 +107,22 @@ class _SurzState extends State<Surz> {
                       child: StaggeredGridView.countBuilder(
                         shrinkWrap: true,
                         crossAxisCount: 3,
-                        itemCount: list.length,
+                        itemCount:
+                            Provider.of<Lanprovider>(context, listen: false)
+                                        .isguz2 ==
+                                    true
+                                ? list.length
+                                : listt.length,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, i) {
                           return GestureDetector(
                             onTap: () {
-                              final arg = list[i];
+                              final arg = Provider.of<Lanprovider>(context,
+                                              listen: false)
+                                          .isguz2 ==
+                                      true
+                                  ? list[i]
+                                  : listt[i];
                               print(Surz.firstrun);
                               Navigator.push(
                                 // or pushReplacement, if you need that
@@ -122,7 +146,12 @@ class _SurzState extends State<Surz> {
                                   Container(
                                     margin: EdgeInsets.only(left: 2, right: 2),
                                     child: Text(
-                                      list[i].englishName,
+                                      Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .isguz2 ==
+                                              true
+                                          ? list[i].englishName
+                                          : listt[i].englishName,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.roboto(
@@ -134,7 +163,20 @@ class _SurzState extends State<Surz> {
                                   Container(
                                     //        margin: EdgeInsets.only(top: 5),
                                     child: Text(
-                                      list[i].name.split(' ').last.toString(),
+                                      Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .isguz2 ==
+                                              true
+                                          ? list[i]
+                                              .name
+                                              .split(' ')
+                                              .last
+                                              .toString()
+                                          : listt[i]
+                                              .name
+                                              .split(' ')
+                                              .last
+                                              .toString(),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.roboto(
@@ -143,56 +185,75 @@ class _SurzState extends State<Surz> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          Provider.of<Quraanprovider>(context,
+                                  Provider.of<Lanprovider>(context,
                                                   listen: false)
-                                              .ayasaves
-                                              .result[i]
-                                              .numberOfVersrRead
-                                              .toString(),
-                                          style: GoogleFonts.roboto(
-                                              color: Colors.white),
-                                        ),
-                                        Spacer(),
-                                        Text(
-                                          list[i].numberOfAyahs.toString(),
-                                          style: GoogleFonts.roboto(
-                                              color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                            horizontal: 5)
-                                        .add(EdgeInsets.only(bottom: 5)),
-                                    child: new LinearPercentIndicator(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.27,
-                                      animation: false,
-                                      lineHeight: 10.0,
-                                      animationDuration: 1000,
-                                      percent: Provider.of<Quraanprovider>(
-                                                  context,
+                                              .isguz2 ==
+                                          true
+                                      ? Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                Provider.of<Quraanprovider>(
+                                                        context,
+                                                        listen: false)
+                                                    .ayasaves
+                                                    .result[i]
+                                                    .numberOfVersrRead
+                                                    .toString(),
+                                                style: GoogleFonts.roboto(
+                                                    color: Colors.white),
+                                              ),
+                                              Spacer(),
+                                              Text(
+                                                list[i]
+                                                    .numberOfAyahs
+                                                    .toString(),
+                                                style: GoogleFonts.roboto(
+                                                    color: Colors.white),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : Container(),
+                                  Provider.of<Lanprovider>(context,
                                                   listen: false)
-                                              .ayasaves
-                                              .result[i]
-                                              .numberOfVersrRead /
-                                          Provider.of<Quraanprovider>(context,
-                                                  listen: false)
-                                              .ayasaves
-                                              .result[i]
-                                              .numberOfVerse,
-                                      // center: Text("80.0%"),
-                                      linearStrokeCap: LinearStrokeCap.roundAll,
-                                      progressColor: Colors.amber,
-                                      backgroundColor: Colors.grey[300],
-                                    ),
-                                  )
+                                              .isguz2 ==
+                                          true
+                                      ? Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                                  horizontal: 5)
+                                              .add(EdgeInsets.only(bottom: 5)),
+                                          child: new LinearPercentIndicator(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.27,
+                                            animation: false,
+                                            lineHeight: 10.0,
+                                            animationDuration: 1000,
+                                            percent:
+                                                Provider.of<Quraanprovider>(
+                                                            context,
+                                                            listen: false)
+                                                        .ayasaves
+                                                        .result[i]
+                                                        .numberOfVersrRead /
+                                                    Provider.of<Quraanprovider>(
+                                                            context,
+                                                            listen: false)
+                                                        .ayasaves
+                                                        .result[i]
+                                                        .numberOfVerse,
+                                            // center: Text("80.0%"),
+                                            linearStrokeCap:
+                                                LinearStrokeCap.roundAll,
+                                            progressColor: Colors.amber,
+                                            backgroundColor: Colors.grey[300],
+                                          ),
+                                        )
+                                      : Container(),
                                 ],
                               ),
                             ),

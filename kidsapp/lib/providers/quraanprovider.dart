@@ -19,7 +19,7 @@ class Quraanprovider with ChangeNotifier {
   Future<void> fetchsour() async {
     try {
       sour = await Dbhandler.instance.getsour();
-      print(sour.data[0].name);
+      print(sour.data[106].name);
     } catch (eroor) {
       print(eroor);
     }

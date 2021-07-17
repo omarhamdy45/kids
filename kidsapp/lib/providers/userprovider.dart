@@ -18,10 +18,11 @@ class Userprovider with ChangeNotifier {
   static String sd;
   static String done;
   Score score;
- 
+
   Future<Score> fetchscore() async {
     try {
       score = await Dbhandler.instance.getscore();
+      print(score.totalScore);
     } catch (error) {
       print('erroe');
     }
@@ -84,7 +85,7 @@ class Userprovider with ChangeNotifier {
       Userprovider.city = first.administrativeArea;
       Userprovider.country = first.country;
       Userprovider.done = 'true';
-    } catch (err) {
+    } catch (error) {
       return false;
     }
   }
