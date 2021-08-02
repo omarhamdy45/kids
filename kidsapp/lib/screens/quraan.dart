@@ -1,10 +1,12 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
+import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/screens/sours.dart';
 import 'package:kidsapp/widgets/navigation.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class Quraan extends StatefulWidget {
@@ -16,78 +18,47 @@ class _QuraanState extends State<Quraan> {
   bool firstrun;
   List<int> arg;
   List<int> sour = List<int>.generate(30, (counter) => counter);
-
-  List<int> start = [
-    77,
-    66,
-    57,
-    51,
-    45,
-    41,
-    39,
-    36,
-    33,
-    29,
-    27,
-    25,
-    22,
-    20,
-    18,
-    16,
-    14,
-    12,
-    11,
-    9,
-    8,
-    7,
-    6,
-    5,
-    4,
-    3,
-    3,
-    2,
-    2,
-    0,
-  ];
-  List<int> end = [
-    114,
-    77,
-    66,
-    57,
-    51,
-    45,
-    41,
-    39,
-    36,
-    33,
-    29,
-    27,
-    25,
-    22,
-    20,
-    18,
-    20,
-    16,
-    12,
-    11,
-    9,
-    8,
-    7,
-    6,
-    5,
-    4,
-    4,
-    3,
-    3,
-    2,
+  List<int> ayatleanth = [
+    564,
+    431,
+    137,
+    399,
+    195,
+    246,
+    175,
+    357,
+    169,
+    178,
+    171,
+    339,
+    202,
+    190,
+    269,
+    185,
+    227,
+    154,
+    170,
+    151,
+    127,
+    159,
+    142,
+    149,
+    110,
+    124,
+    131,
+    126,
+    111,
+    148,
   ];
 
   @override
   void didChangeDependencies() async {
+    // ignore: todo
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     await Provider.of<Quraanprovider>(context, listen: false).fetchsour();
     await Provider.of<Quraanprovider>(context, listen: false).fetchjuz2saaves();
+    await Provider.of<Quraanprovider>(context, listen: false).fetchlevels();
     if (!mounted) return;
     setState(() {
       firstrun = false;
@@ -96,6 +67,7 @@ class _QuraanState extends State<Quraan> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     firstrun = true;
@@ -103,7 +75,7 @@ class _QuraanState extends State<Quraan> {
 
   @override
   Widget build(BuildContext context) {
-    print(start.length);
+   
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
@@ -141,14 +113,10 @@ class _QuraanState extends State<Quraan> {
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: () {
-                                  final List<int> arg = [
-                                    start[index],
-                                    end[index],
-                                  30
-                                  ];
-                                  print(arg);
-                                  Navigator.push(
+                                onTap: () async {
+                                  final List<int> arg = [sour[29 - index] + 1];
+
+                                  await Navigator.push(
                                     // or pushReplacement, if you need that
                                     context,
                                     FadeInRoute(
@@ -197,7 +165,7 @@ class _QuraanState extends State<Quraan> {
                                                 margin: EdgeInsets.only(
                                                     left: 15, top: 15),
                                                 child: Text(
-                                                  'Vercres : 564',
+                                                  'Vercres : ${ayatleanth[index]}',
                                                   style: GoogleFonts.roboto(
                                                     textStyle: TextStyle(
                                                         color: Colors.white,
@@ -254,7 +222,7 @@ class _QuraanState extends State<Quraan> {
                                                                     listen:
                                                                         false)
                                                                 .juz2save
-                                                                .result[0]
+                                                                .result[index]
                                                                 .numberOfVersrRead
                                                                 .toString() +
                                                             '/564',
@@ -282,169 +250,286 @@ class _QuraanState extends State<Quraan> {
                             })
                         : ListView.builder(
                             shrinkWrap: true,
-                            itemCount: 12,
+                            itemCount: Provider.of<Quraanprovider>(context)
+                                .levles
+                                .levels
+                                .length,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () async {
-                                  if (index == 0) {
-                                    arg = [
-                                      1,
-                                      112,
-                                      114,
-                                      113,
-                                      111,
-                                      110,
-                                      105,
-                                      107
-                                    ];
-                                  }
-                                  if (index == 1) {
-                                    arg = [
-                                      106,
-                                      109,
-                                      91,
-                                      94,
-                                      103,
-                                      102,
-                                      93,
-                                      100,
-                                      97,
-                                    ];
-                                  }
-                                  if (index == 2) {
-                                    arg = [96, 104, 99, 101, 92, 90, 89, 98];
-                                  }
-                                  if (index == 3) {
-                                    arg = [88, 87, 86, 85, 84, 83];
-                                  }
-                                  if (index == 4) {
-                                    arg = [82, 81, 80, 79, 78];
-                                  }
-                                  if (index == 5) {
-                                    arg = [32, 67];
-                                  }
-                                  if (index == 6) {
-                                    arg = [50, 55];
-                                  }
-                                  if (index == 7) {
-                                    arg = [50, 36];
-                                  }
-                                  if (index == 8) {
-                                    arg = [49, 56];
-                                  }
-                                  if (index == 9) {
-                                    arg = [18];
-                                  }
-                                  if (index == 10) {
-                                    arg = [33];
-                                  }
-                                  if (index == 11) {
-                                    arg = [24];
-                                  }
-                                  //  print(arg);
-                                  Navigator.push(
-                                    // or pushReplacement, if you need that
-                                    context,
-                                    FadeInRoute(
-                                        routeName: Surz.route,
-                                        page: Surz(),
-                                        argument: arg),
-                                  );
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 7).add(
-                                      EdgeInsets.symmetric(
-                                          horizontal: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.01)),
-                                  height: 130,
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    color: Theme.of(context).primaryColor,
-                                    child: Container(
-                                      margin: EdgeInsets.only(left: 7),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.65,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
+                              return Container(
+                                child: ExpandableNotifier(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Column(
+                                    children: <Widget>[
+                                      ScrollOnExpand(
+                                        scrollOnExpand: true,
+                                        scrollOnCollapse: true,
+                                        child: Container(
+                                          child: ExpandablePanel(
+                                            theme: const ExpandableThemeData(
+                                              headerAlignment:
+                                                  ExpandablePanelHeaderAlignment
+                                                      .center,
+                                              hasIcon: false,
+                                              tapBodyToCollapse: true,
+                                            ),
+                                            header: Card(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: Container(
+                                                height: 60,
+                                                margin: EdgeInsets.symmetric(
+                                                    vertical: 2),
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(10),
                                                   child: Text(
-                                                    'Level ${index + 1}',
-                                                    style: GoogleFonts.roboto(
-                                                      textStyle: TextStyle(
-                                                          color: Colors.white,
-                                                          letterSpacing: .5,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 25),
-                                                    ),
+                                                    "Level ${index + 1}",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                   ),
                                                 ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                              ],
+                                              ),
                                             ),
-                                          ),
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.25,
-                                            child: Row(
-                                              children: [
-                                                VerticalDivider(
-                                                  width: 2,
-                                                  endIndent: 10,
-                                                  indent: 10,
-                                                  color: Colors.white,
-                                                ),
-                                                SizedBox(
-                                                  width: 20,
-                                                ),
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    CircleAvatar(
-                                                      radius: 20,
-                                                      backgroundColor:
-                                                          Colors.grey[100],
-                                                      child: CircleAvatar(
-                                                          radius: 19,
-                                                          backgroundColor:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          child: Icon(
-                                                            Icons.check_sharp,
+                                            expanded: Container(
+                                              height:
+                                                  Provider.of<Quraanprovider>(
+                                                              context)
+                                                          .levles
+                                                          .levels[index]
+                                                          .qurans
+                                                          .length *
+                                                      145.toDouble(),
+                                              child: ListView.builder(
+                                                  physics:
+                                                      NeverScrollableScrollPhysics(),
+                                                  itemCount: Provider.of<
+                                                              Quraanprovider>(
+                                                          context)
+                                                      .levles
+                                                      .levels
+                                                      .length,
+                                                  itemBuilder: (context, i) {
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        List<int> arg = [];
+
+                                                        arg.add(Provider.of<
+                                                                    Quraanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .levles
+                                                            .levels[index]
+                                                            .qurans[i]
+                                                            .number);
+                                                        arg.add(Provider.of<
+                                                                    Quraanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .levles
+                                                            .levels[index]
+                                                            .qurans[i]
+                                                            .juza);
+                                                        arg.add(0);
+                                                        arg.add(Provider.of<
+                                                                    Quraanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .levles
+                                                            .levels[index]
+                                                            .qurans[i]
+                                                            .numberOfVerse);
+                                                        Navigator.push(
+                                                          // or pushReplacement, if you need that
+                                                          context,
+                                                          FadeInRoute(
+                                                              routeName:
+                                                                  Soura.route,
+                                                              page: Soura(),
+                                                              argument: arg),
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        height: 130,
+                                                        margin: EdgeInsets.symmetric(
+                                                            horizontal:
+                                                                MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width *
+                                                                    0.07,
+                                                            vertical: 8),
+                                                        child: Card(
+                                                            elevation: 5,
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10)),
                                                             color: Colors.white,
-                                                          )),
-                                                    ),
-                                                  ],
-                                                )
+                                                            child: Column(
+                                                              children: [
+                                                                Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          8.0),
+                                                                  child:
+                                                                      Container(
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Text(
+                                                                          Provider.of<Quraanprovider>(context)
+                                                                              .levles
+                                                                              .levels[index]
+                                                                              .qurans[i]
+                                                                              .number
+                                                                              .toString(),
+                                                                          style:
+                                                                              TextStyle(color: Colors.black),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  width: double
+                                                                      .infinity,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: EdgeInsets.only(
+                                                                        bottom:
+                                                                            10),
+                                                                    child: Text(
+                                                                      Provider.of<Quraanprovider>(
+                                                                              context)
+                                                                          .levles
+                                                                          .levels[
+                                                                              index]
+                                                                          .qurans[
+                                                                              i]
+                                                                          .surah,
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      softWrap:
+                                                                          true,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .fade,
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .black,
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                              .symmetric(
+                                                                          horizontal:
+                                                                              5)
+                                                                      .add(EdgeInsets.only(
+                                                                          bottom:
+                                                                              5)),
+                                                                  child:
+                                                                      new LinearPercentIndicator(
+                                                                    //   fillColor: Theme.of(context).pr,
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.77,
+
+                                                                    animation:
+                                                                        false,
+                                                                    lineHeight:
+                                                                        10.0,
+                                                                    animationDuration:
+                                                                        1000,
+                                                                    percent:
+                                                                        10 /
+                                                                            100,
+                                                                    // center: Text("80.0%"),
+                                                                    linearStrokeCap:
+                                                                        LinearStrokeCap
+                                                                            .roundAll,
+                                                                    progressColor:
+                                                                        Theme.of(context)
+                                                                            .primaryColor,
+                                                                    backgroundColor: Theme.of(
+                                                                            context)
+                                                                        .primaryColor
+                                                                        .withOpacity(
+                                                                            0.2),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            )),
+                                                      ),
+                                                    );
+                                                  }),
+                                            ),
+
+                                            /*
+                                             Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                for (var _ in Iterable
+                                                    .generate(Provider.of<
+                                                                Quraanprovider>(
+                                                            context)
+                                                        .levles
+                                                        .levels[index]
+                                                        .qurans
+                                                        .length))
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.all(20),
+                                                    width: double.infinity,
+                                                    color: Colors.white,
+                                                    child: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                bottom: 10),
+                                                        child: Text(
+                                                          Provider.of<Quraanprovider>(
+                                                                  context)
+                                                              .levles
+                                                              .levels[index]
+                                                              .qurans[1]
+                                                              .surah,
+                                                          softWrap: true,
+                                                          overflow:
+                                                              TextOverflow
+                                                                  .fade,
+                                                        )),
+                                                  ),
                                               ],
                                             ),
+                                            */
+                                            builder: (_, collapsed, expanded) {
+                                              return Expandable(
+                                                collapsed: collapsed,
+                                                expanded: expanded,
+                                                theme:
+                                                    const ExpandableThemeData(
+                                                        crossFadePoint: 0),
+                                              );
+                                            },
                                           ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ),
+                                )),
                               );
                             },
                           ),

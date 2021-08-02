@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
-import 'package:kidsapp/providers/azkarprovider.dart';
 import 'package:kidsapp/providers/deedprovider.dart';
 import 'package:kidsapp/screens/ramdanscreen.dart';
 import 'package:kidsapp/widgets/gift.dart';
@@ -31,6 +30,7 @@ class _SeraState extends State<Sera> {
 @override
   void dispose() {
     advancedPlayer.dispose();
+    // ignore: todo
     // TODO: implement dispose
     super.dispose();
   }

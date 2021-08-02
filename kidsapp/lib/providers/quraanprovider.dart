@@ -6,8 +6,8 @@ import 'package:kidsapp/models/ayah.dart';
 import 'package:kidsapp/models/ayasaves.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/guz2save.dart';
+import 'package:kidsapp/models/quraanlevles.dart';
 import 'package:kidsapp/models/sour.dart';
-import 'package:kidsapp/screens/quraan.dart';
 
 class Quraanprovider with ChangeNotifier {
   Sour sour;
@@ -16,6 +16,7 @@ class Quraanprovider with ChangeNotifier {
   Juz2save juz2save;
   Ayacheak ayacheak;
 
+  Levles levles;
   Future<void> fetchsour() async {
     try {
       sour = await Dbhandler.instance.getsour();
@@ -25,9 +26,12 @@ class Quraanprovider with ChangeNotifier {
     }
   }
 
+  
+
   Future<void> fetchayat(int id) async {
     try {
       ayah = await Dbhandler.instance.getayatbyid(id);
+      print(ayah.data.number);
     } catch (eroor) {
       print(eroor);
     }
@@ -36,6 +40,14 @@ class Quraanprovider with ChangeNotifier {
   Future<void> fetchayasave(int id) async {
     try {
       ayasaves = await Dbhandler.instance.getayasaves(id);
+    } catch (eroor) {
+      print(eroor);
+    }
+  }
+
+  Future<void> fetchlevels() async {
+    try {
+      levles = await Dbhandler.instance.getlevles();
     } catch (eroor) {
       print(eroor);
     }

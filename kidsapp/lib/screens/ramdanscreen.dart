@@ -13,7 +13,7 @@ import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/screens/dua.dart';
 import 'package:kidsapp/screens/hadethramdan.dart';
 import 'package:kidsapp/screens/sera.dart';
-import 'package:kidsapp/screens/types.dart';
+import 'package:kidsapp/screens/Home.dart';
 import 'package:kidsapp/widgets/gift.dart';
 import 'package:kidsapp/widgets/ramdancounte.dart';
 import 'package:kidsapp/widgets/ramdanitem.dart';
@@ -1327,7 +1327,7 @@ class _RamdanState extends State<Ramdan> {
                                                     (route) => route.isFirst);
                                                 await Navigator
                                                     .pushReplacementNamed(
-                                                        context, Types.route);
+                                                        context, Home.route);
                                               },
                                               text: 'Done',
                                               color: Color.fromRGBO(

@@ -24,18 +24,24 @@ class Ayasaves {
 class Result {
   int quranNumber;
   String surah;
+  int from;
+  int to;
   int numberOfVerse;
   int numberOfVersrRead;
 
   Result(
       {this.quranNumber,
       this.surah,
+      this.from,
+      this.to,
       this.numberOfVerse,
       this.numberOfVersrRead});
 
   Result.fromJson(Map<String, dynamic> json) {
     quranNumber = json['quran_number'];
     surah = json['surah'];
+    from = json['from'];
+    to = json['to'];
     numberOfVerse = json['numberOfVerse'];
     numberOfVersrRead = json['numberOfVersrRead'];
   }
@@ -44,6 +50,8 @@ class Result {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['quran_number'] = this.quranNumber;
     data['surah'] = this.surah;
+    data['from'] = this.from;
+    data['to'] = this.to;
     data['numberOfVerse'] = this.numberOfVerse;
     data['numberOfVersrRead'] = this.numberOfVersrRead;
     return data;

@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
-import 'package:kidsapp/screens/types.dart';
+import 'package:kidsapp/screens/Home.dart';
 import 'package:kidsapp/widgets/background.dart';
 
 import 'package:provider/provider.dart';
@@ -42,7 +42,7 @@ class _LoginState extends State<Login> {
       setState(() {
         loading = true;
       });
-
+      Userprovider.username = email;
       String error = await Provider.of<Userprovider>(context, listen: false)
           .signInn(email, password);
 
@@ -57,7 +57,7 @@ class _LoginState extends State<Login> {
         });
       } else {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => Types()));
+            MaterialPageRoute(builder: (BuildContext context) => Home()));
       }
     }
   }
@@ -103,7 +103,11 @@ class _LoginState extends State<Login> {
                         child: Container(
                           margin: EdgeInsets.only(
                               top: MediaQuery.of(context).size.height * 0.07),
-                          child: Image.asset('assets/images/bss.png',height: 250,width: 250,),
+                          child: Image.asset(
+                            'assets/images/bss.png',
+                            height: 250,
+                            width: 250,
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -198,10 +202,10 @@ class _LoginState extends State<Login> {
                                   setState(() {
                                     password = value;
                                   });
-                                  if (password.length >= 8) {
+                                  if (password.length >= 6) {
                                     return null;
                                   }
-                                  return 'password must contain 8 charcter at least';
+                                  return 'password must contain 6 charcter at least';
                                 },
                                 textInputAction: TextInputAction.done,
                                 focusNode: passwordnode,

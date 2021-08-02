@@ -8,8 +8,7 @@ import 'package:kidsapp/screens/elfajar.dart';
 import 'package:kidsapp/screens/isha.dart';
 import 'package:kidsapp/screens/maghrib.dart';
 import 'package:kidsapp/screens/thuhr.dart';
-import 'package:kidsapp/screens/types.dart';
-import 'package:kidsapp/widgets/background.dart';
+import 'package:kidsapp/screens/Home.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +42,6 @@ class _SalahState extends State<Salah> {
   void initState() {
     super.initState();
     getnextprayer();
-    final player = new AudioPlayer();
     var format = DateFormat("HH:mm");
     hour1 = format.parse("${datetime.hour}:${datetime.minute}");
     if (hour1 == time) {
@@ -134,11 +132,11 @@ class _SalahState extends State<Salah> {
       // or pushReplacement, if you need that
       context,
       FadeInRoute(
-        routeName: Types.route,
-        page: Types(),
+        routeName: Home.route,
+        page: Home(),
       ),
     );
-    // why use freshWords var? https://stackoverflow.com/a/52992836/2301224
+
   }
 
   @override

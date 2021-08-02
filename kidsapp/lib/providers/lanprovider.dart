@@ -216,4 +216,18 @@ class Lanprovider with ChangeNotifier {
     isEn = prefs.getBool("isguz2") ?? true;
     notifyListeners();
   }
+   bool islevel = true;
+
+  changehadithselecet(bool lan) async {
+    islevel = lan;
+    notifyListeners();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("islevel", isEn);
+  }
+
+  gethadithselect() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isEn = prefs.getBool("islevel") ?? true;
+    notifyListeners();
+  }
 }

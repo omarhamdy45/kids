@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kidsapp/screens/types.dart';
+import 'package:kidsapp/screens/Home.dart';
 import 'package:kidsapp/widgets/background.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
@@ -31,7 +31,7 @@ class Splash extends StatelessWidget {
             ],
           ),
           splashIconSize: 500,
-          nextScreen: Types(),
+          nextScreen: Home(),
           splashTransition: SplashTransition.rotationTransition,
           pageTransitionType: PageTransitionType.fade,
           backgroundColor: Colors.transparent,

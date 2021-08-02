@@ -1,17 +1,15 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:android_alarm_manager/android_alarm_manager.dart';
-import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kidsapp/models/ayah.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Athan.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
+import 'package:kidsapp/screens/Homescreen.dart';
 import 'package:kidsapp/screens/duaas.dart';
 import 'package:kidsapp/screens/hadithsection.dart';
 import 'package:kidsapp/screens/login.dart';
@@ -21,15 +19,13 @@ import 'package:kidsapp/screens/salah.dart';
 
 import 'package:provider/provider.dart';
 
-class Types extends StatefulWidget {
+class Home extends StatefulWidget {
   static const String route = 'types';
-  static AudioPlayer player2;
-  static bool alarm = true;
   @override
   _TypesState createState() => _TypesState();
 }
 
-class _TypesState extends State<Types> with TickerProviderStateMixin {
+class _TypesState extends State<Home> with TickerProviderStateMixin {
   bool firstrun;
   int i;
   String currentPostion;
@@ -45,15 +41,12 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
     scaffold = GlobalKey<ScaffoldState>();
     // final assetsAudioPlayer = AssetsAudioPlayer();
     cheaknetwork();
-    tabController = TabController(length: 5, vsync: this);
+    tabController = TabController(length: 6, vsync: this);
     firstrun = true;
     Userprovider.sd = Provider.of<Userprovider>(context, listen: false)
         .currentUser
         .token
         .toString();
-    setState(() {
-      Types.alarm = false;
-    });
   }
 
   Future<bool> _onWillPop() async {
@@ -83,10 +76,10 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-
     await Provider.of<Userprovider>(context, listen: false).getUserLocation();
     if (Userprovider.done == 'true') {
       await Provider.of<Userprovider>(context, listen: false).fetchscore();
+      await Provider.of<Userprovider>(context, listen: false).getusername();
       await Provider.of<Lanprovider>(context, listen: false).getdate();
       if (DateTime.now().day.toString() !=
           Provider.of<Lanprovider>(context, listen: false).time) {
@@ -114,16 +107,10 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    int year = DateTime.now().year;
-    int day = DateTime.now().day;
-    int mounth = DateTime.now().month;
-    int nexthour;
-    int nextminute;
-
     return WillPopScope(
       onWillPop: _onWillPop,
       child: DefaultTabController(
-        length: 5,
+        length: 6,
         child: Scaffold(
             key: scaffold,
             appBar: AppBar(
@@ -140,12 +127,9 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              AssetsAudioPlayer.newPlayer().open(
-                                Audio("assets/audios/azan1.mp3"),
-                                autoStart: true,
-                                //  autoPlay: true,
-                                showNotification: true,
-                              );
+                              await player2.setUrl(
+                                  'https://muslimkids.royaltechni.com/public/assets/audio/dailyhadiths/-1624717661.mp3');
+                              player2.play();
                             },
                             child: Text(
                               Provider.of<Userprovider>(context, listen: false)
@@ -186,6 +170,28 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                 indicatorColor: Colors.white,
                 isScrollable: true,
                 tabs: [
+                  Container(
+                    height: 60,
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    child: Tab(
+                        icon: FittedBox(
+                            child: Column(
+                      children: [
+                        Icon(FontAwesomeIcons.home,size: 35,),
+                        SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          'Home',
+                          style: GoogleFonts.roboto(
+                            letterSpacing: 0.5,
+                           
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ))),
+                  ),
                   Container(
                     height: 60,
                     width: MediaQuery.of(context).size.width * 0.2,
@@ -308,6 +314,7 @@ class _TypesState extends State<Types> with TickerProviderStateMixin {
                 : TabBarView(
                     controller: tabController,
                     children: [
+                      Homescreen(),
                       Salah(),
                       Duaas(),
                       Ramdan(),

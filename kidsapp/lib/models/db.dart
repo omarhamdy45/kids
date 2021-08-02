@@ -12,6 +12,8 @@ import 'package:kidsapp/models/ayah.dart';
 import 'package:kidsapp/models/ayasaves.dart';
 import 'package:kidsapp/models/catgoriess.dart';
 import 'package:kidsapp/models/dialyhadith.dart';
+import 'package:kidsapp/models/hadithlevel.dart';
+import 'package:kidsapp/models/quraanlevles.dart';
 import 'package:kidsapp/models/sour.dart';
 import 'package:kidsapp/models/location.dart';
 import 'package:kidsapp/models/score.dart';
@@ -21,7 +23,6 @@ import 'dart:convert' as convert;
 
 import 'package:http/http.dart' as http;
 import 'package:kidsapp/screens/dialyhadith.dart';
-
 import 'guz2save.dart';
 
 class Dbhandler {
@@ -39,7 +40,7 @@ class Dbhandler {
   int athancheak;
   int dialyhadith;
 
-  String mainurl = 'https://muslim-kids.royaltechni.com/api';
+  String mainurl = 'https://muslimkids.royaltechni.com/api';
 
   Future<Athan> gettimes() async {
     String city = Userprovider.city;
@@ -60,7 +61,7 @@ class Dbhandler {
       print(url);
       http.Response response = await http.get(Uri.parse(url));
       athancheak = response.statusCode;
-     // print(response.body);
+      // print(response.body);
 
       return Athan.fromJson(json.decode(response.body) as Map<String, dynamic>);
     } catch (eroor) {
@@ -300,20 +301,23 @@ class Dbhandler {
 
   Future<Score> getscore() async {
     String url = '$mainurl/score';
+    print(url);
     final String tokenn = Userprovider.sd;
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
-
-    Response response = await _dio.get(url);
-    print(response.statusCode);
-
-    return Score.fromJson(response.data);
+    try {
+      Response response = await _dio.get(url);
+      print(url);
+      return Score.fromJson(response.data);
+    } catch (eroor) {
+      print(eroor);
+    }
   }
 
   Future<Sour> getsour() async {
     String url = 'http://api.alquran.cloud/v1/surah';
 
     Response response = await _dio.get(url);
-    //  print(response.data);
+    print(response.data);
     return Sour.fromJson(response.data);
   }
 
@@ -321,12 +325,11 @@ class Dbhandler {
     String url = 'https://api.quran.sutanlab.id/surah/$id';
 
     var response = await http.get(Uri.parse(url));
-
-    return Ayah.fromJson(
-        convert.jsonDecode(response.body) as Map<String, dynamic>);
+    print(response.body);
+    return Ayah.fromJson(convert.jsonDecode(response.body));
   }
 
-  Future<void> azkaraftersalah(String status) async {
+  Future<void> azkaraftersalah(String status, String id) async {
     String url = '$mainurl/azkar_salah_status';
     final String tokenn = Userprovider.sd;
 
@@ -337,7 +340,7 @@ class Dbhandler {
           'Accept': 'application/json',
           'Authorization': 'Bearer $tokenn',
         },
-        body: {'status': status},
+        body: {'status': status, 'salah_id': id},
       );
       //  print(response.body);
     } catch (eroor) {
@@ -406,7 +409,7 @@ class Dbhandler {
           'status': status,
         },
       );
-      print(response.statusCode);
+      print(response.body);
     } catch (eroor) {
       print(eroor);
     }
@@ -442,10 +445,20 @@ class Dbhandler {
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
 
     Response response = await _dio.get(url);
+    print(response.data);
 
     return Ayasaves.fromJson(response.data);
   }
+  Future<Ayasaves> getlevelsaves(int id) async {
+    String url = '$mainurl/numberOfSavesThroughLevel/$id';
+    final String tokenn = Userprovider.sd;
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
 
+    Response response = await _dio.get(url);
+    print(response.data);
+
+    return Ayasaves.fromJson(response.data);
+  }
   Future<Ayacheak> getayacheak(int id) async {
     String url = '$mainurl/allOfVerseSave/$id';
     final String tokenn = Userprovider.sd;
@@ -476,9 +489,23 @@ class Dbhandler {
     return Juz2save.fromJson(response.data);
   }
 
+  Future<Levles> getlevles() async {
+    String url = '$mainurl/QuranLevels';
+
+    Response response = await _dio.get(url);
+
+    return Levles.fromJson(response.data);
+  }
+
   Future<Dailyhadith> getdialyhadith() async {
     String url = '$mainurl/dailyhadith';
     Response response = await _dio.get(url);
     return Dailyhadith.fromJson(response.data);
+  }
+
+  Future<Hadithlevel> gethadithleevel() async {
+    String url = '$mainurl/HadithLevels';
+    Response response = await _dio.get(url);
+    return Hadithlevel.fromJson(response.data);
   }
 }

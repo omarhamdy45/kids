@@ -22,7 +22,7 @@ class Surz extends StatefulWidget {
 
 class _SurzState extends State<Surz> {
   List<Data> list = [];
-  List<Data> listt = [];
+
   int i;
 
   @override
@@ -39,9 +39,8 @@ class _SurzState extends State<Surz> {
     List<int> arg = ModalRoute.of(context).settings.arguments as List<int>;
     if (Provider.of<Lanprovider>(context, listen: false).isguz2 == true) {
       await Provider.of<Quraanprovider>(context, listen: false)
-          .fetchayasave(arg[2]);
+          .fetchayasave(arg[0]);
     }
-
     if (!mounted) return;
     setState(() {
       Surz.firstrun = false;
@@ -50,7 +49,7 @@ class _SurzState extends State<Surz> {
 
   Future<bool> _onWillPop() async {
     print("on will pop");
-    listt.clear();
+
     Navigator.of(context).pop();
   }
 
@@ -58,6 +57,7 @@ class _SurzState extends State<Surz> {
   Widget build(BuildContext context) {
     List<int> arg = ModalRoute.of(context).settings.arguments as List<int>;
     print(Provider.of<Lanprovider>(context, listen: false).isguz2);
+    /*
     Provider.of<Lanprovider>(context, listen: false).isguz2 == true
         ? list = [
             for (i = arg[1] - 1; i > arg[0] - 1; i--)
@@ -65,11 +65,8 @@ class _SurzState extends State<Surz> {
           ]
         : arg.forEach((element) {
             print(element);
-
-            listt.add(
-                Provider.of<Quraanprovider>(context).sour.data[element - 1]);
           });
-
+*/
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -108,30 +105,41 @@ class _SurzState extends State<Surz> {
                         shrinkWrap: true,
                         crossAxisCount: 3,
                         itemCount:
-                            Provider.of<Lanprovider>(context, listen: false)
-                                        .isguz2 ==
-                                    true
-                                ? list.length
-                                : listt.length,
+                            Provider.of<Quraanprovider>(context, listen: false)
+                                .ayasaves
+                                .result
+                                .length,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, i) {
                           return GestureDetector(
                             onTap: () {
-                              final arg = Provider.of<Lanprovider>(context,
-                                              listen: false)
-                                          .isguz2 ==
-                                      true
-                                  ? list[i]
-                                  : listt[i];
-                              print(Surz.firstrun);
+                              List<int> args = [];
+                              // List<int> arg = [];
+                              args.add(Provider.of<Quraanprovider>(context,
+                                      listen: false)
+                                  .ayasaves
+                                  .result[i]
+                                  .quranNumber);
+                              args.add(arg[0]);
+                              args.add(Provider.of<Quraanprovider>(context,
+                                      listen: false)
+                                  .ayasaves
+                                  .result[i]
+                                  .from);
+                                   args.add(Provider.of<Quraanprovider>(context,
+                                      listen: false)
+                                  .ayasaves
+                                  .result[i]
+                                  .numberOfVerse);
                               Navigator.push(
                                 // or pushReplacement, if you need that
                                 context,
                                 FadeInRoute(
                                     routeName: Soura.route,
                                     page: Soura(),
-                                    argument: arg),
+                                    argument: args),
                               );
+                              print(args);
                             },
                             child: Container(
                               height: 110,
@@ -146,12 +154,10 @@ class _SurzState extends State<Surz> {
                                   Container(
                                     margin: EdgeInsets.only(left: 2, right: 2),
                                     child: Text(
-                                      Provider.of<Lanprovider>(context,
-                                                      listen: false)
-                                                  .isguz2 ==
-                                              true
-                                          ? list[i].englishName
-                                          : listt[i].englishName,
+                                      Provider.of<Quraanprovider>(context)
+                                          .ayasaves
+                                          .result[i]
+                                          .surah,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.roboto(
@@ -163,20 +169,8 @@ class _SurzState extends State<Surz> {
                                   Container(
                                     //        margin: EdgeInsets.only(top: 5),
                                     child: Text(
-                                      Provider.of<Lanprovider>(context,
-                                                      listen: false)
-                                                  .isguz2 ==
-                                              true
-                                          ? list[i]
-                                              .name
-                                              .split(' ')
-                                              .last
-                                              .toString()
-                                          : listt[i]
-                                              .name
-                                              .split(' ')
-                                              .last
-                                              .toString(),
+                                      Provider.of<Quraanprovider>(context)
+                                          .sour.data[Provider.of<Quraanprovider>(context,listen: false).ayasaves.result[i].quranNumber-1].name.split(' ').last,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.roboto(
@@ -196,8 +190,7 @@ class _SurzState extends State<Surz> {
                                             children: [
                                               Text(
                                                 Provider.of<Quraanprovider>(
-                                                        context,
-                                                        listen: false)
+                                                        context)
                                                     .ayasaves
                                                     .result[i]
                                                     .numberOfVersrRead
@@ -207,8 +200,11 @@ class _SurzState extends State<Surz> {
                                               ),
                                               Spacer(),
                                               Text(
-                                                list[i]
-                                                    .numberOfAyahs
+                                                Provider.of<Quraanprovider>(
+                                                        context)
+                                                    .ayasaves
+                                                    .result[i]
+                                                    .numberOfVerse
                                                     .toString(),
                                                 style: GoogleFonts.roboto(
                                                     color: Colors.white),

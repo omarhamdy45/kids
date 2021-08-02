@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/screens/soura.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'Controlsbuttons.dart';
@@ -33,6 +34,7 @@ class _IconsplayState extends State<Iconsplay> {
   Future<bool> _onWillPop() async {
     print("on will pop");
     advancedPlayer.stop();
+    advancedPlayer = AudioPlayer();
     Navigator.pop(context);
   }
 
@@ -45,9 +47,7 @@ class _IconsplayState extends State<Iconsplay> {
           child: SizedBox(
             width: 50,
             height: 50,
-            child: advancedPlayer.playing
-                ? Icon(Icons.pause, size: 40.0, color: Colors.green)
-                : Icon(
+            child:  Icon(
                     Icons.play_arrow,
                     size: 40.0,
                     color: Colors.green,

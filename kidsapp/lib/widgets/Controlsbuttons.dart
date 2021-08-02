@@ -20,7 +20,6 @@ class _ControlButtonsState extends State<ControlButtons> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-       
         StreamBuilder<LoopMode>(
           stream: widget.player.loopModeStream,
           builder: (context, snapshot) {
@@ -100,8 +99,8 @@ class _ControlButtonsState extends State<ControlButtons> {
               return IconButton(
                 icon: Icon(Icons.replay),
                 iconSize: 35.0,
-                onPressed: () => widget.player.seek(Duration.zero,
-                    index: widget.player.effectiveIndices.first),
+                onPressed: () => widget.player.seek(Duration.zero,)
+                   // index: widget.player.effectiveIndices.first),
               );
             }
           },

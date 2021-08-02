@@ -17,6 +17,7 @@ class Userprovider with ChangeNotifier {
   static String timezone;
   static String sd;
   static String done;
+  static String username;
   Score score;
 
   Future<Score> fetchscore() async {
@@ -31,16 +32,16 @@ class Userprovider with ChangeNotifier {
   Future<void> saverUserData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString('token', currentUser.token);
-    preferences.setString('name', currentUser.name);
-    preferences.setString('email', currentUser.email);
+    preferences.setString('name', Userprovider.username);
+  //  preferences.setString('email', currentUser.email);
     // preferences.setString('id', currentUser.id.toString());
   }
+
 
   Future<void> clearuserdata() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.remove('token');
     preferences.remove('name');
-    preferences.remove('email');
   }
 
   Future<String> signInn(String email, String password) async {
@@ -63,6 +64,11 @@ class Userprovider with ChangeNotifier {
       return false;
     }
   }
+    Future<void> getusername() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+      currentUser = User.fromPrefs(preferences);
+  }
+
 
   Future<void> fetchuserlocation() async {
     try {

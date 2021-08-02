@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
-import 'package:kidsapp/screens/types.dart';
+import 'package:kidsapp/screens/Home.dart';
 import 'package:kidsapp/widgets/duadetails.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/widgets.dart';

@@ -36,6 +36,8 @@ class _AzkarState extends State<Azkar> {
 
   @override
   Widget build(BuildContext context) {
+    String id = ModalRoute.of(context).settings.arguments as String;
+    print(id);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -458,7 +460,7 @@ class _AzkarState extends State<Azkar> {
                                         loading = true;
                                       });
                                       await Dbhandler.instance
-                                          .azkaraftersalah('read');
+                                          .azkaraftersalah('read', id);
                                       setState(() {
                                         loading = false;
                                       });
