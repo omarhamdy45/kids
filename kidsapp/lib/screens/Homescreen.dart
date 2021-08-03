@@ -23,7 +23,7 @@ class Homescreen extends StatelessWidget {
       Provider.of<Athanprovider>(context).time.data.timings.isha
     ];
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[200],
       body: Container(
         height: double.infinity,
         child: Padding(
@@ -39,7 +39,7 @@ class Homescreen extends StatelessWidget {
                 style: GoogleFonts.lato(fontSize: 20),
               ),
               Text(
-                  'May the blessings of allah fill your day with peace,happiness and success. ',
+                  'May the blessings of Allah fill your day with peace,happiness and success. ',
                   style: GoogleFonts.lato(fontSize: 20)),
               SizedBox(
                 height: 20,
@@ -53,7 +53,7 @@ class Homescreen extends StatelessWidget {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                            color: Colors.grey[200],
+                            color: Colors.white,
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(15),
                                 topRight: Radius.circular(15))),
@@ -123,7 +123,7 @@ class Homescreen extends StatelessWidget {
                 ),
               ),
               Card(
-                color: Colors.grey[200],
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 child: Container(
@@ -134,32 +134,43 @@ class Homescreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Quran - Lastplaylist',
+                          'Quran - Lastsaved',
                           style: GoogleFonts.lato(fontSize: 18),
                         ),
                         SizedBox(
                           height: 5,
                         ),
+                        
                         Text(
-                          'verse 1-3',
+                          Provider.of<Userprovider>(context, listen: false)
+                              .homedata
+                              .lastQuran
+                              .surah,
                           style: GoogleFonts.lato(fontSize: 16),
                         ),
                         SizedBox(
                           height: 5,
                         ),
                         Text(
-                          'Alnaas - الناس',
+                          'Saved ' +
+                              Provider.of<Userprovider>(context, listen: false)
+                                  .homedata
+                                  .countQuran
+                                  .toString() +
+                              ' verses today',
                           style: GoogleFonts.lato(fontSize: 16),
-                        )
+                        ),
+                        
                       ],
                     ),
                   ),
                 ),
               ),
-              
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Card(
-                color: Colors.grey[200],
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 child: Container(
@@ -177,18 +188,42 @@ class Homescreen extends StatelessWidget {
                           height: 5,
                         ),
                         Text(
-                          'thekrname',
+                          Provider.of<Userprovider>(context, listen: false)
+                              .homedata
+                              .lastAzkar
+                              .category
+                              .title,
                           style: GoogleFonts.lato(fontSize: 16),
                         ),
-                        
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Completed ' +
+                              Provider.of<Userprovider>(context, listen: false)
+                                  .homedata
+                                  .countAzkar
+                                  .toString() +
+                              ' azkar today',
+                          style: GoogleFonts.lato(fontSize: 16),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 200,
+                            child: Image.network(
+                                'https://muslimkids.royaltechni.com/public/assets/images/categories/-1623509021.png')),
                       ],
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 10,),
-                  Card(
-                     color: Colors.grey[200],
+              SizedBox(
+                height: 10,
+              ),
+              Card(
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 child: Container(
@@ -205,11 +240,26 @@ class Homescreen extends StatelessWidget {
                         SizedBox(
                           height: 5,
                         ),
-                        
                         Text(
-                          'Hadith-name',
+                          Provider.of<Userprovider>(context, listen: false)
+                              .homedata
+                              .lastHadith
+                              .hadith
+                              .title,
                           style: GoogleFonts.lato(fontSize: 16),
-                        )
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Completed ' +
+                              Provider.of<Userprovider>(context, listen: false)
+                                  .homedata
+                                  .countHadith
+                                  .toString() +
+                              ' hadith today',
+                          style: GoogleFonts.lato(fontSize: 16),
+                        ),
                       ],
                     ),
                   ),

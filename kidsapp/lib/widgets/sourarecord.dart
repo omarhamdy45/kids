@@ -76,7 +76,7 @@ class _AudioRecordState extends State<AudioRecord> {
     Color color;
 
     if (_isRecording || _isPaused) {
-      icon = Icon(Icons.stop, color: Colors.white, size: 30);
+      icon = Icon(Icons.stop, color: Colors.white, size: 35);
       color = Theme.of(context).primaryColor.withOpacity(0.1);
     } else {
       final theme = Theme.of(context);
@@ -84,14 +84,20 @@ class _AudioRecordState extends State<AudioRecord> {
       color = theme.primaryColor.withOpacity(0.1);
     }
 
-    return ClipOval(
-      child: Material(
-        color: color,
-        child: InkWell(
-          child: SizedBox(width: 50, height: 50, child: icon),
-          onTap: () {
-            _isRecording ? _stop() : _start();
-          },
+    return Padding(
+    padding: const EdgeInsets.only(top: 15),
+      child: Container(
+        child: ClipOval(
+          child: Material(
+            
+            color: color,
+            child: InkWell(
+              child: SizedBox(width: 50, height: 50, child: icon),
+              onTap: () {
+                _isRecording ? _stop() : _start();
+              },
+            ),
+          ),
         ),
       ),
     );
@@ -243,25 +249,19 @@ class _SourarecordState extends State<Sourarecord> {
                           width: 10,
                         ),
                         ClipOval(
-                          child: Material(
-                            color: Theme.of(context)
-                                .primaryColor
-                                .withOpacity(0.04),
-                            child: InkWell(
-                              child: SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: Icon(
-                                    Icons.mic,
-                                    size: 30,
-                                    color: Colors.white,
-                                  )),
-                              onTap: () {
-                                setState(() {
-                                  showPlayer = false;
-                                });
-                              },
-                            ),
+                          child: InkWell(
+                            child: SizedBox(
+                                
+                                child: Icon(
+                                  Icons.mic,
+                                  size: 30,
+                                  color: Colors.white,
+                                )),
+                            onTap: () {
+                              setState(() {
+                                showPlayer = false;
+                              });
+                            },
                           ),
                         ),
                         SizedBox(

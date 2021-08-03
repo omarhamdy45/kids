@@ -19,6 +19,8 @@ import 'package:kidsapp/screens/salah.dart';
 
 import 'package:provider/provider.dart';
 
+import 'namesofallah.dart';
+
 class Home extends StatefulWidget {
   static const String route = 'types';
   @override
@@ -41,7 +43,7 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
     scaffold = GlobalKey<ScaffoldState>();
     // final assetsAudioPlayer = AssetsAudioPlayer();
     cheaknetwork();
-    tabController = TabController(length: 6, vsync: this);
+    tabController = TabController(length: 7, vsync: this);
     firstrun = true;
     Userprovider.sd = Provider.of<Userprovider>(context, listen: false)
         .currentUser
@@ -80,6 +82,7 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
     if (Userprovider.done == 'true') {
       await Provider.of<Userprovider>(context, listen: false).fetchscore();
       await Provider.of<Userprovider>(context, listen: false).getusername();
+      await Provider.of<Userprovider>(context, listen: false).fetchhomedata();
       await Provider.of<Lanprovider>(context, listen: false).getdate();
       if (DateTime.now().day.toString() !=
           Provider.of<Lanprovider>(context, listen: false).time) {
@@ -110,7 +113,7 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: DefaultTabController(
-        length: 6,
+        length: 7,
         child: Scaffold(
             key: scaffold,
             appBar: AppBar(
@@ -177,7 +180,10 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
                         icon: FittedBox(
                             child: Column(
                       children: [
-                        Icon(FontAwesomeIcons.home,size: 35,),
+                        Icon(
+                          FontAwesomeIcons.home,
+                          size: 35,
+                        ),
                         SizedBox(
                           height: 3,
                         ),
@@ -185,7 +191,6 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
                           'Home',
                           style: GoogleFonts.roboto(
                             letterSpacing: 0.5,
-                           
                             color: Colors.white,
                           ),
                         ),
@@ -302,6 +307,28 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
                       ],
                     ))),
                   ),
+                   Container(
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    height: 60,
+                    child: Tab(
+                        icon: FittedBox(
+                            child: Column(
+                      children: [
+                        Image.asset('assets/images/hadith.png'),
+                        SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          'NamesofAllah',
+                          style: GoogleFonts.roboto(
+                            letterSpacing: 0.5,
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ))),
+                  ),
                 ],
                 indicatorWeight: 4,
                 enableFeedback: false,
@@ -319,7 +346,8 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
                       Duaas(),
                       Ramdan(),
                       Quraan(),
-                      Hadithsection()
+                      Hadithsection(),
+                      Namesofallah()
                     ],
                   )),
       ),

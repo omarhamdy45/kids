@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hijri/hijri_calendar.dart';
+import 'package:kidsapp/models/Homedata.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/location.dart';
 import 'package:kidsapp/models/score.dart';
@@ -19,6 +20,7 @@ class Userprovider with ChangeNotifier {
   static String done;
   static String username;
   Score score;
+  Homedata homedata;
 
   Future<Score> fetchscore() async {
     try {
@@ -93,6 +95,13 @@ class Userprovider with ChangeNotifier {
       Userprovider.done = 'true';
     } catch (error) {
       return false;
+    }
+  }
+  Future<Score> fetchhomedata() async {
+    try {
+      homedata = await Dbhandler.instance.gethomedata();
+    } catch (error) {
+      print('erroe');
     }
   }
 }

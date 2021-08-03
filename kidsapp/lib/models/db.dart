@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:kidsapp/models/Athan.dart';
 import 'package:kidsapp/models/Categories.dart';
 import 'package:kidsapp/models/Hadith.dart';
+import 'package:kidsapp/models/Homedata.dart';
 import 'package:kidsapp/models/ayacheak.dart';
 import 'package:kidsapp/models/ayah.dart';
 import 'package:kidsapp/models/ayasaves.dart';
@@ -507,5 +508,12 @@ class Dbhandler {
     String url = '$mainurl/HadithLevels';
     Response response = await _dio.get(url);
     return Hadithlevel.fromJson(response.data);
+  }
+  Future<Homedata> gethomedata() async {
+    String url = '$mainurl/homepage';
+    final String tokenn = Userprovider.sd;
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+    Response response = await _dio.get(url);
+    return Homedata.fromJson(response.data);
   }
 }

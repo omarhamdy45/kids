@@ -345,6 +345,7 @@ class _QuraanState extends State<Quraan> {
                                                             .levels[index]
                                                             .qurans[i]
                                                             .numberOfVerse);
+                                                            print(arg);
                                                         Navigator.push(
                                                           // or pushReplacement, if you need that
                                                           context,
