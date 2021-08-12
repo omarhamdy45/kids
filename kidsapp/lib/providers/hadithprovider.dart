@@ -27,6 +27,7 @@ class Hadithprovider with ChangeNotifier {
   Future<void> fetchhadithlevels() async {
     try {
       hadithlevles = await Dbhandler.instance.gethadithleevel();
+     // print(hadithlevles.levels[0].allhadiths[0].title);
     } catch (error) {
       print('errorrrrrrrrrrrrrr');
     }

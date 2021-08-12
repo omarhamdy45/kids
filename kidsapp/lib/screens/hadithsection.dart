@@ -34,6 +34,7 @@ class _HadithsectionState extends State<Hadithsection> {
         .fetchdailyhadith();
     await Provider.of<Hadithprovider>(context, listen: false)
         .fetchhadithlevels();
+        print( Provider.of<Hadithprovider>(context, listen: false).hadithlevles.levels[0].name);
     setState(() {
       firstrun = false;
     });
@@ -218,10 +219,9 @@ class _HadithsectionState extends State<Hadithsection> {
                           )
                         : ListView.builder(
                             shrinkWrap: true,
-                            itemCount: Provider.of<Quraanprovider>(context)
-                                .levles
-                                .levels
-                                .length,
+                            itemCount: Provider.of<Hadithprovider>(
+                                                              context)
+                                                          .hadithlevles.levels.length,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               return Container(
@@ -268,22 +268,17 @@ class _HadithsectionState extends State<Hadithsection> {
                                             ),
                                             expanded: Container(
                                               height:
-                                                  Provider.of<Quraanprovider>(
+                                                  Provider.of<Hadithprovider>(
                                                               context)
-                                                          .levles
-                                                          .levels[index]
-                                                          .qurans
-                                                          .length *
-                                                      145.toDouble(),
+                                                          .hadithlevles.levels[index].allhadiths.length*145.toDouble(),
+                                                   
                                               child: ListView.builder(
                                                   physics:
                                                       NeverScrollableScrollPhysics(),
-                                                  itemCount: Provider.of<
-                                                              Hadithprovider>(
-                                                          context)
-                                                      .hadithlevles
-                                                      .levels
-                                                      .length,
+                                                  itemCount:  Provider.of<Hadithprovider>(
+                                                              context)
+                                                          .hadithlevles.levels[index].allhadiths.length,
+                                                      
                                                   itemBuilder: (context, i) {
                                                     return GestureDetector(
                                                       onTap: () {

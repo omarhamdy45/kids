@@ -76,7 +76,7 @@ class _AudioRecordState extends State<AudioRecord> {
     Color color;
 
     if (_isRecording || _isPaused) {
-      icon = Icon(Icons.stop, color: Colors.white, size: 35);
+      icon = Icon(Icons.stop, color: Colors.white, size: 30);
       color = Theme.of(context).primaryColor.withOpacity(0.1);
     } else {
       final theme = Theme.of(context);
@@ -85,11 +85,10 @@ class _AudioRecordState extends State<AudioRecord> {
     }
 
     return Padding(
-    padding: const EdgeInsets.only(top: 15),
+      padding: const EdgeInsets.only(top: 15),
       child: Container(
         child: ClipOval(
           child: Material(
-            
             color: color,
             child: InkWell(
               child: SizedBox(width: 50, height: 50, child: icon),
@@ -117,7 +116,7 @@ class _AudioRecordState extends State<AudioRecord> {
 
     return Text(
       '$minutes : $seconds',
-      style: TextStyle(color:Colors.white),
+      style: TextStyle(color: Colors.white),
     );
   }
 
@@ -196,8 +195,6 @@ class _SourarecordState extends State<Sourarecord> {
 
   @override
   Widget build(BuildContext context) {
-    String ayanum = this.widget.index;
-    String hadithid = this.widget.hadithid;
     return Container(
       height: 60,
       child: Scaffold(
@@ -210,7 +207,7 @@ class _SourarecordState extends State<Sourarecord> {
                 if (snapshot.hasData) {
                   if (showPlayer) {
                     return Row(
-                      mainAxisSize: MainAxisSize.max,
+                      //    mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         loading
@@ -224,8 +221,8 @@ class _SourarecordState extends State<Sourarecord> {
                                       .withOpacity(0.04),
                                   child: InkWell(
                                     child: SizedBox(
-                                        width: 50,
-                                        height: 50,
+                                        width: 56,
+                                        height: 56,
                                         child: Icon(
                                           Icons.send,
                                           size: 30,
@@ -235,12 +232,12 @@ class _SourarecordState extends State<Sourarecord> {
                                       setState(() {
                                         loading = true;
                                       });
-                                     
+                                      Dbhandler.instance
+                                          .hosnarecord(File(path));
 
                                       setState(() {
                                         loading = false;
                                       });
-                                      print('a');
                                     },
                                   ),
                                 ),
@@ -251,12 +248,11 @@ class _SourarecordState extends State<Sourarecord> {
                         ClipOval(
                           child: InkWell(
                             child: SizedBox(
-                                
                                 child: Icon(
-                                  Icons.mic,
-                                  size: 30,
-                                  color: Colors.white,
-                                )),
+                              Icons.mic,
+                              size: 30,
+                              color: Colors.white,
+                            )),
                             onTap: () {
                               setState(() {
                                 showPlayer = false;

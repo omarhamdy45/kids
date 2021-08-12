@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -27,12 +26,13 @@ class _HadethState extends State<Hadeth> {
     advancedPlayer = AudioPlayer();
     play = false;
   }
+
   @override
-    void dispose() {
-      advancedPlayer.dispose();
-      // TODO: implement dispose
-      super.dispose();
-    }
+  void dispose() {
+    advancedPlayer.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,16 +109,14 @@ class _HadethState extends State<Hadeth> {
                           play = !play;
                         });
                         await advancedPlayer.setUrl(
-                                Provider.of<Hadithprovider>(context,
-                                        listen: false)
-                                    .azkar
-                                    .data[Ramdan.day - 1]
-                                    .audio);
+                            Provider.of<Hadithprovider>(context, listen: false)
+                                .azkar
+                                .data[Ramdan.day - 1]
+                                .audio);
                         play
-                            ? await advancedPlayer.play(
-                                )
+                            ? await advancedPlayer.play()
                             : await advancedPlayer.pause();
-                            /*
+                        /*
                              advancedPlayer.onPlayerCompletion.listen((event) {
                               advancedPlayer.stop();
                               setState(() {
@@ -146,21 +144,21 @@ class _HadethState extends State<Hadeth> {
                       width: 15,
                     ),
                     GestureDetector(
-                          onTap: () async {
-                            await advancedPlayer.stop();
-                            setState(() {
-                              play = false;
-                            });
-                          },
-                          child: CircleAvatar(
-                              radius: 30,
-                              backgroundColor: Theme.of(context).primaryColor,
-                              child: Icon(
-                                Icons.stop,
-                                color: Colors.white,
-                                size: 45,
-                              )),
-                        )
+                      onTap: () async {
+                        await advancedPlayer.stop();
+                        setState(() {
+                          play = false;
+                        });
+                      },
+                      child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: Icon(
+                            Icons.stop,
+                            color: Colors.white,
+                            size: 45,
+                          )),
+                    )
                   ],
                 ),
               ),
@@ -188,8 +186,13 @@ class _HadethState extends State<Hadeth> {
                         setState(() {
                           loading = true;
                         });
-                        await Dbhandler.instance
-                            .hadithread((Ramdan.day - 1).toString(), 'read');
+                        await Dbhandler.instance.hadithread(
+                            Provider.of<Hadithprovider>(context, listen: false)
+                                .azkar
+                                .data[Ramdan.day - 1]
+                                .id
+                                .toString(),
+                            'read');
                         setState(() {
                           loading = false;
                         });

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
@@ -27,13 +26,15 @@ class _SeraState extends State<Sera> {
     advancedPlayer = AudioPlayer();
     play = false;
   }
-@override
+
+  @override
   void dispose() {
     advancedPlayer.dispose();
     // ignore: todo
     // TODO: implement dispose
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -108,17 +109,15 @@ class _SeraState extends State<Sera> {
                         setState(() {
                           play = !play;
                         });
-                         await advancedPlayer.setUrl(
-                                Provider.of<Deedprovider>(context,
-                                        listen: false)
-                                    .dead
-                                    .data[Ramdan.day - 1]
-                                    .audio);
+                        await advancedPlayer.setUrl(
+                            Provider.of<Deedprovider>(context, listen: false)
+                                .dead
+                                .data[Ramdan.day - 1]
+                                .audio);
                         play
-                            ? await advancedPlayer.play(
-                                )
+                            ? await advancedPlayer.play()
                             : await advancedPlayer.pause();
-                            /*
+                        /*
                              advancedPlayer.onPlayerCompletion.listen((event) {
                               advancedPlayer.stop();
                               setState(() {
@@ -146,21 +145,21 @@ class _SeraState extends State<Sera> {
                       width: 15,
                     ),
                     GestureDetector(
-                          onTap: () async {
-                            await advancedPlayer.stop();
-                            setState(() {
-                              play = false;
-                            });
-                          },
-                          child: CircleAvatar(
-                              radius: 30,
-                              backgroundColor: Theme.of(context).primaryColor,
-                              child: Icon(
-                                Icons.stop,
-                                color: Colors.white,
-                                size: 45,
-                              )),
-                        )
+                      onTap: () async {
+                        await advancedPlayer.stop();
+                        setState(() {
+                          play = false;
+                        });
+                      },
+                      child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: Icon(
+                            Icons.stop,
+                            color: Colors.white,
+                            size: 45,
+                          )),
+                    )
                   ],
                 ),
               ),
@@ -188,8 +187,13 @@ class _SeraState extends State<Sera> {
                         setState(() {
                           loading = true;
                         });
-                        await Dbhandler.instance
-                            .deaedread((Ramdan.day - 1).toString(), 'read');
+                        await Dbhandler.instance.deaedread(
+                            Provider.of<Deedprovider>(context, listen: false)
+                                .dead
+                                .data[Ramdan.day - 1]
+                                .id
+                                .toString(),
+                            'read');
                         setState(() {
                           loading = false;
                         });

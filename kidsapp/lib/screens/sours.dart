@@ -56,17 +56,6 @@ class _SurzState extends State<Surz> {
   @override
   Widget build(BuildContext context) {
     List<int> arg = ModalRoute.of(context).settings.arguments as List<int>;
-    print(Provider.of<Lanprovider>(context, listen: false).isguz2);
-    /*
-    Provider.of<Lanprovider>(context, listen: false).isguz2 == true
-        ? list = [
-            for (i = arg[1] - 1; i > arg[0] - 1; i--)
-              Provider.of<Quraanprovider>(context).sour.data[i]
-          ]
-        : arg.forEach((element) {
-            print(element);
-          });
-*/
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -222,10 +211,7 @@ class _SurzState extends State<Surz> {
                                                   horizontal: 5)
                                               .add(EdgeInsets.only(bottom: 5)),
                                           child: new LinearPercentIndicator(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.27,
+                                           
                                             animation: false,
                                             lineHeight: 10.0,
                                             animationDuration: 1000,

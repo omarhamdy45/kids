@@ -1,12 +1,16 @@
 import 'dart:ui';
 
+import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kidsapp/screens/record.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:kidsapp/models/Namesofallah.dart';
+import 'package:kidsapp/models/db.dart';
+import 'package:kidsapp/providers/Namesofallah.dart';
 import 'package:kidsapp/widgets/sourarecord.dart';
-import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+import 'package:provider/provider.dart';
 
 class Namesofallah extends StatefulWidget {
   @override
@@ -15,8 +19,19 @@ class Namesofallah extends StatefulWidget {
 
 class _NamesofallahState extends State<Namesofallah> {
   List<ObjectClass> demoData;
+  bool firstrun = true;
+  bool secondrun = false;
+  AudioPlayer player2;
+  List<int> hosnasaved = [];
+  bool play;
+  int page = 1;
+  int total = 0;
+  List<Data> names = [];
+  List<Data> distinctIds = [];
+  BetterPlayerController _betterPlayerController;
+  ScrollController _scrollController = new ScrollController();
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     demoData = List.generate(99, (i) {
@@ -24,163 +39,316 @@ class _NamesofallahState extends State<Namesofallah> {
         checked: false,
       );
     });
+
+    await Provider.of<Namesofallahprovider>(context, listen: false)
+        .fetchnamesofallah(page);
+    names.addAll(Provider.of<Namesofallahprovider>(context, listen: false)
+        .namesofallah
+        .data);
+    distinctIds = names.toSet().toList();
+    _scrollController.addListener(() async {
+      if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent &&
+          page <=
+              Provider.of<Namesofallahprovider>(context, listen: false)
+                  .namesofallah
+                  .meta
+                  .lastPage) {
+        setState(() {
+          secondrun = true;
+        });
+        await Provider.of<Namesofallahprovider>(context, listen: false)
+            .fetchnamesofallah(++page);
+        names.addAll(Provider.of<Namesofallahprovider>(context, listen: false)
+            .namesofallah
+            .data);
+        distinctIds = names.toSet().toList();
+        setState(() {
+          secondrun = false;
+        });
+      }
+    });
+    await Provider.of<Namesofallahprovider>(context, listen: false)
+        .fetchnamessaved();
+    await Provider.of<Namesofallahprovider>(context, listen: false)
+        .fetchvedio();
+
+    for (int i = 0;
+        i <
+            Provider.of<Namesofallahprovider>(context, listen: false)
+                .hosnasaved
+                .result
+                .length;
+        i++) {
+      hosnasaved.add(Provider.of<Namesofallahprovider>(context, listen: false)
+          .hosnasaved
+          .result[i]
+          .hosnaId);
+      int b = hosnasaved.elementAt(i);
+      demoData[b - 1].checked = true;
+    }
+    setState(() {
+      firstrun = false;
+    });
+  }
+
+  @override
+  void initState() {
+    play = false;
+    player2 = AudioPlayer();
+    print(total);
+    // TODO: implement initState
+    BetterPlayerConfiguration betterPlayerConfiguration =
+        BetterPlayerConfiguration(
+            aspectRatio: 16 / 9,
+            fit: BoxFit.contain,
+            autoPlay: false,
+            autoDispose: false,
+            autoDetectFullscreenDeviceOrientation: true);
+    BetterPlayerDataSource dataSource = BetterPlayerDataSource(
+        BetterPlayerDataSourceType.network,
+        'https://muslimkids.royaltechni.com/public/assets/videos/-1628346084.mp4');
+    _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
+    _betterPlayerController.setupDataSource(dataSource);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    //  _betterPlayerController.dispose();
+    _betterPlayerController.videoPlayerController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  Future<bool> _onWillPop() async {
+    print("on will pop");
+    // _betterPlayerController.pause();
+    _betterPlayerController.videoPlayerController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        height: double.infinity,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(begin: Alignment.bottomCenter, stops: [
-          0.05,
-          0.4,
-          0.9
-        ], colors: [
-          Theme.of(context).primaryColor,
-          Theme.of(context).primaryColor.withOpacity(0.6),
-          Colors.blue[700]
-        ])),
-        child: ListView(
-          children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Container(
-                margin: EdgeInsets.only(bottom: 20, top: 15, left: 15),
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.white,
-                      ),
-                      constraints: BoxConstraints(maxWidth: double.infinity),
-                      height: 40,
-                      child: Center(
-                        child: Container(
-                          margin: EdgeInsets.all(10),
-                          child: Text(
-                            'Record The 99 Names of Allah ',
-                            style: GoogleFonts.roboto(fontSize: 16),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                      child: Icon(
-                        FontAwesomeIcons.playCircle,
-                        color: Colors.white,
-                        size: 40,
-                      ),
-                    ),
-                     Container(
-                                    width: 200,
-                                   
-                                    child: Sourarecord()),
-                    
-                 
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              child: StaggeredGridView.countBuilder(
-                shrinkWrap: true,
-                crossAxisCount: 2,
-                itemCount: 6,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    margin: EdgeInsets.all(10),
-                    height: 220,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.white,
-                        border: Border.all(
-                            width: 4, color: Theme.of(context).primaryColor)),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            children: [
-                              Stack(
-                                children: [
-                                  Image.asset(
-                                    'assets/images/hexa.png',
-                                    width: 30,
-                                    height: 30,
-                                  ),
-                                  Positioned(
-                                    bottom: 5,
-                                    left: 0,
-                                    right: 0,
-                                    top: 5,
-                                    child: Container(
-                                      child: FittedBox(
-                                        child: Text(
-                                          (1 + index).toString(),
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            play = false;
+          });
+          _betterPlayerController.pause();
+          //   _betterPlayerController.videoPlayerController.dispose();
+        },
+        child: Scaffold(
+          body: Container(
+              height: double.infinity,
+              decoration: BoxDecoration(
+                  gradient:
+                      LinearGradient(begin: Alignment.bottomCenter, stops: [
+                0.05,
+                0.4,
+                0.9
+              ], colors: [
+                Theme.of(context).primaryColor,
+                Theme.of(context).primaryColor.withOpacity(0.6),
+                Colors.blue[700]
+              ])),
+              child: ListView(
+                controller: _scrollController,
+                children: [
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 20, top: 15, left: 15),
+                      child: Row(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.white,
+                            ),
+                            constraints:
+                                BoxConstraints(maxWidth: double.infinity),
+                            height: 40,
+                            child: Center(
+                              child: Container(
+                                margin: EdgeInsets.all(10),
+                                child: Text(
+                                  'Record The 99 Names of Allah ',
+                                  style: GoogleFonts.roboto(fontSize: 16),
+                                ),
                               ),
-                              Spacer(),
-                              Checkbox(
-                                  value: demoData[index].checked,
-                                  // demoData[index].checked,
-                                  splashRadius: 2,
-                                  hoverColor: Colors.blueAccent,
-                                  activeColor: Theme.of(context).primaryColor,
-                                  onChanged: (bool newValue) async {
-                                    setState(() {
-                                      demoData[index].checked = newValue;
-                                    });
-                                  }),
-                            ],
+                            ),
                           ),
-                        ),
-                        Text(
-                          'الرحمن',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'Al-rahman',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
+                          SizedBox(
+                            width: 10,
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'The most merciful, ever merciful ,most clemnt',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                play = !play;
+                              });
+                              play
+                                  ? _betterPlayerController.play()
+                                  : _betterPlayerController.pause();
+                            },
+                            child: play
+                                ? Icon(
+                                    FontAwesomeIcons.pauseCircle,
+                                    color: Colors.white,
+                                    size: 40,
+                                  )
+                                : Icon(
+                                    FontAwesomeIcons.playCircle,
+                                    color: Colors.white,
+                                    size: 40,
+                                  ),
                           ),
-                        ),
-                      ],
+                          Container(width: 200, child: Sourarecord()),
+                        ],
+                      ),
                     ),
-                  );
-                },
-                staggeredTileBuilder: (int index) => new StaggeredTile.fit(1),
-                mainAxisSpacing: 2.0,
-                crossAxisSpacing: 2.0,
-              ),
-            )
-          ],
+                  ),
+                  firstrun
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Stack(
+                          children: [
+                            Container(
+                              child: StaggeredGridView.countBuilder(
+                                shrinkWrap: true,
+                                crossAxisCount: 2,
+                                itemCount: distinctIds.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    margin: EdgeInsets.all(8),
+                                    height: 240,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            width: 4,
+                                            color: Theme.of(context)
+                                                .primaryColor)),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Row(
+                                            children: [
+                                              InkWell(
+                                                onTap: () async {
+                                                  await player2.setUrl(
+                                                    (distinctIds[index].audio),
+                                                  );
+                                                  await player2.play();
+                                                },
+                                                child: Stack(
+                                                  children: [
+                                                    Image.asset(
+                                                      'assets/images/hexa.png',
+                                                      width: 30,
+                                                      height: 30,
+                                                    ),
+                                                    Positioned(
+                                                      bottom: 5,
+                                                      left: 0,
+                                                      right: 0,
+                                                      top: 5,
+                                                      child: Container(
+                                                        child: FittedBox(
+                                                          child: Text(
+                                                            (1 + index)
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Spacer(),
+                                              Checkbox(
+                                                  value:
+                                                      demoData[index].checked,
+                                                  // demoData[index].checked,
+                                                  splashRadius: 2,
+                                                  hoverColor: Colors.blueAccent,
+                                                  activeColor: Theme.of(context)
+                                                      .primaryColor,
+                                                  onChanged:
+                                                      (bool newValue) async {
+                                                    setState(() {
+                                                      demoData[index].checked =
+                                                          newValue;
+                                                    });
+                                                    Dbhandler.instance
+                                                        .namesofallahsaved(
+                                                            distinctIds[index]
+                                                                .id
+                                                                .toString());
+                                                  }),
+                                            ],
+                                          ),
+                                        ),
+                                        Text(
+                                          distinctIds[index].titleAr,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          distinctIds[index].titleEn,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          distinctIds[index].description,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                staggeredTileBuilder: (int index) =>
+                                    new StaggeredTile.fit(1),
+                                mainAxisSpacing: 2.0,
+                                crossAxisSpacing: 2.0,
+                              ),
+                            ),
+                            play
+                                ? AspectRatio(
+                                    aspectRatio: 16 / 9,
+                                    child: BetterPlayer(
+                                        controller: _betterPlayerController),
+                                  )
+                                : Container()
+                          ],
+                        ),
+                  secondrun
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Container(),
+                ],
+              )),
         ),
       ),
     );

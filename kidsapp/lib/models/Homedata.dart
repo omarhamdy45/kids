@@ -1,11 +1,10 @@
-
 class Homedata {
-  LastHadith lastHadith;
+  List<LastHadith> lastHadith;
   int countHadith;
-  LastAzkar lastAzkar;
+  List<LastAzkar> lastAzkar;
   int countAzkar;
-  LastQuran lastQuran;
-  int countQuran;
+  List<LastQuran> lastQuran;
+  List<LastSalah> lastSalah;
 
   Homedata(
       {this.lastHadith,
@@ -13,37 +12,53 @@ class Homedata {
       this.lastAzkar,
       this.countAzkar,
       this.lastQuran,
-      this.countQuran});
+      this.lastSalah});
 
   Homedata.fromJson(Map<String, dynamic> json) {
-    lastHadith = json['LastHadith'] != null
-        ? new LastHadith.fromJson(json['LastHadith'])
-        : null;
+    if (json['LastHadith'] != null) {
+      lastHadith = new List<LastHadith>();
+      json['LastHadith'].forEach((v) {
+        lastHadith.add(new LastHadith.fromJson(v));
+      });
+    }
     countHadith = json['CountHadith'];
-    lastAzkar = json['LastAzkar'] != null
-        ? new LastAzkar.fromJson(json['LastAzkar'])
-        : null;
+    if (json['LastAzkar'] != null) {
+      lastAzkar = new List<LastAzkar>();
+      json['LastAzkar'].forEach((v) {
+        lastAzkar.add(new LastAzkar.fromJson(v));
+      });
+    }
     countAzkar = json['CountAzkar'];
-    lastQuran = json['LastQuran'] != null
-        ? new LastQuran.fromJson(json['LastQuran'])
-        : null;
-    countQuran = json['CountQuran'];
+    if (json['LastQuran'] != null) {
+      lastQuran = new List<LastQuran>();
+      json['LastQuran'].forEach((v) {
+        lastQuran.add(new LastQuran.fromJson(v));
+      });
+    }
+    if (json['LastSalah'] != null) {
+      lastSalah = new List<LastSalah>();
+      json['LastSalah'].forEach((v) {
+        lastSalah.add(new LastSalah.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.lastHadith != null) {
-      data['LastHadith'] = this.lastHadith.toJson();
+      data['LastHadith'] = this.lastHadith.map((v) => v.toJson()).toList();
     }
     data['CountHadith'] = this.countHadith;
     if (this.lastAzkar != null) {
-      data['LastAzkar'] = this.lastAzkar.toJson();
+      data['LastAzkar'] = this.lastAzkar.map((v) => v.toJson()).toList();
     }
     data['CountAzkar'] = this.countAzkar;
     if (this.lastQuran != null) {
-      data['LastQuran'] = this.lastQuran.toJson();
+      data['LastQuran'] = this.lastQuran.map((v) => v.toJson()).toList();
     }
-    data['CountQuran'] = this.countQuran;
+    if (this.lastSalah != null) {
+      data['LastSalah'] = this.lastSalah.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -54,9 +69,8 @@ class LastHadith {
   int userId;
   int gradeId;
   int grade;
-  Null audio;
+  String audio;
   String date;
-  Null hijri;
   String createdAt;
   String updatedAt;
   Hadithh hadith;
@@ -69,7 +83,7 @@ class LastHadith {
       this.grade,
       this.audio,
       this.date,
-      this.hijri,
+    
       this.createdAt,
       this.updatedAt,
       this.hadith});
@@ -82,7 +96,7 @@ class LastHadith {
     grade = json['grade'];
     audio = json['audio'];
     date = json['date'];
-    hijri = json['hijri'];
+  
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     hadith =
@@ -98,7 +112,6 @@ class LastHadith {
     data['grade'] = this.grade;
     data['audio'] = this.audio;
     data['date'] = this.date;
-    data['hijri'] = this.hijri;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     if (this.hadith != null) {
@@ -235,62 +248,39 @@ class Category {
 }
 
 class LastQuran {
-  int id;
-  int userId;
-  int quranNumber;
-  int juza;
   String surah;
-  int numberOfVerse;
-  Null audio;
-  int gradeId;
-  int grade;
-  String date;
-  String createdAt;
-  String updatedAt;
+  int count;
 
-  LastQuran(
-      {this.id,
-      this.userId,
-      this.quranNumber,
-      this.juza,
-      this.surah,
-      this.numberOfVerse,
-      this.audio,
-      this.gradeId,
-      this.grade,
-      this.date,
-      this.createdAt,
-      this.updatedAt});
+  LastQuran({this.surah, this.count});
 
   LastQuran.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    userId = json['user_id'];
-    quranNumber = json['quran_number'];
-    juza = json['juza'];
     surah = json['surah'];
-    numberOfVerse = json['numberOfVerse'];
-    audio = json['audio'];
-    gradeId = json['grade_id'];
-    grade = json['grade'];
-    date = json['date'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    count = json['count'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['quran_number'] = this.quranNumber;
-    data['juza'] = this.juza;
     data['surah'] = this.surah;
-    data['numberOfVerse'] = this.numberOfVerse;
-    data['audio'] = this.audio;
-    data['grade_id'] = this.gradeId;
-    data['grade'] = this.grade;
-    data['date'] = this.date;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['count'] = this.count;
+    return data;
+  }
+}
+
+class LastSalah {
+  int salah;
+  String result;
+
+  LastSalah({this.salah, this.result});
+
+  LastSalah.fromJson(Map<String, dynamic> json) {
+    salah = json['salah'];
+    result = json['result'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['salah'] = this.salah;
+    data['result'] = this.result;
     return data;
   }
 }

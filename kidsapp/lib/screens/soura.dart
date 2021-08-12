@@ -10,6 +10,7 @@ import 'package:just_audio/just_audio.dart';
 
 import 'package:kidsapp/models/ayah.dart';
 import 'package:kidsapp/models/db.dart';
+import 'package:kidsapp/models/sour.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/screens/record.dart';
 import 'package:kidsapp/widgets/Controlsbuttons.dart';
@@ -43,7 +44,7 @@ class _SouraState extends State<Soura> {
   bool ayaplayed;
   List<double> speed = [1, 0.5, 1.5];
   bool playlist;
-   ScrollController _scrollController = new ScrollController();
+  ScrollController _scrollController = new ScrollController();
   int j;
   int s = 0;
   bool finsh;
@@ -53,7 +54,7 @@ class _SouraState extends State<Soura> {
   int juz;
   List<int> ayasaved = [];
   String ayaaudio;
-  int listleangh=10;
+  int listleangh = 10;
 
   @override
   void didChangeDependencies() async {
@@ -101,16 +102,15 @@ class _SouraState extends State<Soura> {
     // player3 = AudioPlayer();
     finsh = false;
     _scrollController.addListener(() async {
-    if (_scrollController.position.pixels ==
+      if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         setState(() {
           firstrun = true;
         });
         setState(() {
-          listleangh=20;
+          listleangh = 20;
         });
-       
-        
+
         setState(() {
           firstrun = false;
         });
@@ -145,11 +145,11 @@ class _SouraState extends State<Soura> {
     print('ss');
     Navigator.of(context).pop();
   }
- 
 
   @override
   Widget build(BuildContext context) {
     List<int> arg = ModalRoute.of(context).settings.arguments as List<int>;
+    print(arg);
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -224,63 +224,64 @@ class _SouraState extends State<Soura> {
                                 ),
                                 GestureDetector(
                                   onTap: () async {
-                                    print(audios);
+                                    if (audios.isNotEmpty) {
+                                      setState(() {
+                                        playlist = !playlist;
+                                        ayaplayed = true;
+                                        play = true;
+                                        fromplaylist = true;
+                                      });
 
-                                    setState(() {
-                                      playlist = !playlist;
-                                      ayaplayed = true;
-                                      play = true;
-                                      fromplaylist = true;
-                                    });
+                                      for (int i = audios.first - 1;
+                                          i < audios.last;
+                                          i++) {
+                                        final b = Provider.of<Quraanprovider>(
+                                                    context,
+                                                    listen: false)
+                                                .sour
+                                                .data[arg[0] - 1]
+                                                .number *
+                                            1000;
+                                        final c = b.toString();
+                                        if (c.length == 4) {
+                                          ayaaudio =
+                                              '00' + (b + i + 1).toString();
+                                        }
+                                        if (c.length == 5) {
+                                          ayaaudio =
+                                              '0' + (b + i + 1).toString();
+                                        }
+                                        if (c.length == 6) {
+                                          ayaaudio = (b + i + 1).toString();
+                                        }
+                                        audioss.add(
+                                            'https://verse.mp3quran.net/arabic/mishary_alafasy/128/$ayaaudio.mp3');
+                                      }
+                                      print(audioss);
 
-                                    for (int i = audios.first - 1;
-                                        i < audios.last;
-                                        i++) {
-                                      final b = Provider.of<Quraanprovider>(
-                                                  context,
-                                                  listen: false)
-                                              .sour
-                                              .data[arg[0] - 1]
-                                              .number *
-                                          1000;
-                                      final c = b.toString();
-                                      if (c.length == 4) {
-                                        ayaaudio =
-                                            '00' + (b + i + 1).toString();
-                                      }
-                                      if (c.length == 5) {
-                                        ayaaudio = '0' + (b + i + 1).toString();
-                                      }
-                                      if (c.length == 6) {
-                                        ayaaudio = (b + i + 1).toString();
-                                      }
-                                      audioss.add(
-                                          'https://verse.mp3quran.net/arabic/mishary_alafasy/128/$ayaaudio.mp3');
+                                      audioss = audioss.toSet().toList();
+                                      await player2.setAudioSource(
+                                        ConcatenatingAudioSource(
+                                          children: [
+                                            for (var i in audioss)
+                                              AudioSource.uri(Uri.parse(i)),
+                                          ],
+                                        ),
+                                        // Playback will be prepared to start from track1.mp3
+                                        initialIndex: 0,
+
+                                        // default
+                                        // Playback will be prepared to start from position zero.
+                                        // initialPosition: Duration.zero, // default
+                                      );
+
+                                      await player2.play();
+                                      // audioss.clear();
+
+                                      setState(() {
+                                        playlist = false;
+                                      });
                                     }
-                                    print(audioss);
-
-                                    audioss = audioss.toSet().toList();
-                                    await player2.setAudioSource(
-                                      ConcatenatingAudioSource(
-                                        children: [
-                                          for (var i in audioss)
-                                            AudioSource.uri(Uri.parse(i)),
-                                        ],
-                                      ),
-                                      // Playback will be prepared to start from track1.mp3
-                                      initialIndex: 0,
-
-                                      // default
-                                      // Playback will be prepared to start from position zero.
-                                      // initialPosition: Duration.zero, // default
-                                    );
-
-                                    await player2.play();
-                                    // audioss.clear();
-
-                                    setState(() {
-                                      playlist = false;
-                                    });
                                   },
                                   child: Icon(
                                     playlist
@@ -292,10 +293,6 @@ class _SouraState extends State<Soura> {
                                     size: 45,
                                   ),
                                 ),
-                                Container(
-                                    width: 200,
-                                    color: Theme.of(context).primaryColor,
-                                    child: Sourarecord()),
                               ],
                             ),
                           ),
@@ -342,10 +339,26 @@ class _SouraState extends State<Soura> {
                                           thickness: 0.5,
                                         ),
                                         ListView.builder(
-                                           controller: _scrollController,
+                                            controller: _scrollController,
                                             shrinkWrap: true,
                                             itemCount: arg[3],
                                             itemBuilder: (context, index) {
+                                              Soura.juznum = arg[1].toString();
+                                              Soura.souraname =
+                                                  Provider.of<Quraanprovider>(
+                                                          context,
+                                                          listen: false)
+                                                      .sour
+                                                      .data[arg[0] - 1]
+                                                      .name;
+                                              Soura.souranum =
+                                                  Provider.of<Quraanprovider>(
+                                                          context,
+                                                          listen: false)
+                                                      .sour
+                                                      .data[arg[0] - 1]
+                                                      .number
+                                                      .toString();
                                               index += arg[2];
 
                                               //index = arg[2];

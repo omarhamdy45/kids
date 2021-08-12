@@ -54,7 +54,7 @@ class _IconsplayState extends State<Iconsplay> {
                   ),
           ),
           onTap: () async {
-            advancedPlayer.setUrl(this.widget.url);
+           await advancedPlayer.setUrl(this.widget.url);
             advancedPlayer.play();
 
             showDialog(
@@ -85,10 +85,7 @@ class _IconsplayState extends State<Iconsplay> {
                                       PositionData(
                                           Duration.zero, Duration.zero);
                                   var position = positionData.position;
-                                  if (position > duration) {
-                                    position = duration;
-                                    advancedPlayer.stop();
-                                  }
+                                  
 
                                   var bufferedPosition =
                                       positionData.bufferedPosition;

@@ -1,5 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
@@ -75,7 +76,6 @@ class _QuraanState extends State<Quraan> {
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
@@ -303,9 +303,10 @@ class _QuraanState extends State<Quraan> {
                                                               context)
                                                           .levles
                                                           .levels[index]
-                                                          .qurans
+                                                          .quran
                                                           .length *
-                                                      145.toDouble(),
+                                                      146.toDouble(),
+                                                      
                                               child: ListView.builder(
                                                   physics:
                                                       NeverScrollableScrollPhysics(),
@@ -313,7 +314,8 @@ class _QuraanState extends State<Quraan> {
                                                               Quraanprovider>(
                                                           context)
                                                       .levles
-                                                      .levels
+                                                      .levels[index]
+                                                      .quran
                                                       .length,
                                                   itemBuilder: (context, i) {
                                                     return GestureDetector(
@@ -326,26 +328,34 @@ class _QuraanState extends State<Quraan> {
                                                                 listen: false)
                                                             .levles
                                                             .levels[index]
-                                                            .qurans[i]
-                                                            .number);
+                                                            .quran[i]
+                                                            .quranNumber);
                                                         arg.add(Provider.of<
                                                                     Quraanprovider>(
                                                                 context,
                                                                 listen: false)
                                                             .levles
                                                             .levels[index]
-                                                            .qurans[i]
+                                                            .quran[i]
                                                             .juza);
                                                         arg.add(0);
+                                                        arg.add(
+                                                          Provider.of<Quraanprovider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .levles
+                                                              .levels[index]
+                                                              .quran[i]
+                                                              .numberOfVerse,
+                                                        );
                                                         arg.add(Provider.of<
                                                                     Quraanprovider>(
                                                                 context,
                                                                 listen: false)
                                                             .levles
                                                             .levels[index]
-                                                            .qurans[i]
-                                                            .numberOfVerse);
-                                                            print(arg);
+                                                            .level);
+                                                        print(arg);
                                                         Navigator.push(
                                                           // or pushReplacement, if you need that
                                                           context,
@@ -364,7 +374,7 @@ class _QuraanState extends State<Quraan> {
                                                                             context)
                                                                         .size
                                                                         .width *
-                                                                    0.07,
+                                                                    0.04,
                                                             vertical: 8),
                                                         child: Card(
                                                             elevation: 5,
@@ -389,8 +399,8 @@ class _QuraanState extends State<Quraan> {
                                                                           Provider.of<Quraanprovider>(context)
                                                                               .levles
                                                                               .levels[index]
-                                                                              .qurans[i]
-                                                                              .number
+                                                                              .quran[i]
+                                                                              .quranNumber
                                                                               .toString(),
                                                                           style:
                                                                               TextStyle(color: Colors.black),
@@ -413,7 +423,7 @@ class _QuraanState extends State<Quraan> {
                                                                           .levles
                                                                           .levels[
                                                                               index]
-                                                                          .qurans[
+                                                                          .quran[
                                                                               i]
                                                                           .surah,
                                                                       textAlign:
@@ -433,6 +443,36 @@ class _QuraanState extends State<Quraan> {
                                                                   ),
                                                                 ),
                                                                 Padding(
+                                                                  padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Text(
+                                                                        Provider.of<Quraanprovider>(
+                                                                                context)
+                                                                            .levles
+                                                                            .levels[
+                                                                                index]
+                                                                            .quran[
+                                                                                i]
+                                                                            .numberOfVersrRead
+                                                                            .toString(),
+                                                                      ),
+                                                                      Spacer(),
+                                                                      Text(Provider.of<Quraanprovider>(
+                                                                              context)
+                                                                          .levles
+                                                                          .levels[
+                                                                              index]
+                                                                          .quran[
+                                                                              i]
+                                                                          .numberOfVerse
+                                                                          .toString())
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                 
+                                                                
+                                                                Padding(
                                                                   padding: const EdgeInsets
                                                                               .symmetric(
                                                                           horizontal:
@@ -443,20 +483,25 @@ class _QuraanState extends State<Quraan> {
                                                                   child:
                                                                       new LinearPercentIndicator(
                                                                     //   fillColor: Theme.of(context).pr,
-                                                                    width: MediaQuery.of(context)
-                                                                            .size
-                                                                            .width *
-                                                                        0.77,
-
+                                                                    addAutomaticKeepAlive: true,
                                                                     animation:
                                                                         false,
                                                                     lineHeight:
                                                                         10.0,
                                                                     animationDuration:
                                                                         1000,
-                                                                    percent:
-                                                                        10 /
-                                                                            100,
+                                                                    percent: Provider.of<Quraanprovider>(context)
+                                                                            .levles
+                                                                            .levels[
+                                                                                index]
+                                                                            .quran[
+                                                                                i]
+                                                                            .numberOfVersrRead /
+                                                                        Provider.of<Quraanprovider>(context)
+                                                                            .levles
+                                                                            .levels[index]
+                                                                            .quran[i]
+                                                                            .numberOfVerse,
                                                                     // center: Text("80.0%"),
                                                                     linearStrokeCap:
                                                                         LinearStrokeCap
@@ -471,51 +516,14 @@ class _QuraanState extends State<Quraan> {
                                                                             0.2),
                                                                   ),
                                                                 )
+                                                                
+                                                              
                                                               ],
                                                             )),
                                                       ),
                                                     );
                                                   }),
                                             ),
-
-                                            /*
-                                             Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                for (var _ in Iterable
-                                                    .generate(Provider.of<
-                                                                Quraanprovider>(
-                                                            context)
-                                                        .levles
-                                                        .levels[index]
-                                                        .qurans
-                                                        .length))
-                                                  Container(
-                                                    margin:
-                                                        EdgeInsets.all(20),
-                                                    width: double.infinity,
-                                                    color: Colors.white,
-                                                    child: Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                bottom: 10),
-                                                        child: Text(
-                                                          Provider.of<Quraanprovider>(
-                                                                  context)
-                                                              .levles
-                                                              .levels[index]
-                                                              .qurans[1]
-                                                              .surah,
-                                                          softWrap: true,
-                                                          overflow:
-                                                              TextOverflow
-                                                                  .fade,
-                                                        )),
-                                                  ),
-                                              ],
-                                            ),
-                                            */
                                             builder: (_, collapsed, expanded) {
                                               return Expandable(
                                                 collapsed: collapsed,

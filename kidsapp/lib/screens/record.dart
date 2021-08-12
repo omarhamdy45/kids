@@ -229,6 +229,7 @@ class _MyApppState extends State<MyAppp> {
                                       setState(() {
                                         loading = true;
                                       });
+                                      print(Soura.souraname);
                                       AudioRecorder.dialy
                                           ? await Dbhandler.instance
                                               .hadithrecord(
@@ -245,7 +246,6 @@ class _MyApppState extends State<MyAppp> {
                                       setState(() {
                                         loading = false;
                                       });
-                                      print('a');
                                     },
                                   ),
                                 ),

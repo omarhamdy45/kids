@@ -84,6 +84,8 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
       await Provider.of<Userprovider>(context, listen: false).getusername();
       await Provider.of<Userprovider>(context, listen: false).fetchhomedata();
       await Provider.of<Lanprovider>(context, listen: false).getdate();
+      await Provider.of<Userprovider>(context, listen: false)
+          .fetchtopstudents();
       if (DateTime.now().day.toString() !=
           Provider.of<Lanprovider>(context, listen: false).time) {
         Provider.of<Lanprovider>(context, listen: false).cleardata();
@@ -128,23 +130,16 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
                             Icons.star,
                             color: Colors.amberAccent,
                           ),
-                          GestureDetector(
-                            onTap: () async {
-                              await player2.setUrl(
-                                  'https://muslimkids.royaltechni.com/public/assets/audio/dailyhadiths/-1624717661.mp3');
-                              player2.play();
-                            },
-                            child: Text(
-                              Provider.of<Userprovider>(context, listen: false)
-                                  .score
-                                  .totalScore
-                                  .toString(),
-                              style: GoogleFonts.roboto(
-                                letterSpacing: 0.5,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                          Text(
+                            Provider.of<Userprovider>(context, listen: false)
+                                .score
+                                .totalScore
+                                .toString(),
+                            style: GoogleFonts.roboto(
+                              letterSpacing: 0.5,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ],
@@ -180,13 +175,7 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
                         icon: FittedBox(
                             child: Column(
                       children: [
-                        Icon(
-                          FontAwesomeIcons.home,
-                          size: 35,
-                        ),
-                        SizedBox(
-                          height: 3,
-                        ),
+                         Image.asset('assets/images/home.png'),
                         Text(
                           'Home',
                           style: GoogleFonts.roboto(
@@ -248,28 +237,6 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
                         icon: FittedBox(
                             child: Column(
                       children: [
-                        Image.asset('assets/images/ramadan.png'),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          'Ramdan',
-                          style: GoogleFonts.roboto(
-                            letterSpacing: 0.5,
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ))),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    height: 60,
-                    child: Tab(
-                        icon: FittedBox(
-                            child: Column(
-                      children: [
                         Image.asset('assets/images/quraan.png'),
                         SizedBox(
                           height: 3,
@@ -307,14 +274,14 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
                       ],
                     ))),
                   ),
-                   Container(
+                  Container(
                     width: MediaQuery.of(context).size.width * 0.2,
                     height: 60,
                     child: Tab(
                         icon: FittedBox(
                             child: Column(
                       children: [
-                        Image.asset('assets/images/hadith.png'),
+                        Image.asset('assets/images/names.png'),
                         SizedBox(
                           height: 3,
                         ),
@@ -325,7 +292,29 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
                             fontSize: 15,
                             color: Colors.white,
                           ),
-                        )
+                        ),
+                      ],
+                    ))),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    height: 60,
+                    child: Tab(
+                        icon: FittedBox(
+                            child: Column(
+                      children: [
+                        Image.asset('assets/images/ramadan.png'),
+                        SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          'Ramdan',
+                          style: GoogleFonts.roboto(
+                            letterSpacing: 0.5,
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        ),
                       ],
                     ))),
                   ),
@@ -344,10 +333,10 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
                       Homescreen(),
                       Salah(),
                       Duaas(),
-                      Ramdan(),
                       Quraan(),
                       Hadithsection(),
-                      Namesofallah()
+                      Namesofallah(),
+                      Ramdan(),
                     ],
                   )),
       ),

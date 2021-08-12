@@ -3,10 +3,13 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:kidsapp/models/Homedata.dart';
+import 'package:kidsapp/models/Salahsummry.dart';
+import 'package:kidsapp/models/Top_student.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/location.dart';
 import 'package:kidsapp/models/score.dart';
 import 'package:kidsapp/models/user.dart';
+import 'package:kidsapp/screens/salah.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,8 +23,9 @@ class Userprovider with ChangeNotifier {
   static String done;
   static String username;
   Score score;
+  Salahsummary salah;
   Homedata homedata;
-
+  Topstudents topstudents;
   Future<Score> fetchscore() async {
     try {
       score = await Dbhandler.instance.getscore();
@@ -97,11 +101,25 @@ class Userprovider with ChangeNotifier {
       return false;
     }
   }
-  Future<Score> fetchhomedata() async {
+  Future<void> fetchhomedata() async {
     try {
       homedata = await Dbhandler.instance.gethomedata();
     } catch (error) {
       print('erroe');
+    }
+  }
+  Future<void> fetchsalahsummary(int id) async {
+    try {
+      salah = await Dbhandler.instance.getsalahsumrry(id);
+    } catch (error) {
+      print('error');
+    }
+  }
+  Future<void> fetchtopstudents() async {
+    try {
+      topstudents = await Dbhandler.instance.gettopstudents();
+    } catch (error) {
+      print('error');
     }
   }
 }

@@ -149,10 +149,10 @@ class _SalahevState extends State<Salahev> {
                               child: Padding(
                                 padding: const EdgeInsets.all(15.0),
                                 child: Text(
-                                  parts[0] +
-                                      ' hours ' +
+                                  parts[0] +':'+
+                                      
                                       parts[1] +
-                                      ' minutes ' +
+                                     
                                       ' remaining for the prayer',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontSize: 18),
@@ -316,7 +316,9 @@ class _SalahevState extends State<Salahev> {
                                               format.parse(this.widget.time);
                                           var hour1 = format.parse(
                                               "${datetime.hour}:${datetime.minute}");
-
+                                          var str =
+                                              ds.difference(hour1).toString();
+                                          List<String> parts = str.split(':');
                                           if (ds.isAfter(hour1)) {
                                             Dialogs.materialDialog(
                                                 customView: Container(
@@ -326,10 +328,11 @@ class _SalahevState extends State<Salahev> {
                                                         const EdgeInsets.all(
                                                             15.0),
                                                     child: Text(
-                                                      ds
-                                                              .difference(hour1)
-                                                              .toString() +
-                                                          ' remaining for the prayer',
+                                                     parts[0] +':'+
+                                     
+                                      parts[1] +
+                                     
+                                      ' remaining for the prayer',
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -430,8 +433,10 @@ class _SalahevState extends State<Salahev> {
                                                               .pop();
                                                           Navigator.pushNamed(
                                                               context,
-                                                              Azkar.route,arguments: this.widget.id
-                                                              );
+                                                              Azkar.route,
+                                                              arguments: this
+                                                                  .widget
+                                                                  .id);
                                                         },
                                                         text: 'Done',
                                                         color: Color.fromRGBO(
@@ -510,6 +515,8 @@ class _SalahevState extends State<Salahev> {
                                               format.parse(this.widget.time);
                                           var hour1 = format.parse(
                                               "${datetime.hour}:${datetime.minute}");
+                                                var str = ds.difference(hour1).toString();
+                      List<String> parts = str.split(':');
 
                                           if (ds.isAfter(hour1)) {
                                             Dialogs.materialDialog(
@@ -520,10 +527,11 @@ class _SalahevState extends State<Salahev> {
                                                         const EdgeInsets.all(
                                                             15.0),
                                                     child: Text(
-                                                      ds
-                                                              .difference(hour1)
-                                                              .toString() +
-                                                          ' remaining for Maghrib prayer',
+                                                      parts[0] +':'+
+                                      
+                                      parts[1]+
+                                      
+                                      ' remaining for the prayer',
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -623,7 +631,10 @@ class _SalahevState extends State<Salahev> {
                                                               .pop();
                                                           Navigator.pushNamed(
                                                               context,
-                                                              Azkar.route,arguments: this.widget.id);
+                                                              Azkar.route,
+                                                              arguments: this
+                                                                  .widget
+                                                                  .id);
                                                         },
                                                         text: 'Done',
                                                         color: Color.fromRGBO(
@@ -775,7 +786,8 @@ class _SalahevState extends State<Salahev> {
                                               format.parse(this.widget.time);
                                           var hour1 = format.parse(
                                               "${datetime.hour}:${datetime.minute}");
-
+  var str = ds.difference(hour1).toString();
+                      List<String> parts = str.split(':');
                                           if (ds.isAfter(hour1)) {
                                             Dialogs.materialDialog(
                                                 customView: Container(
@@ -785,10 +797,11 @@ class _SalahevState extends State<Salahev> {
                                                         const EdgeInsets.all(
                                                             15.0),
                                                     child: Text(
-                                                      ds
-                                                              .difference(hour1)
-                                                              .toString() +
-                                                          ' remaining for Maghrib prayer',
+                                                       parts[0] +':'+
+                                   
+                                      parts[1]+
+                                      
+                                      ' remaining for the prayer',
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -890,7 +903,10 @@ class _SalahevState extends State<Salahev> {
                                                               .pop();
                                                           Navigator.pushNamed(
                                                               context,
-                                                              Azkar.route,arguments: this.widget.id);
+                                                              Azkar.route,
+                                                              arguments: this
+                                                                  .widget
+                                                                  .id);
                                                         },
                                                         text: 'Done',
                                                         color: Color.fromRGBO(
@@ -969,7 +985,8 @@ class _SalahevState extends State<Salahev> {
                                               format.parse(this.widget.time);
                                           var hour1 = format.parse(
                                               "${datetime.hour}:${datetime.minute}");
-
+   var str = ds.difference(hour1).toString();
+                      List<String> parts = str.split(':');
                                           if (ds.isAfter(hour1)) {
                                             Dialogs.materialDialog(
                                                 customView: Container(
@@ -979,10 +996,11 @@ class _SalahevState extends State<Salahev> {
                                                         const EdgeInsets.all(
                                                             15.0),
                                                     child: Text(
-                                                      ds
-                                                              .difference(hour1)
-                                                              .toString() +
-                                                          ' remaining for Maghrib prayer',
+                                                  parts[0] +':'+
+                                      
+                                      parts[1] +
+                                      
+                                      ' remaining for the prayer',
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -1083,7 +1101,10 @@ class _SalahevState extends State<Salahev> {
                                                               context);
                                                           Navigator.pushNamed(
                                                               context,
-                                                              Azkar.route,arguments: this.widget.id);
+                                                              Azkar.route,
+                                                              arguments: this
+                                                                  .widget
+                                                                  .id);
                                                         },
                                                         text: 'Done',
                                                         color: Color.fromRGBO(

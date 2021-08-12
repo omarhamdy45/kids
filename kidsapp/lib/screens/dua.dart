@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
@@ -108,23 +107,18 @@ class _DuaState extends State<Dua> {
                         setState(() {
                           play = !play;
                         });
-                         await advancedPlayer.setUrl(
-                                Provider.of<Duaaprovider>(context,
-                                        listen: false)
-                                    .duaa
-                                    .data[0]
-                                    .audio);
-                        play
-                            ?
-                            advancedPlayer.play():
-                            advancedPlayer.pause();
-                            
-                             
-                             await advancedPlayer.pause();
-                             setState(() {
-                            play = false;
-                          });
-                             /*
+                        await advancedPlayer.setUrl(
+                            Provider.of<Duaaprovider>(context, listen: false)
+                                .duaa
+                                .data[Ramdan.day - 1]
+                                .audio);
+                        play ? advancedPlayer.play() : advancedPlayer.pause();
+
+                        await advancedPlayer.pause();
+                        setState(() {
+                          play = false;
+                        });
+                        /*
                         advancedPlayer.((event) {
                           advancedPlayer.stop();
                           setState(() {
@@ -132,8 +126,6 @@ class _DuaState extends State<Dua> {
                           });
                         });
                         */
-
-                      
                       },
                       child: CircleAvatar(
                           radius: 30,
@@ -196,8 +188,13 @@ class _DuaState extends State<Dua> {
                         setState(() {
                           loading = true;
                         });
-                        await Dbhandler.instance
-                            .duaaread((Ramdan.day - 1).toString(), 'read');
+                        await Dbhandler.instance.duaaread(
+                            Provider.of<Duaaprovider>(context, listen: false)
+                                .duaa
+                                .data[Ramdan.day - 1]
+                                .id
+                                .toString(),
+                            'read');
                         setState(() {
                           loading = false;
                         });

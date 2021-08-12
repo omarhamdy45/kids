@@ -16,7 +16,7 @@ class Quraanprovider with ChangeNotifier {
   Juz2save juz2save;
   Ayacheak ayacheak;
 
-  Levles levles;
+  Quraanlevels levles;
   Future<void> fetchsour() async {
     try {
       sour = await Dbhandler.instance.getsour();

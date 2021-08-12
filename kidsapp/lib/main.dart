@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kidsapp/providers/Athan.dart';
+import 'package:kidsapp/providers/Namesofallah.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
 import 'package:kidsapp/providers/deedprovider.dart';
 import 'package:kidsapp/providers/duaaprovider.dart';
@@ -54,6 +55,9 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => Quraanprovider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => Namesofallahprovider(),
+        ),
       ],
       child: MyApp(),
     ),
@@ -102,3 +106,4 @@ class _MyAppState extends State<MyApp> {
         });
   }
 }
+  

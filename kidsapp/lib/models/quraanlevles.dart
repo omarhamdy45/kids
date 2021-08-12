@@ -1,9 +1,9 @@
-class Levles {
+class Quraanlevels {
   List<Levels> levels;
 
-  Levles({this.levels});
+  Quraanlevels({this.levels});
 
-  Levles.fromJson(Map<String, dynamic> json) {
+  Quraanlevels.fromJson(Map<String, dynamic> json) {
     if (json['levels'] != null) {
       levels = new List<Levels>();
       json['levels'].forEach((v) {
@@ -22,81 +22,71 @@ class Levles {
 }
 
 class Levels {
-  int id;
-  String name;
-  Null createdAt;
-  Null updatedAt;
-  List<Qurans> qurans;
+  int level;
+  List<Quran> quran;
 
-  Levels({this.id, this.name, this.createdAt, this.updatedAt, this.qurans});
+  Levels({this.level, this.quran});
 
   Levels.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    if (json['qurans'] != null) {
-      qurans = new List<Qurans>();
-      json['qurans'].forEach((v) {
-        qurans.add(new Qurans.fromJson(v));
+    level = json['level'];
+    if (json['Quran'] != null) {
+      quran = new List<Quran>();
+      json['Quran'].forEach((v) {
+        quran.add(new Quran.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.qurans != null) {
-      data['qurans'] = this.qurans.map((v) => v.toJson()).toList();
+    data['level'] = this.level;
+    if (this.quran != null) {
+      data['Quran'] = this.quran.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Qurans {
-  int id;
-  int number;
-  int juza;
-  int levelId;
+class Quran {
+  int level;
+  int quranNumber;
   String surah;
+  int from;
+  int to;
   int numberOfVerse;
-  String createdAt;
-  String updatedAt;
-
-  Qurans(
-      {this.id,
-      this.number,
-      this.juza,
-      this.levelId,
+  int numberOfVersrRead;
+  int juza;
+  Quran(
+      {this.level,
+      this.quranNumber,
       this.surah,
+      this.from,
+      this.to,
+      this.juza,
       this.numberOfVerse,
-      this.createdAt,
-      this.updatedAt});
+      this.numberOfVersrRead});
 
-  Qurans.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    number = json['number'];
-    juza = json['juza'];
-    levelId = json['level_id'];
+  Quran.fromJson(Map<String, dynamic> json) {
+    level = json['level'];
+    quranNumber = json['quran_number'];
     surah = json['surah'];
+    from = json['from'];
+    to = json['to'];
+    juza=json['juza'];
     numberOfVerse = json['numberOfVerse'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    numberOfVersrRead = json['numberOfVersrRead'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['number'] = this.number;
-    data['juza'] = this.juza;
-    data['level_id'] = this.levelId;
+    data['level'] = this.level;
+    data['quran_number'] = this.quranNumber;
     data['surah'] = this.surah;
+    data['from'] = this.from;
+    data['juza'] = this.juza;
+    data['to'] = this.to;
     data['numberOfVerse'] = this.numberOfVerse;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['numberOfVersrRead'] = this.numberOfVersrRead;
     return data;
   }
 }
