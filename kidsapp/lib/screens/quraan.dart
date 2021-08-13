@@ -225,7 +225,7 @@ class _QuraanState extends State<Quraan> {
                                                                 .result[index]
                                                                 .numberOfVersrRead
                                                                 .toString() +
-                                                            '/564',
+                                                            '/${ayatleanth[index]}',
                                                         style:
                                                             GoogleFonts.roboto(
                                                           textStyle: TextStyle(
