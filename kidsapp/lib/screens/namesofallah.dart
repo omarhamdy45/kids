@@ -42,6 +42,8 @@ class _NamesofallahState extends State<Namesofallah> {
 
     await Provider.of<Namesofallahprovider>(context, listen: false)
         .fetchnamesofallah(page);
+    await Provider.of<Namesofallahprovider>(context, listen: false)
+        .fetchvedio();
     names.addAll(Provider.of<Namesofallahprovider>(context, listen: false)
         .namesofallah
         .data);
@@ -72,7 +74,21 @@ class _NamesofallahState extends State<Namesofallah> {
         .fetchnamessaved();
     await Provider.of<Namesofallahprovider>(context, listen: false)
         .fetchvedio();
-
+   BetterPlayerConfiguration betterPlayerConfiguration =
+        BetterPlayerConfiguration(
+            aspectRatio: 16 / 9,
+            fit: BoxFit.contain,
+            autoPlay: false,
+            autoDispose: false,
+            autoDetectFullscreenDeviceOrientation: true);
+    BetterPlayerDataSource dataSource = BetterPlayerDataSource(
+        BetterPlayerDataSourceType.network,
+        Provider.of<Namesofallahprovider>(context, listen: false)
+            .video
+            .result
+            .videoUrl);
+    _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
+    _betterPlayerController.setupDataSource(dataSource);
     for (int i = 0;
         i <
             Provider.of<Namesofallahprovider>(context, listen: false)
@@ -98,18 +114,7 @@ class _NamesofallahState extends State<Namesofallah> {
     player2 = AudioPlayer();
     print(total);
     // TODO: implement initState
-    BetterPlayerConfiguration betterPlayerConfiguration =
-        BetterPlayerConfiguration(
-            aspectRatio: 16 / 9,
-            fit: BoxFit.contain,
-            autoPlay: false,
-            autoDispose: false,
-            autoDetectFullscreenDeviceOrientation: true);
-    BetterPlayerDataSource dataSource = BetterPlayerDataSource(
-        BetterPlayerDataSourceType.network,
-        'https://muslimkids.royaltechni.com/public/assets/videos/-1628346084.mp4');
-    _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
-    _betterPlayerController.setupDataSource(dataSource);
+    
     super.initState();
   }
 
