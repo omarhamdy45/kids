@@ -1,5 +1,5 @@
 class Topstudents {
-  List<Hadithtop> hadith;
+  List<Hadithhh> hadith;
   List<Azkar> azkar;
   List<Salah> salah;
   List<Quran> quran;
@@ -8,9 +8,9 @@ class Topstudents {
 
   Topstudents.fromJson(Map<String, dynamic> json) {
     if (json['hadith'] != null) {
-      hadith = new List<Hadithtop>();
+      hadith = new List<Hadithhh>();
       json['hadith'].forEach((v) {
-        hadith.add(new Hadithtop.fromJson(v));
+        hadith.add(new Hadithhh.fromJson(v));
       });
     }
     if (json['azkar'] != null) {
@@ -51,14 +51,14 @@ class Topstudents {
   }
 }
 
-class Hadithtop {
+class Hadithhh {
   String name;
   int userId;
   String hadith;
 
-  Hadithtop({this.name, this.userId, this.hadith});
+  Hadithhh({this.name, this.userId, this.hadith});
 
-  Hadithtop.fromJson(Map<String, dynamic> json) {
+  Hadithhh.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     userId = json['user_id'];
     hadith = json['hadith'];
@@ -96,23 +96,26 @@ class Azkar {
 }
 
 class Salah {
+  int id;
   String name;
-  int userId;
-  String salah;
 
-  Salah({this.name, this.userId, this.salah});
+  int totalGrade;
+
+  Salah({this.id, this.name, this.totalGrade});
 
   Salah.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+
     name = json['name'];
-    userId = json['user_id'];
-    salah = json['salah'];
+
+    totalGrade = json['total_grade'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['name'] = this.name;
-    data['user_id'] = this.userId;
-    data['salah'] = this.salah;
+    data['total_grade'] = this.totalGrade;
     return data;
   }
 }

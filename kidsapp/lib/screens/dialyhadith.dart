@@ -4,7 +4,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/dialyhadith.dart';
-import 'package:kidsapp/screens/record.dart';
+import 'package:kidsapp/widgets/record.dart';
 import 'package:kidsapp/widgets/gift.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
@@ -23,6 +23,7 @@ class _DialyhadithState extends State<Dialyhadith> {
     // TODO: implement initState
     super.initState();
     loading = false;
+     AudioRecorder.dialy=true;
   }
 
   @override
@@ -107,7 +108,7 @@ class _DialyhadithState extends State<Dialyhadith> {
                                 Dialogs.materialDialog(
                                     customView: Container(
                                       child: Gift(
-                                        'Amazing',
+                                        'Masha’ Allah',
                                         'ماشاء الله',
                                         'assets/images/Group 804.png',
                                         Colors.white,
@@ -140,7 +141,7 @@ class _DialyhadithState extends State<Dialyhadith> {
                                             Navigator.of(context).pop();
                                             Navigator.of(context).pop();
                                           },
-                                          text: 'Lovely',
+                                          text: 'Done',
                                           color:
                                               Color.fromRGBO(255, 72, 115, 1),
                                           textStyle:

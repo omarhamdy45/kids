@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:provider/provider.dart';
 
-class Topquraancard extends StatelessWidget {
+class Topsalahcard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Color> colors = [
@@ -15,16 +15,16 @@ class Topquraancard extends StatelessWidget {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
-        height: 60 *
+        height:  60 *
             Provider.of<Userprovider>(context, listen: false)
                 .topstudents
-                .quran
+                .salah
                 .length
                 .toDouble(),
         child: ListView.builder(
             itemCount: Provider.of<Userprovider>(context, listen: false)
                 .topstudents
-                .quran
+                .salah
                 .length,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
@@ -60,7 +60,7 @@ class Topquraancard extends StatelessWidget {
                         Text(
                           Provider.of<Userprovider>(context, listen: false)
                               .topstudents
-                              .quran[index]
+                              .salah[index]
                               .name,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
@@ -70,8 +70,8 @@ class Topquraancard extends StatelessWidget {
                           child: Text(
                             Provider.of<Userprovider>(context, listen: false)
                                 .topstudents
-                                .quran[index]
-                                .quran,
+                                .salah[index]
+                                .totalGrade.toString(),
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),

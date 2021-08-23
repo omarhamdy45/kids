@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Lanprovider with ChangeNotifier {
+  bool isenglish = true;
   bool isEn = false;
   bool isEn2 = false;
   bool isEn3 = false;
@@ -18,6 +19,21 @@ class Lanprovider with ChangeNotifier {
   int ts = 0;
   int counter2 = 0;
   int counter3 = 0;
+  bool islevel = true;
+  bool isguz2 = true;
+  changeLanguage(bool lan) async {
+    isenglish = lan;
+    notifyListeners();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("isenglish", isenglish);
+  }
+
+  getLanguage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isenglish = prefs.getBool("isenglish") ?? true;
+    notifyListeners();
+  }
+
   changeLan(bool lan) async {
     isEn = lan;
     notifyListeners();
@@ -202,32 +218,29 @@ class Lanprovider with ChangeNotifier {
     prefs.remove('counter3');
   }
 
-  bool isguz2 = true;
-
   changeselect(bool lan) async {
     isguz2 = lan;
     notifyListeners();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("isguz2", isEn);
+    prefs.setBool("isguz2", isguz2);
   }
 
   getselcet() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    isEn = prefs.getBool("isguz2") ?? true;
+    isguz2 = prefs.getBool("isguz2") ?? true;
     notifyListeners();
   }
-   bool islevel = true;
 
   changehadithselecet(bool lan) async {
     islevel = lan;
     notifyListeners();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("islevel", isEn);
+    prefs.setBool("islevel", islevel);
   }
 
   gethadithselect() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    isEn = prefs.getBool("islevel") ?? true;
+    islevel = prefs.getBool("islevel") ?? true;
     notifyListeners();
   }
 }

@@ -17,9 +17,9 @@ class Azkarprovider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchallcatgories() async {
+  Future<void> fetchallcatgories(String language) async {
     try {
-      categories = await Dbhandler.instance.getallcategries();
+      categories = await Dbhandler.instance.getallcategries(language);
     } catch (error) {
       print('errorrrr');
     }

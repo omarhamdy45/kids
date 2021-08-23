@@ -1,12 +1,14 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kidsapp/models/db.dart';
+import 'package:kidsapp/models/dialyhadith.dart';
 import 'package:kidsapp/providers/hadithprovider.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/screens/dialhadithbylevel.dart';
 import 'package:kidsapp/screens/dialyhadith.dart';
-import 'package:kidsapp/screens/record.dart';
+import 'package:kidsapp/widgets/record.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -19,9 +21,18 @@ class Hadithsection extends StatefulWidget {
 
 class _HadithsectionState extends State<Hadithsection> {
   bool firstrun;
+  bool isfavourie;
+  List<String> hadithids = [];
+  List<ObjectClass> demoData;
+  int page = 1;
+  bool secondrun = false;
+  List<Data> names = [];
+  List<Data> distinctIds = [];
+  ScrollController _scrollController = new ScrollController();
   @override
   void initState() {
     firstrun = true;
+    isfavourie = false;
     // TODO: implement initState
     super.initState();
   }
@@ -31,13 +42,93 @@ class _HadithsectionState extends State<Hadithsection> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     await Provider.of<Hadithprovider>(context, listen: false)
-        .fetchdailyhadith();
+        .fetchdailyhadith(page);
+
     await Provider.of<Hadithprovider>(context, listen: false)
         .fetchhadithlevels();
-        print( Provider.of<Hadithprovider>(context, listen: false).hadithlevles.levels[0].name);
+    await Provider.of<Hadithprovider>(context, listen: false).fetchfavhadith();
+    names.addAll(
+        Provider.of<Hadithprovider>(context, listen: false).dailyhadith.data);
+    distinctIds = names.toSet().toList();
+    demoData = List.generate(distinctIds.length, (i) {
+      return ObjectClass(
+        checked: false,
+      );
+    });
+    for (int i = 0; i < distinctIds.length; i++) {
+      for (int j = 0;
+          j <
+              Provider.of<Hadithprovider>(context, listen: false)
+                  .favhadith
+                  .result
+                  .length;
+          j++) {
+        if (distinctIds[i].id ==
+            Provider.of<Hadithprovider>(context, listen: false)
+                .favhadith
+                .result[j]
+                .hadithId) {
+          demoData[i].checked = true;
+        }
+      }
+    }
+    _scrollController.addListener(() async {
+      if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent &&
+          page <=
+              Provider.of<Hadithprovider>(context, listen: false)
+                  .dailyhadith
+                  .meta
+                  .lastPage) {
+        setState(() {
+          secondrun = true;
+        });
+        await Provider.of<Hadithprovider>(context, listen: false)
+            .fetchdailyhadith(++page);
+        names.addAll(Provider.of<Hadithprovider>(context, listen: false)
+            .dailyhadith
+            .data);
+        distinctIds = names.toSet().toList();
+
+        demoData = List.generate(distinctIds.length, (i) {
+          return ObjectClass(
+            checked: false,
+          );
+        });
+        for (int i = 0; i < distinctIds.length; i++) {
+          for (int j = 0;
+              j <
+                  Provider.of<Hadithprovider>(context, listen: false)
+                      .favhadith
+                      .result
+                      .length;
+              j++) {
+            if (distinctIds[i].id ==
+                Provider.of<Hadithprovider>(context, listen: false)
+                    .favhadith
+                    .result[j]
+                    .hadithId) {
+              demoData[i].checked = true;
+            }
+          }
+        }
+
+        setState(() {
+          secondrun = false;
+        });
+      }
+    });
+
     setState(() {
       firstrun = false;
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -52,12 +143,16 @@ class _HadithsectionState extends State<Hadithsection> {
                   child: CircularProgressIndicator(),
                 )
               : ListView(
+                  controller: _scrollController,
                   children: [
                     ListTile(
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text('Levles'),
+                          Text(Provider.of<Lanprovider>(context, listen: false)
+                                  .isenglish
+                              ? 'Levles'
+                              : 'عرض المستويات'),
                           Switch(
                             value:
                                 Provider.of<Lanprovider>(context, listen: true)
@@ -69,7 +164,27 @@ class _HadithsectionState extends State<Hadithsection> {
                             },
                             activeColor: Theme.of(context).primaryColor,
                           ),
-                          Text('open Library'),
+                          Text(Provider.of<Lanprovider>(context, listen: false)
+                                  .isenglish
+                              ? 'open Library'
+                              : 'المكتبة العامة'),
+                          Spacer(),
+                          GestureDetector(
+                              onTap: () async {
+                                await Provider.of<Hadithprovider>(context,
+                                        listen: false)
+                                    .fetchfavhadith();
+                                setState(() {
+                                  isfavourie = !isfavourie;
+                                });
+                              },
+                              child: Icon(
+                                isfavourie
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                size: 40,
+                                color: Colors.red[800],
+                              ))
                         ],
                       ),
                     ),
@@ -77,21 +192,20 @@ class _HadithsectionState extends State<Hadithsection> {
                         ? ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
-                            itemCount: Provider.of<Hadithprovider>(context,
-                                    listen: false)
-                                .dailyhadith
-                                .data
-                                .length,
+                            itemCount: isfavourie
+                                ? Provider.of<Hadithprovider>(context,
+                                        listen: false)
+                                    .favhadith
+                                    .result
+                                    .length
+                                : distinctIds.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () async {
                                   final dialyhadith =
-                                      Provider.of<Hadithprovider>(context,
-                                              listen: false)
-                                          .dailyhadith
-                                          .data[index];
+                                      distinctIds[index];
                                   AudioRecorder.dialy = true;
-                                  Navigator.push(
+                                  await Navigator.push(
                                     // or pushReplacement, if you need that
                                     context,
                                     FadeInRoute(
@@ -131,39 +245,59 @@ class _HadithsectionState extends State<Hadithsection> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Container(
-                                                  child: Text(
-                                                    'Hadith ${index + 1}',
-                                                    style: GoogleFonts.roboto(
-                                                      textStyle: TextStyle(
-                                                          color: Colors.white,
-                                                          letterSpacing: .5,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 25),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      Provider.of<Lanprovider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isenglish
+                                                          ? 'Hadith ${index + 1}'
+                                                          : 'الحديث ${index + 1}',
+                                                      style: GoogleFonts.roboto(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.white,
+                                                            letterSpacing: .5,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 25),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                                 SizedBox(
                                                   height: 10,
                                                 ),
-                                                Container(
-                                                  child: Text(
-                                                    Provider.of<Hadithprovider>(
-                                                            context,
-                                                            listen: false)
-                                                        .dailyhadith
-                                                        .data[index]
-                                                        .title,
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: GoogleFonts.roboto(
-                                                      textStyle: TextStyle(
-                                                          color: Colors.white,
-                                                          letterSpacing: .5,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 25),
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Container(
+                                                    child: Text(
+                                                      isfavourie
+                                                          ? Provider.of<
+                                                                      Hadithprovider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .favhadith
+                                                              .result[index]
+                                                              .hadiths
+                                                              .title
+                                                          : distinctIds[index]
+                                                              .title,
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      // textDirection:TextDirection .rtl ,
+                                                      textAlign: TextAlign.left,
+                                                      style: GoogleFonts.roboto(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.white,
+                                                            letterSpacing: .5,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 25),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -174,7 +308,7 @@ class _HadithsectionState extends State<Hadithsection> {
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width *
-                                                0.25,
+                                                0.2,
                                             child: Row(
                                               children: [
                                                 VerticalDivider(
@@ -190,20 +324,46 @@ class _HadithsectionState extends State<Hadithsection> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
-                                                    CircleAvatar(
-                                                      radius: 20,
-                                                      backgroundColor:
-                                                          Colors.grey[100],
-                                                      child: CircleAvatar(
-                                                          radius: 19,
-                                                          backgroundColor:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          child: Icon(
-                                                            Icons.check_sharp,
+                                                    isfavourie
+                                                        ? Icon(
+                                                            Icons.favorite,
+                                                            size: 35,
                                                             color: Colors.white,
-                                                          )),
-                                                    ),
+                                                          )
+                                                        : InkWell(
+                                                            onTap: () async {
+                                                              setState(() {
+                                                                demoData[index]
+                                                                        .checked =
+                                                                    !demoData[
+                                                                            index]
+                                                                        .checked;
+                                                              });
+
+                                                              await Dbhandler
+                                                                  .instance
+                                                                  .hadithfav(distinctIds[
+                                                                          index]
+                                                                      .id
+                                                                      .toString());
+                                                            },
+                                                            child: demoData[
+                                                                        index]
+                                                                    .checked
+                                                                ? Icon(
+                                                                    Icons
+                                                                        .favorite,
+                                                                    size: 35,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  )
+                                                                : Icon(
+                                                                    Icons
+                                                                        .favorite_border,
+                                                                    size: 35,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ))
                                                   ],
                                                 )
                                               ],
@@ -219,9 +379,10 @@ class _HadithsectionState extends State<Hadithsection> {
                           )
                         : ListView.builder(
                             shrinkWrap: true,
-                            itemCount: Provider.of<Hadithprovider>(
-                                                              context)
-                                                          .hadithlevles.levels.length,
+                            itemCount: Provider.of<Hadithprovider>(context)
+                                .hadithlevles
+                                .levels
+                                .length,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               return Container(
@@ -257,7 +418,12 @@ class _HadithsectionState extends State<Hadithsection> {
                                                 child: Padding(
                                                   padding: EdgeInsets.all(10),
                                                   child: Text(
-                                                    "Level ${index + 1}",
+                                                    Provider.of<Lanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .isenglish
+                                                        ? "Level ${index + 1}"
+                                                        : "المستوى ${index + 1}",
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:
@@ -270,15 +436,21 @@ class _HadithsectionState extends State<Hadithsection> {
                                               height:
                                                   Provider.of<Hadithprovider>(
                                                               context)
-                                                          .hadithlevles.levels[index].allhadiths.length*145.toDouble(),
-                                                   
+                                                          .hadithlevles
+                                                          .levels[index]
+                                                          .allhadiths
+                                                          .length *
+                                                      145.toDouble(),
                                               child: ListView.builder(
                                                   physics:
                                                       NeverScrollableScrollPhysics(),
-                                                  itemCount:  Provider.of<Hadithprovider>(
-                                                              context)
-                                                          .hadithlevles.levels[index].allhadiths.length,
-                                                      
+                                                  itemCount: Provider.of<
+                                                              Hadithprovider>(
+                                                          context)
+                                                      .hadithlevles
+                                                      .levels[index]
+                                                      .allhadiths
+                                                      .length,
                                                   itemBuilder: (context, i) {
                                                     return GestureDetector(
                                                       onTap: () {
@@ -411,8 +583,20 @@ class _HadithsectionState extends State<Hadithsection> {
                               );
                             },
                           ),
+                    secondrun
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Container(),
                   ],
                 )),
     );
   }
+}
+
+class ObjectClass {
+  bool checked;
+  ObjectClass({
+    this.checked,
+  });
 }

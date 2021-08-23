@@ -10,6 +10,8 @@ import 'package:kidsapp/widgets/navigation.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
+import 'favouritesquraan.dart';
+
 class Quraan extends StatefulWidget {
   @override
   _QuraanState createState() => _QuraanState();
@@ -75,6 +77,13 @@ class _QuraanState extends State<Quraan> {
   }
 
   @override
+  void dispose() {
+    Provider.of<Quraanprovider>(context, listen: false).dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -90,7 +99,9 @@ class _QuraanState extends State<Quraan> {
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text('Levels'),
+                          Text(Provider.of<Lanprovider>(context).isenglish
+                              ? 'Levels'
+                              : 'عرض المستويات'),
                           Switch(
                             value:
                                 Provider.of<Lanprovider>(context, listen: true)
@@ -102,7 +113,27 @@ class _QuraanState extends State<Quraan> {
                             },
                             activeColor: Theme.of(context).primaryColor,
                           ),
-                          Text('Juz`'),
+                          Text(Provider.of<Lanprovider>(context).isenglish
+                              ? 'Juz`'
+                              : 'عرض الأجزاء'),
+                          Spacer(),
+                          GestureDetector(
+                            onTap: () async {
+                              await Navigator.push(
+                                // or pushReplacement, if you need that
+                                context,
+                                FadeInRoute(
+                                  routeName: Favouritesquraanscreen.route,
+                                  page: Favouritesquraanscreen(),
+                                ),
+                              );
+                            },
+                            child: Icon(
+                              Icons.favorite,
+                              color: Colors.red[800],
+                              size: 40,
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -150,7 +181,11 @@ class _QuraanState extends State<Quraan> {
                                             children: [
                                               Container(
                                                 child: Text(
-                                                  'Juz` ${sour[29 - index] + 1}',
+                                                  Provider.of<Lanprovider>(
+                                                              context)
+                                                          .isenglish
+                                                      ? 'Juz` ${sour[29 - index] + 1}'
+                                                      : 'الجزء ${sour[29 - index] + 1}',
                                                   style: GoogleFonts.roboto(
                                                     textStyle: TextStyle(
                                                         color: Colors.white,
@@ -163,9 +198,15 @@ class _QuraanState extends State<Quraan> {
                                               ),
                                               Container(
                                                 margin: EdgeInsets.only(
-                                                    left: 15, top: 15),
+                                                    left: 15,
+                                                    top: 15,
+                                                    right: 15),
                                                 child: Text(
-                                                  'Vercres : ${ayatleanth[index]}',
+                                                  Provider.of<Lanprovider>(
+                                                              context)
+                                                          .isenglish
+                                                      ? 'Vercres : ${ayatleanth[index]}'
+                                                      : 'عدد الآيات : ${ayatleanth[index]}',
                                                   style: GoogleFonts.roboto(
                                                     textStyle: TextStyle(
                                                         color: Colors.white,
@@ -288,7 +329,11 @@ class _QuraanState extends State<Quraan> {
                                                 child: Padding(
                                                   padding: EdgeInsets.all(10),
                                                   child: Text(
-                                                    "Level ${index + 1}",
+                                                    Provider.of<Lanprovider>(
+                                                                context)
+                                                            .isenglish
+                                                        ? "Level ${index + 1}"
+                                                        : "المستوى ${index + 1}",
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:
@@ -306,7 +351,6 @@ class _QuraanState extends State<Quraan> {
                                                           .quran
                                                           .length *
                                                       146.toDouble(),
-                                                      
                                               child: ListView.builder(
                                                   physics:
                                                       NeverScrollableScrollPhysics(),
@@ -404,6 +448,13 @@ class _QuraanState extends State<Quraan> {
                                                                               .toString(),
                                                                           style:
                                                                               TextStyle(color: Colors.black),
+                                                                        ),
+                                                                        Spacer(),
+                                                                        Icon(
+                                                                          Icons
+                                                                              .favorite_border,
+                                                                          size:
+                                                                              30,
                                                                         )
                                                                       ],
                                                                     ),
@@ -443,35 +494,50 @@ class _QuraanState extends State<Quraan> {
                                                                   ),
                                                                 ),
                                                                 Padding(
-                                                                  padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          10,
+                                                                      vertical:
+                                                                          5),
                                                                   child: Row(
                                                                     children: [
-                                                                      Text(
-                                                                        Provider.of<Quraanprovider>(
-                                                                                context)
-                                                                            .levles
-                                                                            .levels[
-                                                                                index]
-                                                                            .quran[
-                                                                                i]
-                                                                            .numberOfVersrRead
-                                                                            .toString(),
-                                                                      ),
+                                                                      Text(Provider.of<Lanprovider>(context)
+                                                                              .isenglish
+                                                                          ? Provider.of<Quraanprovider>(context)
+                                                                              .levles
+                                                                              .levels[
+                                                                                  index]
+                                                                              .quran[
+                                                                                  i]
+                                                                              .numberOfVersrRead
+                                                                              .toString()
+                                                                          : Provider.of<Quraanprovider>(context)
+                                                                              .levles
+                                                                              .levels[index]
+                                                                              .quran[i]
+                                                                              .numberOfVerse
+                                                                              .toString()),
                                                                       Spacer(),
-                                                                      Text(Provider.of<Quraanprovider>(
-                                                                              context)
-                                                                          .levles
-                                                                          .levels[
-                                                                              index]
-                                                                          .quran[
-                                                                              i]
-                                                                          .numberOfVerse
-                                                                          .toString())
+                                                                      Text(Provider.of<Lanprovider>(context)
+                                                                              .isenglish
+                                                                          ? Provider.of<Quraanprovider>(context)
+                                                                              .levles
+                                                                              .levels[
+                                                                                  index]
+                                                                              .quran[
+                                                                                  i]
+                                                                              .numberOfVerse
+                                                                              .toString()
+                                                                          : Provider.of<Quraanprovider>(context)
+                                                                              .levles
+                                                                              .levels[index]
+                                                                              .quran[i]
+                                                                              .numberOfVersrRead
+                                                                              .toString())
                                                                     ],
                                                                   ),
                                                                 ),
-                                                                 
-                                                                
                                                                 Padding(
                                                                   padding: const EdgeInsets
                                                                               .symmetric(
@@ -483,7 +549,8 @@ class _QuraanState extends State<Quraan> {
                                                                   child:
                                                                       new LinearPercentIndicator(
                                                                     //   fillColor: Theme.of(context).pr,
-                                                                    addAutomaticKeepAlive: true,
+                                                                    addAutomaticKeepAlive:
+                                                                        true,
                                                                     animation:
                                                                         false,
                                                                     lineHeight:
@@ -516,8 +583,6 @@ class _QuraanState extends State<Quraan> {
                                                                             0.2),
                                                                   ),
                                                                 )
-                                                                
-                                                              
                                                               ],
                                                             )),
                                                       ),

@@ -1,8 +1,11 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
+import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Athan.dart';
+import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/screens/Asr.dart';
 import 'package:kidsapp/screens/elfajar.dart';
 import 'package:kidsapp/screens/isha.dart';
@@ -32,21 +35,16 @@ class _SalahState extends State<Salah> {
   var fajr;
   String time = 'null';
   AudioPlayer player;
-
+  var mounth = new HijriCalendar.now().getLongMonthName().toString();
+  var day = new HijriCalendar.now().getDayName().toString();
+  var year = new HijriCalendar.now().hYear;
   DateTime datetime = DateTime.now();
-  void fireAlarm() {
-    player.play(
-        'https://muslim-kids.royaltechni.com/public/assets/audio/dailyhadiths/-1624717661.mp3');
-  }
 
   @override
   void initState() {
     super.initState();
     firstrun = true;
-    getnextprayer();
-    setState(() {
-      firstrun = false;
-    });
+
     var format = DateFormat("HH:mm");
     hour1 = format.parse("${datetime.hour}:${datetime.minute}");
   }
@@ -82,7 +80,9 @@ class _SalahState extends State<Salah> {
         .asr);
 
     if (hour1.isAfter(isha) || hour1.isBefore(fajr)) {
-      salah = 'Fajr';
+      salah = Provider.of<Lanprovider>(context, listen: false).isenglish
+          ? 'Fajr'
+          : 'الفجر';
 
       time = Provider.of<Athanprovider>(context, listen: false)
           .time
@@ -91,7 +91,9 @@ class _SalahState extends State<Salah> {
           .fajr;
     }
     if (hour1.isAfter(fajr) && hour1.isBefore(duhr)) {
-      salah = 'Thuhr';
+      salah = Provider.of<Lanprovider>(context, listen: false).isenglish
+          ? 'Thuhr'
+          : 'الظهر';
 
       time = Provider.of<Athanprovider>(context, listen: false)
           .time
@@ -106,10 +108,14 @@ class _SalahState extends State<Salah> {
           .timings
           .asr;
 
-      salah = 'Asr';
+      salah = Provider.of<Lanprovider>(context, listen: false).isenglish
+          ? 'Asr'
+          : 'العصر';
     }
     if (hour1.isAfter(asr) && hour1.isBefore(maghrib)) {
-      salah = 'Maghrib';
+      salah = Provider.of<Lanprovider>(context, listen: false).isenglish
+          ? 'Maghrib'
+          : 'المغرب';
 
       time = Provider.of<Athanprovider>(context, listen: false)
           .time
@@ -124,18 +130,41 @@ class _SalahState extends State<Salah> {
           .timings
           .isha;
 
-      salah = 'isha`';
+      salah = Provider.of<Lanprovider>(context, listen: false).isenglish
+          ? 'isha`'
+          : 'العشاء';
     }
-    return salah + time;
+    return salah + ' ' + time;
   }
 
   Future<void> _pullRefresh() async {
     //await Future.delayed(Duration(seconds: 2));
-    setState(() {
-      
-    });
-    return salah;
+
+    Home.homeindex = 1;
+
+    await Navigator.push(
+      // or pushReplacement, if you need that
+      context,
+      FadeInRoute(
+        routeName: Home.route,
+        page: Home(),
+      ),
+    );
   }
+
+  @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    while (Dbhandler.instance.athancheak != 200) {
+      await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
+    }
+    getnextprayer();
+    setState(() {
+      firstrun = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -152,19 +181,22 @@ class _SalahState extends State<Salah> {
                 : ListView(children: [
                     Container(
                       margin: EdgeInsets.only(
-                          right: MediaQuery.of(context).size.width * 0.3,
+                          right: MediaQuery.of(context).size.width * 0.05,
                           top: 15,
                           bottom: 2,
-                          left: MediaQuery.of(context).size.width * 0.01),
+                          left: MediaQuery.of(context).size.width * 0.03),
                       child: Container(
-                        height: 36,
                         //  margin: EdgeInsets.only(right: 100),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(left: 10),
+                              //  margin: EdgeInsets.only(left: 10),
                               child: Text(
-                                'Next Prayer',
+                                Provider.of<Lanprovider>(context, listen: false)
+                                        .isenglish
+                                    ? 'Next Prayer'
+                                    : 'الصلاة التالية',
                                 style: GoogleFonts.roboto(
                                   textStyle: TextStyle(
                                       color: Color.fromRGBO(204, 14, 116, 1),
@@ -198,6 +230,19 @@ class _SalahState extends State<Salah> {
                       ),
                     ),
                     Container(
+                        margin: EdgeInsets.only(
+                            right: MediaQuery.of(context).size.width * 0.03,
+                            top: 10,
+                            bottom: 2,
+                            left: MediaQuery.of(context).size.width * 0.03),
+                        child: Text(
+                          '$day ,$mounth,$year',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromRGBO(60, 60, 67, 1)),
+                        )),
+                    Container(
                       margin: EdgeInsets.symmetric(
                           vertical: MediaQuery.of(context).size.height * 0.02),
                       child: Row(
@@ -208,7 +253,7 @@ class _SalahState extends State<Salah> {
                                 Navigator.push(
                                   context,
                                   PageTransition(
-                                    duration: Duration(milliseconds: 600),
+                                    duration: Duration(milliseconds: 400),
                                     type: PageTransitionType.fade,
                                     child: Elfajar(),
                                   ),
@@ -222,7 +267,13 @@ class _SalahState extends State<Salah> {
                                     border: Border.all(
                                         color: Colors.white, width: 3)),
                                 child: Container(
-                                  color: Colors.lightBlueAccent.shade700,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image:
+                                          AssetImage("assets/images/fajr.jpeg"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                   child: Stack(
                                     children: [
                                       Positioned(
@@ -230,7 +281,11 @@ class _SalahState extends State<Salah> {
                                         top: 2,
                                         child: Container(
                                           child: Text(
-                                            'Fajr',
+                                            Provider.of<Lanprovider>(context,
+                                                        listen: false)
+                                                    .isenglish
+                                                ? 'Fajr'
+                                                : 'الفجر',
                                             style: GoogleFonts.roboto(
                                               textStyle: TextStyle(
                                                   color: Colors.white,
@@ -266,13 +321,6 @@ class _SalahState extends State<Salah> {
                                                   fontSize: 14),
                                             )),
                                       ),
-                                      Positioned(
-                                        left: 0,
-                                        bottom: 0,
-                                        child: Container(
-                                            child: Image.asset(
-                                                'assets/images/Group 72.png')),
-                                      ),
                                     ],
                                   ),
                                 ),
@@ -285,7 +333,7 @@ class _SalahState extends State<Salah> {
                                 Navigator.push(
                                   context,
                                   PageTransition(
-                                    duration: Duration(milliseconds: 600),
+                                    duration: Duration(milliseconds: 400),
                                     type: PageTransitionType.fade,
                                     child: Thuhr(),
                                   ),
@@ -307,7 +355,11 @@ class _SalahState extends State<Salah> {
                                         top: 2,
                                         child: Container(
                                           child: Text(
-                                            'Thuhr',
+                                            Provider.of<Lanprovider>(context,
+                                                        listen: false)
+                                                    .isenglish
+                                                ? 'Thuhr'
+                                                : 'الظهر',
                                             style: GoogleFonts.roboto(
                                               textStyle: TextStyle(
                                                   color: Colors.black,
@@ -370,7 +422,7 @@ class _SalahState extends State<Salah> {
                                 Navigator.push(
                                   context,
                                   PageTransition(
-                                    duration: Duration(milliseconds: 600),
+                                    duration: Duration(milliseconds: 400),
                                     type: PageTransitionType.fade,
                                     child: Asr(),
                                   ),
@@ -392,7 +444,11 @@ class _SalahState extends State<Salah> {
                                         top: 2,
                                         child: Container(
                                           child: Text(
-                                            'Asr',
+                                            Provider.of<Lanprovider>(context,
+                                                        listen: false)
+                                                    .isenglish
+                                                ? 'Asr'
+                                                : 'العصر',
                                             style: GoogleFonts.roboto(
                                               textStyle: TextStyle(
                                                   color: Colors.black,
@@ -448,7 +504,7 @@ class _SalahState extends State<Salah> {
                                 Navigator.push(
                                   context,
                                   PageTransition(
-                                    duration: Duration(milliseconds: 600),
+                                    duration: Duration(milliseconds: 400),
                                     type: PageTransitionType.fade,
                                     child: Maghrib(),
                                   ),
@@ -462,7 +518,13 @@ class _SalahState extends State<Salah> {
                                     border: Border.all(
                                         color: Colors.white, width: 3)),
                                 child: Container(
-                                  color: Colors.grey[400],
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/images/maghrib.jpeg"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                   child: Stack(
                                     children: [
                                       Positioned(
@@ -470,10 +532,14 @@ class _SalahState extends State<Salah> {
                                         top: 2,
                                         child: Container(
                                           child: Text(
-                                            'Maghrib',
+                                            Provider.of<Lanprovider>(context,
+                                                        listen: false)
+                                                    .isenglish
+                                                ? 'Maghrib'
+                                                : 'المغرب',
                                             style: GoogleFonts.roboto(
                                               textStyle: TextStyle(
-                                                  color: Colors.black,
+                                                  color: Colors.white,
                                                   letterSpacing: .5,
                                                   fontSize: 28),
                                             ),
@@ -500,18 +566,11 @@ class _SalahState extends State<Salah> {
                                                 .maghrib,
                                             style: GoogleFonts.roboto(
                                               textStyle: TextStyle(
-                                                  color: Colors.grey[800],
+                                                  color: Colors.white,
                                                   letterSpacing: .5,
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 14),
                                             )),
-                                      ),
-                                      Positioned(
-                                        bottom: 0,
-                                        left: 0,
-                                        child: Container(
-                                            child: Image.asset(
-                                                'assets/images/Group 72.png')),
                                       ),
                                     ],
                                   ),
@@ -531,7 +590,7 @@ class _SalahState extends State<Salah> {
                             Navigator.push(
                               context,
                               PageTransition(
-                                duration: Duration(milliseconds: 600),
+                                duration: Duration(milliseconds: 400),
                                 type: PageTransitionType.fade,
                                 child: Isha(),
                               ),
@@ -555,7 +614,11 @@ class _SalahState extends State<Salah> {
                                     top: 2,
                                     child: Container(
                                       child: Text(
-                                        'Isha’',
+                                        Provider.of<Lanprovider>(context,
+                                                    listen: false)
+                                                .isenglish
+                                            ? 'Isha’'
+                                            : 'العشاء',
                                         style: GoogleFonts.roboto(
                                           textStyle: TextStyle(
                                               color: Colors.white,

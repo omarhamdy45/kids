@@ -73,7 +73,7 @@ class _DuadetailsState extends State<Duadetails> {
                         child: Row(
                           children: [
                             Icon(
-                              Icons.arrow_back_outlined,
+                              Icons.arrow_back_ios,
                               size: 35,
                             )
                           ],
@@ -293,7 +293,7 @@ class _DuadetailsState extends State<Duadetails> {
                                   Dialogs.materialDialog(
                                       customView: Container(
                                         child: Gift(
-                                          'Amazing',
+                                          'Masha’ Allah',
                                           'ماشاء الله',
                                           'assets/images/Group 804.png',
                                           Colors.white,
@@ -326,7 +326,7 @@ class _DuadetailsState extends State<Duadetails> {
                                               Navigator.of(context).pop();
                                               Navigator.of(context).pop();
                                             },
-                                            text: 'Lovely',
+                                            text: 'Done',
                                             color:
                                                 Color.fromRGBO(255, 72, 115, 1),
                                             textStyle:

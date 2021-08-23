@@ -74,20 +74,7 @@ class _RamdanState extends State<Ramdan> {
     Provider.of<Lanprovider>(context, listen: false).getcounter1();
     Provider.of<Lanprovider>(context, listen: false).getcounter2();
     Provider.of<Lanprovider>(context, listen: false).getcounter3();
-    hour = int.parse(Provider.of<Athanprovider>(context, listen: false)
-        .time
-        .data
-        .timings
-        .maghrib
-        .split(':')
-        .first);
-    minute = int.parse(Provider.of<Athanprovider>(context, listen: false)
-        .time
-        .data
-        .timings
-        .maghrib
-        .split(':')
-        .last);
+    Provider.of<Athanprovider>(context, listen: false).getLan();
   }
 
   @override
@@ -96,6 +83,8 @@ class _RamdanState extends State<Ramdan> {
     await Provider.of<Hadithprovider>(context, listen: false).fetchallhadith();
     await Provider.of<Duaaprovider>(context, listen: false).fetchallduaas();
     await Provider.of<Deedprovider>(context, listen: false).fetchalldeed();
+    hour = int.parse(Athanprovider.maghribtime.split(':').first);
+    minute = int.parse(Athanprovider.maghribtime.split(':').last);
     var format = DateFormat("HH:mm");
     var one = format.parse("$hour:$minute");
     var two = format.parse("${datetime.hour}:${datetime.minute}");

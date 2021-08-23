@@ -23,6 +23,7 @@ import 'namesofallah.dart';
 
 class Home extends StatefulWidget {
   static const String route = 'types';
+  static int homeindex = 0;
   @override
   _TypesState createState() => _TypesState();
 }
@@ -32,18 +33,19 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
   int i;
   String currentPostion;
   bool cheak;
-  GlobalKey<ScaffoldState> scaffold;
   TabController tabController;
   AudioPlayer player2;
 
   @override
   void initState() {
     super.initState();
+    // int arg = ModalRoute.of(context).settings.arguments as int;
     player2 = AudioPlayer();
-    scaffold = GlobalKey<ScaffoldState>();
+   // scaffold = GlobalKey<ScaffoldState>();
     // final assetsAudioPlayer = AssetsAudioPlayer();
-    cheaknetwork();
+   // cheaknetwork();
     tabController = TabController(length: 7, vsync: this);
+    tabController.index = Home.homeindex;
     firstrun = true;
     Userprovider.sd = Provider.of<Userprovider>(context, listen: false)
         .currentUser
@@ -59,7 +61,7 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
       tabController.index = 0;
     }
   }
-
+/*
   Future<void> cheaknetwork() async {
     try {
       final result = await InternetAddress.lookup('google.com');
@@ -74,271 +76,300 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
       cheak = false;
     }
   }
+  */
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
+    await Provider.of<Lanprovider>(context, listen: false).getLanguage();
     await Provider.of<Userprovider>(context, listen: false).getUserLocation();
     if (Userprovider.done == 'true') {
-      await Provider.of<Userprovider>(context, listen: false).fetchscore();
-      await Provider.of<Userprovider>(context, listen: false).getusername();
-      await Provider.of<Userprovider>(context, listen: false).fetchhomedata();
       await Provider.of<Lanprovider>(context, listen: false).getdate();
-      await Provider.of<Userprovider>(context, listen: false)
-          .fetchtopstudents();
       if (DateTime.now().day.toString() !=
           Provider.of<Lanprovider>(context, listen: false).time) {
         Provider.of<Lanprovider>(context, listen: false).cleardata();
       }
       Provider.of<Lanprovider>(context, listen: false).savedate();
-      while (Dbhandler.instance.athancheak != 200) {
-        await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
-      }
+
       // await Provider.of<Athanprovider>(context, listen: false).getLan();
 
     }
 
-    if (!mounted) return;
     setState(() {
-      cheak ? firstrun = false : firstrun = true;
+       firstrun = false;
     });
   }
 
   @override
   void dispose() {
     tabController.dispose();
+    Provider.of<Userprovider>(context, listen: false).dispose();
+    Provider.of<Lanprovider>(context, listen: false).dispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: DefaultTabController(
-        length: 7,
-        child: Scaffold(
-            key: scaffold,
-            appBar: AppBar(
-              toolbarHeight: 140,
-              title: firstrun
-                  ? Container()
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Row(
+    return Directionality(
+      textDirection: Provider.of<Lanprovider>(context, listen: false).isenglish
+          ? TextDirection.ltr
+          : TextDirection.rtl,
+      child: WillPopScope(
+        onWillPop: _onWillPop,
+        child: DefaultTabController(
+          length: 7,
+          child: Scaffold(
+          //    key: scaffold,
+              appBar: AppBar(
+                toolbarHeight: 140,
+                title: firstrun
+                    ? Container()
+                    : Provider.of<Lanprovider>(context, listen: false).isenglish
+                        ? Container()
+                        : GestureDetector(
+                            onTap: () async {
+                              await Provider.of<Userprovider>(context,
+                                      listen: false)
+                                  .clearuserdata();
+                              await Provider.of<Lanprovider>(context,
+                                      listen: false)
+                                  .cleardata();
+                              Navigator.of(context)
+                                  .pushReplacementNamed(Login.route);
+                            },
+                            child: Container(
+                                margin: EdgeInsets.all(5),
+                                child: Icon(
+                                  Icons.logout,
+                                  size: 35,
+                                )),
+                          ),
+                actions: [
+                  Provider.of<Lanprovider>(context, listen: false).isenglish
+                      ? GestureDetector(
+                          onTap: () async {
+                            await Provider.of<Userprovider>(context,
+                                    listen: false)
+                                .clearuserdata();
+                            await Provider.of<Lanprovider>(context,
+                                    listen: false)
+                                .cleardata();
+                            Navigator.of(context)
+                                .pushReplacementNamed(Login.route);
+                          },
+                          child: Container(
+                              margin: EdgeInsets.all(5),
+                              child: Icon(
+                                Icons.logout,
+                                size: 35,
+                              )),
+                        )
+                      : Container()
+                ],
+                backgroundColor: Theme.of(context).primaryColor,
+                bottom: TabBar(
+                  controller: tabController,
+                  indicatorColor: Colors.white,
+                  isScrollable: true,
+                  tabs: [
+                    Container(
+                      height: 60,
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      child: Tab(
+                          icon: Column(
                         children: [
-                          Icon(
-                            Icons.star,
-                            color: Colors.amberAccent,
+                          Image.asset(
+                            'assets/images/home.png',
+                            height: 34,
                           ),
                           Text(
-                            Provider.of<Userprovider>(context, listen: false)
-                                .score
-                                .totalScore
-                                .toString(),
+                            Provider.of<Lanprovider>(context, listen: false)
+                                    .isenglish
+                                ? 'Home'
+                                : 'الرئسية',
                             style: GoogleFonts.roboto(
-                              letterSpacing: 0.5,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                                letterSpacing: 0.5,
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                         ],
-                      ),
-                    ),
-              actions: [
-                GestureDetector(
-                  onTap: () async {
-                    await Provider.of<Userprovider>(context, listen: false)
-                        .clearuserdata();
-                    await Provider.of<Lanprovider>(context, listen: false)
-                        .cleardata();
-                    Navigator.of(context).pushReplacementNamed(Login.route);
-                  },
-                  child: Container(
-                      margin: EdgeInsets.all(5),
-                      child: Icon(
-                        Icons.logout,
-                        size: 35,
                       )),
-                )
-              ],
-              backgroundColor: Theme.of(context).primaryColor,
-              bottom: TabBar(
-                controller: tabController,
-                indicatorColor: Colors.white,
-                isScrollable: true,
-                tabs: [
-                  Container(
-                    height: 60,
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    child: Tab(
-                        icon: FittedBox(
-                            child: Column(
-                      children: [
-                         Image.asset('assets/images/home.png'),
-                        Text(
-                          'Home',
-                          style: GoogleFonts.roboto(
-                            letterSpacing: 0.5,
-                            color: Colors.white,
+                    ),
+                    Container(
+                      height: 60,
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      child: Tab(
+                          icon: Column(
+                        children: [
+                          Image.asset(
+                            'assets/images/Group 2451.png',
+                            height: 34,
                           ),
-                        ),
-                      ],
-                    ))),
-                  ),
-                  Container(
-                    height: 60,
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    child: Tab(
-                        icon: FittedBox(
-                            child: Column(
-                      children: [
-                        Image.asset('assets/images/salah.png'),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          'Salah',
-                          style: GoogleFonts.roboto(
-                            letterSpacing: 0.5,
-                            fontSize: 18,
-                            color: Colors.white,
+                          Text(
+                            Provider.of<Lanprovider>(context, listen: false)
+                                    .isenglish
+                                ? 'Salah'
+                                : 'الصلاة',
+                            style: GoogleFonts.roboto(
+                                letterSpacing: 0.5,
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
-                        ),
-                      ],
-                    ))),
-                  ),
-                  Container(
-                    height: 60,
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    child: Tab(
-                        icon: FittedBox(
-                            child: Column(
-                      children: [
-                        Image.asset('assets/images/azkar.png'),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          'Athkar',
-                          style: GoogleFonts.roboto(
-                            letterSpacing: 0.5,
-                            fontSize: 15,
-                            color: Colors.white,
+                        ],
+                      )),
+                    ),
+                    Container(
+                      height: 60,
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      child: Tab(
+                          icon: Column(
+                        children: [
+                          Image.asset(
+                            'assets/images/Group 2453.png',
+                            height: 34,
+                            fit: BoxFit.cover,
                           ),
-                        )
-                      ],
-                    ))),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    height: 60,
-                    child: Tab(
-                        icon: FittedBox(
-                            child: Column(
-                      children: [
-                        Image.asset('assets/images/quraan.png'),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          'Qur`an',
-                          style: GoogleFonts.roboto(
-                            letterSpacing: 0.5,
-                            fontSize: 18,
-                            color: Colors.white,
+                          Text(
+                            Provider.of<Lanprovider>(context, listen: false)
+                                    .isenglish
+                                ? 'Athkar'
+                                : 'الأذكار',
+                            style: GoogleFonts.roboto(
+                                letterSpacing: 0.5,
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      )),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      height: 60,
+                      child: Tab(
+                          icon: Column(
+                        children: [
+                          Image.asset(
+                            'assets/images/Group 6.png',
+                            height: 34,
                           ),
-                        )
-                      ],
-                    ))),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    height: 60,
-                    child: Tab(
-                        icon: FittedBox(
-                            child: Column(
-                      children: [
-                        Image.asset('assets/images/hadith.png'),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          'Hadith',
-                          style: GoogleFonts.roboto(
-                            letterSpacing: 0.5,
-                            fontSize: 15,
-                            color: Colors.white,
+                          Text(
+                            Provider.of<Lanprovider>(context, listen: false)
+                                    .isenglish
+                                ? 'Qur`an'
+                                : 'القرآن الكريم',
+                            style: GoogleFonts.roboto(
+                                letterSpacing: 0.5,
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      )),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      height: 60,
+                      child: Tab(
+                          icon: Column(
+                        children: [
+                          Image.asset(
+                            'assets/images/Group 5.png',
+                            height: 34,
+                            fit: BoxFit.cover,
                           ),
-                        )
-                      ],
-                    ))),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    height: 60,
-                    child: Tab(
-                        icon: FittedBox(
-                            child: Column(
-                      children: [
-                        Image.asset('assets/images/names.png'),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          'NamesofAllah',
-                          style: GoogleFonts.roboto(
-                            letterSpacing: 0.5,
-                            fontSize: 15,
-                            color: Colors.white,
+                          Text(
+                            Provider.of<Lanprovider>(context, listen: false)
+                                    .isenglish
+                                ? 'Hadith'
+                                : 'الحديث النبوي',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.roboto(
+                                letterSpacing: 0.5,
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      )),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      height: 60,
+                      child: Tab(
+                          icon: Column(
+                        children: [
+                          Image.asset(
+                            'assets/images/Group 2457.png',
+                            height: 34,
+                            fit: BoxFit.cover,
                           ),
-                        ),
-                      ],
-                    ))),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    height: 60,
-                    child: Tab(
-                        icon: FittedBox(
-                            child: Column(
-                      children: [
-                        Image.asset('assets/images/ramadan.png'),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          'Ramdan',
-                          style: GoogleFonts.roboto(
-                            letterSpacing: 0.5,
-                            fontSize: 18,
-                            color: Colors.white,
+                          Text(
+                            Provider.of<Lanprovider>(context, listen: false)
+                                    .isenglish
+                                ? 'NamesofAllah'
+                                : "أسماء الله الحسنى",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.roboto(
+                                letterSpacing: 0.5,
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
-                        ),
-                      ],
-                    ))),
-                  ),
-                ],
-                indicatorWeight: 4,
-                enableFeedback: false,
+                        ],
+                      )),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      height: 60,
+                      child: Tab(
+                          icon: Column(
+                        children: [
+                          Image.asset(
+                            'assets/images/ramdan1.png',
+                            height: 34,
+                          ),
+                          Text(
+                            Provider.of<Lanprovider>(context, listen: false)
+                                    .isenglish
+                                ? 'Ramdan'
+                                : 'رمضان',
+                            style: GoogleFonts.roboto(
+                                letterSpacing: 0.5,
+                                fontSize: 12,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      )),
+                    ),
+                  ],
+                  indicatorWeight: 4,
+                  //enableFeedback: false,
+                ),
               ),
-            ),
-            body: firstrun
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : TabBarView(
-                    controller: tabController,
-                    children: [
-                      Homescreen(),
-                      Salah(),
-                      Duaas(),
-                      Quraan(),
-                      Hadithsection(),
-                      Namesofallah(),
-                      Ramdan(),
-                    ],
-                  )),
+              body: firstrun
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : TabBarView(
+                      controller: tabController,
+                      children: [
+                        Homescreen(),
+                        Salah(),
+                        Duaas(),
+                        Quraan(),
+                        Hadithsection(),
+                        Namesofallah(),
+                        Ramdan(),
+                      ],
+                    )),
+        ),
       ),
     );
   }

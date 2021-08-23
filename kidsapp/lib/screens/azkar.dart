@@ -438,10 +438,9 @@ class _AzkarState extends State<Azkar> {
                           ),
                           Container(
                             height: 40,
-                            margin: EdgeInsets.symmetric(
-                                    horizontal:
-                                        MediaQuery.of(context).size.width * 0.3)
-                                .add(EdgeInsets.symmetric(vertical: 10)),
+                            width: 100,
+                           
+                               
                             child: loading
                                 ? Center(child: CircularProgressIndicator())
                                 : ElevatedButton(
@@ -468,7 +467,7 @@ class _AzkarState extends State<Azkar> {
                                       Dialogs.materialDialog(
                                           customView: Container(
                                             child: Gift(
-                                              'Amazing',
+                                              'Masha’ Allah',
                                               'ماشاء الله',
                                               'assets/images/Group 804.png',
                                               Colors.white,
@@ -489,12 +488,7 @@ class _AzkarState extends State<Azkar> {
                                           actions: [
                                             Container(
                                               height: 40,
-                                              margin: EdgeInsets.symmetric(
-                                                  horizontal:
-                                                      MediaQuery.of(context)
-                                                              .size
-                                                              .width *
-                                                          0.2),
+                                             width: 100,
                                               child: IconsButton(
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius:
@@ -503,8 +497,9 @@ class _AzkarState extends State<Azkar> {
                                                 onPressed: () async {
                                                   Navigator.of(context).pop();
                                                   Navigator.of(context).pop();
+                                                   Navigator.of(context).pop();
                                                 },
-                                                text: 'Lovely',
+                                                text: 'Done',
                                                 color: Color.fromRGBO(
                                                     255, 72, 115, 1),
                                                 textStyle: TextStyle(
@@ -518,6 +513,30 @@ class _AzkarState extends State<Azkar> {
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 18),
                                     )),
+                          ),
+                          SizedBox(height: 10,),
+                          Container(
+                            height: 40,
+                            width: 100,
+                            child: ElevatedButton(
+                                style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    )),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Theme.of(context).accentColor)),
+                                onPressed: () async {
+                                  Navigator.of(context).pop();
+                                   Navigator.of(context).pop();
+                                },
+                                child: Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                )),
                           ),
                         ],
                       ),

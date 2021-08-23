@@ -213,7 +213,39 @@ class _LoginState extends State<Login> {
                               ),
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.05,
+                                    MediaQuery.of(context).size.height * 0.015,
+                              ),
+                              Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      height: 40,
+                      child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Colors.transparent)),
+                        onPressed: ()async {
+                            
+                          Provider.of<Lanprovider>(context, listen: false)
+                              .changeLanguage(!Provider.of<Lanprovider>(context,
+                                      listen: false)
+                                  .isenglish);
+                        },
+                        child: Text(
+                          Provider.of<Lanprovider>(context, listen: true)
+                                  .isenglish
+                              ? 'العربية'
+                              : 'En',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    )),
+                    SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.02,
                               ),
                               Padding(
                                 padding: EdgeInsets.only(
@@ -248,7 +280,8 @@ class _LoginState extends State<Login> {
                                                   .savedate();
                                             },
                                             child: Text(
-                                              'Login',
+                                              Provider.of<Lanprovider>(context, listen: true)
+                                  .isenglish?  'Login':'تسجيل الدخول',
                                               style:
                                                   TextStyle(color: Colors.grey),
                                             )),

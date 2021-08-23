@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:provider/provider.dart';
 
-class Topquraancard extends StatelessWidget {
+class Topqazkarcard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Color> colors = [
@@ -18,13 +18,13 @@ class Topquraancard extends StatelessWidget {
         height: 60 *
             Provider.of<Userprovider>(context, listen: false)
                 .topstudents
-                .quran
+                .azkar
                 .length
                 .toDouble(),
         child: ListView.builder(
             itemCount: Provider.of<Userprovider>(context, listen: false)
                 .topstudents
-                .quran
+                .azkar
                 .length,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
@@ -60,7 +60,7 @@ class Topquraancard extends StatelessWidget {
                         Text(
                           Provider.of<Userprovider>(context, listen: false)
                               .topstudents
-                              .quran[index]
+                              .azkar[index]
                               .name,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
@@ -70,8 +70,8 @@ class Topquraancard extends StatelessWidget {
                           child: Text(
                             Provider.of<Userprovider>(context, listen: false)
                                 .topstudents
-                                .quran[index]
-                                .quran,
+                                .azkar[index]
+                                .azkar,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),

@@ -42,7 +42,7 @@ class _IconsplayState extends State<Iconsplay> {
   Widget build(BuildContext context) {
     return ClipOval(
       child: Material(
-        color: Theme.of(context).primaryColor.withOpacity(0.04),
+        color: Colors.transparent,
         child: InkWell(
           child: SizedBox(
             width: 50,

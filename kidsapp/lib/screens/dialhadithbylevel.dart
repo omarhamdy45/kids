@@ -5,7 +5,7 @@ import 'package:flutter_html/style.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/dialyhadith.dart';
 import 'package:kidsapp/models/hadithlevel.dart';
-import 'package:kidsapp/screens/record.dart';
+import 'package:kidsapp/widgets/record.dart';
 import 'package:kidsapp/widgets/gift.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';

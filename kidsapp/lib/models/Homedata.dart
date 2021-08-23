@@ -230,7 +230,7 @@ class Category {
 
   Category.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    title = json['title'];
+    title = json['title_en'];
     image = json['image'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];

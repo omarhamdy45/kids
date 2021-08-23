@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
+import 'package:kidsapp/models/Allrecord.dart';
 import 'dart:async';
 import 'package:kidsapp/models/Athan.dart';
 import 'package:kidsapp/models/Categories.dart';
@@ -16,11 +17,14 @@ import 'package:kidsapp/models/ayah.dart';
 import 'package:kidsapp/models/ayasaves.dart';
 import 'package:kidsapp/models/catgoriess.dart';
 import 'package:kidsapp/models/dialyhadith.dart';
+import 'package:kidsapp/models/favouritehadith.dart';
 import 'package:kidsapp/models/hadithlevel.dart';
+import 'package:kidsapp/models/quraanffavourite.dart';
 import 'package:kidsapp/models/quraanlevles.dart';
 import 'package:kidsapp/models/sour.dart';
 import 'package:kidsapp/models/location.dart';
 import 'package:kidsapp/models/score.dart';
+import 'package:kidsapp/models/sourarecord.dart';
 import 'package:kidsapp/models/user.dart';
 import 'package:kidsapp/models/vedio.dart';
 import 'package:kidsapp/providers/userprovider.dart';
@@ -29,6 +33,7 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:kidsapp/screens/dialyhadith.dart';
 import 'Namesofallah.dart';
+import 'sourafavourite.dart';
 import 'guz2save.dart';
 
 class Dbhandler {
@@ -82,14 +87,16 @@ class Dbhandler {
     return Locationn.fromJson(response.data);
   }
 
-  Future<Categories> getallcategries() async {
+  Future<Categories> getallcategries(String language) async {
     String url = '$mainurl/categories';
+    _dio.options.headers["Accept-Language"] = "$language";
     Response response = await _dio.get(url);
     return Categories.fromJson(response.data);
   }
 
   Future<Categoriess> gethadithbyid(int id) async {
     String url = '$mainurl/categories/$id';
+
     Response response = await _dio.get(url);
     //  print(response.data);
     return Categoriess.fromJson(response.data);
@@ -506,16 +513,17 @@ class Dbhandler {
     return Quraanlevels.fromJson(response.data);
   }
 
-  Future<Dailyhadith> getdialyhadith() async {
-    String url = '$mainurl/dailyhadith';
+  Future<Dailyhadith> getdialyhadith(int page) async {
+    String url = '$mainurl/dailyhadith?page=$page';
     Response response = await _dio.get(url);
+    print(response.data);
     return Dailyhadith.fromJson(response.data);
   }
 
   Future<Hadithlevel> gethadithleevel() async {
     String url = '$mainurl/HadithLevels';
     Response response = await _dio.get(url);
-    print(response.data);
+    //  print(response.data);
     return Hadithlevel.fromJson(response.data);
   }
 
@@ -580,6 +588,29 @@ class Dbhandler {
     print(response.statusCode);
   }
 
+  Future<void> sourarecrod(
+      File file, int juzid, int souraid, String value) async {
+    String url = '$mainurl/record_quran';
+    final String tokenn = Userprovider.sd;
+    String fileName = file.path.split('/').last;
+    FormData data = FormData.fromMap({
+      "audio": await MultipartFile.fromFile(
+        file.path,
+        filename: fileName,
+      ),
+      'quran_number': souraid,
+      'juza': juzid,
+      'is_update': value,
+    });
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+    _dio.options.headers["Accept"] = "application/json";
+    Response response = await _dio.post(
+      url,
+      data: data,
+    );
+    print(response.data);
+  }
+
   Future<Vedio> gethosnavedio() async {
     String url = '$mainurl/hosnaVideo';
     Response response = await _dio.get(url);
@@ -596,5 +627,111 @@ class Dbhandler {
     String url = '$mainurl/topStudent';
     Response response = await _dio.get(url);
     return Topstudents.fromJson(response.data);
+  }
+
+  Future<void> hadithfav(String hadithid) async {
+    String url = '$mainurl/storeFavouriteHadith';
+    final String tokenn = Userprovider.sd;
+
+    try {
+      http.Response response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $tokenn',
+        },
+        body: {
+          'hadith_id': hadithid,
+        },
+      );
+      print(response.body);
+    } catch (eroor) {
+      print(eroor);
+    }
+  }
+
+  Future<void> quraanfavourite(String soraid, String juzid) async {
+    String url = '$mainurl/storeFavouriteQuran';
+    final String tokenn = Userprovider.sd;
+
+    try {
+      http.Response response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $tokenn',
+        },
+        body: {
+          'quran_number': soraid,
+          'juza': juzid,
+        },
+      );
+      print(response.body);
+    } catch (eroor) {
+      print(eroor);
+    }
+  }
+
+  Future<Favouritehadith> getfavouritehadith() async {
+    String url = '$mainurl/showFavouriteHadith';
+    final String tokenn = Userprovider.sd;
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+    Response response = await _dio.get(url);
+    // print(response.data);
+    return Favouritehadith.fromJson(response.data);
+  }
+
+  Future<Quraanfavourites> getfavouritequraan() async {
+    String url = '$mainurl/showListFavourite';
+    final String tokenn = Userprovider.sd;
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+    Response response = await _dio.get(url);
+    print(response.data);
+    return Quraanfavourites.fromJson(response.data);
+  }
+
+  Future<Sourarecord> getsourarecord(int juz, int soura) async {
+    String url = '$mainurl/isRecordFound/$juz/$soura';
+    final String tokenn = Userprovider.sd;
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+    Response response = await _dio.get(url);
+    print(response.data);
+    return Sourarecord.fromJson(response.data);
+  }
+
+  Future<Sourafavourite> getsouraquran(int juz, int soura) async {
+    String url = '$mainurl/showFavouriteQuran/$juz/$soura';
+    final String tokenn = Userprovider.sd;
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+    Response response = await _dio.get(url);
+    // print(response.data);
+    return Sourafavourite.fromJson(response.data);
+  }
+
+  Future<Allrecord> getallrecord(int juz, int soura) async {
+    String url = '$mainurl/showAllRecords/$juz/$soura';
+    final String tokenn = Userprovider.sd;
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+    Response response = await _dio.get(url);
+    print(response.data);
+    return Allrecord.fromJson(response.data);
+  }
+
+  Future<void> deleterecord(int recordid) async {
+    String url = '$mainurl/deleteRecords/$recordid';
+    final String tokenn = Userprovider.sd;
+
+    try {
+      http.Response response = await http.delete(
+        Uri.parse(url),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $tokenn',
+        },
+      );
+      print(response.body);
+    } catch (eroor) {
+      print(eroor);
+    }
   }
 }

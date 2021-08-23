@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
+import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/screens/Home.dart';
 import 'package:kidsapp/widgets/duadetails.dart';
 import 'package:provider/provider.dart';
@@ -28,8 +29,11 @@ class _DuaasState extends State<Duaas> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+    final lan = Provider.of<Lanprovider>(context, listen: false).isenglish
+        ? 'en'
+        : 'ar';
     await Provider.of<Azkarprovider>(context, listen: false)
-        .fetchallcatgories();
+        .fetchallcatgories(lan);
     if (mounted) {
       setState(() {
         firstrun = false;

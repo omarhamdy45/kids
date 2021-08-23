@@ -9,7 +9,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/Namesofallah.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Namesofallah.dart';
-import 'package:kidsapp/widgets/sourarecord.dart';
+import 'package:kidsapp/providers/lanprovider.dart';
+import 'package:kidsapp/widgets/namesofallahrecord.dart';
 import 'package:provider/provider.dart';
 
 class Namesofallah extends StatefulWidget {
@@ -34,16 +35,15 @@ class _NamesofallahState extends State<Namesofallah> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    demoData = List.generate(99, (i) {
-      return ObjectClass(
-        checked: false,
-      );
-    });
-
     await Provider.of<Namesofallahprovider>(context, listen: false)
         .fetchnamesofallah(page);
     await Provider.of<Namesofallahprovider>(context, listen: false)
         .fetchvedio();
+    demoData = List.generate(99, (i) {
+      return ObjectClass(
+        checked: false,
+      );
+    });   
     names.addAll(Provider.of<Namesofallahprovider>(context, listen: false)
         .namesofallah
         .data);
@@ -74,7 +74,7 @@ class _NamesofallahState extends State<Namesofallah> {
         .fetchnamessaved();
     await Provider.of<Namesofallahprovider>(context, listen: false)
         .fetchvedio();
-   BetterPlayerConfiguration betterPlayerConfiguration =
+    BetterPlayerConfiguration betterPlayerConfiguration =
         BetterPlayerConfiguration(
             aspectRatio: 16 / 9,
             fit: BoxFit.contain,
@@ -114,14 +114,16 @@ class _NamesofallahState extends State<Namesofallah> {
     player2 = AudioPlayer();
     print(total);
     // TODO: implement initState
-    
+
     super.initState();
   }
 
   @override
   void dispose() {
+   
     //  _betterPlayerController.dispose();
     _betterPlayerController.videoPlayerController.dispose();
+     Provider.of<Namesofallahprovider>(context, listen: false).dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -164,7 +166,7 @@ class _NamesofallahState extends State<Namesofallah> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Container(
-                      margin: EdgeInsets.only(bottom: 20, top: 15, left: 15),
+                      margin: EdgeInsets.only(bottom: 20, top: 15, left: 15,right:15 ),
                       child: Row(
                         children: [
                           Container(
@@ -174,12 +176,12 @@ class _NamesofallahState extends State<Namesofallah> {
                             ),
                             constraints:
                                 BoxConstraints(maxWidth: double.infinity),
-                            height: 40,
+                            height: 45,
                             child: Center(
                               child: Container(
                                 margin: EdgeInsets.all(10),
                                 child: Text(
-                                  'Record The 99 Names of Allah ',
+                                 Provider.of<Lanprovider>(context, listen: false).isenglish? 'Record The 99 Names of Allah ':'قم بتسجيل أسماء الله الحسنى',
                                   style: GoogleFonts.roboto(fontSize: 16),
                                 ),
                               ),
@@ -209,7 +211,7 @@ class _NamesofallahState extends State<Namesofallah> {
                                     size: 40,
                                   ),
                           ),
-                          Container(width: 200, child: Sourarecord()),
+                          Container(width: 160, child: Namesofallahrecord()),
                         ],
                       ),
                     ),
@@ -227,30 +229,30 @@ class _NamesofallahState extends State<Namesofallah> {
                                 itemCount: distinctIds.length,
                                 physics: NeverScrollableScrollPhysics(),
                                 itemBuilder: (BuildContext context, int index) {
-                                  return Container(
-                                    margin: EdgeInsets.all(8),
-                                    height: 240,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: Colors.white,
-                                        border: Border.all(
-                                            width: 4,
-                                            color: Theme.of(context)
-                                                .primaryColor)),
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Row(
-                                            children: [
-                                              InkWell(
-                                                onTap: () async {
+                                  return GestureDetector(
+                                    onTap: ()async{
                                                   await player2.setUrl(
                                                     (distinctIds[index].audio),
                                                   );
                                                   await player2.play();
-                                                },
-                                                child: Stack(
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.all(8),
+                                      height: 240,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(15),
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 4,
+                                              color: Theme.of(context)
+                                                  .primaryColor)),
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Row(
+                                              children: [
+                                                Stack(
                                                   children: [
                                                     Image.asset(
                                                       'assets/images/hexa.png',
@@ -276,59 +278,59 @@ class _NamesofallahState extends State<Namesofallah> {
                                                     )
                                                   ],
                                                 ),
-                                              ),
-                                              Spacer(),
-                                              Checkbox(
-                                                  value:
-                                                      demoData[index].checked,
-                                                  // demoData[index].checked,
-                                                  splashRadius: 2,
-                                                  hoverColor: Colors.blueAccent,
-                                                  activeColor: Theme.of(context)
-                                                      .primaryColor,
-                                                  onChanged:
-                                                      (bool newValue) async {
-                                                    setState(() {
-                                                      demoData[index].checked =
-                                                          newValue;
-                                                    });
-                                                    Dbhandler.instance
-                                                        .namesofallahsaved(
-                                                            distinctIds[index]
-                                                                .id
-                                                                .toString());
-                                                  }),
-                                            ],
+                                                Spacer(),
+                                                Checkbox(
+                                                    value:
+                                                        demoData[index].checked,
+                                                    // demoData[index].checked,
+                                                    splashRadius: 2,
+                                                    hoverColor: Colors.blueAccent,
+                                                    activeColor: Theme.of(context)
+                                                        .primaryColor,
+                                                    onChanged:
+                                                        (bool newValue) async {
+                                                      setState(() {
+                                                        demoData[index].checked =
+                                                            newValue;
+                                                      });
+                                                      Dbhandler.instance
+                                                          .namesofallahsaved(
+                                                              distinctIds[index]
+                                                                  .id
+                                                                  .toString());
+                                                    }),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          distinctIds[index].titleAr,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                          distinctIds[index].titleEn,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 16,
+                                          Text(
+                                            distinctIds[index].titleAr,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                          distinctIds[index].description,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 14,
+                                          SizedBox(
+                                            height: 5,
                                           ),
-                                        ),
-                                      ],
+                                          Text(
+                                            distinctIds[index].titleEn,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            distinctIds[index].description,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   );
                                 },

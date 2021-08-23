@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
+import 'package:kidsapp/providers/lanprovider.dart';
+import 'package:provider/provider.dart';
 
 class Ramdancount extends StatelessWidget {
   var ramdany;
@@ -20,6 +22,8 @@ class Ramdancount extends StatelessWidget {
     var a = DateTime.utc(year, mon, day);
     var b = DateTime.utc(ramdany, 09, 01);
     var c = b.difference(a).inDays;
+    print(a);
+    print(b);
     int estimateTs = DateTime(DateTime.now().year, DateTime.now().month,
             DateTime.now().day + 1, 0, 0, 0)
         .millisecondsSinceEpoch;
@@ -37,9 +41,9 @@ class Ramdancount extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                    height: MediaQuery.of(context).size.height*0.6,
-                    width: double.infinity,
-                    child: Image.asset('assets/images/boy.jpg')),
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      width: double.infinity,
+                      child: Image.asset('assets/images/boy.jpg')),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -63,7 +67,12 @@ class Ramdancount extends StatelessWidget {
                             ),
                             Container(
                               margin: EdgeInsets.all(5),
-                              child: Text('Days',
+                              child: Text(
+                                  Provider.of<Lanprovider>(context,
+                                              listen: false)
+                                          .isenglish
+                                      ? 'Days'
+                                      : 'يوم',
                                   style: GoogleFonts.roboto(
                                     fontSize: 14,
                                     color: Colors.white,
@@ -93,7 +102,12 @@ class Ramdancount extends StatelessWidget {
                             ),
                             Container(
                               margin: EdgeInsets.all(5),
-                              child: Text('Hour',
+                              child: Text(
+                                  Provider.of<Lanprovider>(context,
+                                              listen: false)
+                                          .isenglish
+                                      ? 'Hour'
+                                      : 'ساعة',
                                   style: GoogleFonts.roboto(
                                     fontSize: 14,
                                     color: Colors.white,
@@ -122,7 +136,12 @@ class Ramdancount extends StatelessWidget {
                             ),
                             Container(
                               margin: EdgeInsets.all(5),
-                              child: Text('Minutes',
+                              child: Text(
+                                  Provider.of<Lanprovider>(context,
+                                              listen: false)
+                                          .isenglish
+                                      ? 'Minutes'
+                                      : 'دقيقة',
                                   style: GoogleFonts.roboto(
                                     fontSize: 14,
                                     color: Colors.white,
@@ -151,7 +170,12 @@ class Ramdancount extends StatelessWidget {
                             ),
                             Container(
                               margin: EdgeInsets.all(5),
-                              child: Text('Seconds',
+                              child: Text(
+                                  Provider.of<Lanprovider>(context,
+                                              listen: false)
+                                          .isenglish
+                                      ? 'Seconds'
+                                      : 'ثانية',
                                   style: GoogleFonts.roboto(
                                     fontSize: 14,
                                     color: Colors.white,
