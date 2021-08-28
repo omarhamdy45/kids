@@ -42,125 +42,127 @@ class _DialyhadithState extends State<Dialyhadith> {
         backgroundColor: Colors.white,
         body: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 15, left: 10, bottom: 8),
-                    child: GestureDetector(
-                      onTap: () {
-                        _onWillPop();
-                      },
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.arrow_back_outlined,
-                            size: 35,
-                          )
-                        ],
-                      ),
+            Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 15, left: 10, bottom: 8),
+                  child: GestureDetector(
+                    onTap: () {
+                      _onWillPop();
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.arrow_back_outlined,
+                          size: 35,
+                        )
+                      ],
                     ),
                   ),
-                  Container(
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
                     width: double.infinity,
+             //       height: MediaQuery.of(context).size.height,
                     child: Html(
                       data: htmlData,
                       style: {
                         "div": Style(
                             width: MediaQuery.of(context).size.width,
+                            height:  MediaQuery.of(context).size.height*0.5,
                             color: Colors.blueAccent),
                       },
                     ),
                   ),
-                  MyAppp(
-                    url: dialyhadith.audio,
-                    hadithid: dialyhadith.id.toString(),
-                  ),
-                  Container(
-                    height: 40,
-                    width: double.infinity,
-                    margin: EdgeInsets.symmetric(
-                            horizontal: MediaQuery.of(context).size.width * 0.2)
-                        .add(EdgeInsets.symmetric(vertical: 10)),
-                    child: loading
-                        ? Center(child: CircularProgressIndicator())
-                        : ElevatedButton(
-                            style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                )),
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Theme.of(context).accentColor)),
-                            onPressed: () async {
-                              setState(() {
-                                loading = true;
-                              });
-                              await Dbhandler.instance.Dialyhadithstatus(
-                                  'read', dialyhadith.id.toString());
-                              setState(() {
-                                loading = false;
-                              });
-                              if (Dbhandler.instance.dialyhadith == 200)
-                                Dialogs.materialDialog(
-                                    customView: Container(
-                                      child: Gift(
-                                        'Masha’ Allah',
-                                        'ماشاء الله',
-                                        'assets/images/Group 804.png',
-                                        Colors.white,
-                                        Colors.white,
-                                        Color.fromRGBO(255, 72, 115, 1),
-                                        Colors.white,
-                                        Colors.white,
-                                        Color.fromRGBO(255, 72, 115, 1),
+                ),
+                MyAppp(
+                  url: dialyhadith.audio,
+                  hadithid: dialyhadith.id.toString(),
+                ),
+                Container(
+                  height: 40,
+                  width: double.infinity,
+                  margin: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.2)
+                      .add(EdgeInsets.symmetric(vertical: 10)),
+                  child: loading
+                      ? Center(child: CircularProgressIndicator())
+                      : ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              )),
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(
+                                      Theme.of(context).accentColor)),
+                          onPressed: () async {
+                            setState(() {
+                              loading = true;
+                            });
+                            await Dbhandler.instance.Dialyhadithstatus(
+                                'read', dialyhadith.id.toString());
+                            setState(() {
+                              loading = false;
+                            });
+                            if (Dbhandler.instance.dialyhadith == 200)
+                              Dialogs.materialDialog(
+                                  customView: Container(
+                                    child: Gift(
+                                      'Masha’ Allah',
+                                      'ماشاء الله',
+                                      'assets/images/Group 804.png',
+                                      Colors.white,
+                                      Colors.white,
+                                      Color.fromRGBO(255, 72, 115, 1),
+                                      Colors.white,
+                                      Colors.white,
+                                      Color.fromRGBO(255, 72, 115, 1),
+                                    ),
+                                  ),
+                                  titleStyle: TextStyle(
+                                      color: Theme.of(context).accentColor,
+                                      fontSize: 25),
+                                  color: Colors.white,
+                                  //    animation: 'assets/cong_example.json',
+                                  context: context,
+                                  actions: [
+                                    Container(
+                                      height: 40,
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.1),
+                                      child: IconsButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        onPressed: () async {
+                                          Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
+                                        },
+                                        text: 'Done',
+                                        color:
+                                            Color.fromRGBO(255, 72, 115, 1),
+                                        textStyle:
+                                            TextStyle(color: Colors.white),
                                       ),
                                     ),
-                                    titleStyle: TextStyle(
-                                        color: Theme.of(context).accentColor,
-                                        fontSize: 25),
-                                    color: Colors.white,
-                                    //    animation: 'assets/cong_example.json',
-                                    context: context,
-                                    actions: [
-                                      Container(
-                                        height: 40,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1),
-                                        child: IconsButton(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          onPressed: () async {
-                                            Navigator.of(context).pop();
-                                            Navigator.of(context).pop();
-                                          },
-                                          text: 'Done',
-                                          color:
-                                              Color.fromRGBO(255, 72, 115, 1),
-                                          textStyle:
-                                              TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                    ]);
-                              else {
-                                Navigator.of(context).pop();
-                              }
-                            },
-                            child: Text(
-                              'Done',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
-                            )),
-                  ),
-                ],
-              ),
+                                  ]);
+                            else {
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          child: Text(
+                            'Done',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 18),
+                          )),
+                ),
+              ],
             )
           ],
         ),

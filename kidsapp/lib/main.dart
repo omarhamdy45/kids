@@ -8,6 +8,7 @@ import 'package:kidsapp/providers/deedprovider.dart';
 import 'package:kidsapp/providers/duaaprovider.dart';
 import 'package:kidsapp/providers/hadithprovider.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
+import 'package:kidsapp/providers/networkprovider.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/azkar.dart';
@@ -34,6 +35,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
           create: (context) => Athanprovider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Networkprovider(),
         ),
         ChangeNotifierProvider(
           create: (context) => Userprovider(),

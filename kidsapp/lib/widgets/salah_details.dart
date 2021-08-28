@@ -133,7 +133,7 @@ class Salahdetials extends StatelessWidget {
                                             Provider.of<Userprovider>(context,
                                                     listen: false)
                                                 .salah
-                                                .alone
+                                                .jamah
                                                 .toString(),
                                     style: GoogleFonts.lato(fontSize: 16),
                                     textAlign: TextAlign.left,
@@ -156,7 +156,7 @@ class Salahdetials extends StatelessWidget {
                                             Provider.of<Userprovider>(context,
                                                     listen: false)
                                                 .salah
-                                                .alone
+                                                .onTime
                                                 .toString(),
                                     style: GoogleFonts.lato(fontSize: 16),
                                     textAlign: TextAlign.left,
@@ -179,7 +179,7 @@ class Salahdetials extends StatelessWidget {
                                             Provider.of<Userprovider>(context,
                                                     listen: false)
                                                 .salah
-                                                .alone
+                                                .late
                                                 .toString(),
                                     style: GoogleFonts.lato(fontSize: 16),
                                     textAlign: TextAlign.left,
@@ -202,7 +202,7 @@ class Salahdetials extends StatelessWidget {
                                             Provider.of<Userprovider>(context,
                                                     listen: false)
                                                 .salah
-                                                .alone
+                                                .didntpray
                                                 .toString(),
                                     style: GoogleFonts.lato(fontSize: 16),
                                     textAlign: TextAlign.left,
@@ -225,7 +225,7 @@ class Salahdetials extends StatelessWidget {
                                             Provider.of<Userprovider>(context,
                                                     listen: false)
                                                 .salah
-                                                .alone
+                                                .azkaraftersalah
                                                 .toString(),
                                     style: GoogleFonts.lato(fontSize: 16),
                                     textAlign: TextAlign.left,

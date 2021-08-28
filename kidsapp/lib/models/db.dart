@@ -22,16 +22,12 @@ import 'package:kidsapp/models/hadithlevel.dart';
 import 'package:kidsapp/models/quraanffavourite.dart';
 import 'package:kidsapp/models/quraanlevles.dart';
 import 'package:kidsapp/models/sour.dart';
-import 'package:kidsapp/models/location.dart';
 import 'package:kidsapp/models/score.dart';
 import 'package:kidsapp/models/sourarecord.dart';
 import 'package:kidsapp/models/user.dart';
 import 'package:kidsapp/models/vedio.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'dart:convert' as convert;
-
-import 'package:http/http.dart' as http;
-import 'package:kidsapp/screens/dialyhadith.dart';
 import 'Namesofallah.dart';
 import 'sourafavourite.dart';
 import 'guz2save.dart';
@@ -50,9 +46,16 @@ class Dbhandler {
   int ramdanstatuss;
   int athancheak;
   int dialyhadith;
-
+  int dialhadithstatuscode;
+  int homestatuscode;
+  int hosnastatuscode;
+  int azkarstatuscode;
+  int sourastatuscode;
+  int quraanstatuscode;
+  int ramadanstatuscode;
   String mainurl = 'https://muslimkids.royaltechni.com/api';
-
+  int favouritestatuscode;
+  int sourarecord;
   Future<Athan> gettimes() async {
     String city = Userprovider.city;
     String country = Userprovider.country;
@@ -73,24 +76,18 @@ class Dbhandler {
       http.Response response = await http.get(Uri.parse(url));
       athancheak = response.statusCode;
       // print(response.body);
-
+      //  statuscode = response.statusCode;
       return Athan.fromJson(json.decode(response.body) as Map<String, dynamic>);
     } catch (eroor) {
       print(eroor);
     }
   }
 
-  Future<Locationn> getlocation() async {
-    String url = 'http://ip-api.com/json';
-    Response response = await _dio.get(url);
-    //  print(response.data);
-    return Locationn.fromJson(response.data);
-  }
-
-  Future<Categories> getallcategries(String language) async {
-    String url = '$mainurl/categories';
+  Future<Categories> getallcategries(String language, int page) async {
+    String url = '$mainurl/categories?page=$page';
     _dio.options.headers["Accept-Language"] = "$language";
     Response response = await _dio.get(url);
+    azkarstatuscode = response.statusCode;
     return Categories.fromJson(response.data);
   }
 
@@ -105,21 +102,21 @@ class Dbhandler {
   Future<Hadith> getallhadith() async {
     String url = '$mainurl/hadith';
     Response response = await _dio.get(url);
-
+    ramadanstatuscode = response.statusCode;
     return Hadith.fromJson(response.data);
   }
 
   Future<Hadith> getallduuas() async {
     String url = '$mainurl/duaa';
     Response response = await _dio.get(url);
-
+    ramadanstatuscode = response.statusCode;
     return Hadith.fromJson(response.data);
   }
 
   Future<Hadith> getalldeed() async {
     String url = '$mainurl/deed';
     Response response = await _dio.get(url);
-
+    ramadanstatuscode = response.statusCode;
     return Hadith.fromJson(response.data);
   }
 
@@ -319,7 +316,7 @@ class Dbhandler {
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
     try {
       Response response = await _dio.get(url);
-      print(url);
+      homestatuscode = response.statusCode;
       return Score.fromJson(response.data);
     } catch (eroor) {
       print(eroor);
@@ -329,7 +326,7 @@ class Dbhandler {
   Future<Sour> getsour() async {
     String url = 'https://api.alquran.cloud/v1/surah';
     Response response = await _dio.get(url);
-    print(response.data);
+    quraanstatuscode = response.statusCode;
     return Sour.fromJson(response.data);
   }
 
@@ -337,7 +334,7 @@ class Dbhandler {
     String url = 'https://api.quran.sutanlab.id/surah/$id';
 
     var response = await http.get(Uri.parse(url));
-    print(response.body);
+    sourastatuscode = response.statusCode;
     return Ayah.fromJson(convert.jsonDecode(response.body));
   }
 
@@ -481,7 +478,7 @@ class Dbhandler {
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
 
     Response response = await _dio.get(url);
-
+    sourastatuscode = response.statusCode;
     return Ayacheak.fromJson(response.data);
   }
 
@@ -501,7 +498,7 @@ class Dbhandler {
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
 
     Response response = await _dio.get(url);
-
+    quraanstatuscode = response.statusCode;
     return Juz2save.fromJson(response.data);
   }
 
@@ -509,14 +506,14 @@ class Dbhandler {
     String url = '$mainurl/QuranLevels';
 
     Response response = await _dio.get(url);
-
+    quraanstatuscode = response.statusCode;
     return Quraanlevels.fromJson(response.data);
   }
 
   Future<Dailyhadith> getdialyhadith(int page) async {
     String url = '$mainurl/dailyhadith?page=$page';
     Response response = await _dio.get(url);
-    print(response.data);
+    dialhadithstatuscode = response.statusCode;
     return Dailyhadith.fromJson(response.data);
   }
 
@@ -532,14 +529,14 @@ class Dbhandler {
     final String tokenn = Userprovider.sd;
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
     Response response = await _dio.get(url);
-    print(response.data);
+    homestatuscode = response.statusCode;
     return Homedata.fromJson(response.data);
   }
 
   Future<Namesofallah> getnamesofallah(int page) async {
     String url = '$mainurl/hosna?page=$page';
     Response response = await _dio.get(url);
-    print(response.data);
+    hosnastatuscode = response.statusCode;
     return Namesofallah.fromJson(response.data);
   }
 
@@ -608,12 +605,14 @@ class Dbhandler {
       url,
       data: data,
     );
-    print(response.data);
+    sourarecord = response.statusCode;
+    print(response.statusCode);
   }
 
   Future<Vedio> gethosnavedio() async {
     String url = '$mainurl/hosnaVideo';
     Response response = await _dio.get(url);
+    hosnastatuscode = response.statusCode;
     return Vedio.fromJson(response.data);
   }
 
@@ -626,6 +625,7 @@ class Dbhandler {
   Future<Topstudents> gettopstudents() async {
     String url = '$mainurl/topStudent';
     Response response = await _dio.get(url);
+    homestatuscode = response.statusCode;
     return Topstudents.fromJson(response.data);
   }
 
@@ -686,7 +686,7 @@ class Dbhandler {
     final String tokenn = Userprovider.sd;
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
     Response response = await _dio.get(url);
-    print(response.data);
+    favouritestatuscode = response.statusCode;
     return Quraanfavourites.fromJson(response.data);
   }
 
@@ -695,7 +695,8 @@ class Dbhandler {
     final String tokenn = Userprovider.sd;
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
     Response response = await _dio.get(url);
-    print(response.data);
+    sourastatuscode = response.statusCode;
+
     return Sourarecord.fromJson(response.data);
   }
 
@@ -704,7 +705,7 @@ class Dbhandler {
     final String tokenn = Userprovider.sd;
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
     Response response = await _dio.get(url);
-    // print(response.data);
+    sourastatuscode = response.statusCode;
     return Sourafavourite.fromJson(response.data);
   }
 

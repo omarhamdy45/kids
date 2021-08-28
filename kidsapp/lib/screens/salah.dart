@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Athan.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
+import 'package:kidsapp/providers/networkprovider.dart';
+import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/Asr.dart';
 import 'package:kidsapp/screens/elfajar.dart';
 import 'package:kidsapp/screens/isha.dart';
@@ -156,6 +158,8 @@ class _SalahState extends State<Salah> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+    await Provider.of<Userprovider>(context, listen: false).getUserLocation();
+    Provider.of<Networkprovider>(context, listen: false).cheaknetwork();
     while (Dbhandler.instance.athancheak != 200) {
       await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
     }
@@ -172,504 +176,587 @@ class _SalahState extends State<Salah> {
       child: SafeArea(
         child: Scaffold(
           //  backgroundColor: Colors.white,
-          body: Container(
-            height: double.infinity,
-            child: firstrun
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : ListView(children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                          right: MediaQuery.of(context).size.width * 0.05,
-                          top: 15,
-                          bottom: 2,
-                          left: MediaQuery.of(context).size.width * 0.03),
-                      child: Container(
-                        //  margin: EdgeInsets.only(right: 100),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              //  margin: EdgeInsets.only(left: 10),
-                              child: Text(
-                                Provider.of<Lanprovider>(context, listen: false)
-                                        .isenglish
-                                    ? 'Next Prayer'
-                                    : 'الصلاة التالية',
-                                style: GoogleFonts.roboto(
-                                  textStyle: TextStyle(
-                                      color: Color.fromRGBO(204, 14, 116, 1),
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: .5,
-                                      fontSize: 17),
-                                ),
-                              ),
-                            ),
-                            Text(
-                              ': ',
-                              style: GoogleFonts.roboto(
-                                textStyle: TextStyle(
-                                    color: Color.fromRGBO(60, 60, 67, 1),
-                                    letterSpacing: .5,
-                                    fontSize: 17),
-                              ),
-                            ),
-                            Text(
-                              getnextprayer(),
-                              style: GoogleFonts.roboto(
-                                textStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromRGBO(60, 60, 67, 1),
-                                    letterSpacing: .5,
-                                    fontSize: 16),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(
-                            right: MediaQuery.of(context).size.width * 0.03,
-                            top: 10,
-                            bottom: 2,
-                            left: MediaQuery.of(context).size.width * 0.03),
+          body: Networkprovider.cheak == false
+              ? Container(
+                  height: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
                         child: Text(
-                          '$day ,$mounth,$year',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromRGBO(60, 60, 67, 1)),
-                        )),
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                          vertical: MediaQuery.of(context).size.height * 0.02),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () async {
-                                Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    duration: Duration(milliseconds: 400),
-                                    type: PageTransitionType.fade,
-                                    child: Elfajar(),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 10),
-                                height: 176,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.white, width: 3)),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image:
-                                          AssetImage("assets/images/fajr.jpeg"),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                        left: 10,
-                                        top: 2,
-                                        child: Container(
-                                          child: Text(
-                                            Provider.of<Lanprovider>(context,
-                                                        listen: false)
-                                                    .isenglish
-                                                ? 'Fajr'
-                                                : 'الفجر',
-                                            style: GoogleFonts.roboto(
-                                              textStyle: TextStyle(
-                                                  color: Colors.white,
-                                                  letterSpacing: .5,
-                                                  fontSize: 28),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: 10,
-                                        top: 8,
-                                        child: Container(
-                                            child: CircleAvatar(
-                                          backgroundColor: Colors.white,
-                                          radius: 10,
-                                        )),
-                                      ),
-                                      Positioned(
-                                        right: 10,
-                                        top: 50,
-                                        child: Text(
-                                            Provider.of<Athanprovider>(context)
-                                                .time
-                                                .data
-                                                .timings
-                                                .fajr,
-                                            style: GoogleFonts.roboto(
-                                              textStyle: TextStyle(
-                                                  color: Colors.white,
-                                                  letterSpacing: .5,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14),
-                                            )),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    duration: Duration(milliseconds: 400),
-                                    type: PageTransitionType.fade,
-                                    child: Thuhr(),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 5),
-                                height: 176,
-                                //  color: Color.fromARGB(239, 239, 149, 1),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.white, width: 3)),
-                                child: Container(
-                                  color: Colors.yellow.shade400,
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                        left: 10,
-                                        top: 2,
-                                        child: Container(
-                                          child: Text(
-                                            Provider.of<Lanprovider>(context,
-                                                        listen: false)
-                                                    .isenglish
-                                                ? 'Thuhr'
-                                                : 'الظهر',
-                                            style: GoogleFonts.roboto(
-                                              textStyle: TextStyle(
-                                                  color: Colors.black,
-                                                  letterSpacing: .5,
-                                                  fontSize: 28),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: 10,
-                                        top: 7,
-                                        child: Container(
-                                            child: CircleAvatar(
-                                          backgroundColor: Colors.yellow[200],
-                                          radius: 10,
-                                        )),
-                                      ),
-                                      Positioned(
-                                        right: 10,
-                                        top: 50,
-                                        child: Text(
-                                            Provider.of<Athanprovider>(context)
-                                                .time
-                                                .data
-                                                .timings
-                                                .dhuhr,
-                                            style: GoogleFonts.roboto(
-                                              textStyle: TextStyle(
-                                                  color: Colors.grey[700],
-                                                  letterSpacing: .5,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14),
-                                            )),
-                                      ),
-                                      Positioned(
-                                        bottom: 0,
-                                        left: 0,
-                                        child: Container(
-                                            child: Image.asset(
-                                                'assets/images/Group 72.png')),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                          vertical: MediaQuery.of(context).size.height * 0.02),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    duration: Duration(milliseconds: 400),
-                                    type: PageTransitionType.fade,
-                                    child: Asr(),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 10),
-                                height: 176,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.white, width: 3)),
-                                child: Container(
-                                  color: Colors.yellow.shade600,
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                        left: 10,
-                                        top: 2,
-                                        child: Container(
-                                          child: Text(
-                                            Provider.of<Lanprovider>(context,
-                                                        listen: false)
-                                                    .isenglish
-                                                ? 'Asr'
-                                                : 'العصر',
-                                            style: GoogleFonts.roboto(
-                                              textStyle: TextStyle(
-                                                  color: Colors.black,
-                                                  letterSpacing: .5,
-                                                  fontSize: 28),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: 10,
-                                        top: 5,
-                                        child: Container(
-                                            child: CircleAvatar(
-                                          backgroundColor:
-                                              Colors.yellowAccent[400],
-                                          radius: 18,
-                                        )),
-                                      ),
-                                      Positioned(
-                                        right: 10,
-                                        top: 50,
-                                        child: Text(
-                                            Provider.of<Athanprovider>(context)
-                                                .time
-                                                .data
-                                                .timings
-                                                .asr,
-                                            style: GoogleFonts.roboto(
-                                              textStyle: TextStyle(
-                                                  color: Colors.grey[700],
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: .5,
-                                                  fontSize: 14),
-                                            )),
-                                      ),
-                                      Positioned(
-                                        left: 0,
-                                        bottom: 0,
-                                        child: Container(
-                                            child: Image.asset(
-                                                'assets/images/Group 72.png')),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    duration: Duration(milliseconds: 400),
-                                    type: PageTransitionType.fade,
-                                    child: Maghrib(),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 5),
-                                height: 176,
-                                //  color: Color.fromARGB(239, 239, 149, 1),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.white, width: 3)),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/images/maghrib.jpeg"),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                        left: 10,
-                                        top: 2,
-                                        child: Container(
-                                          child: Text(
-                                            Provider.of<Lanprovider>(context,
-                                                        listen: false)
-                                                    .isenglish
-                                                ? 'Maghrib'
-                                                : 'المغرب',
-                                            style: GoogleFonts.roboto(
-                                              textStyle: TextStyle(
-                                                  color: Colors.white,
-                                                  letterSpacing: .5,
-                                                  fontSize: 28),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: 10,
-                                        top: 10,
-                                        child: Container(
-                                            child: CircleAvatar(
-                                          backgroundColor: Colors.white,
-                                          radius: 8,
-                                        )),
-                                      ),
-                                      Positioned(
-                                        right: 10,
-                                        top: 50,
-                                        child: Text(
-                                            Provider.of<Athanprovider>(context)
-                                                .time
-                                                .data
-                                                .timings
-                                                .maghrib,
-                                            style: GoogleFonts.roboto(
-                                              textStyle: TextStyle(
-                                                  color: Colors.white,
-                                                  letterSpacing: .5,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14),
-                                            )),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                          vertical: MediaQuery.of(context).size.height * 0.02),
-                      child: Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              PageTransition(
-                                duration: Duration(milliseconds: 400),
-                                type: PageTransitionType.fade,
-                                child: Isha(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            margin: EdgeInsets.symmetric(horizontal: 7),
-                            height: 176,
-                            //  color: Color.fromARGB(239, 239, 149, 1),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.white, width: 3)),
-                            child: Container(
-                              color: Colors.black,
-                              child: Stack(
-                                fit: StackFit.expand,
-                                children: [
-                                  Positioned(
-                                    left: 10,
-                                    top: 2,
-                                    child: Container(
-                                      child: Text(
-                                        Provider.of<Lanprovider>(context,
-                                                    listen: false)
-                                                .isenglish
-                                            ? 'Isha’'
-                                            : 'العشاء',
-                                        style: GoogleFonts.roboto(
-                                          textStyle: TextStyle(
-                                              color: Colors.white,
-                                              letterSpacing: .5,
-                                              fontSize: 28),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    right: 10,
-                                    top: 6,
-                                    child: Container(
-                                        child: CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      radius: 15,
-                                    )),
-                                  ),
-                                  Positioned(
-                                    right: 10,
-                                    top: 50,
-                                    child: Text(
-                                        Provider.of<Athanprovider>(context)
-                                            .time
-                                            .data
-                                            .timings
-                                            .isha,
-                                        style: GoogleFonts.roboto(
-                                          textStyle: TextStyle(
-                                              color: Colors.white,
-                                              letterSpacing: .5,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14),
-                                        )),
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    left: 0,
-                                    child: Container(
-                                        child: Image.asset(
-                                            'assets/images/Group 72.png')),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          'Check your network connection',
+                          style: TextStyle(fontSize: 16),
                         ),
                       ),
-                    ),
-                  ]),
-          ),
+                      ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              )),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Theme.of(context).accentColor)),
+                          onPressed: () async {
+                            _pullRefresh();
+                          },
+                          child: Text(
+                            'Refresh',
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          )),
+                    ],
+                  ))
+              : Container(
+                  height: double.infinity,
+                  child: firstrun
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Dbhandler.instance.athancheak != 200
+                          ? Container(
+                              height: double.infinity,
+                              child: Image.asset('assets/images/error.jpg'),
+                            )
+                          : ListView(children: [
+                              Container(
+                                margin: EdgeInsets.only(
+                                    right: MediaQuery.of(context).size.width *
+                                        0.05,
+                                    top: 15,
+                                    bottom: 2,
+                                    left: MediaQuery.of(context).size.width *
+                                        0.03),
+                                child: Container(
+                                  //  margin: EdgeInsets.only(right: 100),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        //  margin: EdgeInsets.only(left: 10),
+                                        child: Text(
+                                          Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .isenglish
+                                              ? 'Next Prayer'
+                                              : 'الصلاة التالية',
+                                          style: GoogleFonts.roboto(
+                                            textStyle: TextStyle(
+                                                color: Color.fromRGBO(
+                                                    204, 14, 116, 1),
+                                                fontWeight: FontWeight.bold,
+                                                letterSpacing: .5,
+                                                fontSize: 17),
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        ': ',
+                                        style: GoogleFonts.roboto(
+                                          textStyle: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(60, 60, 67, 1),
+                                              letterSpacing: .5,
+                                              fontSize: 17),
+                                        ),
+                                      ),
+                                      Text(
+                                        getnextprayer(),
+                                        style: GoogleFonts.roboto(
+                                          textStyle: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                                  Color.fromRGBO(60, 60, 67, 1),
+                                              letterSpacing: .5,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                  margin: EdgeInsets.only(
+                                      right: MediaQuery.of(context).size.width *
+                                          0.03,
+                                      top: 10,
+                                      bottom: 2,
+                                      left: MediaQuery.of(context).size.width *
+                                          0.03),
+                                  child: Text(
+                                    '$day ,$mounth,$year',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color.fromRGBO(60, 60, 67, 1)),
+                                  )),
+                              Container(
+                                margin: EdgeInsets.symmetric(
+                                    vertical:
+                                        MediaQuery.of(context).size.height *
+                                            0.02),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          Navigator.push(
+                                            context,
+                                            PageTransition(
+                                              duration:
+                                                  Duration(milliseconds: 400),
+                                              type: PageTransitionType.fade,
+                                              child: Elfajar(),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          height: 176,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.white,
+                                                  width: 3)),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                    "assets/images/fajr.jpeg"),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  left: 10,
+                                                  top: 2,
+                                                  child: Container(
+                                                    child: Text(
+                                                      Provider.of<Lanprovider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isenglish
+                                                          ? 'Fajr'
+                                                          : 'الفجر',
+                                                      style: GoogleFonts.roboto(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.white,
+                                                            letterSpacing: .5,
+                                                            fontSize: 28),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  right: 10,
+                                                  top: 8,
+                                                  child: Container(
+                                                      child: CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    radius: 10,
+                                                  )),
+                                                ),
+                                                Positioned(
+                                                  right: 10,
+                                                  top: 50,
+                                                  child: Text(
+                                                      Provider.of<Athanprovider>(
+                                                              context)
+                                                          .time
+                                                          .data
+                                                          .timings
+                                                          .fajr,
+                                                      style: GoogleFonts.roboto(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.white,
+                                                            letterSpacing: .5,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 14),
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            PageTransition(
+                                              duration:
+                                                  Duration(milliseconds: 400),
+                                              type: PageTransitionType.fade,
+                                              child: Thuhr(),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 5),
+                                          height: 176,
+                                          //  color: Color.fromARGB(239, 239, 149, 1),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.white,
+                                                  width: 3)),
+                                          child: Container(
+                                            color: Colors.yellow.shade400,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  left: 10,
+                                                  top: 2,
+                                                  child: Container(
+                                                    child: Text(
+                                                      Provider.of<Lanprovider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isenglish
+                                                          ? 'Thuhr'
+                                                          : 'الظهر',
+                                                      style: GoogleFonts.roboto(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.black,
+                                                            letterSpacing: .5,
+                                                            fontSize: 28),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  right: 10,
+                                                  top: 7,
+                                                  child: Container(
+                                                      child: CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.yellow[200],
+                                                    radius: 10,
+                                                  )),
+                                                ),
+                                                Positioned(
+                                                  right: 10,
+                                                  top: 50,
+                                                  child: Text(
+                                                      Provider.of<Athanprovider>(
+                                                              context)
+                                                          .time
+                                                          .data
+                                                          .timings
+                                                          .dhuhr,
+                                                      style: GoogleFonts.roboto(
+                                                        textStyle: TextStyle(
+                                                            color: Colors
+                                                                .grey[700],
+                                                            letterSpacing: .5,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 14),
+                                                      )),
+                                                ),
+                                                Positioned(
+                                                  bottom: 0,
+                                                  left: 0,
+                                                  child: Container(
+                                                      child: Image.asset(
+                                                          'assets/images/Group 72.png')),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(
+                                    vertical:
+                                        MediaQuery.of(context).size.height *
+                                            0.02),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            PageTransition(
+                                              duration:
+                                                  Duration(milliseconds: 400),
+                                              type: PageTransitionType.fade,
+                                              child: Asr(),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          height: 176,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.white,
+                                                  width: 3)),
+                                          child: Container(
+                                            color: Colors.yellow.shade600,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  left: 10,
+                                                  top: 2,
+                                                  child: Container(
+                                                    child: Text(
+                                                      Provider.of<Lanprovider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isenglish
+                                                          ? 'Asr'
+                                                          : 'العصر',
+                                                      style: GoogleFonts.roboto(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.black,
+                                                            letterSpacing: .5,
+                                                            fontSize: 28),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  right: 10,
+                                                  top: 5,
+                                                  child: Container(
+                                                      child: CircleAvatar(
+                                                    backgroundColor: Colors
+                                                        .yellowAccent[400],
+                                                    radius: 18,
+                                                  )),
+                                                ),
+                                                Positioned(
+                                                  right: 10,
+                                                  top: 50,
+                                                  child: Text(
+                                                      Provider.of<Athanprovider>(
+                                                              context)
+                                                          .time
+                                                          .data
+                                                          .timings
+                                                          .asr,
+                                                      style: GoogleFonts.roboto(
+                                                        textStyle: TextStyle(
+                                                            color: Colors
+                                                                .grey[700],
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            letterSpacing: .5,
+                                                            fontSize: 14),
+                                                      )),
+                                                ),
+                                                Positioned(
+                                                  left: 0,
+                                                  bottom: 0,
+                                                  child: Container(
+                                                      child: Image.asset(
+                                                          'assets/images/Group 72.png')),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            PageTransition(
+                                              duration:
+                                                  Duration(milliseconds: 400),
+                                              type: PageTransitionType.fade,
+                                              child: Maghrib(),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 5),
+                                          height: 176,
+                                          //  color: Color.fromARGB(239, 239, 149, 1),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.white,
+                                                  width: 3)),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                    "assets/images/maghrib.jpeg"),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  left: 10,
+                                                  top: 2,
+                                                  child: Container(
+                                                    child: Text(
+                                                      Provider.of<Lanprovider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isenglish
+                                                          ? 'Maghrib'
+                                                          : 'المغرب',
+                                                      style: GoogleFonts.roboto(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.white,
+                                                            letterSpacing: .5,
+                                                            fontSize: 28),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  right: 10,
+                                                  top: 10,
+                                                  child: Container(
+                                                      child: CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    radius: 8,
+                                                  )),
+                                                ),
+                                                Positioned(
+                                                  right: 10,
+                                                  top: 50,
+                                                  child: Text(
+                                                      Provider.of<Athanprovider>(
+                                                              context)
+                                                          .time
+                                                          .data
+                                                          .timings
+                                                          .maghrib,
+                                                      style: GoogleFonts.roboto(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.white,
+                                                            letterSpacing: .5,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 14),
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(
+                                    vertical:
+                                        MediaQuery.of(context).size.height *
+                                            0.02),
+                                child: Center(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        PageTransition(
+                                          duration: Duration(milliseconds: 400),
+                                          type: PageTransitionType.fade,
+                                          child: Isha(),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 7),
+                                      height: 176,
+                                      //  color: Color.fromARGB(239, 239, 149, 1),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.white, width: 3)),
+                                      child: Container(
+                                        color: Colors.black,
+                                        child: Stack(
+                                          fit: StackFit.expand,
+                                          children: [
+                                            Positioned(
+                                              left: 10,
+                                              top: 2,
+                                              child: Container(
+                                                child: Text(
+                                                  Provider.of<Lanprovider>(
+                                                              context,
+                                                              listen: false)
+                                                          .isenglish
+                                                      ? 'Isha’'
+                                                      : 'العشاء',
+                                                  style: GoogleFonts.roboto(
+                                                    textStyle: TextStyle(
+                                                        color: Colors.white,
+                                                        letterSpacing: .5,
+                                                        fontSize: 28),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              right: 10,
+                                              top: 6,
+                                              child: Container(
+                                                  child: CircleAvatar(
+                                                backgroundColor: Colors.white,
+                                                radius: 15,
+                                              )),
+                                            ),
+                                            Positioned(
+                                              right: 10,
+                                              top: 50,
+                                              child: Text(
+                                                  Provider.of<Athanprovider>(
+                                                          context)
+                                                      .time
+                                                      .data
+                                                      .timings
+                                                      .isha,
+                                                  style: GoogleFonts.roboto(
+                                                    textStyle: TextStyle(
+                                                        color: Colors.white,
+                                                        letterSpacing: .5,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 14),
+                                                  )),
+                                            ),
+                                            Positioned(
+                                              bottom: 0,
+                                              left: 0,
+                                              child: Container(
+                                                  child: Image.asset(
+                                                      'assets/images/Group 72.png')),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ]),
+                ),
         ),
       ),
     );

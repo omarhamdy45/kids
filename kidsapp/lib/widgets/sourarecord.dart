@@ -5,21 +5,28 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
+import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/widgets/Controlsbuttons.dart';
+import 'package:kidsapp/widgets/addrecord.dart';
 import 'package:kidsapp/widgets/iconplay.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:record/record.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:rxdart/rxdart.dart';
+
+import 'allrecorddialog.dart';
 
 class AudioRecord extends StatefulWidget {
   final String path;
   final VoidCallback onStop;
   static bool dialy = false;
-  final String url;
-  const AudioRecord({this.path, this.onStop, this.url});
+  final int juzid;
+  final int souraid;
+  const AudioRecord({this.path, this.onStop, this.juzid, this.souraid});
 
   @override
   _AudioRecordState createState() => _AudioRecordState();
@@ -45,36 +52,59 @@ class _AudioRecordState extends State<AudioRecord> {
     super.dispose();
   }
 
+  Future<bool> _onWillPopup() async {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(Soura.isrecorded);
     return Container(
       height: 50,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Container(
           height: 50,
-          width: double.infinity,
+          //   width: double.infinity,
           child: Row(
             mainAxisAlignment: AudioRecord.dialy
                 ? MainAxisAlignment.center
                 : MainAxisAlignment.start,
             children: <Widget>[
-              _buildRecordStopControl(),
-              //   const SizedBox(width: ),
-              Soura.isrecorded
-                  ? Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: Iconsplay(this.widget.url),
-                    )
-                  : Container(),
-              const SizedBox(width: 5),
-              // _buildPauseResumeControl(),
-
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: _buildText(),
               ),
+              _buildRecordStopControl(),
+              //   const SizedBox(width: ),
+              Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                child: GestureDetector(
+                  onTap: () async {
+                    await showDialog(
+                        //  barrierDismissible: false, //
+                        context: context,
+                        builder: (_) {
+                          return WillPopScope(
+                            onWillPop: _onWillPopup,
+                            child: AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                content: Allrecorddialog(
+                                  this.widget.juzid,
+                                  this.widget.souraid,
+                                )),
+                          );
+                        });
+                  },
+                  child: Icon(
+                    Icons.play_arrow,
+                    size: 35,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 5),
+              // _buildPauseResumeControl(),
             ],
           ),
         ),
@@ -275,154 +305,30 @@ class _SourarecordState extends State<Sourarecord> {
                                                                 BorderRadius
                                                                     .circular(
                                                                         15)),
-                                                        content: Container(
-                                                          height: 200,
-                                                          child: Column(
-                                                              children: [
-                                                                loading1
-                                                                    ? Center(
-                                                                        child:
-                                                                            CircularProgressIndicator(),
-                                                                      )
-                                                                    : Container(
-                                                                        margin: EdgeInsets.only(
-                                                                            top:
-                                                                                15),
-                                                                        width:
-                                                                            220,
-                                                                        height:
-                                                                            45,
-                                                                        child:
-                                                                            ElevatedButton(
-                                                                          style:
-                                                                              ButtonStyle(
-                                                                            backgroundColor:
-                                                                                MaterialStateProperty.all(
-                                                                              Color.fromRGBO(34, 196, 228, 1),
-                                                                            ),
-                                                                            shape:
-                                                                                MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                                                            ),
-                                                                          ),
-                                                                          onPressed:
-                                                                              () async {
-                                                                            await Dbhandler.instance.sourarecrod(
-                                                                                File(path),
-                                                                                this.widget.juzid,
-                                                                                this.widget.souraid,
-                                                                                'yes');
-
-                                                                            Navigator.of(context).pop();
-                                                                          },
-                                                                          child:
-                                                                              Text(
-                                                                            'Update The Last Record',
-                                                                            style:
-                                                                                TextStyle(fontSize: 15),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                loading2
-                                                                    ? Center(
-                                                                        child:
-                                                                            CircularProgressIndicator(),
-                                                                      )
-                                                                    : Container(
-                                                                        margin: EdgeInsets.only(
-                                                                            top:
-                                                                                15),
-                                                                        width:
-                                                                            220,
-                                                                        height:
-                                                                            45,
-                                                                        child:
-                                                                            ElevatedButton(
-                                                                          style:
-                                                                              ButtonStyle(
-                                                                            backgroundColor:
-                                                                                MaterialStateProperty.all(
-                                                                              Color.fromRGBO(34, 196, 228, 1),
-                                                                            ),
-                                                                            shape:
-                                                                                MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                                                            ),
-                                                                          ),
-                                                                          onPressed:
-                                                                              () async {
-                                                                            await Dbhandler.instance.sourarecrod(
-                                                                                File(path),
-                                                                                this.widget.juzid,
-                                                                                this.widget.souraid,
-                                                                                'no');
-
-                                                                            Navigator.of(context).pop();
-                                                                          },
-                                                                          child:
-                                                                              Text(
-                                                                            'Add new Record',
-                                                                            style:
-                                                                                TextStyle(fontSize: 15),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          top:
-                                                                              15),
-                                                                  width: 220,
-                                                                  height: 45,
-                                                                  child:
-                                                                      ElevatedButton(
-                                                                    style:
-                                                                        ButtonStyle(
-                                                                      backgroundColor:
-                                                                          MaterialStateProperty
-                                                                              .all(
-                                                                        Color.fromRGBO(
-                                                                            34,
-                                                                            196,
-                                                                            228,
-                                                                            1),
-                                                                      ),
-                                                                      shape: MaterialStateProperty
-                                                                          .all<
-                                                                              RoundedRectangleBorder>(
-                                                                        RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(10)),
-                                                                      ),
-                                                                    ),
-                                                                    onPressed:
-                                                                        () async {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    },
-                                                                    child: Text(
-                                                                      'Cancel',
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              15),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ]),
-                                                        )));
+                                                        content: ADdredcord(
+                                                            this.widget.juzid,
+                                                            this.widget.souraid,
+                                                            path)));
+                                                            
                                               })
-                                          : await Dbhandler.instance
-                                              .sourarecrod(
-                                                  File(path),
-                                                  this.widget.juzid,
-                                                  this.widget.souraid,
-                                                  'no');
+                                          : setState(() {
+                                              loading = true;
+                                            });
+                                      await Dbhandler.instance.sourarecrod(
+                                          File(path),
+                                          this.widget.juzid,
+                                          this.widget.souraid,
+                                          'no');
 
                                       Soura.isrecorded = true;
                                       setState(() {
                                         loading = false;
                                       });
+                                      //   Navigator.pop(context);
+                                       setState(() {
+                                showPlayer = false;
+                              });
+                                      
                                     },
                                   ),
                                 ),
@@ -454,14 +360,16 @@ class _SourarecordState extends State<Sourarecord> {
                   } else {
                     return AudioRecord(
                       path: snapshot.data,
-                      url: this.widget.url,
+                      juzid: this.widget.juzid,
+                      souraid: this.widget.souraid,
+                      //  url: this.widget.url,
                       onStop: () {
                         setState(() => showPlayer = true);
                       },
                     );
                   }
                 } else {
-                  return Center();
+                  return Container();
                 }
               },
             )),

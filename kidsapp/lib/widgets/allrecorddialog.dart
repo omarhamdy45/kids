@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/models/db.dart';
+import 'package:kidsapp/providers/networkprovider.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/screens/namesofallah.dart';
 import 'package:kidsapp/widgets/iconplay.dart';
@@ -31,6 +32,7 @@ class _AllrecorddialogState extends State<Allrecorddialog> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+    await Provider.of<Networkprovider>(context, listen: false).cheaknetwork();
     await Provider.of<Quraanprovider>(context, listen: false)
         .fetchallrecord(this.widget.juzid, this.widget.souraid);
 
@@ -53,125 +55,133 @@ class _AllrecorddialogState extends State<Allrecorddialog> {
     return Container(
         height: 300,
         width: 300.0,
-        child: firstrun
+        child: Networkprovider.cheak == false
             ? Center(
-                child: CircularProgressIndicator(),
+                child: Text(
+                  'Check your network connection',
+                  style: TextStyle(fontSize: 16),
+                ),
               )
-            : Provider.of<Quraanprovider>(context, listen: false)
-                    .allrecord
-                    .records
-                    .isEmpty
+            : firstrun
                 ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        child: Text(
-                          'No recorded yet',
-                          style: GoogleFonts.roboto(fontSize: 16),
-                        ),
-                      ),
-                    ),
+                    child: CircularProgressIndicator(),
                   )
-                : ListView(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
+                : Provider.of<Quraanprovider>(context, listen: false)
+                        .allrecord
+                        .records
+                        .isEmpty
+                    ? Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(4.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Container(
                             child: Text(
-                              'My Recordings',
+                              'You didn\'t record this Sarah yet',
                               style: GoogleFonts.roboto(fontSize: 16),
                             ),
                           ),
                         ),
-                      ),
-                      ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: Provider.of<Quraanprovider>(context,
-                                  listen: false)
-                              .allrecord
-                              .records
-                              .length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              height: 70,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Text(
-                                        Provider.of<Quraanprovider>(context,
-                                                listen: false)
-                                            .allrecord
-                                            .records[index]
-                                            .date
-                                            .split(' ')
-                                            .first,
-                                        style: GoogleFonts.roboto(fontSize: 15),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
+                      )
+                    : ListView(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Container(
+                                child: Text(
+                                  'My Recordings',
+                                  style: GoogleFonts.roboto(fontSize: 16),
+                                ),
+                              ),
+                            ),
+                          ),
+                          ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: Provider.of<Quraanprovider>(context,
+                                      listen: false)
+                                  .allrecord
+                                  .records
+                                  .length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  height: 70,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Text(
+                                           'h',
+                                                
+                                            style: GoogleFonts.roboto(
+                                                fontSize: 15),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Iconsplay(
-                                          Provider.of<Quraanprovider>(context,
-                                                  listen: false)
-                                              .allrecord
-                                              .records[index]
-                                              .audio),
-                                    ),
-                                  ),
-                                  demoData[index].checked
-                                      ? Center(
-                                          child: CircularProgressIndicator(),
-                                        )
-                                      : Container(
-                                          width: 100,
-                                          child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              primary:
-                                                  Colors.red[600], // background
-                                              onPrimary:
-                                                  Colors.white, // foreground
-                                            ),
-                                            onPressed: () async {
-                                              setState(() {
-                                                demoData[index].checked = true;
-                                              });
-                                              await Dbhandler.instance
-                                                  .deleterecord(Provider.of<
+                                      Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Iconsplay(
+                                              Provider.of<Quraanprovider>(
+                                                      context,
+                                                      listen: false)
+                                                  .allrecord
+                                                  .records[index]
+                                                  .audio),
+                                        ),
+                                      ),
+                                      demoData[index].checked
+                                          ? Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            )
+                                          : Container(
+                                              width: 100,
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Colors
+                                                      .red[600], // background
+                                                  onPrimary: Colors
+                                                      .white, // foreground
+                                                ),
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    demoData[index].checked =
+                                                        true;
+                                                  });
+                                                  await Dbhandler.instance
+                                                      .deleterecord(Provider.of<
+                                                                  Quraanprovider>(
+                                                              context,
+                                                              listen: false)
+                                                          .allrecord
+                                                          .records[index]
+                                                          .id);
+                                                  await Provider.of<
                                                               Quraanprovider>(
                                                           context,
                                                           listen: false)
-                                                      .allrecord
-                                                      .records[index]
-                                                      .id);
-                                              await Provider.of<Quraanprovider>(
-                                                      context,
-                                                      listen: false)
-                                                  .fetchallrecord(
-                                                      this.widget.juzid,
-                                                      this.widget.souraid);
+                                                      .fetchallrecord(
+                                                          this.widget.juzid,
+                                                          this.widget.souraid);
 
-                                              setState(() {
-                                                demoData[index].checked = false;
-                                              });
-                                            },
-                                            child: Text('Delete'),
-                                          ),
-                                        ),
-                                ],
-                              ),
-                            );
-                          }),
-                    ],
-                  ));
+                                                  setState(() {
+                                                    demoData[index].checked =
+                                                        false;
+                                                  });
+                                                },
+                                                child: Text('Delete'),
+                                              ),
+                                            ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                        ],
+                      ));
   }
 }

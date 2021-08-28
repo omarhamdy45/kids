@@ -9,7 +9,6 @@ import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/location.dart';
 import 'package:kidsapp/models/score.dart';
 import 'package:kidsapp/models/user.dart';
-import 'package:kidsapp/screens/salah.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -76,16 +75,7 @@ class Userprovider with ChangeNotifier {
   }
 
 
-  Future<void> fetchuserlocation() async {
-    try {
-      location = await Dbhandler.instance.getlocation();
-      country = location.country;
-      // city = location.city;
-      timezone = location.timezone.split('/').first;
-    } catch (error) {
-      print('errorrr');
-    }
-  }
+  
 
   Future<void> getUserLocation() async {
     try {
@@ -96,7 +86,7 @@ class Userprovider with ChangeNotifier {
       var first = placemarks.first;
       Userprovider.city = first.administrativeArea;
       Userprovider.country = first.country;
-      Userprovider.done = 'true';
+      //Userprovider.done = 'true';
     } catch (error) {
       return false;
     }

@@ -8,6 +8,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Athan.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
+import 'package:kidsapp/providers/networkprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/Homescreen.dart';
 import 'package:kidsapp/screens/duaas.dart';
@@ -32,18 +33,20 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
   bool firstrun;
   int i;
   String currentPostion;
-  bool cheak;
+
   TabController tabController;
   AudioPlayer player2;
+  GlobalKey<ScaffoldState> scaffoldd;
 
   @override
   void initState() {
     super.initState();
     // int arg = ModalRoute.of(context).settings.arguments as int;
     player2 = AudioPlayer();
-   // scaffold = GlobalKey<ScaffoldState>();
+
+    scaffoldd = GlobalKey<ScaffoldState>();
     // final assetsAudioPlayer = AssetsAudioPlayer();
-   // cheaknetwork();
+
     tabController = TabController(length: 7, vsync: this);
     tabController.index = Home.homeindex;
     firstrun = true;
@@ -61,51 +64,29 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
       tabController.index = 0;
     }
   }
-/*
-  Future<void> cheaknetwork() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        cheak = true;
-      }
-    } on SocketException catch (_) {
-      scaffold.currentState.showSnackBar(SnackBar(
-        content: Text('Cheak Netwok'),
-        backgroundColor: Colors.red[600],
-      ));
-      cheak = false;
-    }
-  }
-  */
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
+
     await Provider.of<Lanprovider>(context, listen: false).getLanguage();
-    await Provider.of<Userprovider>(context, listen: false).getUserLocation();
-    if (Userprovider.done == 'true') {
-      await Provider.of<Lanprovider>(context, listen: false).getdate();
-      if (DateTime.now().day.toString() !=
-          Provider.of<Lanprovider>(context, listen: false).time) {
-        Provider.of<Lanprovider>(context, listen: false).cleardata();
-      }
+
+    await Provider.of<Lanprovider>(context, listen: false).getdate();
+    if (DateTime.now().day.toString() !=
+        Provider.of<Lanprovider>(context, listen: false).time) {
+      Provider.of<Lanprovider>(context, listen: false).cleardata();
+
       Provider.of<Lanprovider>(context, listen: false).savedate();
-
-      // await Provider.of<Athanprovider>(context, listen: false).getLan();
-
     }
-
     setState(() {
-       firstrun = false;
+      firstrun = false;
     });
+    // await Provider.of<Athanprovider>(context, listen: false).getLan();
   }
 
   @override
   void dispose() {
     tabController.dispose();
-    Provider.of<Userprovider>(context, listen: false).dispose();
-    Provider.of<Lanprovider>(context, listen: false).dispose();
-
     super.dispose();
   }
 
@@ -120,7 +101,7 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
         child: DefaultTabController(
           length: 7,
           child: Scaffold(
-          //    key: scaffold,
+              key: scaffoldd,
               appBar: AppBar(
                 toolbarHeight: 140,
                 title: firstrun

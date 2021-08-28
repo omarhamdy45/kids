@@ -7,7 +7,6 @@ class Azkarprovider with ChangeNotifier {
   // Azkarr azkar;
   Categories categories;
   Categoriess categoriess;
-  
 
   Future<void> fetchazkarbyid(int id) async {
     try {
@@ -17,12 +16,11 @@ class Azkarprovider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchallcatgories(String language) async {
+  Future<void> fetchallcatgories(String language, int page) async {
     try {
-      categories = await Dbhandler.instance.getallcategries(language);
+      categories = await Dbhandler.instance.getallcategries(language, page);
     } catch (error) {
       print('errorrrr');
     }
   }
-   
 }

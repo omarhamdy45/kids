@@ -115,8 +115,8 @@ class Azkars {
 class Links {
   String first;
   String last;
-  Null prev;
-  Null next;
+  String prev;
+  String next;
 
   Links({this.first, this.last, this.prev, this.next});
 

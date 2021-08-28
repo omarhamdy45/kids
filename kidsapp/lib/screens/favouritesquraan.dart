@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/screens/soura.dart';
@@ -53,7 +54,12 @@ class _FavouritesquraanscreenState extends State<Favouritesquraanscreen> {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : ListView(
+              :Dbhandler.instance.favouritestatuscode != 200
+                    ? Container(
+                        height: double.infinity,
+                        child: Image.asset('assets/images/error.jpg'),
+                      )
+                    :  ListView(
                   children: [
                     Container(
                       child: GestureDetector(
