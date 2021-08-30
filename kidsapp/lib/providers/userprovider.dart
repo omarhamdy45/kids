@@ -25,6 +25,7 @@ class Userprovider with ChangeNotifier {
   Salahsummary salah;
   Homedata homedata;
   Topstudents topstudents;
+  Topstudents topclassstudents;
   Future<Score> fetchscore() async {
     try {
       score = await Dbhandler.instance.getscore();
@@ -38,10 +39,9 @@ class Userprovider with ChangeNotifier {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString('token', currentUser.token);
     preferences.setString('name', Userprovider.username);
-  //  preferences.setString('email', currentUser.email);
+    //  preferences.setString('email', currentUser.email);
     // preferences.setString('id', currentUser.id.toString());
   }
-
 
   Future<void> clearuserdata() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -69,13 +69,11 @@ class Userprovider with ChangeNotifier {
       return false;
     }
   }
-    Future<void> getusername() async {
+
+  Future<void> getusername() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-      currentUser = User.fromPrefs(preferences);
+    currentUser = User.fromPrefs(preferences);
   }
-
-
-  
 
   Future<void> getUserLocation() async {
     try {
@@ -91,6 +89,7 @@ class Userprovider with ChangeNotifier {
       return false;
     }
   }
+
   Future<void> fetchhomedata() async {
     try {
       homedata = await Dbhandler.instance.gethomedata();
@@ -98,6 +97,7 @@ class Userprovider with ChangeNotifier {
       print('erroe');
     }
   }
+
   Future<void> fetchsalahsummary(int id) async {
     try {
       salah = await Dbhandler.instance.getsalahsumrry(id);
@@ -105,9 +105,18 @@ class Userprovider with ChangeNotifier {
       print('error');
     }
   }
+
   Future<void> fetchtopstudents() async {
     try {
       topstudents = await Dbhandler.instance.gettopstudents();
+    } catch (error) {
+      print('error');
+    }
+  }
+
+  Future<void> topclassstudent() async {
+    try {
+      topclassstudents = await Dbhandler.instance.gettopclassstudents();
     } catch (error) {
       print('error');
     }

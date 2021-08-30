@@ -77,7 +77,9 @@ class _SouraState extends State<Soura> {
       );
     });
     // await Provider.of<Quraanprovider>(context, listen: false).fetchayat(arg[0]);
-    await Provider.of<Quraanprovider>(context, listen: false).fetchayat(arg[0]);
+    await Provider.of<Quraanprovider>(context, listen: false).fetchayat(
+        arg[0],
+        arg.last);
     await Provider.of<Quraanprovider>(context, listen: false)
         .fetchayacheak(arg[0]);
 
@@ -159,7 +161,6 @@ class _SouraState extends State<Soura> {
   }
 
   Future<bool> _onWillPopup() async {
-   
     Navigator.of(context).pop();
   }
 
@@ -205,6 +206,7 @@ class _SouraState extends State<Soura> {
                                 ),
                                 Container(
                                   child: Container(
+                                    width: MediaQuery.of(context).size.width*0.65,
                                       margin: EdgeInsets.all(15),
                                       child: Text(
                                           Provider.of<Quraanprovider>(context)
@@ -293,7 +295,7 @@ class _SouraState extends State<Soura> {
                                     child: Center(
                                         child: Text(
                                       audios.isNotEmpty
-                                          ? 'verce ' +
+                                          ? 'Verse ' +
                                               (audios[0]).toString() +
                                               ' - ' +
                                               audios.last.toString()
@@ -379,7 +381,6 @@ class _SouraState extends State<Soura> {
                                 SizedBox(
                                   width: 10,
                                 ),
-
                               ],
                             ),
                           ),
@@ -410,7 +411,6 @@ class _SouraState extends State<Soura> {
                                                     .number,
                                           ),
                                         ),
-                                      
                                       ],
                                     ),
                                   )

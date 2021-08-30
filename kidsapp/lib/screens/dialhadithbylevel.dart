@@ -76,7 +76,7 @@ class _DialyhadithState extends State<Dialyhadithbylevle> {
                   ),
                   MyAppp(
                     url: dialyhadith.audio,
-                    hadithid: dialyhadith.id.toString(),
+                    hadithid: dialyhadith.id,
                   ),
                   Container(
                     height: 40,

@@ -37,6 +37,13 @@ class _LoginState extends State<Login> {
     loading = false;
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    passwordnode.dispose();
+  }
+
   void validatetologin() async {
     if (form.currentState.validate()) {
       setState(() {
@@ -125,7 +132,7 @@ class _LoginState extends State<Login> {
                                 style: TextStyle(color: Colors.black),
                                 decoration: InputDecoration(
                                   contentPadding: new EdgeInsets.symmetric(
-                                      vertical: 1.0, horizontal: 1.0),
+                                      vertical: 2.0, horizontal: 8.0),
                                   fillColor: Colors.white,
                                   filled: true,
                                   errorStyle:
@@ -174,7 +181,7 @@ class _LoginState extends State<Login> {
                                 style: TextStyle(color: Colors.black),
                                 decoration: InputDecoration(
                                   contentPadding: new EdgeInsets.symmetric(
-                                      vertical: 1.0, horizontal: 1.0),
+                                      vertical: 1.0, horizontal: 8.0),
                                   fillColor: Colors.white,
                                   filled: true,
                                   errorStyle:
@@ -216,34 +223,38 @@ class _LoginState extends State<Login> {
                                     MediaQuery.of(context).size.height * 0.015,
                               ),
                               Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      height: 40,
-                      child: TextButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Colors.transparent)),
-                        onPressed: ()async {
-                            
-                          Provider.of<Lanprovider>(context, listen: false)
-                              .changeLanguage(!Provider.of<Lanprovider>(context,
-                                      listen: false)
-                                  .isenglish);
-                        },
-                        child: Text(
-                          Provider.of<Lanprovider>(context, listen: true)
-                                  .isenglish
-                              ? 'العربية'
-                              : 'En',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    )),
-                    SizedBox(
+                                  alignment: Alignment.centerRight,
+                                  child: Container(
+                                    height: 40,
+                                    child: TextButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.transparent)),
+                                      onPressed: () async {
+                                        Provider.of<Lanprovider>(context,
+                                                listen: false)
+                                            .changeLanguage(
+                                                !Provider.of<Lanprovider>(
+                                                        context,
+                                                        listen: false)
+                                                    .isenglish);
+                                      },
+                                      child: Text(
+                                        Provider.of<Lanprovider>(context,
+                                                    listen: true)
+                                                .isenglish
+                                            ? 'العربية'
+                                            : 'En',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  )),
+                              SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * 0.02,
                               ),
@@ -280,8 +291,11 @@ class _LoginState extends State<Login> {
                                                   .savedate();
                                             },
                                             child: Text(
-                                              Provider.of<Lanprovider>(context, listen: true)
-                                  .isenglish?  'Login':'تسجيل الدخول',
+                                              Provider.of<Lanprovider>(context,
+                                                          listen: true)
+                                                      .isenglish
+                                                  ? 'Login'
+                                                  : 'تسجيل الدخول',
                                               style:
                                                   TextStyle(color: Colors.grey),
                                             )),

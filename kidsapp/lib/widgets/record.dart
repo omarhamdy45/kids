@@ -5,19 +5,26 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
+import 'package:kidsapp/screens/dialyhadith.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/widgets/Controlsbuttons.dart';
+import 'package:kidsapp/widgets/addhadithrecord.dart';
+import 'package:kidsapp/widgets/allrecordhathi.dart';
 import 'package:kidsapp/widgets/iconplay.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:rxdart/rxdart.dart';
+
+import 'addquraanrecoed.dart';
+import 'allrecorddialog.dart';
 
 class AudioRecorder extends StatefulWidget {
   final String path;
   final VoidCallback onStop;
   static bool dialy = false;
   final String url;
-  const AudioRecorder({this.path, this.onStop, this.url});
+  final hadithid;
+  const AudioRecorder({this.path, this.onStop, this.url, this.hadithid});
 
   @override
   _AudioRecorderState createState() => _AudioRecorderState();
@@ -44,6 +51,10 @@ class _AudioRecorderState extends State<AudioRecorder> {
     super.dispose();
   }
 
+  Future<bool> _onWillPopup() async {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,6 +73,37 @@ class _AudioRecorderState extends State<AudioRecorder> {
               const SizedBox(width: 20),
               AudioRecorder.dialy ? Iconsplay(this.widget.url) : Container(),
               const SizedBox(width: 20),
+              AudioRecorder.dialy
+                  ? GestureDetector(
+                      onTap: () async {
+                        await showDialog(
+                            //  barrierDismissible: false, //
+                            context: context,
+                            builder: (_) {
+                              return WillPopScope(
+                                onWillPop: _onWillPopup,
+                                child: AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    content: Allrecordhadithdialog(
+                                      this.widget.hadithid,
+                                    )),
+                              );
+                            });
+                      },
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: Icon(
+                          Icons.play_arrow,
+                          size: 40.0,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    )
+                  : Container(),
+
               // _buildPauseResumeControl(),
 
               _buildText(),
@@ -167,7 +209,7 @@ class MyAppp extends StatefulWidget {
   static bool dialy;
   final String url;
   final String index;
-  final hadithid;
+  final int hadithid;
   const MyAppp({this.url, this.index, this.hadithid});
 
   @override
@@ -189,6 +231,12 @@ class _MyApppState extends State<MyAppp> {
     super.initState();
   }
 
+  Future<bool> _onWillPopup() async {
+    print('ss');
+    // AudioRecorder.dialy = false;
+    //  Navigator.of(context).pop();
+  }
+
   @override
   void dispose() {
     advancedPlayer.dispose();
@@ -199,7 +247,7 @@ class _MyApppState extends State<MyAppp> {
   @override
   Widget build(BuildContext context) {
     String ayanum = this.widget.index;
-    String hadithid = this.widget.hadithid;
+    int hadithid = this.widget.hadithid;
     return Container(
       height: 60,
       child: Scaffold(
@@ -235,26 +283,48 @@ class _MyApppState extends State<MyAppp> {
                                               color: Colors.blue,
                                             )),
                                         onTap: () async {
+                                          /*
                                           setState(() {
-                                            loading = true;
+                                            showPlayer = false;
                                           });
-                                          print(Soura.souraname);
-                                          AudioRecorder.dialy
-                                              ? await Dbhandler.instance
-                                                  .hadithrecord(
-                                                      'read',
-                                                      hadithid.toString(),
-                                                      File(path))
-                                              : await Dbhandler.instance
-                                                  .ayarecord(
-                                                      Soura.souranum,
-                                                      ayanum,
-                                                      Soura.souraname,
-                                                      Soura.juznum,
-                                                      File(path));
+                                          */
+                                          if (Dialyhadith.isrecorded) {
+                                            showDialog(
+                                                //  barrierDismissible: false, //
+                                                context: context,
+                                                builder: (_) {
+                                                  return WillPopScope(
+                                                      onWillPop: _onWillPopup,
+                                                      child: AlertDialog(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15)),
+                                                          content:
+                                                              Addhadithrecord(
+                                                                  this
+                                                                      .widget
+                                                                      .hadithid,
+                                                                  path)));
+                                                });
+                                          } else {
+                                            setState(() {
+                                              loading = true;
+                                            });
+                                            await Dbhandler.instance
+                                                .strothafithrecord(
+                                                    'no',
+                                                    hadithid.toString(),
+                                                    File(path));
 
+                                            Dialyhadith.isrecorded = true;
+                                            setState(() {
+                                              loading = false;
+                                            });
+                                          }
                                           setState(() {
-                                            loading = false;
+                                            showPlayer = false;
                                           });
                                         },
                                       ),
@@ -296,6 +366,7 @@ class _MyApppState extends State<MyAppp> {
                     return AudioRecorder(
                       path: snapshot.data,
                       url: this.widget.url,
+                      hadithid: this.widget.hadithid,
                       onStop: () {
                         setState(() => showPlayer = true);
                       },

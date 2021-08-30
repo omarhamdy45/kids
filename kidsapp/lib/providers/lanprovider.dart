@@ -129,7 +129,7 @@ class Lanprovider with ChangeNotifier {
     isEn7 = lan;
     notifyListeners();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("isEn7", isEn6);
+    prefs.setBool("isEn7", isEn7);
   }
 
   getLan7() async {

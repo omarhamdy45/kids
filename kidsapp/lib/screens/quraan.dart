@@ -269,7 +269,7 @@ class _QuraanState extends State<Quraan> {
                                                           Provider.of<Lanprovider>(
                                                                       context)
                                                                   .isenglish
-                                                              ? 'Vercres : ${ayatleanth[index]}'
+                                                              ? 'Verses : ${ayatleanth[index]}'
                                                               : 'عدد الآيات : ${ayatleanth[index]}',
                                                           style: GoogleFonts
                                                               .roboto(

@@ -2,19 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:kidsapp/models/db.dart';
+import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/screens/soura.dart';
+import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-class ADdredcord extends StatefulWidget {
-  int juzid;
-  int souraid;
+class Addhadithrecord extends StatefulWidget {
+  int hadithid;
   String path;
-  ADdredcord(this.juzid, this.souraid, this.path);
+  Addhadithrecord(this.hadithid, this.path);
   @override
   _ADdredcordState createState() => _ADdredcordState();
 }
 
-class _ADdredcordState extends State<ADdredcord> {
+class _ADdredcordState extends State<Addhadithrecord> {
   bool loading1;
   bool loading2;
   @override
@@ -52,8 +53,11 @@ class _ADdredcordState extends State<ADdredcord> {
                     setState(() {
                       loading1 = true;
                     });
-                    await Dbhandler.instance.sourarecrod(File(this.widget.path),
-                        this.widget.juzid, this.widget.souraid, 'yes');
+                    await Dbhandler.instance.strothafithrecord(
+                        'yes',
+                        this.widget.hadithid.toString(),
+                        File(this.widget.path));
+
                     if (Dbhandler.instance.sourarecord == 200) {
                       return Alert(
                         context: context,
@@ -91,7 +95,9 @@ class _ADdredcordState extends State<ADdredcord> {
                     }
                   },
                   child: Text(
-                    'Update The Last Record',
+                    Provider.of<Lanprovider>(context, listen: false).isenglish
+                        ? 'Update The Last Record'
+                        : 'تحديث التسجيل الأخير',
                     style: TextStyle(fontSize: 15),
                   ),
                 ),
@@ -121,8 +127,10 @@ class _ADdredcordState extends State<ADdredcord> {
                     setState(() {
                       loading2 = true;
                     });
-                    await Dbhandler.instance.sourarecrod(File(this.widget.path),
-                        this.widget.juzid, this.widget.souraid, 'no');
+                    await Dbhandler.instance.strothafithrecord(
+                        'no',
+                        this.widget.hadithid.toString(),
+                        File(this.widget.path));
                     print(Dbhandler.instance.sourarecord);
                     if (Dbhandler.instance.sourarecord == 200) {
                       return Alert(
@@ -161,7 +169,9 @@ class _ADdredcordState extends State<ADdredcord> {
                     }
                   },
                   child: Text(
-                    'Add new Record',
+                    Provider.of<Lanprovider>(context, listen: false).isenglish
+                        ? 'Add new Record'
+                        : 'إضافة تسجيل جديد',
                     style: TextStyle(fontSize: 15),
                   ),
                 ),
@@ -186,7 +196,9 @@ class _ADdredcordState extends State<ADdredcord> {
                     Navigator.of(context).pop();
                   },
                   child: Text(
-                    'Cancel',
+                    Provider.of<Lanprovider>(context, listen: false).isenglish
+                        ? 'Cancel'
+                        : 'إلغاء',
                     style: TextStyle(fontSize: 15),
                   ),
                 ),

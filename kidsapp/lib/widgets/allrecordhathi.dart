@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/models/db.dart';
+import 'package:kidsapp/providers/hadithprovider.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/networkprovider.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
+import 'package:kidsapp/screens/dialyhadith.dart';
 import 'package:kidsapp/screens/namesofallah.dart';
 import 'package:kidsapp/widgets/iconplay.dart';
 
 import 'package:provider/provider.dart';
 
-class Allrecordquraandialog extends StatefulWidget {
-  final int juzid;
-  final int souraid;
-  Allrecordquraandialog(this.juzid, this.souraid);
+class Allrecordhadithdialog extends StatefulWidget {
+  final int hadithid;
+
+  Allrecordhadithdialog(
+    this.hadithid,
+  );
   @override
   _AllrecorddialogState createState() => _AllrecorddialogState();
 }
 
-class _AllrecorddialogState extends State<Allrecordquraandialog> {
+class _AllrecorddialogState extends State<Allrecordhadithdialog> {
   bool firstrun;
   bool loading;
   List<ObjectClass> demoData;
@@ -34,12 +38,12 @@ class _AllrecorddialogState extends State<Allrecordquraandialog> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     await Provider.of<Networkprovider>(context, listen: false).cheaknetwork();
-    await Provider.of<Quraanprovider>(context, listen: false)
-        .fetchallrecord(this.widget.juzid, this.widget.souraid);
+    await Provider.of<Hadithprovider>(context, listen: false)
+        .fetchallhadithrecord(this.widget.hadithid);
 
     demoData = List.generate(
-        Provider.of<Quraanprovider>(context, listen: false)
-            .allrecord
+        Provider.of<Hadithprovider>(context, listen: false)
+            .allhadithrecord
             .records
             .length, (i) {
       return ObjectClass(
@@ -67,8 +71,8 @@ class _AllrecorddialogState extends State<Allrecordquraandialog> {
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : Provider.of<Quraanprovider>(context, listen: false)
-                        .allrecord
+                : Provider.of<Hadithprovider>(context, listen: false)
+                        .allhadithrecord
                         .records
                         .isEmpty
                     ? Center(
@@ -76,7 +80,8 @@ class _AllrecorddialogState extends State<Allrecordquraandialog> {
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
                             child: Text(
-                              'You didn\'t record this Sarah yet',
+                              'You didn\'t record this Hadith yet',
+                              textAlign: TextAlign.center,
                               style: GoogleFonts.roboto(fontSize: 16),
                             ),
                           ),
@@ -106,9 +111,9 @@ class _AllrecorddialogState extends State<Allrecordquraandialog> {
                           ),
                           ListView.builder(
                               physics: NeverScrollableScrollPhysics(),
-                              itemCount: Provider.of<Quraanprovider>(context,
+                              itemCount: Provider.of<Hadithprovider>(context,
                                       listen: false)
-                                  .allrecord
+                                  .allhadithrecord
                                   .records
                                   .length,
                               shrinkWrap: true,
@@ -122,9 +127,9 @@ class _AllrecorddialogState extends State<Allrecordquraandialog> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: Text(
-                                            Provider.of<Quraanprovider>(context,
+                                            Provider.of<Hadithprovider>(context,
                                                     listen: false)
-                                                .allrecord
+                                                .allhadithrecord
                                                 .records[index]
                                                 .date,
                                             style: GoogleFonts.roboto(
@@ -138,10 +143,10 @@ class _AllrecorddialogState extends State<Allrecordquraandialog> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: Iconsplay(
-                                              Provider.of<Quraanprovider>(
+                                              Provider.of<Hadithprovider>(
                                                       context,
                                                       listen: false)
-                                                  .allrecord
+                                                  .allhadithrecord
                                                   .records[index]
                                                   .audio),
                                         ),
@@ -166,20 +171,29 @@ class _AllrecorddialogState extends State<Allrecordquraandialog> {
                                                         true;
                                                   });
                                                   await Dbhandler.instance
-                                                      .deleterecord(Provider.of<
-                                                                  Quraanprovider>(
-                                                              context,
-                                                              listen: false)
-                                                          .allrecord
+                                                      .deletehadithrecord(Provider
+                                                              .of<Hadithprovider>(
+                                                                  context,
+                                                                  listen: false)
+                                                          .allhadithrecord
                                                           .records[index]
                                                           .id);
                                                   await Provider.of<
-                                                              Quraanprovider>(
+                                                              Hadithprovider>(
                                                           context,
                                                           listen: false)
-                                                      .fetchallrecord(
-                                                          this.widget.juzid,
-                                                          this.widget.souraid);
+                                                      .fetchallhadithrecord(
+                                                          this.widget.hadithid);
+                                                  if (Provider.of<
+                                                              Hadithprovider>(
+                                                          context,
+                                                          listen: false)
+                                                      .allhadithrecord
+                                                      .records
+                                                      .isEmpty) {
+                                                    Dialyhadith.isrecorded =
+                                                        false;
+                                                  }
 
                                                   setState(() {
                                                     demoData[index].checked =

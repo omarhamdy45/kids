@@ -66,12 +66,13 @@ class _HadithsectionState extends State<Hadithsection> {
                 Provider.of<Hadithprovider>(context, listen: false)
                     .favhadith
                     .result
-                    .data.length;
+                    .length;
             j++) {
           if (distinctIds[i].id ==
               Provider.of<Hadithprovider>(context, listen: false)
                   .favhadith
-                  .result.data[j].hadithId) {
+                  .result[j]
+                  .hadithId) {
             demoData[i].checked = true;
           }
         }
@@ -105,12 +106,12 @@ class _HadithsectionState extends State<Hadithsection> {
                     Provider.of<Hadithprovider>(context, listen: false)
                         .favhadith
                         .result
-                        .data.length;
+                        .length;
                 j++) {
               if (distinctIds[i].id ==
                   Provider.of<Hadithprovider>(context, listen: false)
                       .favhadith
-                      .result.data[j]
+                      .result[j]
                       .hadithId) {
                 demoData[i].checked = true;
               }
@@ -141,44 +142,45 @@ class _HadithsectionState extends State<Hadithsection> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Networkprovider.cheak == false
-            ? Container(
-                height: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Text(
-                        'Check your network connection',
-                        style: TextStyle(fontSize: 16),
-                      ),
+          ? Container(
+              height: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Text(
+                      'Check your network connection',
+                      style: TextStyle(fontSize: 16),
                     ),
-                    ElevatedButton(
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            )),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Theme.of(context).accentColor)),
-                        onPressed: () async {
-                          Home.homeindex = 4;
+                  ),
+                  ElevatedButton(
+                      style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          )),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Theme.of(context).accentColor)),
+                      onPressed: () async {
+                        Home.homeindex = 4;
 
-                          await Navigator.push(
-                            // or pushReplacement, if you need that
-                            context,
-                            FadeInRoute(
-                              routeName: Home.route,
-                              page: Home(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'Refresh',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        )),
-                  ],
-                ))
-            :Container(
+                        await Navigator.push(
+                          // or pushReplacement, if you need that
+                          context,
+                          FadeInRoute(
+                            routeName: Home.route,
+                            page: Home(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Refresh',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      )),
+                ],
+              ))
+          : Container(
               height: double.infinity,
               width: double.infinity,
               child: firstrun
@@ -250,7 +252,7 @@ class _HadithsectionState extends State<Hadithsection> {
                                                 listen: false)
                                             .favhadith
                                             .result
-                                            .data.length
+                                            .length
                                         : distinctIds.length,
                                     itemBuilder: (context, index) {
                                       return GestureDetector(
@@ -348,7 +350,8 @@ class _HadithsectionState extends State<Hadithsection> {
                                                                           listen:
                                                                               false)
                                                                       .favhadith
-                                                                      .result.data[index]
+                                                                      .result[
+                                                                          index]
                                                                       .hadiths
                                                                       .title
                                                                   : distinctIds[

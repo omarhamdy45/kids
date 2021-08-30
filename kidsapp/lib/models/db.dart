@@ -330,8 +330,8 @@ class Dbhandler {
     return Sour.fromJson(response.data);
   }
 
-  Future<Ayah> getayatbyid(int id) async {
-    String url = 'https://api.quran.sutanlab.id/surah/$id';
+  Future<Ayah> getayatbyid(int id,int limit) async {
+    String url = 'https://api.quran.sutanlab.id/surah/$id?offset=1&limit=$limit';
 
     var response = await http.get(Uri.parse(url));
     sourastatuscode = response.statusCode;
@@ -378,8 +378,8 @@ class Dbhandler {
     }
   }
 
-  Future<void> hadithrecord(String status, String hadithid, File file) async {
-    String url = '$mainurl/dailyhadith_status';
+  Future<void> strothafithrecord(String status, String hadithid, File file) async {
+    String url = '$mainurl/record_hadith';
     final String tokenn = Userprovider.sd;
     String fileName = file.path.split('/').last;
     FormData data = FormData.fromMap({
@@ -387,8 +387,8 @@ class Dbhandler {
         file.path,
         filename: fileName,
       ),
-      'status': status,
-      'dailyhadith_id': hadithid,
+      'is_update': status,
+      'hadith_id': hadithid,
     });
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
     _dio.options.headers["Accept"] = "application/json";
@@ -717,6 +717,14 @@ class Dbhandler {
     print(response.data);
     return Allrecord.fromJson(response.data);
   }
+  Future<Allrecord> getallhadithrecord(int hadithid) async {
+    String url = '$mainurl/showAllHadithRecords/$hadithid';
+    final String tokenn = Userprovider.sd;
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+    Response response = await _dio.get(url);
+    print(response.data);
+    return Allrecord.fromJson(response.data);
+  }
 
   Future<void> deleterecord(int recordid) async {
     String url = '$mainurl/deleteRecords/$recordid';
@@ -735,4 +743,28 @@ class Dbhandler {
       print(eroor);
     }
   }
+   Future<void> deletehadithrecord(int recordid) async {
+    String url = '$mainurl/deleteHadithRecords/$recordid';
+    final String tokenn = Userprovider.sd;
+
+    try {
+      http.Response response = await http.delete(
+        Uri.parse(url),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $tokenn',
+        },
+      );
+      print(response.body);
+    } catch (eroor) {
+      print(eroor);
+    }
+  }
+  Future<Topstudents> gettopclassstudents() async {
+    String url = '$mainurl/topStudentForClass';
+    Response response = await _dio.get(url);
+    homestatuscode = response.statusCode;
+    return Topstudents.fromJson(response.data);
+  }
+
 }

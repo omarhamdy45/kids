@@ -6,8 +6,13 @@ import 'package:kidsapp/providers/networkprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:kidsapp/widgets/salah_details.dart';
+
 import 'package:kidsapp/widgets/topazkarcard.dart';
+import 'package:kidsapp/widgets/topazkarclass.dart';
 import 'package:kidsapp/widgets/topcard.dart';
+import 'package:kidsapp/widgets/topclasshadith.dart';
+import 'package:kidsapp/widgets/topclassquraan.dart';
+import 'package:kidsapp/widgets/topclasssalah.dart';
 import 'package:kidsapp/widgets/tophadithcard.dart';
 import 'package:kidsapp/widgets/topslahacard.dart';
 import 'package:provider/provider.dart';
@@ -36,9 +41,12 @@ class _HomescreenState extends State<Homescreen> {
     'المغرب',
     'العشاء'
   ];
+  List<bool> isSelected;
+
   @override
   void initState() {
     firstrun = true;
+    isSelected = [true, false];
     // TODO: implement initState
     super.initState();
   }
@@ -47,9 +55,11 @@ class _HomescreenState extends State<Homescreen> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+    //  await Provider.of<Lanprovider>(context, listen: false).getLanguage();
     await Provider.of<Networkprovider>(context, listen: false).cheaknetwork();
     await Provider.of<Userprovider>(context, listen: false).fetchhomedata();
     await Provider.of<Userprovider>(context, listen: false).fetchtopstudents();
+    await Provider.of<Userprovider>(context, listen: false).topclassstudent();
     await Provider.of<Userprovider>(context, listen: false).getusername();
     await Provider.of<Userprovider>(context, listen: false).fetchscore();
     setState(() {
@@ -67,6 +77,7 @@ class _HomescreenState extends State<Homescreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(isSelected[0]);
     return Directionality(
       textDirection: Provider.of<Lanprovider>(context, listen: false).isenglish
           ? TextDirection.ltr
@@ -126,6 +137,7 @@ class _HomescreenState extends State<Homescreen> {
                             )
                           : ListView(
                               children: [
+                                //   Text('Toggle Value : $_toggleValue'),
                                 Provider.of<Lanprovider>(context, listen: false)
                                         .isenglish
                                     ? Text(
@@ -163,7 +175,11 @@ class _HomescreenState extends State<Homescreen> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Your score:',
+                                        Provider.of<Lanprovider>(context,
+                                                    listen: false)
+                                                .isenglish
+                                            ? 'Your score:'
+                                            : 'نتيجك:',
                                         style: GoogleFonts.roboto(
                                           letterSpacing: 0.5,
                                           fontSize: 24,
@@ -619,86 +635,264 @@ class _HomescreenState extends State<Homescreen> {
                                               ],
                                             ),
                                           )),
-                                Provider.of<Userprovider>(context,
-                                            listen: false)
-                                        .topstudents
-                                        .quran
-                                        .isNotEmpty
-                                    ? Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 10),
-                                        child: Text(
-                                          Provider.of<Lanprovider>(context,
+                                Container(
+                                  margin: EdgeInsets.all(10),
+                                  child: Text(
+                                    Provider.of<Lanprovider>(context,
+                                                listen: false)
+                                            .isenglish
+                                        ? 'List of Champions'
+                                        : 'قائمة المتصدرين ',
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(vertical: 10),
+                                  child: Center(
+                                    child: ToggleButtons(
+                                      constraints: BoxConstraints(
+                                          minHeight: 60,
+                                          minWidth: (MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  30) /
+                                              2),
+                                      borderColor: Colors.grey[300],
+                                      fillColor: Theme.of(context).primaryColor,
+                                      borderWidth: 2,
+                                      selectedBorderColor:
+                                          Theme.of(context).primaryColor,
+                                      selectedColor: Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                      children: <Widget>[
+                                        
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            Provider.of<Lanprovider>(context,
+                                                        listen: false)
+                                                    .isenglish
+                                                ? 'School'
+                                                : 'في الصف',
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            Provider.of<Lanprovider>(context,
+                                                        listen: false)
+                                                    .isenglish
+                                                ? 'CLASS'
+                                                : 'في المدرسة',
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                        ),
+                                      ],
+                                      onPressed: (int index) {
+                                        setState(() {
+                                          for (int i = 0;
+                                              i < isSelected.length;
+                                              i++) {
+                                            isSelected[i] = i == index;
+                                          }
+                                        });
+                                      },
+                                      isSelected: isSelected,
+                                    ),
+                                  ),
+                                ),
+                                isSelected[0]
+                                    ? Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Provider.of<Userprovider>(context,
                                                       listen: false)
-                                                  .isenglish
-                                              ? 'Qur\'an Champions'
-                                              : 'مسابقة القرأن',
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ))
-                                    : Container(),
-                                Topquraancard(),
-                                Provider.of<Userprovider>(context,
-                                            listen: false)
-                                        .topstudents
-                                        .azkar
-                                        .isNotEmpty
-                                    ? Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 10),
-                                        child: Text(
-                                          Provider.of<Lanprovider>(context,
+                                                  .topstudents
+                                                  .quran
+                                                  .isNotEmpty
+                                              ? Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 10),
+                                                  child: Text(
+                                                    Provider.of<Lanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .isenglish
+                                                        ? 'Qur\'an Champions'
+                                                        : ' المتصدرين في القرآن الكريم ',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ))
+                                              : Container(),
+                                          Topquraancard(),
+                                          Provider.of<Userprovider>(context,
                                                       listen: false)
-                                                  .isenglish
-                                              ? 'Thikr Champions'
-                                              : 'مسابقة الذكر',
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ))
-                                    : Container(),
-                                Topqazkarcard(),
-                                Provider.of<Userprovider>(context,
-                                            listen: false)
-                                        .topstudents
-                                        .hadith
-                                        .isNotEmpty
-                                    ? Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 10),
-                                        child: Text(
-                                          Provider.of<Lanprovider>(context,
+                                                  .topstudents
+                                                  .azkar
+                                                  .isNotEmpty
+                                              ? Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 10),
+                                                  child: Text(
+                                                    Provider.of<Lanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .isenglish
+                                                        ? 'Thikr Champions'
+                                                        : ' المتصدرين في الأذكار اليومية',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ))
+                                              : Container(),
+                                          Topqazkarcard(),
+                                          Provider.of<Userprovider>(context,
                                                       listen: false)
-                                                  .isenglish
-                                              ? 'Hadith Champions'
-                                              : 'مسابقة الحديث',
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ))
-                                    : Container(),
-                                Tophadithcard(),
-                                Provider.of<Userprovider>(context,
-                                            listen: false)
-                                        .topstudents
-                                        .salah
-                                        .isNotEmpty
-                                    ? Container(
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 10),
-                                        child: Text(
-                                          Provider.of<Lanprovider>(context,
+                                                  .topstudents
+                                                  .hadith
+                                                  .isNotEmpty
+                                              ? Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 10),
+                                                  child: Text(
+                                                    Provider.of<Lanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .isenglish
+                                                        ? 'Hadith Champions'
+                                                        : '  المتصدرين في الحديث الشريف',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ))
+                                              : Container(),
+                                          Tophadithcard(),
+                                          Provider.of<Userprovider>(context,
                                                       listen: false)
-                                                  .isenglish
-                                              ? 'Salah Champions'
-                                              : 'مسابقة الصلاة',
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ))
-                                    : Container(),
-                                Topsalahcard()
+                                                  .topstudents
+                                                  .salah
+                                                  .isNotEmpty
+                                              ? Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 10),
+                                                  child: Text(
+                                                    Provider.of<Lanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .isenglish
+                                                        ? 'Salah Champions'
+                                                        : ' المتصدرين في آداء الصلاة',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ))
+                                              : Container(),
+                                          Topsalahcard()
+                                        ],
+                                      )
+                                    : Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Provider.of<Userprovider>(context,
+                                                      listen: false)
+                                                  .topclassstudents
+                                                  .quran
+                                                  .isNotEmpty
+                                              ? Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 10),
+                                                  child: Text(
+                                                    Provider.of<Lanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .isenglish
+                                                        ? 'Qur\'an Champions'
+                                                        : ' المتصدرين في القرآن الكريم ',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ))
+                                              : Container(),
+                                          Topclassquraancard(),
+                                          Provider.of<Userprovider>(context,
+                                                      listen: false)
+                                                  .topclassstudents
+                                                  .azkar
+                                                  .isNotEmpty
+                                              ? Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 10),
+                                                  child: Text(
+                                                    Provider.of<Lanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .isenglish
+                                                        ? 'Thikr Champions'
+                                                        : ' المتصدرين في الأذكار اليومية',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ))
+                                              : Container(),
+                                          Topclassqazkarcard(),
+                                          Provider.of<Userprovider>(context,
+                                                      listen: false)
+                                                  .topclassstudents
+                                                  .hadith
+                                                  .isNotEmpty
+                                              ? Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 10),
+                                                  child: Text(
+                                                    Provider.of<Lanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .isenglish
+                                                        ? 'Hadith Champions'
+                                                        : '  المتصدرين في الحديث الشريف',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ))
+                                              : Container(),
+                                          Topclasshadithcard(),
+                                          Provider.of<Userprovider>(context,
+                                                      listen: false)
+                                                  .topclassstudents
+                                                  .salah
+                                                  .isNotEmpty
+                                              ? Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 10),
+                                                  child: Text(
+                                                    Provider.of<Lanprovider>(
+                                                                context,
+                                                                listen: false)
+                                                            .isenglish
+                                                        ? 'Salah Champions'
+                                                        : ' المتصدرين في آداء الصلاة',
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ))
+                                              : Container(),
+                                          Topclasssalahcard()
+                                        ],
+                                      )
                               ],
                             ),
                 ),

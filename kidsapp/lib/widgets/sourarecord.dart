@@ -8,7 +8,7 @@ import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/widgets/Controlsbuttons.dart';
-import 'package:kidsapp/widgets/addrecord.dart';
+import 'package:kidsapp/widgets/addquraanrecoed.dart';
 import 'package:kidsapp/widgets/iconplay.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
@@ -77,7 +77,7 @@ class _AudioRecordState extends State<AudioRecord> {
               _buildRecordStopControl(),
               //   const SizedBox(width: ),
               Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10),
                 child: GestureDetector(
                   onTap: () async {
                     await showDialog(
@@ -89,7 +89,7 @@ class _AudioRecordState extends State<AudioRecord> {
                             child: AlertDialog(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15)),
-                                content: Allrecorddialog(
+                                content: Allrecordquraandialog(
                                   this.widget.juzid,
                                   this.widget.souraid,
                                 )),
@@ -292,43 +292,43 @@ class _SourarecordState extends State<Sourarecord> {
                                           color: Colors.white,
                                         )),
                                     onTap: () async {
-                                      Soura.isrecorded
-                                          ? showDialog(
-                                              //  barrierDismissible: false, //
-                                              context: context,
-                                              builder: (_) {
-                                                return WillPopScope(
-                                                    onWillPop: _onWillPopup,
-                                                    child: AlertDialog(
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15)),
-                                                        content: ADdredcord(
-                                                            this.widget.juzid,
-                                                            this.widget.souraid,
-                                                            path)));
-                                                            
-                                              })
-                                          : setState(() {
-                                              loading = true;
+                                      if (Soura.isrecorded) {
+                                        showDialog(
+                                            //  barrierDismissible: false, //
+                                            context: context,
+                                            builder: (_) {
+                                              return WillPopScope(
+                                                  onWillPop: _onWillPopup,
+                                                  child: AlertDialog(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15)),
+                                                      content: Addquraanrecord(
+                                                          this.widget.juzid,
+                                                          this.widget.souraid,
+                                                          path)));
                                             });
-                                      await Dbhandler.instance.sourarecrod(
-                                          File(path),
-                                          this.widget.juzid,
-                                          this.widget.souraid,
-                                          'no');
+                                      } else {
+                                        setState(() {
+                                          loading = true;
+                                        });
+                                        await Dbhandler.instance.sourarecrod(
+                                            File(path),
+                                            this.widget.juzid,
+                                            this.widget.souraid,
+                                            'no');
 
-                                      Soura.isrecorded = true;
+                                        Soura.isrecorded = true;
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                      }
                                       setState(() {
-                                        loading = false;
+                                        showPlayer = false;
                                       });
-                                      //   Navigator.pop(context);
-                                       setState(() {
-                                showPlayer = false;
-                              });
-                                      
                                     },
                                   ),
                                 ),

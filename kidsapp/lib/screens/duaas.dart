@@ -147,7 +147,7 @@ class _DuaasState extends State<Duaas> {
                                         arguments: azakar);
                                   },
                                   child: Container(
-                                    height: 165,
+                                    height: 170,
                                     margin: EdgeInsets.all(10),
                                     child: Column(
                                       children: [
@@ -174,7 +174,7 @@ class _DuaasState extends State<Duaas> {
                                           height: 5,
                                         ),
                                         Container(
-                                          height: 42,
+                                          height:47,
                                           child: Text(
                                             distinctIds[index].title,
                                             maxLines: 2,

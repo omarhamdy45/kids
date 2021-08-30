@@ -83,7 +83,8 @@ class _MyAppState extends State<MyApp> {
           primaryColor: Color.fromRGBO(184, 95, 143, 1),
           accentColor: Color.fromRGBO(167, 85, 163, 1),
         ),
-        home: FutureBuilder(
+        home: 
+        FutureBuilder(
           future:
               Provider.of<Userprovider>(context, listen: false).isLoggedIn(),
           builder: (context, snapshot) {

@@ -2,41 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:provider/provider.dart';
 
-class Topsalahcard extends StatelessWidget {
+class Topclasshadithcard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-     int len;
-    if (Provider.of<Userprovider>(context, listen: false)
-            .topstudents
-            .salah[0]
-            .totalGrade ==
-        0) {
-      len = 0;
-    }
-   else if (Provider.of<Userprovider>(context, listen: false)
-            .topstudents
-            .salah[1]
-            .totalGrade ==
-        0) {
-      len = 1;
-    }
-  else  if (Provider.of<Userprovider>(context, listen: false)
-            .topstudents
-            .salah[2]
-            .totalGrade ==
-        0) {
-      len = 2;
-    }
-   else  if (Provider.of<Userprovider>(context, listen: false)
-            .topstudents
-            .salah[3]
-            .totalGrade ==
-        0) {
-      len = 3;
-    }
-     else {
-      len = 4;
-    }
     List<Color> colors = [
       Colors.blue,
       Colors.amber,
@@ -48,10 +16,16 @@ class Topsalahcard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
         height: 60 *
-            len
+            Provider.of<Userprovider>(context, listen: false)
+                .topclassstudents
+                .hadith
+                .length
                 .toDouble(),
         child: ListView.builder(
-            itemCount: len,
+            itemCount: Provider.of<Userprovider>(context, listen: false)
+                .topclassstudents
+                .hadith
+                .length,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return Container(
@@ -82,14 +56,11 @@ class Topsalahcard extends StatelessWidget {
                         if (index == 4)
                           Container(
                               height: 40,
-                              child: Image.asset(
-                                'assets/images/bronze5.png',
-                                fit: BoxFit.contain,
-                              )),
+                              child: Image.asset('assets/images/bronze5.png')),
                         Text(
                           Provider.of<Userprovider>(context, listen: false)
-                              .topstudents
-                              .salah[index]
+                              .topclassstudents
+                              .hadith[index]
                               .name,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
@@ -98,10 +69,9 @@ class Topsalahcard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: Text(
                             Provider.of<Userprovider>(context, listen: false)
-                                .topstudents
-                                .salah[index]
-                                .totalGrade
-                                .toString(),
+                                .topclassstudents
+                                .hadith[index]
+                                .hadith,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),

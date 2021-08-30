@@ -33,9 +33,9 @@ class Quraanprovider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchayat(int id) async {
+  Future<void> fetchayat(int id,int limit) async {
     try {
-      ayah = await Dbhandler.instance.getayatbyid(id);
+      ayah = await Dbhandler.instance.getayatbyid(id,limit);
       print(ayah.data.number);
     } catch (eroor) {
       print(eroor);

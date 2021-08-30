@@ -131,7 +131,7 @@ class _NamesofallahState extends State<Namesofallah> {
   void dispose() {
     //  _betterPlayerController.dispose();
     _betterPlayerController.videoPlayerController.dispose();
-    Provider.of<Namesofallahprovider>(context, listen: false).dispose();
+   // Provider.of<Namesofallahprovider>(context, listen: false).dispose();
     // TODO: implement dispose
     super.dispose();
   }

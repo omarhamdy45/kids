@@ -2,33 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:provider/provider.dart';
 
-class Topsalahcard extends StatelessWidget {
+class Topclasssalahcard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-     int len;
+    int len;
     if (Provider.of<Userprovider>(context, listen: false)
-            .topstudents
+            .topclassstudents
             .salah[0]
             .totalGrade ==
         0) {
       len = 0;
     }
    else if (Provider.of<Userprovider>(context, listen: false)
-            .topstudents
+            .topclassstudents
             .salah[1]
             .totalGrade ==
         0) {
       len = 1;
     }
   else  if (Provider.of<Userprovider>(context, listen: false)
-            .topstudents
+            .topclassstudents
             .salah[2]
             .totalGrade ==
         0) {
       len = 2;
     }
    else  if (Provider.of<Userprovider>(context, listen: false)
-            .topstudents
+            .topclassstudents
             .salah[3]
             .totalGrade ==
         0) {
@@ -48,7 +48,7 @@ class Topsalahcard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
         height: 60 *
-            len
+           len
                 .toDouble(),
         child: ListView.builder(
             itemCount: len,
@@ -88,7 +88,7 @@ class Topsalahcard extends StatelessWidget {
                               )),
                         Text(
                           Provider.of<Userprovider>(context, listen: false)
-                              .topstudents
+                              .topclassstudents
                               .salah[index]
                               .name,
                           style: TextStyle(fontWeight: FontWeight.bold),
@@ -98,7 +98,7 @@ class Topsalahcard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: Text(
                             Provider.of<Userprovider>(context, listen: false)
-                                .topstudents
+                                .topclassstudents
                                 .salah[index]
                                 .totalGrade
                                 .toString(),

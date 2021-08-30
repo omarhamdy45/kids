@@ -26,19 +26,19 @@ class Records {
   String audio;
   String date;
 
-  Records({this.id, this.audio});
+  Records({this.id, this.audio, this.date});
 
   Records.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    date = json['updated_at'];
     audio = json['audio'];
+    date = json['date'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['audio'] = this.audio;
-    data['updated_at'] = this.date;
+    data['date'] = this.date;
     return data;
   }
 }
