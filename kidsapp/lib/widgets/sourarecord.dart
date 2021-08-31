@@ -136,6 +136,7 @@ class _AudioRecordState extends State<AudioRecord> {
               child: SizedBox(width: 56, height: 56, child: icon),
               onTap: () async{
                     await Permission.manageExternalStorage.request();
+                    await Permission.storage.request();
                   await Permission.microphone.request();
                 _isRecording ? _stop() : _start();
               },

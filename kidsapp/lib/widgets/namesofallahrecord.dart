@@ -252,6 +252,7 @@ class _NamesofallahrecordState extends State<Namesofallahrecord> {
 
                                       setState(() {
                                         loading = false;
+                                        showPlayer = false;
                                       });
                                     },
                                   ),
