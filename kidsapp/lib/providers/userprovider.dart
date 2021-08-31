@@ -9,6 +9,7 @@ import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/location.dart';
 import 'package:kidsapp/models/score.dart';
 import 'package:kidsapp/models/user.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -77,6 +78,7 @@ class Userprovider with ChangeNotifier {
 
   Future<void> getUserLocation() async {
     try {
+      await Permission.location.request();
       var position = await GeolocatorPlatform.instance
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       var placemarks =
