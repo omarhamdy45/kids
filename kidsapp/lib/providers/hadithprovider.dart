@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kidsapp/models/Allrecord.dart';
 import 'package:kidsapp/models/Hadith.dart';
+import 'package:kidsapp/models/Hadithbyid.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/dialyhadith.dart';
 import 'package:kidsapp/models/favouritehadith.dart';
@@ -12,6 +13,7 @@ class Hadithprovider with ChangeNotifier {
   Hadithlevel hadithlevles;
   Favouritehadith favhadith;
   Allrecord allhadithrecord;
+  Hadithbyid hadithid;
   Future<void> fetchallhadith() async {
     try {
       azkar = await Dbhandler.instance.getallhadith();
@@ -48,6 +50,14 @@ class Hadithprovider with ChangeNotifier {
     try {
       allhadithrecord = await Dbhandler.instance.getallhadithrecord(hadithid);
       print(allhadithrecord.records.length);
+    } catch (error) {
+      print('errorrrrrrrrrrrrrr');
+    }
+  }
+   Future<void> fetchhadithbyid(int id) async {
+    try {
+      hadithid = await Dbhandler.instance.getspecifichadith(id);
+      
     } catch (error) {
       print('errorrrrrrrrrrrrrr');
     }

@@ -1,35 +1,35 @@
 class Favouritehadith {
-  List<Result> result;
+  List<Resualt> data;
 
-  Favouritehadith({this.result});
+  Favouritehadith({this.data});
 
   Favouritehadith.fromJson(Map<String, dynamic> json) {
-    if (json['result'] != null) {
-      result = new List<Result>();
-      json['result'].forEach((v) {
-        result.add(new Result.fromJson(v));
+    if (json['Data'] != null) {
+      data = new List<Resualt>();
+      json['Data'].forEach((v) {
+        data.add(new Resualt.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.result != null) {
-      data['result'] = this.result.map((v) => v.toJson()).toList();
+    if (this.data != null) {
+      data['Data'] = this.data.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Result {
+class Resualt {
   int id;
   int hadithId;
   int userId;
   String createdAt;
   String updatedAt;
-  Hadiths hadiths;
+  Data hadiths;
 
-  Result(
+  Resualt(
       {this.id,
       this.hadithId,
       this.userId,
@@ -37,14 +37,14 @@ class Result {
       this.updatedAt,
       this.hadiths});
 
-  Result.fromJson(Map<String, dynamic> json) {
+  Resualt.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     hadithId = json['hadith_id'];
     userId = json['user_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     hadiths =
-        json['hadiths'] != null ? new Hadiths.fromJson(json['hadiths']) : null;
+        json['hadiths'] != null ? new Data.fromJson(json['hadiths']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -61,7 +61,7 @@ class Result {
   }
 }
 
-class Hadiths {
+class Data {
   int id;
   String title;
   String description;
@@ -70,7 +70,7 @@ class Hadiths {
   String createdAt;
   String updatedAt;
 
-  Hadiths(
+  Data(
       {this.id,
       this.title,
       this.description,
@@ -79,7 +79,7 @@ class Hadiths {
       this.createdAt,
       this.updatedAt});
 
-  Hadiths.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     description = json['description'];

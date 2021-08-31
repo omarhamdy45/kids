@@ -44,47 +44,51 @@ class _HadithsectionState extends State<Hadithsection> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+    print('ssss');
     await Provider.of<Networkprovider>(context, listen: false).cheaknetwork();
-    await Provider.of<Hadithprovider>(context, listen: false)
-        .fetchdailyhadith(page);
+
     await Provider.of<Hadithprovider>(context, listen: false)
         .fetchhadithlevels();
     await Provider.of<Hadithprovider>(context, listen: false).fetchfavhadith();
-
-    if (Dbhandler.instance.dialhadithstatuscode == 200) {
-      names.addAll(
-          Provider.of<Hadithprovider>(context, listen: false).dailyhadith.data);
-      distinctIds = names.toSet().toList();
-      demoData = List.generate(distinctIds.length, (i) {
-        return ObjectClass(
-          checked: false,
-        );
-      });
-      for (int i = 0; i < distinctIds.length; i++) {
-        for (int j = 0;
-            j <
+    if (page == 1) {
+      await Provider.of<Hadithprovider>(context, listen: false)
+          .fetchdailyhadith(page);
+      if (Dbhandler.instance.dialhadithstatuscode == 200) {
+        names.addAll(Provider.of<Hadithprovider>(context, listen: false)
+            .dailyhadith
+            .data);
+        distinctIds = names.toSet().toList();
+        demoData = List.generate(distinctIds.length, (i) {
+          return ObjectClass(
+            checked: false,
+          );
+        });
+        for (int i = 0; i < distinctIds.length; i++) {
+          for (int j = 0;
+              j <
+                  Provider.of<Hadithprovider>(context, listen: false)
+                      .favhadith
+                      .data
+                      .length;
+              j++) {
+            if (distinctIds[i].id ==
                 Provider.of<Hadithprovider>(context, listen: false)
                     .favhadith
-                    .result
-                    .length;
-            j++) {
-          if (distinctIds[i].id ==
-              Provider.of<Hadithprovider>(context, listen: false)
-                  .favhadith
-                  .result[j]
-                  .hadithId) {
-            demoData[i].checked = true;
+                    .data[j]
+                    .hadithId) {
+              demoData[i].checked = true;
+            }
           }
         }
       }
       _scrollController.addListener(() async {
         if (_scrollController.position.pixels ==
                 _scrollController.position.maxScrollExtent &&
-            page <=
+            distinctIds.length <=
                 Provider.of<Hadithprovider>(context, listen: false)
                     .dailyhadith
                     .meta
-                    .lastPage) {
+                    .total) {
           setState(() {
             secondrun = true;
           });
@@ -93,7 +97,9 @@ class _HadithsectionState extends State<Hadithsection> {
           names.addAll(Provider.of<Hadithprovider>(context, listen: false)
               .dailyhadith
               .data);
-          distinctIds = names.toSet().toList();
+          distinctIds.addAll(Provider.of<Hadithprovider>(context, listen: false)
+              .dailyhadith
+              .data);
 
           demoData = List.generate(distinctIds.length, (i) {
             return ObjectClass(
@@ -105,13 +111,13 @@ class _HadithsectionState extends State<Hadithsection> {
                 j <
                     Provider.of<Hadithprovider>(context, listen: false)
                         .favhadith
-                        .result
+                        .data
                         .length;
                 j++) {
               if (distinctIds[i].id ==
                   Provider.of<Hadithprovider>(context, listen: false)
                       .favhadith
-                      .result[j]
+                      .data[j]
                       .hadithId) {
                 demoData[i].checked = true;
               }
@@ -139,6 +145,8 @@ class _HadithsectionState extends State<Hadithsection> {
 
   @override
   Widget build(BuildContext context) {
+    print(distinctIds.length);
+    distinctIds = names.toSet().toList();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Networkprovider.cheak == false
@@ -251,15 +259,21 @@ class _HadithsectionState extends State<Hadithsection> {
                                         ? Provider.of<Hadithprovider>(context,
                                                 listen: false)
                                             .favhadith
-                                            .result
+                                            .data
                                             .length
                                         : distinctIds.length,
                                     itemBuilder: (context, index) {
                                       return GestureDetector(
                                         onTap: () async {
-                                          final dialyhadith =
-                                              distinctIds[index];
-                                          AudioRecorder.dialy = true;
+                                          final dialyhadith = isfavourie
+                                              ? Provider.of<Hadithprovider>(
+                                                      context,
+                                                      listen: false)
+                                                  .favhadith
+                                                  .data[index]
+                                                  .hadiths
+                                                  .id
+                                              : distinctIds[index].id;
                                           await Navigator.push(
                                             // or pushReplacement, if you need that
                                             context,
@@ -350,7 +364,7 @@ class _HadithsectionState extends State<Hadithsection> {
                                                                           listen:
                                                                               false)
                                                                       .favhadith
-                                                                      .result[
+                                                                      .data[
                                                                           index]
                                                                       .hadiths
                                                                       .title

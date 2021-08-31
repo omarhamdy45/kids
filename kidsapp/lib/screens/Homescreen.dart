@@ -667,7 +667,6 @@ class _HomescreenState extends State<Homescreen> {
                                       selectedColor: Colors.white,
                                       borderRadius: BorderRadius.circular(12),
                                       children: <Widget>[
-                                        
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
@@ -675,7 +674,7 @@ class _HomescreenState extends State<Homescreen> {
                                                         listen: false)
                                                     .isenglish
                                                 ? 'School'
-                                                : 'في الصف',
+                                                : 'في المدرسة',
                                             style: TextStyle(fontSize: 16),
                                           ),
                                         ),
@@ -686,7 +685,7 @@ class _HomescreenState extends State<Homescreen> {
                                                         listen: false)
                                                     .isenglish
                                                 ? 'CLASS'
-                                                : 'في المدرسة',
+                                                : 'في الصف',
                                             style: TextStyle(fontSize: 16),
                                           ),
                                         ),

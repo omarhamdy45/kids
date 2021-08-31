@@ -27,15 +27,18 @@ class _DialyhadithState extends State<Dialyhadith> {
     super.initState();
     firstrun = true;
     loading = false;
+     AudioRecorder.dialy=true;
   }
 
   @override
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    Data dialyhadith = ModalRoute.of(context).settings.arguments as Data;
+    int dialyhadith = ModalRoute.of(context).settings.arguments as int;
     await Provider.of<Hadithprovider>(context, listen: false)
-        .fetchallhadithrecord(dialyhadith.id);
+        .fetchhadithbyid(dialyhadith);
+    await Provider.of<Hadithprovider>(context, listen: false)
+        .fetchallhadithrecord(dialyhadith);
 
     Provider.of<Hadithprovider>(context, listen: false)
             .allhadithrecord
@@ -48,17 +51,16 @@ class _DialyhadithState extends State<Dialyhadith> {
       firstrun = false;
     });
   }
-
-  @override
-  Widget build(BuildContext context) {
-    Future<bool> _onWillPop() {
+  Future<bool> _onWillPop() {
       print("on will pop");
       AudioRecorder.dialy = false;
       Navigator.of(context).pop();
     }
 
-    Data dialyhadith = ModalRoute.of(context).settings.arguments as Data;
-    final htmlData = """ ${dialyhadith.description}""";
+  @override
+  Widget build(BuildContext context) {
+    
+
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -93,7 +95,8 @@ class _DialyhadithState extends State<Dialyhadith> {
                           width: double.infinity,
                           //       height: MediaQuery.of(context).size.height,
                           child: Html(
-                            data: htmlData,
+                            data:
+                                """ ${Provider.of<Hadithprovider>(context, listen: false).hadithid.data.description}""",
                             style: {
                               "div": Style(
                                   width: MediaQuery.of(context).size.width,
@@ -105,8 +108,15 @@ class _DialyhadithState extends State<Dialyhadith> {
                         ),
                       ),
                       MyAppp(
-                        url: dialyhadith.audio,
-                        hadithid: dialyhadith.id,
+                        url: Provider.of<Hadithprovider>(context, listen: false)
+                            .hadithid
+                            .data
+                            .audio,
+                        hadithid:
+                            Provider.of<Hadithprovider>(context, listen: false)
+                                .hadithid
+                                .data
+                                .id,
                       ),
                       Container(
                         height: 40,
@@ -132,7 +142,13 @@ class _DialyhadithState extends State<Dialyhadith> {
                                     loading = true;
                                   });
                                   await Dbhandler.instance.Dialyhadithstatus(
-                                      'read', dialyhadith.id.toString());
+                                      'read',
+                                      Provider.of<Hadithprovider>(context,
+                                              listen: false)
+                                          .hadithid
+                                          .data
+                                          .id
+                                          .toString());
                                   setState(() {
                                     loading = false;
                                   });

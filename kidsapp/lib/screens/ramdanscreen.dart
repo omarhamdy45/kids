@@ -18,6 +18,7 @@ import 'package:kidsapp/screens/Home.dart';
 import 'package:kidsapp/widgets/Dialycheaklist2.dart';
 import 'package:kidsapp/widgets/gift.dart';
 import 'package:kidsapp/widgets/navigation.dart';
+import 'package:kidsapp/widgets/ramdancounte.dart';
 import 'package:kidsapp/widgets/ramdanitem.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
@@ -156,11 +157,12 @@ class _RamdanState extends State<Ramdan> {
                         )),
                   ],
                 ))
-            /*
+      
+            
             : mounth != 'Ramadan'
                 ? Ramdancount()
-                : */
-            : firstrun
+                : 
+            firstrun
                 ? Center(child: CircularProgressIndicator())
                 : Dbhandler.instance.ramadanstatuscode != 200
                     ? Container(

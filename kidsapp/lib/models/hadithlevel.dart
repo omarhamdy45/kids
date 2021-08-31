@@ -56,7 +56,6 @@ class Allhadiths {
   String title;
   String description;
   String audio;
-  int levelId;
   String createdAt;
   String updatedAt;
 
@@ -65,7 +64,6 @@ class Allhadiths {
       this.title,
       this.description,
       this.audio,
-      this.levelId,
       this.createdAt,
       this.updatedAt});
 
@@ -74,7 +72,6 @@ class Allhadiths {
     title = json['title'];
     description = json['description'];
     audio = json['audio'];
-    levelId = json['level_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -85,7 +82,6 @@ class Allhadiths {
     data['title'] = this.title;
     data['description'] = this.description;
     data['audio'] = this.audio;
-    data['level_id'] = this.levelId;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

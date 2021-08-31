@@ -8,6 +8,8 @@ import 'dart:async';
 import 'package:kidsapp/models/Athan.dart';
 import 'package:kidsapp/models/Categories.dart';
 import 'package:kidsapp/models/Hadith.dart';
+import 'package:kidsapp/models/Hadithbyid.dart';
+
 import 'package:kidsapp/models/Homedata.dart';
 import 'package:kidsapp/models/Hosnasave.dart';
 import 'package:kidsapp/models/Salahsummry.dart';
@@ -31,7 +33,6 @@ import 'dart:convert' as convert;
 import 'Namesofallah.dart';
 import 'sourafavourite.dart';
 import 'guz2save.dart';
-
 class Dbhandler {
   static Dbhandler _instance = Dbhandler._private();
   Dbhandler._private();
@@ -765,6 +766,12 @@ class Dbhandler {
     Response response = await _dio.get(url);
     homestatuscode = response.statusCode;
     return Topstudents.fromJson(response.data);
+  }
+  Future<Hadithbyid> getspecifichadith(int id) async {
+    String url = '$mainurl/dailyhadith/$id';
+    Response response = await _dio.get(url);
+    homestatuscode = response.statusCode;
+    return Hadithbyid.fromJson(response.data);
   }
 
 }
