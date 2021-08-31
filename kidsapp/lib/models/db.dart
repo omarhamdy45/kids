@@ -130,7 +130,8 @@ class Dbhandler {
         'password': password,
       },
     ));
-    // print(response.data);
+     print(response.data);
+      print(response.statusCode);
     return User.fromjson(response.data);
   }
 

@@ -12,6 +12,7 @@ import 'package:kidsapp/widgets/addhadithrecord.dart';
 import 'package:kidsapp/widgets/allrecordhathi.dart';
 import 'package:kidsapp/widgets/iconplay.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -132,7 +133,8 @@ class _AudioRecorderState extends State<AudioRecorder> {
         color: color,
         child: InkWell(
           child: SizedBox(width: 50, height: 50, child: icon),
-          onTap: () {
+          onTap: () async{
+             await Permission.microphone.request();
             _isRecording ? _stop() : _start();
           },
         ),
