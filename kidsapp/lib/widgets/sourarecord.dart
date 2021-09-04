@@ -134,10 +134,8 @@ class _AudioRecordState extends State<AudioRecord> {
             color: color,
             child: InkWell(
               child: SizedBox(width: 56, height: 56, child: icon),
-              onTap: () async{
-                    await Permission.manageExternalStorage.request();
-                    await Permission.storage.request();
-                  await Permission.microphone.request();
+              onTap: () async {
+                await Permission.microphone.request();
                 _isRecording ? _stop() : _start();
               },
             ),
@@ -348,8 +346,19 @@ class _SourarecordState extends State<Sourarecord> {
                               size: 30,
                               color: Colors.white,
                             )),
-                            onTap: () {
-                              print(path);
+                            onTap: () async {
+                              await showDialog(
+                                  //  barrierDismissible: false, //
+                                  context: context,
+                                  builder: (_) {
+                                    return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        content: Container(
+                                          child: Center(child: Text(path)),
+                                        ));
+                                  });
                               setState(() {
                                 showPlayer = false;
                               });
