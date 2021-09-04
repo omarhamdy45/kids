@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
@@ -17,6 +18,7 @@ import 'package:kidsapp/screens/login.dart';
 import 'package:kidsapp/screens/quraan.dart';
 import 'package:kidsapp/screens/ramdanscreen.dart';
 import 'package:kidsapp/screens/salah.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:provider/provider.dart';
 
@@ -71,6 +73,7 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
 
     await Provider.of<Lanprovider>(context, listen: false).getLanguage();
 
+    LocationPermission permission = await Geolocator.requestPermission();
     await Provider.of<Lanprovider>(context, listen: false).getdate();
     if (DateTime.now().day.toString() !=
         Provider.of<Lanprovider>(context, listen: false).time) {

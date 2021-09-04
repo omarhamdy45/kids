@@ -16,6 +16,7 @@ import 'package:kidsapp/screens/thuhr.dart';
 import 'package:kidsapp/screens/Home.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class Salah extends StatefulWidget {
@@ -158,6 +159,7 @@ class _SalahState extends State<Salah> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+ 
     await Provider.of<Userprovider>(context, listen: false).getUserLocation();
     Provider.of<Networkprovider>(context, listen: false).cheaknetwork();
     while (Dbhandler.instance.athancheak != 200) {

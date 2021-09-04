@@ -27,6 +27,8 @@ class Userprovider with ChangeNotifier {
   Homedata homedata;
   Topstudents topstudents;
   Topstudents topclassstudents;
+  LocationPermission permission;
+
   Future<Score> fetchscore() async {
     try {
       score = await Dbhandler.instance.getscore();
@@ -77,8 +79,9 @@ class Userprovider with ChangeNotifier {
   }
 
   Future<void> getUserLocation() async {
+   // await Geolocator.requestPermission();
+     LocationPermission permission = await Geolocator.requestPermission();
     try {
-      await Permission.location.request();
       var position = await GeolocatorPlatform.instance
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       var placemarks =

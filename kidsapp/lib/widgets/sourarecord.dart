@@ -349,6 +349,7 @@ class _SourarecordState extends State<Sourarecord> {
                               color: Colors.white,
                             )),
                             onTap: () {
+                              print(path);
                               setState(() {
                                 showPlayer = false;
                               });
@@ -387,7 +388,7 @@ class _SourarecordState extends State<Sourarecord> {
       path = dir.path +
           '/' +
           DateTime.now().millisecondsSinceEpoch.toString() +
-          '.m4a';
+          '.mp4';
     }
     return path;
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
@@ -62,6 +63,7 @@ class _HomescreenState extends State<Homescreen> {
     await Provider.of<Userprovider>(context, listen: false).topclassstudent();
     await Provider.of<Userprovider>(context, listen: false).getusername();
     await Provider.of<Userprovider>(context, listen: false).fetchscore();
+    print(Dbhandler.instance.homestatuscode);
     setState(() {
       firstrun = false;
     });
@@ -137,7 +139,7 @@ class _HomescreenState extends State<Homescreen> {
                             )
                           : ListView(
                               children: [
-                                //   Text('Toggle Value : $_toggleValue'),
+                              
                                 Provider.of<Lanprovider>(context, listen: false)
                                         .isenglish
                                     ? Text(

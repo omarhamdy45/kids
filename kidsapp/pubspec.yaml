@@ -51,7 +51,7 @@ dependencies:
   flutter_countdown_timer: ^4.1.0
   animated_splash_screen: any
   record: ^1.0.3
-  just_audio: ^0.9.4
+  just_audio: ^0.9.9
   audio_session: any
   rxdart: any
   flutter_html: ^2.1.1
