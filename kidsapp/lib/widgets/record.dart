@@ -391,7 +391,7 @@ class _MyApppState extends State<MyAppp> {
       path = dir.path +
           '/' +
           DateTime.now().millisecondsSinceEpoch.toString() +
-          '.mp4';
+          '.mp3';
     }
     return path;
   }

@@ -63,7 +63,7 @@ class _HomescreenState extends State<Homescreen> {
     await Provider.of<Userprovider>(context, listen: false).topclassstudent();
     await Provider.of<Userprovider>(context, listen: false).getusername();
     await Provider.of<Userprovider>(context, listen: false).fetchscore();
-   
+    print(Dbhandler.instance.homestatuscode);
     setState(() {
       firstrun = false;
     });

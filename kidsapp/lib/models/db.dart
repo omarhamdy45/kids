@@ -33,6 +33,7 @@ import 'dart:convert' as convert;
 import 'Namesofallah.dart';
 import 'sourafavourite.dart';
 import 'guz2save.dart';
+
 class Dbhandler {
   static Dbhandler _instance = Dbhandler._private();
   Dbhandler._private();
@@ -130,8 +131,8 @@ class Dbhandler {
         'password': password,
       },
     ));
-     print(response.data);
-      print(response.statusCode);
+    print(response.data);
+    print(response.statusCode);
     return User.fromjson(response.data);
   }
 
@@ -332,8 +333,9 @@ class Dbhandler {
     return Sour.fromJson(response.data);
   }
 
-  Future<Ayah> getayatbyid(int id,int limit) async {
-    String url = 'https://api.quran.sutanlab.id/surah/$id?offset=1&limit=$limit';
+  Future<Ayah> getayatbyid(int id, int limit) async {
+    String url =
+        'https://api.quran.sutanlab.id/surah/$id?offset=1&limit=$limit';
 
     var response = await http.get(Uri.parse(url));
     sourastatuscode = response.statusCode;
@@ -380,7 +382,8 @@ class Dbhandler {
     }
   }
 
-  Future<void> strothafithrecord(String status, String hadithid, File file) async {
+  Future<void> strothafithrecord(
+      String status, String hadithid, File file) async {
     String url = '$mainurl/record_hadith';
     final String tokenn = Userprovider.sd;
     String fileName = file.path.split('/').last;
@@ -719,6 +722,7 @@ class Dbhandler {
     print(response.data);
     return Allrecord.fromJson(response.data);
   }
+
   Future<Allrecord> getallhadithrecord(int hadithid) async {
     String url = '$mainurl/showAllHadithRecords/$hadithid';
     final String tokenn = Userprovider.sd;
@@ -745,7 +749,8 @@ class Dbhandler {
       print(eroor);
     }
   }
-   Future<void> deletehadithrecord(int recordid) async {
+
+  Future<void> deletehadithrecord(int recordid) async {
     String url = '$mainurl/deleteHadithRecords/$recordid';
     final String tokenn = Userprovider.sd;
 
@@ -762,17 +767,18 @@ class Dbhandler {
       print(eroor);
     }
   }
+
   Future<Topstudents> gettopclassstudents() async {
     String url = '$mainurl/topStudentForClass';
     Response response = await _dio.get(url);
     homestatuscode = response.statusCode;
     return Topstudents.fromJson(response.data);
   }
+
   Future<Hadithbyid> getspecifichadith(int id) async {
     String url = '$mainurl/dailyhadith/$id';
     Response response = await _dio.get(url);
     homestatuscode = response.statusCode;
     return Hadithbyid.fromJson(response.data);
   }
-
 }

@@ -306,7 +306,7 @@ class _NamesofallahrecordState extends State<Namesofallahrecord> {
       path = dir.path +
           '/' +
           DateTime.now().millisecondsSinceEpoch.toString() +
-          '.mp4';
+          '.m4a';
     }
     return path;
   }

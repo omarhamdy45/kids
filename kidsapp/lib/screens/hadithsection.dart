@@ -44,15 +44,14 @@ class _HadithsectionState extends State<Hadithsection> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    print('ssss');
     await Provider.of<Networkprovider>(context, listen: false).cheaknetwork();
-
     await Provider.of<Hadithprovider>(context, listen: false)
         .fetchhadithlevels();
     await Provider.of<Hadithprovider>(context, listen: false).fetchfavhadith();
     if (page == 1) {
       await Provider.of<Hadithprovider>(context, listen: false)
           .fetchdailyhadith(page);
+
       if (Dbhandler.instance.dialhadithstatuscode == 200) {
         names.addAll(Provider.of<Hadithprovider>(context, listen: false)
             .dailyhadith
