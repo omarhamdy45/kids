@@ -52,10 +52,12 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
     tabController = TabController(length: 7, vsync: this);
     tabController.index = Home.homeindex;
     firstrun = true;
+    
     Userprovider.sd = Provider.of<Userprovider>(context, listen: false)
         .currentUser
         .token
         .toString();
+        
   }
 
   Future<bool> _onWillPop() async {
@@ -81,7 +83,6 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
     }
     Map<Permission, PermissionStatus> statuses = await [
       Permission.location,
-      Permission.microphone
     ].request();
     setState(() {
       firstrun = false;

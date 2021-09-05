@@ -8,6 +8,7 @@ import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/widgets/Controlsbuttons.dart';
 import 'package:kidsapp/widgets/iconplay.dart';
+import 'package:kidsapp/widgets/playassets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
@@ -91,18 +92,16 @@ class _AudioRecordState extends State<AudioRecord> {
     return Padding(
       padding: const EdgeInsets.only(top: 15),
       child: Container(
-        child: ClipOval(
-          child: Material(
-            color: color,
-            child: InkWell(
-              child: SizedBox(width: 56, height: 56, child: icon),
-              onTap: () async {
-                await Permission.manageExternalStorage.request();
+        child: Material(
+          color: color,
+          child: InkWell(
+            child: SizedBox(width: 50, height: 50, child: icon),
+            onTap: () async {
+              await Permission.manageExternalStorage.request();
 
-                await Permission.microphone.request();
-                _isRecording ? _stop() : _start();
-              },
-            ),
+              await Permission.microphone.request();
+              _isRecording ? _stop() : _start();
+            },
           ),
         ),
       ),
@@ -280,7 +279,7 @@ class _NamesofallahrecordState extends State<Namesofallahrecord> {
                         SizedBox(
                           width: 10,
                         ),
-                        Iconsplay(snapshot.data),
+                        Playassets(snapshot.data),
                       ],
                     );
                   } else {

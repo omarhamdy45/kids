@@ -11,6 +11,7 @@ import 'package:kidsapp/widgets/Controlsbuttons.dart';
 import 'package:kidsapp/widgets/addhadithrecord.dart';
 import 'package:kidsapp/widgets/allrecordhathi.dart';
 import 'package:kidsapp/widgets/iconplay.dart';
+import 'package:kidsapp/widgets/playassets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
@@ -362,7 +363,7 @@ class _MyApppState extends State<MyAppp> {
                         SizedBox(
                           width: 10,
                         ),
-                        Iconsplay(snapshot.data),
+                        Playassets(snapshot.data),
                       ],
                     );
                   } else {
@@ -390,7 +391,7 @@ class _MyApppState extends State<MyAppp> {
       path = dir.path +
           '/' +
           DateTime.now().millisecondsSinceEpoch.toString() +
-          '.wav';
+          '.m4a';
     }
     return path;
   }
