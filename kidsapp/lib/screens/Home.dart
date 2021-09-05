@@ -79,7 +79,10 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
 
       Provider.of<Lanprovider>(context, listen: false).savedate();
     }
-    await checkPermissions();
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+      Permission.microphone
+    ].request();
     setState(() {
       firstrun = false;
     });
@@ -90,15 +93,6 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
   void dispose() {
     tabController.dispose();
     super.dispose();
-  }
-
-  Future<String> checkPermissions() async {
-
-    PermissionStatus whenInUse = await Permission.locationWhenInUse.request();
-    if (whenInUse == PermissionStatus.granted) return "print";
-
-    PermissionStatus always = await Permission.locationAlways.status;
-    if (always == PermissionStatus.denied) return "always";
   }
 
   @override

@@ -79,9 +79,8 @@ class Userprovider with ChangeNotifier {
   }
 
   Future<void> getUserLocation() async {
-   // await Geolocator.requestPermission();
-     LocationPermission permission = await Geolocator.requestPermission();
-     
+    await Geolocator.requestPermission();
+    LocationPermission permission = await Geolocator.requestPermission();
     try {
       var position = await GeolocatorPlatform.instance
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);

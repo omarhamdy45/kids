@@ -38,7 +38,7 @@ dependencies:
   page_indicator: ^0.4.1
   flutter_staggered_grid_view: ^0.4.0
   shared_preferences: ^2.0.5
-  geolocator: ^7.0.2
+  geolocator: ^7.6.0
   hijri: ^2.0.3
   intl: any
   geocoding: ^2.0.0
