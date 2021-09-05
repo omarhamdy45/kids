@@ -72,8 +72,6 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
     super.didChangeDependencies();
 
     await Provider.of<Lanprovider>(context, listen: false).getLanguage();
-
-    LocationPermission permission = await Geolocator.requestPermission();
     await Provider.of<Lanprovider>(context, listen: false).getdate();
     if (DateTime.now().day.toString() !=
         Provider.of<Lanprovider>(context, listen: false).time) {
@@ -81,6 +79,7 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
 
       Provider.of<Lanprovider>(context, listen: false).savedate();
     }
+    await checkPermissions();
     setState(() {
       firstrun = false;
     });
@@ -91,6 +90,15 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
   void dispose() {
     tabController.dispose();
     super.dispose();
+  }
+
+  Future<String> checkPermissions() async {
+
+    PermissionStatus whenInUse = await Permission.locationWhenInUse.request();
+    if (whenInUse == PermissionStatus.granted) return "print";
+
+    PermissionStatus always = await Permission.locationAlways.status;
+    if (always == PermissionStatus.denied) return "always";
   }
 
   @override

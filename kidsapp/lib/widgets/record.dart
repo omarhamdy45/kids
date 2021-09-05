@@ -135,7 +135,6 @@ class _AudioRecorderState extends State<AudioRecorder> {
           child: SizedBox(width: 50, height: 50, child: icon),
           onTap: () async {
             await Permission.manageExternalStorage.request();
-            
             await Permission.microphone.request();
             _isRecording ? _stop() : _start();
           },
@@ -363,7 +362,7 @@ class _MyApppState extends State<MyAppp> {
                         SizedBox(
                           width: 10,
                         ),
-                        Iconsplay(path),
+                        Iconsplay(snapshot.data),
                       ],
                     );
                   } else {
@@ -391,7 +390,7 @@ class _MyApppState extends State<MyAppp> {
       path = dir.path +
           '/' +
           DateTime.now().millisecondsSinceEpoch.toString() +
-          '.mp3';
+          '.wav';
     }
     return path;
   }

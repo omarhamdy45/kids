@@ -1,24 +1,15 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:kidsapp/models/db.dart';
-import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/screens/soura.dart';
-import 'package:kidsapp/widgets/Controlsbuttons.dart';
 import 'package:kidsapp/widgets/addquraanrecoed.dart';
-import 'package:kidsapp/widgets/iconplay.dart';
-import 'package:material_dialogs/material_dialogs.dart';
-import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 import 'package:record/record.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:rxdart/rxdart.dart';
-
 import 'allrecorddialog.dart';
 
 class AudioRecord extends StatefulWidget {
@@ -242,6 +233,7 @@ class _SourarecordState extends State<Sourarecord> {
     loading = false;
     loading1 = false;
     loading2 = false;
+
     super.initState();
   }
 
@@ -356,7 +348,8 @@ class _SourarecordState extends State<Sourarecord> {
                                             borderRadius:
                                                 BorderRadius.circular(15)),
                                         content: Container(
-                                          child: Center(child: Text(path)),
+                                          child: Center(
+                                              child: Text(snapshot.data)),
                                         ));
                                   });
                               setState(() {
@@ -368,7 +361,30 @@ class _SourarecordState extends State<Sourarecord> {
                         SizedBox(
                           width: 10,
                         ),
-                        Iconsplay(path),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              play = true;
+                            });
+                            play
+                                ? advancedPlayer.play(snapshot.data,
+                                    isLocal: true)
+                                : advancedPlayer.pause();
+                            advancedPlayer.onPlayerCompletion.listen((event) {
+                              advancedPlayer.stop();
+                              setState(() {
+                                play = false;
+                              });
+                            });
+                          },
+                          child: Icon(
+                            play
+                                ? FontAwesomeIcons.pauseCircle
+                                : FontAwesomeIcons.playCircle,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        )
                       ],
                     );
                   } else {
@@ -397,7 +413,7 @@ class _SourarecordState extends State<Sourarecord> {
       path = dir.path +
           '/' +
           DateTime.now().millisecondsSinceEpoch.toString() +
-          '.mp4';
+           '.m4a';
     }
     return path;
   }

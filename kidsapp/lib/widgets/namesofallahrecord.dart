@@ -270,6 +270,7 @@ class _NamesofallahrecordState extends State<Namesofallahrecord> {
                               color: Colors.white,
                             )),
                             onTap: () {
+                            
                               setState(() {
                                 showPlayer = false;
                               });
@@ -279,7 +280,7 @@ class _NamesofallahrecordState extends State<Namesofallahrecord> {
                         SizedBox(
                           width: 10,
                         ),
-                        Iconsplay(path),
+                        Iconsplay(snapshot.data),
                       ],
                     );
                   } else {
