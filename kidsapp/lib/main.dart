@@ -17,6 +17,7 @@ import 'package:kidsapp/screens/dialyhadith.dart';
 import 'package:kidsapp/screens/duaas.dart';
 import 'package:kidsapp/screens/favouritesquraan.dart';
 import 'package:kidsapp/screens/login.dart';
+import 'package:kidsapp/screens/recordss.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/screens/sours.dart';
 import 'package:kidsapp/screens/splash.dart';
@@ -83,7 +84,8 @@ class _MyAppState extends State<MyApp> {
           primaryColor: Color.fromRGBO(184, 95, 143, 1),
           accentColor: Color.fromRGBO(167, 85, 163, 1),
         ),
-        home: 
+        home: Records(),
+        /*
         FutureBuilder(
           future:
               Provider.of<Userprovider>(context, listen: false).isLoggedIn(),
@@ -93,10 +95,11 @@ class _MyAppState extends State<MyApp> {
             } else if (snapshot.data == true) {
               return Splash();
             } else {
-              return Login();
+              return Home();
             }
           },
         ),
+        */
         routes: {
           Login.route: (context) => Login(),
           Salah.route: (context) => Salah(),
