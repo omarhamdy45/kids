@@ -135,7 +135,6 @@ class _AudioRecorderState extends State<AudioRecorder> {
         child: InkWell(
           child: SizedBox(width: 50, height: 50, child: icon),
           onTap: () async {
-            await Permission.manageExternalStorage.request();
             await Permission.microphone.request();
             _isRecording ? _stop() : _start();
           },

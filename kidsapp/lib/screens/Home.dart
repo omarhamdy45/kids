@@ -57,7 +57,6 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
         .currentUser
         .token
         .toString();
-        
   }
 
   Future<bool> _onWillPop() async {
@@ -81,9 +80,8 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
 
       Provider.of<Lanprovider>(context, listen: false).savedate();
     }
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.location,
-    ].request();
+    Map<Permission, PermissionStatus> statuses =
+        await [Permission.location].request();
     setState(() {
       firstrun = false;
     });
