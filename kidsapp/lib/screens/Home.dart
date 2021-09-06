@@ -18,7 +18,6 @@ import 'package:kidsapp/screens/login.dart';
 import 'package:kidsapp/screens/quraan.dart';
 import 'package:kidsapp/screens/ramdanscreen.dart';
 import 'package:kidsapp/screens/salah.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import 'package:provider/provider.dart';
 
@@ -80,8 +79,6 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
 
       Provider.of<Lanprovider>(context, listen: false).savedate();
     }
-    Map<Permission, PermissionStatus> statuses =
-        await [Permission.location].request();
     setState(() {
       firstrun = false;
     });

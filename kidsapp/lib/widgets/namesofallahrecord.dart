@@ -10,7 +10,6 @@ import 'package:kidsapp/widgets/Controlsbuttons.dart';
 import 'package:kidsapp/widgets/iconplay.dart';
 import 'package:kidsapp/widgets/playassets.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -97,9 +96,6 @@ class _AudioRecordState extends State<AudioRecord> {
           child: InkWell(
             child: SizedBox(width: 50, height: 50, child: icon),
             onTap: () async {
-              await Permission.manageExternalStorage.request();
-
-              await Permission.microphone.request();
               _isRecording ? _stop() : _start();
             },
           ),

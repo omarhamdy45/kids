@@ -16,7 +16,6 @@ import 'package:kidsapp/screens/thuhr.dart';
 import 'package:kidsapp/screens/Home.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class Salah extends StatefulWidget {

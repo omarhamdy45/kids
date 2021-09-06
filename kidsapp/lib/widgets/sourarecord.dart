@@ -7,8 +7,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/widgets/addquraanrecoed.dart';
+import 'package:kidsapp/widgets/playassets.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 import 'allrecorddialog.dart';
 
@@ -125,7 +125,6 @@ class _AudioRecordState extends State<AudioRecord> {
           child: InkWell(
             child: SizedBox(width: 56, height: 56, child: icon),
             onTap: () async {
-              await Permission.microphone.request();
               _isRecording ? _stop() : _start();
             },
           ),
@@ -337,19 +336,6 @@ class _SourarecordState extends State<Sourarecord> {
                               color: Colors.white,
                             )),
                             onTap: () async {
-                              await showDialog(
-                                  //  barrierDismissible: false, //
-                                  context: context,
-                                  builder: (_) {
-                                    return AlertDialog(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        content: Container(
-                                          child: Center(
-                                              child: Text(snapshot.data)),
-                                        ));
-                                  });
                               setState(() {
                                 showPlayer = false;
                               });
@@ -359,30 +345,7 @@ class _SourarecordState extends State<Sourarecord> {
                         SizedBox(
                           width: 10,
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              play = !play;
-                            });
-                            play
-                                ? advancedPlayer.play(snapshot.data,
-                                    isLocal: true)
-                                : advancedPlayer.pause();
-                            advancedPlayer.onPlayerCompletion.listen((event) {
-                              advancedPlayer.stop();
-                              setState(() {
-                                play = false;
-                              });
-                            });
-                          },
-                          child: Icon(
-                            play
-                                ? FontAwesomeIcons.pauseCircle
-                                : FontAwesomeIcons.playCircle,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                        )
+                        Playassets(snapshot.data),
                       ],
                     );
                   } else {
@@ -411,7 +374,7 @@ class _SourarecordState extends State<Sourarecord> {
       path = dir.path +
           '/' +
           DateTime.now().millisecondsSinceEpoch.toString() +
-           '.m4a';
+          '.m4a';
     }
     return path;
   }
