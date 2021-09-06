@@ -400,7 +400,8 @@ class _SouraState extends State<Soura> {
                                       // mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Container(
-                                          width: 191,
+                                          color: Colors.white,
+                                        width: 200,
                                           child: Sourarecord(
                                             juzid: arg[1],
                                             souraid:
