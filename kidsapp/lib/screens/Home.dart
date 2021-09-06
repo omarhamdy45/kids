@@ -18,6 +18,7 @@ import 'package:kidsapp/screens/login.dart';
 import 'package:kidsapp/screens/quraan.dart';
 import 'package:kidsapp/screens/ramdanscreen.dart';
 import 'package:kidsapp/screens/salah.dart';
+import 'package:location/location.dart';
 
 import 'package:provider/provider.dart';
 
@@ -51,7 +52,7 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
     tabController = TabController(length: 7, vsync: this);
     tabController.index = Home.homeindex;
     firstrun = true;
-    
+
     Userprovider.sd = Provider.of<Userprovider>(context, listen: false)
         .currentUser
         .token
@@ -79,6 +80,8 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
 
       Provider.of<Lanprovider>(context, listen: false).savedate();
     }
+    getlocatiion();
+
     setState(() {
       firstrun = false;
     });
@@ -89,6 +92,31 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
   void dispose() {
     tabController.dispose();
     super.dispose();
+  }
+
+  Future<void> getlocatiion() async {
+    Location location = new Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+    _locationData = await location.getLocation();
   }
 
   @override
