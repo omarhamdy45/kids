@@ -117,11 +117,10 @@ class _AudioRecordState extends State<AudioRecord> {
       color = theme.primaryColor.withOpacity(0.1);
     }
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 15),
-      child: Container(
-        child: Material(
-          color: color,
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.only(top:12.0),
+        child: ClipOval(
           child: InkWell(
             child: SizedBox(width: 56, height: 56, child: icon),
             onTap: () async {
@@ -330,6 +329,8 @@ class _SourarecordState extends State<Sourarecord> {
                         ClipOval(
                           child: InkWell(
                             child: SizedBox(
+                              width: 50,
+                              height: 40,
                                 child: Icon(
                               Icons.mic,
                               size: 30,

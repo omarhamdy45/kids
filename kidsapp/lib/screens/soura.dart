@@ -77,9 +77,8 @@ class _SouraState extends State<Soura> {
       );
     });
     // await Provider.of<Quraanprovider>(context, listen: false).fetchayat(arg[0]);
-    await Provider.of<Quraanprovider>(context, listen: false).fetchayat(
-        arg[0],
-        arg.last);
+    await Provider.of<Quraanprovider>(context, listen: false)
+        .fetchayat(arg[0], arg.last);
     await Provider.of<Quraanprovider>(context, listen: false)
         .fetchayacheak(arg[0]);
 
@@ -206,7 +205,8 @@ class _SouraState extends State<Soura> {
                                 ),
                                 Container(
                                   child: Container(
-                                    width: MediaQuery.of(context).size.width*0.65,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.65,
                                       margin: EdgeInsets.all(15),
                                       child: Text(
                                           Provider.of<Quraanprovider>(context)
@@ -400,8 +400,7 @@ class _SouraState extends State<Soura> {
                                       // mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Container(
-                                          color: Colors.white,
-                                        width: 200,
+                                          width: 200,
                                           child: Sourarecord(
                                             juzid: arg[1],
                                             souraid:
