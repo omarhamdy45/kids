@@ -20,10 +20,10 @@ class Ramdancount extends StatelessWidget {
       }
     }
     var a = DateTime.utc(year, mon, day);
-    var b = DateTime.utc(ramdany, 09, 01);
+    var b = DateTime.utc(ramdany, 08, 30);
     var c = b.difference(a).inDays;
-    print(a);
-    print(b);
+    print(c);
+    
     int estimateTs = DateTime(DateTime.now().year, DateTime.now().month,
             DateTime.now().day + 1, 0, 0, 0)
         .millisecondsSinceEpoch;
