@@ -116,7 +116,7 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
         return;
       }
     }
-    _locationData = await location.getLocation();
+    //  _locationData = await location.getLocation();
   }
 
   @override
