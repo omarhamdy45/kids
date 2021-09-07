@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/dialyhadith.dart';
 import 'package:kidsapp/providers/hadithprovider.dart';
@@ -21,13 +22,15 @@ class Dialyhadith extends StatefulWidget {
 class _DialyhadithState extends State<Dialyhadith> {
   bool loading;
   bool firstrun;
+  AudioPlayer audioPlayer;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     firstrun = true;
     loading = false;
-     AudioRecorder.dialy=true;
+    AudioRecorder.dialy = true;
+    audioPlayer = AudioPlayer();
   }
 
   @override
@@ -51,16 +54,15 @@ class _DialyhadithState extends State<Dialyhadith> {
       firstrun = false;
     });
   }
+
   Future<bool> _onWillPop() {
-      print("on will pop");
-      AudioRecorder.dialy = false;
-      Navigator.of(context).pop();
-    }
+    print("on will pop");
+    AudioRecorder.dialy = false;
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
-    
-
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -152,6 +154,10 @@ class _DialyhadithState extends State<Dialyhadith> {
                                   setState(() {
                                     loading = false;
                                   });
+                                    if (Dbhandler.instance.dialyhadith == 200)
+                                        await audioPlayer.setAsset(
+                                                    'assets/audio/mixkit-achievement-bell-600.wav');
+                                                audioPlayer.play();
                                   if (Dbhandler.instance.dialyhadith == 200)
                                     Dialogs.materialDialog(
                                         customView: Container(
@@ -189,6 +195,8 @@ class _DialyhadithState extends State<Dialyhadith> {
                                                       BorderRadius.circular(
                                                           10)),
                                               onPressed: () async {
+
+                                          
                                                 Navigator.of(context).pop();
                                                 Navigator.of(context).pop();
                                               },

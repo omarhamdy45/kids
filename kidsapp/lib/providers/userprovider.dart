@@ -30,7 +30,6 @@ class Userprovider with ChangeNotifier {
   Future<Score> fetchscore() async {
     try {
       score = await Dbhandler.instance.getscore();
-      print(score.totalScore);
     } catch (error) {
       print('erroe');
     }

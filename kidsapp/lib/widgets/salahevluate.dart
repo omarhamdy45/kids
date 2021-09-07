@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Namesofallah.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
@@ -40,11 +41,12 @@ class _SalahevState extends State<Salahev> {
   String sa;
   GlobalKey<ScaffoldState> scaffold;
   DateTime datetime = DateTime.now();
-
+  AudioPlayer audioPlayer;
   @override
   void initState() {
     super.initState();
     loading = false;
+    audioPlayer = AudioPlayer();
   }
 
   @override
@@ -53,6 +55,13 @@ class _SalahevState extends State<Salahev> {
         .fetchvedio();
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -466,6 +475,12 @@ class _SalahevState extends State<Salahev> {
                                                               this.widget.id,
                                                               'late group',
                                                               '0');
+                                                                if (Dbhandler.instance
+                                                              .cheaksalah ==
+                                                          200)
+                                                               await audioPlayer.setAsset(
+                                                    'assets/audio/mixkit-achievement-bell-600.wav');
+                                                audioPlayer.play();
                                                       if (Dbhandler.instance
                                                               .cheaksalah ==
                                                           200) {
@@ -714,6 +729,12 @@ class _SalahevState extends State<Salahev> {
                                                               this.widget.id,
                                                               'late single',
                                                               '0');
+                                                                if (Dbhandler.instance
+                                                              .cheaksalah ==
+                                                          200)
+                                                               await audioPlayer.setAsset(
+                                                    'assets/audio/mixkit-achievement-bell-600.wav');
+                                                audioPlayer.play();
                                                       if (Dbhandler.instance
                                                               .cheaksalah ==
                                                           200) {
@@ -1046,6 +1067,12 @@ class _SalahevState extends State<Salahev> {
                                                               this.widget.id,
                                                               'ontime group',
                                                               '0');
+                                                                 if (Dbhandler.instance
+                                                              .cheaksalah ==
+                                                          200)
+                                                                await audioPlayer.setAsset(
+                                                    'assets/audio/mixkit-achievement-bell-600.wav');
+                                                audioPlayer.play();
                                                       if (Dbhandler.instance
                                                               .cheaksalah ==
                                                           200) {
@@ -1297,6 +1324,12 @@ class _SalahevState extends State<Salahev> {
                                                               this.widget.id,
                                                               'ontime single',
                                                               '0');
+                                                              if (Dbhandler.instance
+                                                              .cheaksalah ==
+                                                          200)
+                                                                await audioPlayer.setAsset(
+                                                    'assets/audio/mixkit-achievement-bell-600.wav');
+                                                audioPlayer.play();
                                                       if (Dbhandler.instance
                                                               .cheaksalah ==
                                                           200) {

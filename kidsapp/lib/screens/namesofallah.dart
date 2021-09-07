@@ -129,9 +129,8 @@ class _NamesofallahState extends State<Namesofallah> {
 
   @override
   void dispose() {
-    //  _betterPlayerController.dispose();
+    player2.dispose();
     _betterPlayerController.videoPlayerController.dispose();
-   // Provider.of<Namesofallahprovider>(context, listen: false).dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -155,45 +154,46 @@ class _NamesofallahState extends State<Namesofallah> {
           //   _betterPlayerController.videoPlayerController.dispose();
         },
         child: Scaffold(
-          body:Networkprovider.cheak == false
-            ? Container(
-                height: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Text(
-                        'Check your network connection',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    ElevatedButton(
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            )),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Theme.of(context).accentColor)),
-                        onPressed: () async {
-                          Home.homeindex = 5;
-
-                          await Navigator.push(
-                            // or pushReplacement, if you need that
-                            context,
-                            FadeInRoute(
-                              routeName: Home.route,
-                              page: Home(),
-                            ),
-                          );
-                        },
+          body: Networkprovider.cheak == false
+              ? Container(
+                  height: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
                         child: Text(
-                          'Refresh',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        )),
-                  ],
-                ))
-            :Container(
+                          'Check your network connection',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      ElevatedButton(
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              )),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Theme.of(context).accentColor)),
+                          onPressed: () async {
+                            Home.homeindex = 5;
+
+                            await Navigator.push(
+                              // or pushReplacement, if you need that
+                              context,
+                              FadeInRoute(
+                                routeName: Home.route,
+                                page: Home(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'Refresh',
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          )),
+                    ],
+                  ))
+              : Container(
                   height: double.infinity,
                   decoration: BoxDecoration(
                       gradient:
@@ -359,6 +359,10 @@ class _NamesofallahState extends State<Namesofallah> {
                                                                         .checked =
                                                                     newValue;
                                                               });
+                                                              await player2
+                                                                  .setAsset(
+                                                                      'assets/audio/mixkit-achievement-bell-600.wav');
+                                                              player2.play();
                                                               Dbhandler.instance
                                                                   .namesofallahsaved(
                                                                       distinctIds[

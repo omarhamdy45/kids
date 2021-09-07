@@ -131,23 +131,6 @@ class _IconsplayState extends State<Iconsplay> {
                     ),
                   );
                 });
-
-            /*
-                                setState(() {
-                                  play = !play;
-                                });
-                                await advancedPlayer.play(path);
-                                play
-                                    ? advancedPlayer.resume()
-                                    : advancedPlayer.pause();
-                                advancedPlayer.onPlayerCompletion
-                                    .listen((event) {
-                                  advancedPlayer.stop();
-                                  setState(() {
-                                    play = false;
-                                  });
-                                });
-                                */
           },
         ),
       ),

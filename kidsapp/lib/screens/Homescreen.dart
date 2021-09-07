@@ -63,7 +63,6 @@ class _HomescreenState extends State<Homescreen> {
     await Provider.of<Userprovider>(context, listen: false).topclassstudent();
     await Provider.of<Userprovider>(context, listen: false).getusername();
     await Provider.of<Userprovider>(context, listen: false).fetchscore();
-    print(Dbhandler.instance.homestatuscode);
     setState(() {
       firstrun = false;
     });
@@ -79,7 +78,6 @@ class _HomescreenState extends State<Homescreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(isSelected[0]);
     return Directionality(
       textDirection: Provider.of<Lanprovider>(context, listen: false).isenglish
           ? TextDirection.ltr

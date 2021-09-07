@@ -1,17 +1,21 @@
-import 'package:audioplayers/audioplayers.dart';
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/Categories.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
 import 'package:kidsapp/providers/networkprovider.dart';
 import 'package:kidsapp/screens/duaas.dart';
+import 'package:kidsapp/screens/soura.dart';
+import 'package:kidsapp/widgets/Controlsbuttons.dart';
 import 'package:kidsapp/widgets/gift.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 
 class Duadetails extends StatefulWidget {
   static const String route = '/Duadetails';
@@ -40,7 +44,8 @@ class _DuadetailsState extends State<Duadetails> {
     advancedPlayer = AudioPlayer();
     await Provider.of<Networkprovider>(context).cheaknetwork();
     Data azkar = ModalRoute.of(context).settings.arguments as Data;
-    await Provider.of<Azkarprovider>(context,listen: false).fetchazkarbyid(azkar.id);
+    await Provider.of<Azkarprovider>(context, listen: false)
+        .fetchazkarbyid(azkar.id);
     setState(() {
       firstrun = false;
     });
@@ -51,6 +56,13 @@ class _DuadetailsState extends State<Duadetails> {
     advancedPlayer.dispose();
     // TODO: implement dispose
     super.dispose();
+  }
+
+  Future<bool> _onWillPop() async {
+    print("on will pop");
+    advancedPlayer.stop();
+    advancedPlayer = AudioPlayer();
+    Navigator.pop(context);
   }
 
   @override
@@ -215,28 +227,119 @@ class _DuadetailsState extends State<Duadetails> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                setState(() {
-                                  play = !play;
-                                });
-
-                                await advancedPlayer.play(
+                                await advancedPlayer.setUrl(
                                     Provider.of<Azkarprovider>(context,
                                             listen: false)
                                         .categoriess
                                         .data
                                         .azkars[0]
                                         .audio);
-                                play
-                                    ? await advancedPlayer.resume()
-                                    : await advancedPlayer.pause();
+                                advancedPlayer.play();
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      var children2 = <Widget>[
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            StreamBuilder<Duration>(
+                                                stream: advancedPlayer
+                                                    .durationStream,
+                                                builder: (context, snapshot) {
+                                                  final duration =
+                                                      snapshot.data ??
+                                                          Duration.zero;
+                                                  return StreamBuilder<
+                                                      PositionData>(
+                                                    stream: Rx.combineLatest2<
+                                                            Duration,
+                                                            Duration,
+                                                            PositionData>(
+                                                        advancedPlayer
+                                                            .positionStream,
+                                                        advancedPlayer
+                                                            .bufferedPositionStream,
+                                                        (position,
+                                                                bufferedPosition) =>
+                                                            PositionData(
+                                                                position,
+                                                                bufferedPosition)),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      final positionData =
+                                                          snapshot.data ??
+                                                              PositionData(
+                                                                  Duration.zero,
+                                                                  Duration
+                                                                      .zero);
+                                                      var position =
+                                                          positionData.position;
 
-                                advancedPlayer.onPlayerCompletion
-                                    .listen((event) {
-                                  advancedPlayer.stop();
-                                  setState(() {
-                                    play = false;
-                                  });
-                                });
+                                                      var bufferedPosition =
+                                                          positionData
+                                                              .bufferedPosition;
+                                                      if (bufferedPosition >
+                                                          duration) {
+                                                        bufferedPosition =
+                                                            duration;
+                                                      }
+                                                      return ProgressBar(
+                                                          thumbRadius: 12,
+                                                          progressBarColor:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          thumbColor:
+                                                              Theme.of(context)
+                                                                  .accentColor,
+                                                          progress: position,
+                                                          buffered:
+                                                              bufferedPosition,
+                                                          total: duration,
+                                                          onSeek: (duration) {
+                                                            advancedPlayer
+                                                                .seek(duration);
+                                                          });
+                                                    },
+                                                  );
+                                                }),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            ControlButtons(advancedPlayer),
+                                          ],
+                                        )
+                                      ];
+                                      return WillPopScope(
+                                        onWillPop: _onWillPop,
+                                        child: AlertDialog(
+                                          elevation: 5,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16)),
+                                          content: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.2,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: Column(
+                                              children: children2,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    });
                               },
                               child: CircleAvatar(
                                   radius: 30,
@@ -257,23 +360,6 @@ class _DuadetailsState extends State<Duadetails> {
                             SizedBox(
                               width: 15,
                             ),
-                            GestureDetector(
-                              onTap: () async {
-                                advancedPlayer.stop();
-                                setState(() {
-                                  play = false;
-                                });
-                              },
-                              child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor:
-                                      Theme.of(context).primaryColor,
-                                  child: Icon(
-                                    Icons.stop,
-                                    color: Colors.white,
-                                    size: 45,
-                                  )),
-                            )
                           ],
                         ),
                         SizedBox(
@@ -284,7 +370,7 @@ class _DuadetailsState extends State<Duadetails> {
                           margin: EdgeInsets.symmetric(
                                   horizontal:
                                       MediaQuery.of(context).size.width * 0.3)
-                              .add(EdgeInsets.symmetric(vertical: 10)),
+                              .add(EdgeInsets.only(bottom: 30, top: 10)),
                           child: loading
                               ? Center(child: CircularProgressIndicator())
                               : ElevatedButton(
@@ -307,6 +393,11 @@ class _DuadetailsState extends State<Duadetails> {
                                     setState(() {
                                       loading = false;
                                     });
+                                      if (Dbhandler.instance.azkarreadd == 200)
+                                    await advancedPlayer.setAsset(
+                                      'assets/audio/mixkit-achievement-bell-600.wav',
+                                    );
+                                    advancedPlayer.play();
                                     if (Dbhandler.instance.azkarreadd == 200)
                                       Dialogs.materialDialog(
                                           customView: Container(

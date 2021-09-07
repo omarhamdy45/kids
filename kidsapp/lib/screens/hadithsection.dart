@@ -6,13 +6,9 @@ import 'package:kidsapp/models/dialyhadith.dart';
 import 'package:kidsapp/providers/hadithprovider.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/networkprovider.dart';
-import 'package:kidsapp/providers/quraanprovider.dart';
-import 'package:kidsapp/screens/dialhadithbylevel.dart';
 import 'package:kidsapp/screens/dialyhadith.dart';
 import 'package:kidsapp/widgets/record.dart';
-import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/widgets/navigation.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 import 'Home.dart';
@@ -569,7 +565,7 @@ class _HadithsectionState extends State<Hadithsection> {
                                                                     .hadithlevles
                                                                     .levels[
                                                                         index]
-                                                                    .allhadiths[index];
+                                                                    .allhadiths[index].id;
                                                                 AudioRecorder
                                                                         .dialy =
                                                                     true;
@@ -578,10 +574,10 @@ class _HadithsectionState extends State<Hadithsection> {
                                                                   context,
                                                                   FadeInRoute(
                                                                       routeName:
-                                                                          Dialyhadithbylevle
+                                                                          Dialyhadith
                                                                               .route,
                                                                       page:
-                                                                          Dialyhadithbylevle(),
+                                                                          Dialyhadith(),
                                                                       argument:
                                                                           dialyhadith),
                                                                 );

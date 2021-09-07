@@ -314,7 +314,6 @@ class Dbhandler {
 
   Future<Score> getscore() async {
     String url = '$mainurl/score';
-    print(url);
     final String tokenn = Userprovider.sd;
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
     try {

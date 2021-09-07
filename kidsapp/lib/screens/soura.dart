@@ -712,6 +712,10 @@ class _SouraState extends State<Soura> {
                                                                                 setState(() {
                                                                                   demoData[index].checked = newValue;
                                                                                 });
+                                                                                await player2.setAsset(
+                                                                                  'assets/audio/mixkit-achievement-bell-600.wav',
+                                                                                );
+                                                                                player2.play();
 
                                                                                 !demoData[index].checked ? await Dbhandler.instance.ayasave(Provider.of<Quraanprovider>(context, listen: false).sour.data[arg[0] - 1].number.toString(), (index + 1).toString(), Provider.of<Quraanprovider>(context, listen: false).sour.data[arg[0] - 1].name, arg[1].toString(), 'no') : await Dbhandler.instance.ayasave(Provider.of<Quraanprovider>(context, listen: false).sour.data[arg[0] - 1].number.toString(), (index + 1).toString(), Provider.of<Quraanprovider>(context, listen: false).sour.data[arg[0] - 1].name, arg[1].toString(), 'read');
                                                                               }),

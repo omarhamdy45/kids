@@ -12,7 +12,6 @@ import 'package:kidsapp/providers/networkprovider.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/azkar.dart';
-import 'package:kidsapp/screens/dialhadithbylevel.dart';
 import 'package:kidsapp/screens/dialyhadith.dart';
 import 'package:kidsapp/screens/duaas.dart';
 import 'package:kidsapp/screens/favouritesquraan.dart';
@@ -107,7 +106,6 @@ class _MyAppState extends State<MyApp> {
           Dialyhadith.route: (context) => Dialyhadith(),
           Surz.route: (context) => Surz(),
           Soura.route: (context) => Soura(),
-          Dialyhadithbylevle.route: (context) => Dialyhadithbylevle(),
           Favouritesquraanscreen.route: (context) => Favouritesquraanscreen(),
         });
   }
