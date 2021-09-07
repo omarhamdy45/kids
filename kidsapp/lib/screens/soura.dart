@@ -712,6 +712,7 @@ class _SouraState extends State<Soura> {
                                                                                 setState(() {
                                                                                   demoData[index].checked = newValue;
                                                                                 });
+                                                                                if(demoData[index].checked)
                                                                                 await player2.setAsset(
                                                                                   'assets/audio/mixkit-achievement-bell-600.wav',
                                                                                 );

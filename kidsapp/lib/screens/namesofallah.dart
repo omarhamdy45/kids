@@ -359,9 +359,12 @@ class _NamesofallahState extends State<Namesofallah> {
                                                                         .checked =
                                                                     newValue;
                                                               });
-                                                              await player2
-                                                                  .setAsset(
-                                                                      'assets/audio/mixkit-achievement-bell-600.wav');
+                                                              if (demoData[
+                                                                      index]
+                                                                  .checked)
+                                                                await player2
+                                                                    .setAsset(
+                                                                        'assets/audio/mixkit-achievement-bell-600.wav');
                                                               player2.play();
                                                               Dbhandler.instance
                                                                   .namesofallahsaved(

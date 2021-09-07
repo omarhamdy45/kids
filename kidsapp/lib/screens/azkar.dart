@@ -468,11 +468,10 @@ class _AzkarState extends State<Azkar> {
                                         setState(() {
                                           loading = false;
                                         });
-  final audioplayer =
-                                                        AudioPlayer();
-                                                    await audioplayer.setAsset(
-                                                        'assets/audio/mixkit-achievement-bell-600.wav');
-                                                    audioplayer.play();
+                                        final audioplayer = AudioPlayer();
+                                        await audioplayer.setAsset(
+                                            'assets/audio/mixkit-achievement-bell-600.wav');
+                                        audioplayer.play();
                                         Dialogs.materialDialog(
                                             customView: Container(
                                               child: Gift(
@@ -504,7 +503,6 @@ class _AzkarState extends State<Azkar> {
                                                           BorderRadius.circular(
                                                               10)),
                                                   onPressed: () async {
-                                                  
                                                     Navigator.of(context).pop();
                                                     Navigator.of(context).pop();
                                                     Navigator.of(context).pop();
