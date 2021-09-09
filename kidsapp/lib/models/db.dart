@@ -460,7 +460,7 @@ class Dbhandler {
     _dio.options.headers["Authorization"] = "Bearer $tokenn";
 
     Response response = await _dio.get(url);
-    print(response.data);
+    print(response.statusCode);
 
     return Ayasaves.fromJson(response.data);
   }

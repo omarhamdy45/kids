@@ -5,6 +5,7 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
+import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/screens/dialyhadith.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/widgets/Controlsbuttons.dart';
@@ -13,6 +14,7 @@ import 'package:kidsapp/widgets/allrecordhathi.dart';
 import 'package:kidsapp/widgets/iconplay.dart';
 import 'package:kidsapp/widgets/playassets.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:record/record.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -74,7 +76,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
               const SizedBox(width: 20),
               AudioRecorder.dialy ? Iconsplay(this.widget.url) : Container(),
               const SizedBox(width: 20),
-              AudioRecorder.dialy
+            Dialyhadith.isrecorded
                   ? GestureDetector(
                       onTap: () async {
                         await showDialog(
@@ -264,11 +266,12 @@ class _MyApppState extends State<MyAppp> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                           Provider.of<Lanprovider>(context, listen: false).islogin?
                         loading
                             ? Center(
                                 child: CircularProgressIndicator(),
                               )
-                            : AudioRecorder.dialy
+                            : Provider.of<Lanprovider>(context,listen: false).islogin
                                 ? ClipOval(
                                     child: Material(
                                       color: Theme.of(context)
@@ -331,7 +334,7 @@ class _MyApppState extends State<MyAppp> {
                                       ),
                                     ),
                                   )
-                                : Container(),
+                                : Container():Container(),
                         SizedBox(
                           width: 10,
                         ),

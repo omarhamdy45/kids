@@ -96,7 +96,8 @@ class _NamesofallahState extends State<Namesofallah> {
       _betterPlayerController =
           BetterPlayerController(betterPlayerConfiguration);
       _betterPlayerController.setupDataSource(dataSource);
-      for (int i = 0;
+      if(  Provider.of<Lanprovider>(context, listen: false).islogin){
+ for (int i = 0;
           i <
               Provider.of<Namesofallahprovider>(context, listen: false)
                   .hosnasaved
@@ -110,6 +111,8 @@ class _NamesofallahState extends State<Namesofallah> {
         int b = hosnasaved.elementAt(i);
         demoData[b - 1].checked = true;
       }
+      }
+     
     }
 
     setState(() {

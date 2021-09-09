@@ -52,11 +52,12 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
     tabController = TabController(length: 7, vsync: this);
     tabController.index = Home.homeindex;
     firstrun = true;
-
-    Userprovider.sd = Provider.of<Userprovider>(context, listen: false)
-        .currentUser
-        .token
-        .toString();
+   // print()
+    if (Provider.of<Lanprovider>(context, listen: false).islogin)
+      Userprovider.sd = Provider.of<Userprovider>(context, listen: false)
+          .currentUser
+          .token
+          .toString();
   }
 
   Future<bool> _onWillPop() async {

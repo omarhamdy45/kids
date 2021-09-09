@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:kidsapp/models/db.dart';
+import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/widgets/addquraanrecoed.dart';
 import 'package:kidsapp/widgets/playassets.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:record/record.dart';
 import 'allrecorddialog.dart';
 
@@ -68,6 +70,7 @@ class _AudioRecordState extends State<AudioRecord> {
               ),
               _buildRecordStopControl(),
               //   const SizedBox(width: ),
+               Provider.of<Lanprovider>(context, listen: false).islogin?
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: GestureDetector(
@@ -94,7 +97,7 @@ class _AudioRecordState extends State<AudioRecord> {
                     color: Colors.white,
                   ),
                 ),
-              ),
+              ):Container(),
               const SizedBox(width: 5),
               // _buildPauseResumeControl(),
             ],
@@ -263,6 +266,7 @@ class _SourarecordState extends State<Sourarecord> {
                       //    mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                             Provider.of<Lanprovider>(context, listen: false).islogin?
                         loading
                             ? Center(
                                 child: CircularProgressIndicator(),
@@ -322,7 +326,7 @@ class _SourarecordState extends State<Sourarecord> {
                                     },
                                   ),
                                 ),
-                              ),
+                              ):Container(),
                         SizedBox(
                           width: 10,
                         ),

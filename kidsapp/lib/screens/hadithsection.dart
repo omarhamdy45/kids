@@ -47,6 +47,7 @@ class _HadithsectionState extends State<Hadithsection> {
     if (page == 1) {
       await Provider.of<Hadithprovider>(context, listen: false)
           .fetchdailyhadith(page);
+          
 
       if (Dbhandler.instance.dialhadithstatuscode == 200) {
         names.addAll(Provider.of<Hadithprovider>(context, listen: false)
@@ -58,6 +59,7 @@ class _HadithsectionState extends State<Hadithsection> {
             checked: false,
           );
         });
+          if(  Provider.of<Lanprovider>(context, listen: false).islogin){
         for (int i = 0; i < distinctIds.length; i++) {
           for (int j = 0;
               j <
@@ -75,6 +77,7 @@ class _HadithsectionState extends State<Hadithsection> {
             }
           }
         }
+          }
       }
       _scrollController.addListener(() async {
         if (_scrollController.position.pixels ==
@@ -101,6 +104,8 @@ class _HadithsectionState extends State<Hadithsection> {
               checked: false,
             );
           });
+             if(  Provider.of<Lanprovider>(context, listen: false).islogin){
+          
           for (int i = 0; i < distinctIds.length; i++) {
             for (int j = 0;
                 j <
@@ -118,10 +123,12 @@ class _HadithsectionState extends State<Hadithsection> {
               }
             }
           }
+             }
 
           setState(() {
             secondrun = false;
           });
+             
         }
       });
     }
@@ -225,6 +232,7 @@ class _HadithsectionState extends State<Hadithsection> {
                                       ? 'open Library'
                                       : 'المكتبة العامة'),
                                   Spacer(),
+                                  Provider.of<Lanprovider>(context,listen: false).islogin?
                                   GestureDetector(
                                       onTap: () async {
                                         await Provider.of<Hadithprovider>(
@@ -241,7 +249,7 @@ class _HadithsectionState extends State<Hadithsection> {
                                             : Icons.favorite_border,
                                         size: 40,
                                         color: Colors.red[800],
-                                      ))
+                                      )):Container()
                                 ],
                               ),
                             ),

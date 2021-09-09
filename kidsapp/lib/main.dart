@@ -25,6 +25,8 @@ import 'package:kidsapp/screens/Home.dart';
 import 'package:kidsapp/widgets/duadetails.dart';
 import 'package:provider/provider.dart';
 
+import 'screens/login.dart';
+
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: Colors.transparent));
@@ -91,7 +93,7 @@ class _MyAppState extends State<MyApp> {
             } else if (snapshot.data == true) {
               return Splash();
             } else {
-              return Login();
+              return Provider.of<Lanprovider>(context).islogin? Login():Home();
             }
           },
         ),

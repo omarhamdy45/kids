@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'package:kidsapp/models/db.dart';
+import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/networkprovider.dart';
 
 import 'package:kidsapp/providers/quraanprovider.dart';
@@ -22,6 +23,8 @@ import 'package:kidsapp/widgets/sourarecord.dart';
 
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+
+import 'dialyhadith.dart';
 
 class Soura extends StatefulWidget {
   static const String route = '/Soura';
@@ -95,7 +98,11 @@ class _SouraState extends State<Soura> {
                 .sour
                 .data[arg[0] - 1]
                 .number);
-    if (Dbhandler.instance.sourastatuscode == 200) {
+    if (Provider.of<Lanprovider>(context, listen: false)
+        .islogin){
+
+        
+         if (Dbhandler.instance.sourastatuscode == 200) {
       Soura.isrecorded = Provider.of<Quraanprovider>(context, listen: false)
           .sourarecord
           .isFound;
@@ -114,6 +121,7 @@ class _SouraState extends State<Soura> {
         int b = ayasaved.elementAt(i);
         demoData[b - 1].checked = true;
       }
+         }
     }
 
     if (!mounted) return;
@@ -135,6 +143,7 @@ class _SouraState extends State<Soura> {
     play = false;
     ayaplayed = false;
     fromplaylist = false;
+      Dialyhadith.isrecorded=false;
   }
 
   void stop() async {
@@ -259,7 +268,9 @@ class _SouraState extends State<Soura> {
                                               child: Image.asset(
                                                   'assets/images/error.jpg'),
                                             )
-                                          : Provider.of<Quraanprovider>(context,
+                                          :
+                                          Provider.of<Lanprovider>(context, listen: false).islogin?
+                                           Provider.of<Quraanprovider>(context,
                                                       listen: false)
                                                   .quranfavourite
                                                   .result
@@ -272,7 +283,7 @@ class _SouraState extends State<Soura> {
                                                   Icons.favorite_border,
                                                   size: 35,
                                                   color: Colors.white,
-                                                ),
+                                                ):Container()
                                 )
                               ],
                             )),
@@ -712,10 +723,10 @@ class _SouraState extends State<Soura> {
                                                                                 setState(() {
                                                                                   demoData[index].checked = newValue;
                                                                                 });
-                                                                                if(demoData[index].checked)
-                                                                                await player2.setAsset(
-                                                                                  'assets/audio/mixkit-achievement-bell-600.wav',
-                                                                                );
+                                                                                if (demoData[index].checked)
+                                                                                  await player2.setAsset(
+                                                                                    'assets/audio/mixkit-achievement-bell-600.wav',
+                                                                                  );
                                                                                 player2.play();
 
                                                                                 !demoData[index].checked ? await Dbhandler.instance.ayasave(Provider.of<Quraanprovider>(context, listen: false).sour.data[arg[0] - 1].number.toString(), (index + 1).toString(), Provider.of<Quraanprovider>(context, listen: false).sour.data[arg[0] - 1].name, arg[1].toString(), 'no') : await Dbhandler.instance.ayasave(Provider.of<Quraanprovider>(context, listen: false).sour.data[arg[0] - 1].number.toString(), (index + 1).toString(), Provider.of<Quraanprovider>(context, listen: false).sour.data[arg[0] - 1].name, arg[1].toString(), 'read');

@@ -6,6 +6,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/dialyhadith.dart';
 import 'package:kidsapp/providers/hadithprovider.dart';
+import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/widgets/record.dart';
 import 'package:kidsapp/widgets/gift.dart';
 import 'package:material_dialogs/material_dialogs.dart';
@@ -40,16 +41,18 @@ class _DialyhadithState extends State<Dialyhadith> {
     int dialyhadith = ModalRoute.of(context).settings.arguments as int;
     await Provider.of<Hadithprovider>(context, listen: false)
         .fetchhadithbyid(dialyhadith);
-    await Provider.of<Hadithprovider>(context, listen: false)
-        .fetchallhadithrecord(dialyhadith);
+  Dialyhadith.isrecorded=false;
+    if (Provider.of<Lanprovider>(context, listen: false).islogin) {
+      await Provider.of<Hadithprovider>(context, listen: false)
+          .fetchallhadithrecord(dialyhadith);
 
-    Provider.of<Hadithprovider>(context, listen: false)
-            .allhadithrecord
-            .records
-            .isEmpty
-        ? Dialyhadith.isrecorded = false
-        : Dialyhadith.isrecorded = true;
-
+      Provider.of<Hadithprovider>(context, listen: false)
+              .allhadithrecord
+              .records
+              .isEmpty
+          ? Dialyhadith.isrecorded = false
+          : Dialyhadith.isrecorded = true;
+    }
     setState(() {
       firstrun = false;
     });
@@ -154,10 +157,10 @@ class _DialyhadithState extends State<Dialyhadith> {
                                   setState(() {
                                     loading = false;
                                   });
-                                    if (Dbhandler.instance.dialyhadith == 200)
-                                        await audioPlayer.setAsset(
-                                                    'assets/audio/mixkit-achievement-bell-600.wav');
-                                                audioPlayer.play();
+                                  if (Dbhandler.instance.dialyhadith == 200)
+                                    await audioPlayer.setAsset(
+                                        'assets/audio/mixkit-achievement-bell-600.wav');
+                                  audioPlayer.play();
                                   if (Dbhandler.instance.dialyhadith == 200)
                                     Dialogs.materialDialog(
                                         customView: Container(
@@ -195,8 +198,6 @@ class _DialyhadithState extends State<Dialyhadith> {
                                                       BorderRadius.circular(
                                                           10)),
                                               onPressed: () async {
-
-                                          
                                                 Navigator.of(context).pop();
                                                 Navigator.of(context).pop();
                                               },

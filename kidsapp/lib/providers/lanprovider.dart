@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Lanprovider with ChangeNotifier {
   bool isenglish = true;
+  bool islogin = false;
   bool isEn = false;
   bool isEn2 = false;
   bool isEn3 = false;
@@ -21,6 +22,7 @@ class Lanprovider with ChangeNotifier {
   int counter3 = 0;
   bool islevel = true;
   bool isguz2 = true;
+
   changeLanguage(bool lan) async {
     isenglish = lan;
     notifyListeners();
@@ -31,6 +33,18 @@ class Lanprovider with ChangeNotifier {
   getLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     isenglish = prefs.getBool("isenglish") ?? true;
+    notifyListeners();
+  }
+  changeLoggedin(bool lan) async {
+    islogin = lan;
+    notifyListeners();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("islogin", islogin);
+  }
+
+  getLoggedin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    islogin = prefs.getBool("islogin") ?? true;
     notifyListeners();
   }
 

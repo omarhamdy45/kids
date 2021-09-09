@@ -17,7 +17,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   bool login;
   bool hidepassword, hideconfirmpassword;
-  String password, email;
+  TextEditingController password, email;
   GlobalKey<FormState> form;
   FocusNode passwordnode;
   bool loading;
@@ -35,6 +35,8 @@ class _LoginState extends State<Login> {
     form = GlobalKey<FormState>();
     passwordnode = FocusNode();
     loading = false;
+    email=TextEditingController();
+    password=TextEditingController();
   }
 
   @override
@@ -49,9 +51,10 @@ class _LoginState extends State<Login> {
       setState(() {
         loading = true;
       });
-      Userprovider.username = email;
+     
+      Userprovider.username = email.text;
       String error = await Provider.of<Userprovider>(context, listen: false)
-          .signInn(email, password);
+          .signInn(email.text, password.text);
 
       if (error != null) {
         // ignore: deprecated_member_use
@@ -63,6 +66,7 @@ class _LoginState extends State<Login> {
           loading = false;
         });
       } else {
+        Provider.of<Lanprovider>(context, listen: false).changeLoggedin(true);
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (BuildContext context) => Home()));
       }
@@ -129,6 +133,7 @@ class _LoginState extends State<Login> {
                           child: Column(
                             children: [
                               TextFormField(
+                                controller: email,
                                 style: TextStyle(color: Colors.black),
                                 decoration: InputDecoration(
                                   contentPadding: new EdgeInsets.symmetric(
@@ -156,15 +161,6 @@ class _LoginState extends State<Login> {
                                     //   borderRadius: BorderRadius.all(),
                                   ),
                                 ),
-                                validator: (value) {
-                                  setState(() {
-                                    email = value;
-                                  });
-                                  if (email.length >= 4) {
-                                    return null;
-                                  }
-                                  return 'invalid Email';
-                                },
                                 onFieldSubmitted: (value) {
                                   passwordnode.requestFocus();
                                 },
@@ -176,6 +172,7 @@ class _LoginState extends State<Login> {
                                     MediaQuery.of(context).size.height * 0.02,
                               ),
                               TextFormField(
+                                controller: password,
                                 maxLines: 1,
                                 obscureText: true,
                                 style: TextStyle(color: Colors.black),
@@ -205,15 +202,6 @@ class _LoginState extends State<Login> {
                                     //   borderRadius: BorderRadius.all(),
                                   ),
                                 ),
-                                validator: (value) {
-                                  setState(() {
-                                    password = value;
-                                  });
-                                  if (password.length >= 6) {
-                                    return null;
-                                  }
-                                  return 'password must contain 6 charcter at least';
-                                },
                                 textInputAction: TextInputAction.done,
                                 focusNode: passwordnode,
                                 keyboardType: TextInputType.emailAddress,
@@ -258,48 +246,82 @@ class _LoginState extends State<Login> {
                                 height:
                                     MediaQuery.of(context).size.height * 0.02,
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context).size.height *
-                                        0.05),
-                                child: loading
-                                    ? Center(child: CircularProgressIndicator())
-                                    : Container(
-                                        width: double.infinity,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.2),
-                                        height: 40,
-                                        child: ElevatedButton(
-                                            style: ButtonStyle(
-                                                shape: MaterialStateProperty.all<
-                                                        RoundedRectangleBorder>(
-                                                    RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                )),
-                                                backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                        Color>(Colors.white)),
-                                            onPressed: () async {
-                                              validatetologin();
-                                              Provider.of<Lanprovider>(context,
-                                                      listen: false)
-                                                  .savedate();
-                                            },
-                                            child: Text(
-                                              Provider.of<Lanprovider>(context,
-                                                          listen: true)
-                                                      .isenglish
-                                                  ? 'Login'
-                                                  : 'تسجيل الدخول',
-                                              style:
-                                                  TextStyle(color: Colors.grey),
-                                            )),
-                                      ),
+                              loading
+                                  ? Center(child: CircularProgressIndicator())
+                                  : Container(
+                                      width: double.infinity,
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.2),
+                                      height: 40,
+                                      child: ElevatedButton(
+                                          style: ButtonStyle(
+                                              shape: MaterialStateProperty.all<
+                                                      RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                              )),
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(Colors.white)),
+                                          onPressed: () async {
+                                            validatetologin();
+                                            Provider.of<Lanprovider>(context,
+                                                    listen: false)
+                                                .savedate();
+                                          },
+                                          child: Text(
+                                            Provider.of<Lanprovider>(context,
+                                                        listen: true)
+                                                    .isenglish
+                                                ? 'Login'
+                                                : 'تسجيل الدخول',
+                                            style:
+                                                TextStyle(color: Colors.grey),
+                                          )),
+                                    ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal:
+                                        MediaQuery.of(context).size.width *
+                                            0.2),
+                                height: 40,
+                                child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        )),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.white)),
+                                    onPressed: () async {
+                                      Provider.of<Lanprovider>(context,
+                                              listen: false)
+                                          .changeLoggedin(false);
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  Home()));
+                                    },
+                                    child: Text(
+                                      Provider.of<Lanprovider>(context,
+                                                  listen: true)
+                                              .isenglish
+                                          ? 'Skip'
+                                          : ' تخطى',
+                                      style: TextStyle(color: Colors.grey),
+                                    )),
                               )
                             ],
                           ),

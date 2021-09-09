@@ -37,7 +37,6 @@ class _SurzState extends State<Surz> {
     super.didChangeDependencies();
     await Provider.of<Networkprovider>(context, listen: false).cheaknetwork();
     List<int> arg = ModalRoute.of(context).settings.arguments as List<int>;
-
     await Provider.of<Quraanprovider>(context, listen: false)
         .fetchayasave(arg[0]);
 
@@ -61,45 +60,44 @@ class _SurzState extends State<Surz> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Container(
-                height: double.infinity,
-                child: Surz.firstrun
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : ListView(
-                        children: [
-                          Container(
-                            child: GestureDetector(
-                              onTap: () {
-                                _onWillPop();
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      child: Icon(
-                                        Icons.arrow_back_ios,
-                                        size: 35,
-                                      ),
-                                    )
-                                  ],
+          height: double.infinity,
+          child: Surz.firstrun
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ListView(
+                  children: [
+                    Container(
+                      child: GestureDetector(
+                        onTap: () {
+                          _onWillPop();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Container(
+                                child: Icon(
+                                  Icons.arrow_back_ios,
+                                  size: 35,
                                 ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Networkprovider.cheak == false
+                        ? Container(
+                            //  height: double.infinity,
+                            child: Center(
+                              child: Text(
+                                'Check your network connection',
+                                style: TextStyle(fontSize: 16),
                               ),
                             ),
-                          ),
-                          Networkprovider.cheak == false
-            ? Container(
-              //  height: double.infinity,
-                child: Center(
-                  child: Text(
-                    'Check your network connection',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              )
-            : 
-                          Container(
+                          )
+                        : Container(
                             margin: EdgeInsets.only(top: 30),
                             child: StaggeredGridView.countBuilder(
                               shrinkWrap: true,
@@ -280,9 +278,9 @@ class _SurzState extends State<Surz> {
                               crossAxisSpacing: 2.0,
                             ),
                           )
-                        ],
-                      ),
-              ),
+                  ],
+                ),
+        ),
       ),
     );
   }

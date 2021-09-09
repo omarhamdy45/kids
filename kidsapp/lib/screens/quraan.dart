@@ -64,8 +64,11 @@ class _QuraanState extends State<Quraan> {
     super.didChangeDependencies();
     await Provider.of<Networkprovider>(context, listen: false).cheaknetwork();
     await Provider.of<Quraanprovider>(context, listen: false).fetchsour();
-    await Provider.of<Quraanprovider>(context, listen: false).fetchjuz2saaves();
     await Provider.of<Quraanprovider>(context, listen: false).fetchlevels();
+    if (Provider.of<Lanprovider>(context, listen: false).islogin) {
+      await Provider.of<Quraanprovider>(context, listen: false)
+          .fetchjuz2saaves();
+    }
 
     if (!mounted) return;
     setState(() {
@@ -93,44 +96,45 @@ class _QuraanState extends State<Quraan> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Networkprovider.cheak == false
-            ? Container(
-                height: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Text(
-                        'Check your network connection',
-                        style: TextStyle(fontSize: 16),
-                      ),
+          ? Container(
+              height: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Text(
+                      'Check your network connection',
+                      style: TextStyle(fontSize: 16),
                     ),
-                    ElevatedButton(
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            )),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Theme.of(context).accentColor)),
-                        onPressed: () async {
-                          Home.homeindex = 3;
+                  ),
+                  ElevatedButton(
+                      style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          )),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Theme.of(context).accentColor)),
+                      onPressed: () async {
+                        Home.homeindex = 3;
 
-                          await Navigator.push(
-                            // or pushReplacement, if you need that
-                            context,
-                            FadeInRoute(
-                              routeName: Home.route,
-                              page: Home(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'Refresh',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        )),
-                  ],
-                ))
-            :Container(
+                        await Navigator.push(
+                          // or pushReplacement, if you need that
+                          context,
+                          FadeInRoute(
+                            routeName: Home.route,
+                            page: Home(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Refresh',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      )),
+                ],
+              ))
+          : Container(
               height: double.infinity,
               child: firstrun
                   ? Center(
@@ -168,6 +172,7 @@ class _QuraanState extends State<Quraan> {
                                       ? 'Juz`'
                                       : 'عرض الأجزاء'),
                                   Spacer(),
+                                     Provider.of<Lanprovider>(context,listen: false).islogin?
                                   GestureDetector(
                                     onTap: () async {
                                       await Navigator.push(
@@ -185,7 +190,7 @@ class _QuraanState extends State<Quraan> {
                                       color: Colors.red[800],
                                       size: 40,
                                     ),
-                                  )
+                                  ):Container()
                                 ],
                               ),
                             ),
@@ -201,6 +206,7 @@ class _QuraanState extends State<Quraan> {
                                           final List<int> arg = [
                                             sour[29 - index] + 1
                                           ];
+                                          print(arg);
 
                                           await Navigator.push(
                                             // or pushReplacement, if you need that
@@ -260,28 +266,37 @@ class _QuraanState extends State<Quraan> {
                                                           ),
                                                         ),
                                                       ),
-                                                      Container(
-                                                        margin: EdgeInsets.only(
-                                                            left: 15,
-                                                            top: 15,
-                                                            right: 15),
-                                                        child: Text(
-                                                          Provider.of<Lanprovider>(
-                                                                      context)
-                                                                  .isenglish
-                                                              ? 'Verses : ${ayatleanth[index]}'
-                                                              : 'عدد الآيات : ${ayatleanth[index]}',
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                            textStyle: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                letterSpacing:
-                                                                    .5,
-                                                                fontSize: 18),
-                                                          ),
-                                                        ),
-                                                      ),
+                                                      Provider.of<Lanprovider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .islogin
+                                                          ? Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      left: 15,
+                                                                      top: 15,
+                                                                      right:
+                                                                          15),
+                                                              child: Text(
+                                                                Provider.of<Lanprovider>(
+                                                                            context)
+                                                                        .isenglish
+                                                                    ? 'Verses : ${ayatleanth[index]}'
+                                                                    : 'عدد الآيات : ${ayatleanth[index]}',
+                                                                style:
+                                                                    GoogleFonts
+                                                                        .roboto(
+                                                                  textStyle: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      letterSpacing:
+                                                                          .5,
+                                                                      fontSize:
+                                                                          18),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : Container()
                                                     ],
                                                   ),
                                                   Container(
@@ -334,7 +349,12 @@ class _QuraanState extends State<Quraan> {
                                                                   .only(
                                                                       top: 10)),
                                                               child: Text(
-                                                                Provider.of<Quraanprovider>(
+                                                                Provider.of<Lanprovider>(
+                                                                            context,
+                                                                            listen:
+                                                                                false)
+                                                                        .islogin
+                                                                    ? Provider.of<Quraanprovider>(
                                                                             context,
                                                                             listen:
                                                                                 false)
@@ -342,8 +362,9 @@ class _QuraanState extends State<Quraan> {
                                                                         .result[
                                                                             index]
                                                                         .numberOfVersrRead
-                                                                        .toString() +
-                                                                    '/${ayatleanth[index]}',
+                                                                        .toString()+  '/${ayatleanth[index]}'
+                                                                    : '0' +
+                                                                        '/${ayatleanth[index]}',
                                                                 style:
                                                                     GoogleFonts
                                                                         .roboto(
@@ -356,7 +377,7 @@ class _QuraanState extends State<Quraan> {
                                                                           20),
                                                                 ),
                                                               ),
-                                                            ),
+                                                            )
                                                           ],
                                                         )
                                                       ],
