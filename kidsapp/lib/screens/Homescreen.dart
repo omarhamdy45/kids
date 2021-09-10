@@ -47,10 +47,12 @@ class _HomescreenState extends State<Homescreen> {
 
   @override
   void initState() {
+      
     firstrun = true;
     isSelected = [true, false];
     // TODO: implement initState
     super.initState();
+    
   }
 
   @override

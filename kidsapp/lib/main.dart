@@ -93,7 +93,7 @@ class _MyAppState extends State<MyApp> {
             } else if (snapshot.data == true) {
               return Splash();
             } else {
-              return Provider.of<Lanprovider>(context).islogin? Login():Home();
+              return  Login();
             }
           },
         ),

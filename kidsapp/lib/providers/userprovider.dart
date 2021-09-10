@@ -9,6 +9,8 @@ import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/location.dart';
 import 'package:kidsapp/models/score.dart';
 import 'package:kidsapp/models/user.dart';
+import 'package:kidsapp/providers/lanprovider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Userprovider with ChangeNotifier {
@@ -64,6 +66,7 @@ class Userprovider with ChangeNotifier {
 
     if (preferences.containsKey('token')) {
       currentUser = User.fromPrefs(preferences);
+     // Provider.of<Lanprovider>(context,listen: false).islogin=
       return true;
     } else {
       return false;

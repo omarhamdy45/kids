@@ -52,7 +52,7 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
     tabController = TabController(length: 7, vsync: this);
     tabController.index = Home.homeindex;
     firstrun = true;
-   // print()
+    // print()
     if (Provider.of<Lanprovider>(context, listen: false).islogin)
       Userprovider.sd = Provider.of<Userprovider>(context, listen: false)
           .currentUser
@@ -152,7 +152,11 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
                             child: Container(
                                 margin: EdgeInsets.all(5),
                                 child: Icon(
-                                  Icons.logout,
+                                  Provider.of<Lanprovider>(context,
+                                              listen: false)
+                                          .islogin
+                                      ? Icons.logout
+                                      : Icons.login,
                                   size: 35,
                                 )),
                           ),
@@ -172,7 +176,10 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
                           child: Container(
                               margin: EdgeInsets.all(5),
                               child: Icon(
-                                Icons.logout,
+                                Provider.of<Lanprovider>(context, listen: false)
+                                        .islogin
+                                    ? Icons.logout
+                                    : Icons.login,
                                 size: 35,
                               )),
                         )

@@ -35,8 +35,8 @@ class _LoginState extends State<Login> {
     form = GlobalKey<FormState>();
     passwordnode = FocusNode();
     loading = false;
-    email=TextEditingController();
-    password=TextEditingController();
+    email = TextEditingController();
+    password = TextEditingController();
   }
 
   @override
@@ -51,7 +51,7 @@ class _LoginState extends State<Login> {
       setState(() {
         loading = true;
       });
-     
+
       Userprovider.username = email.text;
       String error = await Provider.of<Userprovider>(context, listen: false)
           .signInn(email.text, password.text);
@@ -66,7 +66,7 @@ class _LoginState extends State<Login> {
           loading = false;
         });
       } else {
-        Provider.of<Lanprovider>(context, listen: false).changeLoggedin(true);
+     
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (BuildContext context) => Home()));
       }

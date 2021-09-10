@@ -37,14 +37,14 @@ class Lanprovider with ChangeNotifier {
   }
   changeLoggedin(bool lan) async {
     islogin = lan;
-    notifyListeners();
+    //notifyListeners();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("islogin", islogin);
   }
 
   getLoggedin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    islogin = prefs.getBool("islogin") ?? true;
+    islogin = prefs.getBool("islogin") ?? false;
     notifyListeners();
   }
 
@@ -230,6 +230,7 @@ class Lanprovider with ChangeNotifier {
     prefs.remove('counter1');
     prefs.remove('counter2');
     prefs.remove('counter3');
+    prefs.remove('islogin');
   }
 
   changeselect(bool lan) async {
