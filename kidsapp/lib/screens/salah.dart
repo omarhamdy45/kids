@@ -161,9 +161,11 @@ class _SalahState extends State<Salah> {
  
     await Provider.of<Userprovider>(context, listen: false).getUserLocation();
     Provider.of<Networkprovider>(context, listen: false).cheaknetwork();
+    
     while (Dbhandler.instance.athancheak != 200) {
       await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
     }
+  
     getnextprayer();
     setState(() {
       firstrun = false;

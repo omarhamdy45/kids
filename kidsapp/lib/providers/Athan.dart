@@ -29,12 +29,6 @@ class Athanprovider with ChangeNotifier {
       prefs.setString("durtime", time.data.timings.dhuhr);
       prefs.setString("maghribtime", time.data.timings.maghrib);
       prefs.setString("ishatime", time.data.timings.isha);
-    
-      /*
-      prefs.setString("fajrtime", time.data.timings.fajr);
-      prefs.setString("fajrtime", time.data.timings.fajr);
-      prefs.setString("fajrtime", time.data.timings.fajr);
-      */
     } catch (error) {
       print('errorrrrrr');
     }

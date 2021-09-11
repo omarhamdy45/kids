@@ -66,7 +66,9 @@ class _LoginState extends State<Login> {
           loading = false;
         });
       } else {
-     
+        Provider.of<Lanprovider>(context,
+                                              listen: false)
+                                          .changeLoggedin(true);
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (BuildContext context) => Home()));
       }

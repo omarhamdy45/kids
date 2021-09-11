@@ -18,6 +18,7 @@ class Userprovider with ChangeNotifier {
   Locationn location;
   static String country;
   static String city;
+  static String enabled;
   static String timezone;
   static String sd;
   static String done;
@@ -66,7 +67,7 @@ class Userprovider with ChangeNotifier {
 
     if (preferences.containsKey('token')) {
       currentUser = User.fromPrefs(preferences);
-     // Provider.of<Lanprovider>(context,listen: false).islogin=
+      // Provider.of<Lanprovider>(context,listen: false).islogin=
       return true;
     } else {
       return false;
@@ -88,8 +89,9 @@ class Userprovider with ChangeNotifier {
       var first = placemarks.first;
       Userprovider.city = first.administrativeArea;
       Userprovider.country = first.country;
-      //Userprovider.done = 'true';
     } catch (error) {
+      Userprovider.city = 'cairo';
+      Userprovider.country = 'egypt';
       return false;
     }
   }
