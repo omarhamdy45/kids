@@ -52,7 +52,6 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
     tabController = TabController(length: 7, vsync: this);
     tabController.index = Home.homeindex;
     firstrun = true;
-    // print()
     if (Provider.of<Lanprovider>(context, listen: false).islogin)
       Userprovider.sd = Provider.of<Userprovider>(context, listen: false)
           .currentUser
@@ -74,6 +73,7 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
     super.didChangeDependencies();
 
     await Provider.of<Lanprovider>(context, listen: false).getLanguage();
+    await Provider.of<Lanprovider>(context, listen: false).savedate();
     await Provider.of<Lanprovider>(context, listen: false).getdate();
     if (DateTime.now().day.toString() !=
         Provider.of<Lanprovider>(context, listen: false).time) {
@@ -81,6 +81,7 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
 
       Provider.of<Lanprovider>(context, listen: false).savedate();
     }
+
     getlocatiion();
 
     setState(() {
