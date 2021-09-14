@@ -14,6 +14,8 @@ import 'package:kidsapp/screens/isha.dart';
 import 'package:kidsapp/screens/maghrib.dart';
 import 'package:kidsapp/screens/thuhr.dart';
 import 'package:kidsapp/screens/Home.dart';
+import 'package:kidsapp/widgets/cheaklogin.dart';
+import 'package:kidsapp/widgets/cheakloginwidget.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -158,14 +160,13 @@ class _SalahState extends State<Salah> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
- 
     await Provider.of<Userprovider>(context, listen: false).getUserLocation();
     Provider.of<Networkprovider>(context, listen: false).cheaknetwork();
-    
+
     while (Dbhandler.instance.athancheak != 200) {
       await Provider.of<Athanprovider>(context, listen: false).fetchtimes();
     }
-  
+
     getnextprayer();
     setState(() {
       firstrun = false;
@@ -302,15 +303,31 @@ class _SalahState extends State<Salah> {
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () async {
-                                          Navigator.push(
-                                            context,
-                                            PageTransition(
-                                              duration:
-                                                  Duration(milliseconds: 400),
-                                              type: PageTransitionType.fade,
-                                              child: Elfajar(),
-                                            ),
-                                          );
+                                          !Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .islogin
+                                              ? await showDialog(
+                                                  //  barrierDismissible: false, //
+                                                  context: context,
+                                                  builder: (_) {
+                                                    return AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15)),
+                                                        content: Cheaklogin());
+                                                  })
+                                              : Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    duration: Duration(
+                                                        milliseconds: 400),
+                                                    type:
+                                                        PageTransitionType.fade,
+                                                    child: Elfajar(),
+                                                  ),
+                                                );
                                         },
                                         child: Container(
                                           margin: EdgeInsets.symmetric(
@@ -388,7 +405,23 @@ class _SalahState extends State<Salah> {
                                     ),
                                     Expanded(
                                       child: GestureDetector(
-                                        onTap: () {
+                                        onTap: ()async {
+                                               !Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .islogin
+                                              ? await showDialog(
+                                                  //  barrierDismissible: false, //
+                                                  context: context,
+                                                  builder: (_) {
+                                                    return AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15)),
+                                                        content: Cheaklogin());
+                                                  })
+                                              :
                                           Navigator.push(
                                             context,
                                             PageTransition(
@@ -487,7 +520,23 @@ class _SalahState extends State<Salah> {
                                   children: [
                                     Expanded(
                                       child: GestureDetector(
-                                        onTap: () {
+                                        onTap: ()async {
+                                               !Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .islogin
+                                              ? await showDialog(
+                                                  //  barrierDismissible: false, //
+                                                  context: context,
+                                                  builder: (_) {
+                                                    return AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15)),
+                                                        content: Cheaklogin());
+                                                  })
+                                              :
                                           Navigator.push(
                                             context,
                                             PageTransition(
@@ -576,7 +625,23 @@ class _SalahState extends State<Salah> {
                                     ),
                                     Expanded(
                                       child: GestureDetector(
-                                        onTap: () {
+                                        onTap: ()async {
+                                               !Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .islogin
+                                              ? await showDialog(
+                                                  //  barrierDismissible: false, //
+                                                  context: context,
+                                                  builder: (_) {
+                                                    return AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15)),
+                                                        content: Cheaklogin());
+                                                  })
+                                              :
                                           Navigator.push(
                                             context,
                                             PageTransition(
@@ -671,7 +736,23 @@ class _SalahState extends State<Salah> {
                                             0.02),
                                 child: Center(
                                   child: GestureDetector(
-                                    onTap: () {
+                                    onTap: () async{
+                                           !Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .islogin
+                                              ? await showDialog(
+                                                  //  barrierDismissible: false, //
+                                                  context: context,
+                                                  builder: (_) {
+                                                    return AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15)),
+                                                        content: Cheaklogin());
+                                                  })
+                                              :
                                       Navigator.push(
                                         context,
                                         PageTransition(

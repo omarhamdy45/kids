@@ -8,6 +8,8 @@ import 'package:kidsapp/providers/networkprovider.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/screens/sours.dart';
+import 'package:kidsapp/widgets/cheaklogin.dart';
+import 'package:kidsapp/widgets/cheakloginwidget.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -172,25 +174,46 @@ class _QuraanState extends State<Quraan> {
                                       ? 'Juz`'
                                       : 'عرض الأجزاء'),
                                   Spacer(),
-                                     Provider.of<Lanprovider>(context,listen: false).islogin?
-                                  GestureDetector(
-                                    onTap: () async {
-                                      await Navigator.push(
-                                        // or pushReplacement, if you need that
-                                        context,
-                                        FadeInRoute(
-                                          routeName:
-                                              Favouritesquraanscreen.route,
-                                          page: Favouritesquraanscreen(),
-                                        ),
-                                      );
-                                    },
-                                    child: Icon(
-                                      Icons.favorite,
-                                      color: Colors.red[800],
-                                      size: 40,
-                                    ),
-                                  ):Container()
+                                  Provider.of<Lanprovider>(context,
+                                              listen: false)
+                                          .islogin
+                                      ? GestureDetector(
+                                          onTap: () async {
+                                            !Provider.of<Lanprovider>(context,
+                                                        listen: false)
+                                                    .islogin
+                                                ? await showDialog(
+                                                    //  barrierDismissible: false, //
+                                                    context: context,
+                                                    builder: (_) {
+                                                      return AlertDialog(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15)),
+                                                          content:
+                                                              Cheaklogin());
+                                                    })
+                                                : await Navigator.push(
+                                                    // or pushReplacement, if you need that
+                                                    context,
+                                                    FadeInRoute(
+                                                      routeName:
+                                                          Favouritesquraanscreen
+                                                              .route,
+                                                      page:
+                                                          Favouritesquraanscreen(),
+                                                    ),
+                                                  );
+                                          },
+                                          child: Icon(
+                                            Icons.favorite,
+                                            color: Colors.red[800],
+                                            size: 40,
+                                          ),
+                                        )
+                                      : Container()
                                 ],
                               ),
                             ),
@@ -206,16 +229,29 @@ class _QuraanState extends State<Quraan> {
                                           final List<int> arg = [
                                             sour[29 - index] + 1
                                           ];
-                                          print(arg);
-
-                                          await Navigator.push(
-                                            // or pushReplacement, if you need that
-                                            context,
-                                            FadeInRoute(
-                                                routeName: Surz.route,
-                                                page: Surz(),
-                                                argument: arg),
-                                          );
+                                          !Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .islogin
+                                              ? await showDialog(
+                                                  //  barrierDismissible: false, //
+                                                  context: context,
+                                                  builder: (_) {
+                                                    return AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15)),
+                                                        content: Cheaklogin());
+                                                  })
+                                              : await Navigator.push(
+                                                  // or pushReplacement, if you need that
+                                                  context,
+                                                  FadeInRoute(
+                                                      routeName: Surz.route,
+                                                      page: Surz(),
+                                                      argument: arg),
+                                                );
                                         },
                                         child: Container(
                                           margin:
@@ -354,15 +390,13 @@ class _QuraanState extends State<Quraan> {
                                                                             listen:
                                                                                 false)
                                                                         .islogin
-                                                                    ? Provider.of<Quraanprovider>(
-                                                                            context,
-                                                                            listen:
-                                                                                false)
-                                                                        .juz2save
-                                                                        .result[
-                                                                            index]
-                                                                        .numberOfVersrRead
-                                                                        .toString()+  '/${ayatleanth[index]}'
+                                                                    ? Provider.of<Quraanprovider>(context, listen: false)
+                                                                            .juz2save
+                                                                            .result[
+                                                                                index]
+                                                                            .numberOfVersrRead
+                                                                            .toString() +
+                                                                        '/${ayatleanth[index]}'
                                                                     : '0' +
                                                                         '/${ayatleanth[index]}',
                                                                 style:
@@ -474,7 +508,7 @@ class _QuraanState extends State<Quraan> {
                                                           itemBuilder:
                                                               (context, i) {
                                                             return GestureDetector(
-                                                              onTap: () {
+                                                              onTap: () async {
                                                                 List<int> arg =
                                                                     [];
 
@@ -519,19 +553,33 @@ class _QuraanState extends State<Quraan> {
                                                                     .levels[
                                                                         index]
                                                                     .level);
-                                                                print(arg);
-                                                                Navigator.push(
-                                                                  // or pushReplacement, if you need that
-                                                                  context,
-                                                                  FadeInRoute(
-                                                                      routeName:
-                                                                          Soura
-                                                                              .route,
-                                                                      page:
-                                                                          Soura(),
-                                                                      argument:
-                                                                          arg),
-                                                                );
+                                                                !Provider.of<Lanprovider>(
+                                                                            context,
+                                                                            listen:
+                                                                                false)
+                                                                        .islogin
+                                                                    ? await showDialog(
+                                                                        //  barrierDismissible: false, //
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (_) {
+                                                                          return AlertDialog(
+                                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                                                              content: Cheaklogin());
+                                                                        })
+                                                                    : Navigator
+                                                                        .push(
+                                                                        // or pushReplacement, if you need that
+                                                                        context,
+                                                                        FadeInRoute(
+                                                                            routeName: Soura
+                                                                                .route,
+                                                                            page:
+                                                                                Soura(),
+                                                                            argument:
+                                                                                arg),
+                                                                      );
                                                               },
                                                               child: Container(
                                                                 height: 130,

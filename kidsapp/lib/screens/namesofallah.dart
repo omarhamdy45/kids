@@ -11,6 +11,8 @@ import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/Namesofallah.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/networkprovider.dart';
+import 'package:kidsapp/widgets/cheaklogin.dart';
+import 'package:kidsapp/widgets/cheakloginwidget.dart';
 import 'package:kidsapp/widgets/namesofallahrecord.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:provider/provider.dart';
@@ -245,7 +247,22 @@ class _NamesofallahState extends State<Namesofallah> {
                                 width: 10,
                               ),
                               GestureDetector(
-                                onTap: () {
+                                onTap: ()async {
+                                   !Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .islogin
+                                              ? await showDialog(
+                                                  //  barrierDismissible: false, //
+                                                  context: context,
+                                                  builder: (_) {
+                                                    return AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15)),
+                                                        content: Cheaklogin());
+                                                  }):
                                   setState(() {
                                     play = !play;
                                   });
@@ -292,6 +309,21 @@ class _NamesofallahState extends State<Namesofallah> {
                                             (BuildContext context, int index) {
                                           return GestureDetector(
                                             onTap: () async {
+                                               !Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .islogin
+                                              ? await showDialog(
+                                                  //  barrierDismissible: false, //
+                                                  context: context,
+                                                  builder: (_) {
+                                                    return AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15)),
+                                                        content: Cheaklogin());
+                                                  }):
                                               await player2.setUrl(
                                                 (distinctIds[index].audio),
                                               );
@@ -357,6 +389,21 @@ class _NamesofallahState extends State<Namesofallah> {
                                                                 .primaryColor,
                                                             onChanged: (bool
                                                                 newValue) async {
+                                                                   !Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .islogin
+                                              ? await showDialog(
+                                                  //  barrierDismissible: false, //
+                                                  context: context,
+                                                  builder: (_) {
+                                                    return AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15)),
+                                                        content: Cheaklogin());
+                                                  }):
                                                               setState(() {
                                                                 demoData[index]
                                                                         .checked =

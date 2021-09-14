@@ -71,12 +71,8 @@ class _HomescreenState extends State<Homescreen> {
       firstrun = false;
     });
   }
-
   @override
   void dispose() {
-    // Provider.of<Userprovider>(context, listen: false).dispose();
-
-    // TODO: implement dispose
     super.dispose();
   }
 

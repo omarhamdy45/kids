@@ -8,6 +8,8 @@ import 'package:kidsapp/providers/azkarprovider.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/networkprovider.dart';
 import 'package:kidsapp/screens/Home.dart';
+import 'package:kidsapp/widgets/cheaklogin.dart';
+import 'package:kidsapp/widgets/cheakloginwidget.dart';
 import 'package:kidsapp/widgets/duadetails.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:provider/provider.dart';
@@ -141,10 +143,24 @@ class _DuaasState extends State<Duaas> {
                                 final azakar = distinctIds[index];
 
                                 return GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, Duadetails.route,
-                                        arguments: azakar);
+                                  onTap: () async {
+                                    !Provider.of<Lanprovider>(context,
+                                                listen: false)
+                                            .islogin
+                                        ? await showDialog(
+                                            //  barrierDismissible: false, //
+                                            context: context,
+                                            builder: (_) {
+                                              return AlertDialog(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15)),
+                                                  content: Cheaklogin());
+                                            })
+                                        : Navigator.pushNamed(
+                                            context, Duadetails.route,
+                                            arguments: azakar);
                                   },
                                   child: Container(
                                     height: 170,
@@ -174,7 +190,7 @@ class _DuaasState extends State<Duaas> {
                                           height: 5,
                                         ),
                                         Container(
-                                          height:47,
+                                          height: 47,
                                           child: Text(
                                             distinctIds[index].title,
                                             maxLines: 2,
