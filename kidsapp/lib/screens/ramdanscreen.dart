@@ -16,7 +16,6 @@ import 'package:kidsapp/screens/hadethramdan.dart';
 import 'package:kidsapp/screens/sera.dart';
 import 'package:kidsapp/screens/Home.dart';
 import 'package:kidsapp/widgets/Dialycheaklist2.dart';
-import 'package:kidsapp/widgets/cheakloginwidget.dart';
 import 'package:kidsapp/widgets/gift.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:kidsapp/widgets/ramdancounte.dart';

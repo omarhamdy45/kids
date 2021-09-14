@@ -9,7 +9,6 @@ import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/screens/sours.dart';
 import 'package:kidsapp/widgets/cheaklogin.dart';
-import 'package:kidsapp/widgets/cheakloginwidget.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';

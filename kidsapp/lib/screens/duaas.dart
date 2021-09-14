@@ -9,7 +9,6 @@ import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/networkprovider.dart';
 import 'package:kidsapp/screens/Home.dart';
 import 'package:kidsapp/widgets/cheaklogin.dart';
-import 'package:kidsapp/widgets/cheakloginwidget.dart';
 import 'package:kidsapp/widgets/duadetails.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:provider/provider.dart';

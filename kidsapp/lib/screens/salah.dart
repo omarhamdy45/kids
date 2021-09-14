@@ -15,7 +15,6 @@ import 'package:kidsapp/screens/maghrib.dart';
 import 'package:kidsapp/screens/thuhr.dart';
 import 'package:kidsapp/screens/Home.dart';
 import 'package:kidsapp/widgets/cheaklogin.dart';
-import 'package:kidsapp/widgets/cheakloginwidget.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';

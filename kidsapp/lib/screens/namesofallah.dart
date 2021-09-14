@@ -12,7 +12,6 @@ import 'package:kidsapp/providers/Namesofallah.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/networkprovider.dart';
 import 'package:kidsapp/widgets/cheaklogin.dart';
-import 'package:kidsapp/widgets/cheakloginwidget.dart';
 import 'package:kidsapp/widgets/namesofallahrecord.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:provider/provider.dart';
