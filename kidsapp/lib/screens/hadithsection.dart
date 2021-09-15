@@ -593,7 +593,7 @@ class _HadithsectionState extends State<Hadithsection> {
                                                                                 listen: false)
                                                                             .hadithlevles
                                                                             .levels[index]
-                                                                            .allhadiths[index]
+                                                                            .allhadiths[i]
                                                                             .id;
                                                                         AudioRecorder.dialy =
                                                                             true;
@@ -678,7 +678,7 @@ class _HadithsectionState extends State<Hadithsection> {
                                                                                   child: Padding(
                                                                                     padding: EdgeInsets.only(bottom: 10),
                                                                                     child: Text(
-                                                                                      Provider.of<Hadithprovider>(context).hadithlevles.levels[index].allhadiths[index].title,
+                                                                                      Provider.of<Hadithprovider>(context).hadithlevles.levels[index].allhadiths[i].title,
                                                                                       textAlign: TextAlign.center,
                                                                                       softWrap: true,
                                                                                       overflow: TextOverflow.fade,
