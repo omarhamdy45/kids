@@ -6,6 +6,7 @@ import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/networkprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/login.dart';
+import 'package:kidsapp/screens/settings.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 import 'package:kidsapp/widgets/salah_details.dart';
 
@@ -47,13 +48,11 @@ class _HomescreenState extends State<Homescreen> {
 
   @override
   void initState() {
-      
     firstrun = true;
     isSelected = [true, false];
-     
+
     // TODO: implement initState
     super.initState();
-    
   }
 
   @override
@@ -71,6 +70,7 @@ class _HomescreenState extends State<Homescreen> {
       firstrun = false;
     });
   }
+
   @override
   void dispose() {
     super.dispose();
@@ -154,15 +154,19 @@ class _HomescreenState extends State<Homescreen> {
                                       MaterialStateProperty.all<Color>(
                                           Theme.of(context).primaryColor)),
                               onPressed: () async {
-                                  Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => Login()));
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Login()));
                               },
                               child: Text(
                                 Provider.of<Lanprovider>(context, listen: true)
                                         .isenglish
                                     ? 'press here Login in'
                                     : ' اضغط هنا لتسجيل الدخول',
-                                style: TextStyle(color: Colors.white,fontSize: 18),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
                               )),
                         ),
                       ],
@@ -183,31 +187,45 @@ class _HomescreenState extends State<Homescreen> {
                                 )
                               : ListView(
                                   children: [
-                                    Provider.of<Lanprovider>(context,
-                                                listen: false)
-                                            .isenglish
-                                        ? Text(
-                                            'wlecome ' +
-                                                Provider.of<Userprovider>(
-                                                        context,
-                                                        listen: false)
-                                                    .currentUser
-                                                    .name +
-                                                ' !',
-                                            style:
-                                                GoogleFonts.lato(fontSize: 20),
-                                          )
-                                        : Text(
-                                            ' مرحباً' +
-                                                Provider.of<Userprovider>(
-                                                        context,
-                                                        listen: false)
-                                                    .currentUser
-                                                    .name +
-                                                ' !',
-                                            style:
-                                                GoogleFonts.lato(fontSize: 20),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          // or pushReplacement, if you need that
+                                          context,
+                                          FadeInRoute(
+                                            routeName: Settings.route,
+                                            page: Settings(),
                                           ),
+                                        );
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Provider.of<Lanprovider>(context,
+                                                      listen: false)
+                                                  .isenglish
+                                              ? Text(
+                                                  'wlecome ',
+                                                  style: GoogleFonts.lato(
+                                                      fontSize: 20),
+                                                )
+                                              : Text(
+                                                  ' مرحباً',
+                                                  style: GoogleFonts.lato(
+                                                      fontSize: 20),
+                                                ),
+                                          Text(
+                                            Provider.of<Userprovider>(context,
+                                                        listen: false)
+                                                    .currentUser
+                                                    .name +
+                                                ' !',
+                                            style: GoogleFonts.lato(
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                     Text(
                                         Provider.of<Lanprovider>(context,
                                                     listen: false)

@@ -76,7 +76,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
               const SizedBox(width: 20),
               AudioRecorder.dialy ? Iconsplay(this.widget.url) : Container(),
               const SizedBox(width: 20),
-            Dialyhadith.isrecorded
+              Dialyhadith.isrecorded
                   ? GestureDetector(
                       onTap: () async {
                         await showDialog(
@@ -209,7 +209,6 @@ class _AudioRecorderState extends State<AudioRecorder> {
 }
 
 class MyAppp extends StatefulWidget {
-  static bool dialy;
   final String url;
   final String index;
   final int hadithid;
@@ -236,8 +235,6 @@ class _MyApppState extends State<MyAppp> {
 
   Future<bool> _onWillPopup() async {
     print('ss');
-    // AudioRecorder.dialy = false;
-    //  Navigator.of(context).pop();
   }
 
   @override
@@ -266,75 +263,81 @@ class _MyApppState extends State<MyAppp> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                           Provider.of<Lanprovider>(context, listen: false).islogin?
-                        loading
-                            ? Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : Provider.of<Lanprovider>(context,listen: false).islogin
-                                ? ClipOval(
-                                    child: Material(
-                                      color: Theme.of(context)
-                                          .primaryColor
-                                          .withOpacity(0.04),
-                                      child: InkWell(
-                                        child: SizedBox(
-                                            width: 50,
-                                            height: 50,
-                                            child: Icon(
-                                              Icons.send,
-                                              size: 30,
-                                              color: Colors.blue,
-                                            )),
-                                        onTap: () async {
-                                          /*
+                        AudioRecorder.dialy
+                            ? Provider.of<Lanprovider>(context, listen: false)
+                                    .islogin
+                                ? loading
+                                    ? Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : Provider.of<Lanprovider>(context,
+                                                listen: false)
+                                            .islogin
+                                        ? ClipOval(
+                                            child: Material(
+                                              color: Theme.of(context)
+                                                  .primaryColor
+                                                  .withOpacity(0.04),
+                                              child: InkWell(
+                                                child: SizedBox(
+                                                    width: 50,
+                                                    height: 50,
+                                                    child: Icon(
+                                                      Icons.send,
+                                                      size: 30,
+                                                      color: Colors.blue,
+                                                    )),
+                                                onTap: () async {
+                                                  /*
                                           setState(() {
                                             showPlayer = false;
                                           });
                                           */
-                                          if (Dialyhadith.isrecorded) {
-                                            showDialog(
-                                                //  barrierDismissible: false, //
-                                                context: context,
-                                                builder: (_) {
-                                                  return WillPopScope(
-                                                      onWillPop: _onWillPopup,
-                                                      child: AlertDialog(
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15)),
-                                                          content:
-                                                              Addhadithrecord(
-                                                                  this
-                                                                      .widget
-                                                                      .hadithid,
-                                                                  path)));
-                                                });
-                                          } else {
-                                            setState(() {
-                                              loading = true;
-                                            });
-                                            await Dbhandler.instance
-                                                .strothafithrecord(
-                                                    'no',
-                                                    hadithid.toString(),
-                                                    File(path));
+                                                  if (Dialyhadith.isrecorded) {
+                                                    showDialog(
+                                                        //  barrierDismissible: false, //
+                                                        context: context,
+                                                        builder: (_) {
+                                                          return WillPopScope(
+                                                              onWillPop:
+                                                                  _onWillPopup,
+                                                              child: AlertDialog(
+                                                                  shape: RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              15)),
+                                                                  content: Addhadithrecord(
+                                                                      this
+                                                                          .widget
+                                                                          .hadithid,
+                                                                      path)));
+                                                        });
+                                                  } else {
+                                                    setState(() {
+                                                      loading = true;
+                                                    });
+                                                    await Dbhandler.instance
+                                                        .strothafithrecord(
+                                                            'no',
+                                                            hadithid.toString(),
+                                                            File(path));
 
-                                            Dialyhadith.isrecorded = true;
-                                            setState(() {
-                                              loading = false;
-                                            });
-                                          }
-                                          setState(() {
-                                            showPlayer = false;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  )
-                                : Container():Container(),
+                                                    Dialyhadith.isrecorded =
+                                                        true;
+                                                    setState(() {
+                                                      loading = false;
+                                                    });
+                                                  }
+                                                  setState(() {
+                                                    showPlayer = false;
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                          )
+                                        : Container()
+                                : Container()
+                            : Container(),
                         SizedBox(
                           width: 10,
                         ),

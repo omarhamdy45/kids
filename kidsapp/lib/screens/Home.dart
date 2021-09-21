@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -43,6 +45,7 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
     // int arg = ModalRoute.of(context).settings.arguments as int;
     player2 = AudioPlayer();
 
@@ -73,9 +76,21 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
     super.didChangeDependencies();
 
     await Provider.of<Lanprovider>(context, listen: false).getLanguage();
-   
 
     getlocatiion();
+/*
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: true,
+      sound: true,
+    );
+    */
+   
 
     setState(() {
       firstrun = false;
@@ -128,56 +143,25 @@ class _TypesState extends State<Home> with TickerProviderStateMixin {
               key: scaffoldd,
               appBar: AppBar(
                 toolbarHeight: 140,
-                title: firstrun
-                    ? Container()
-                    : Provider.of<Lanprovider>(context, listen: false).isenglish
-                        ? Container()
-                        : GestureDetector(
-                            onTap: () async {
-                              await Provider.of<Userprovider>(context,
-                                      listen: false)
-                                  .clearuserdata();
-                              await Provider.of<Lanprovider>(context,
-                                      listen: false)
-                                  .cleardata();
-                              Navigator.of(context)
-                                  .pushReplacementNamed(Login.route);
-                            },
-                            child: Container(
-                                margin: EdgeInsets.all(5),
-                                child: Icon(
-                                  Provider.of<Lanprovider>(context,
-                                              listen: false)
-                                          .islogin
-                                      ? Icons.logout
-                                      : Icons.login,
-                                  size: 35,
-                                )),
-                          ),
                 actions: [
-                  Provider.of<Lanprovider>(context, listen: false).isenglish
-                      ? GestureDetector(
-                          onTap: () async {
-                            await Provider.of<Userprovider>(context,
-                                    listen: false)
-                                .clearuserdata();
-                            await Provider.of<Lanprovider>(context,
-                                    listen: false)
-                                .cleardata();
-                            Navigator.of(context)
-                                .pushReplacementNamed(Login.route);
-                          },
-                          child: Container(
-                              margin: EdgeInsets.all(5),
-                              child: Icon(
-                                Provider.of<Lanprovider>(context, listen: false)
-                                        .islogin
-                                    ? Icons.logout
-                                    : Icons.login,
-                                size: 35,
-                              )),
-                        )
-                      : Container()
+                  GestureDetector(
+                    onTap: () async {
+                      await Provider.of<Userprovider>(context, listen: false)
+                          .clearuserdata();
+                      await Provider.of<Lanprovider>(context, listen: false)
+                          .cleardata();
+                      Navigator.of(context).pushReplacementNamed(Login.route);
+                    },
+                    child: Container(
+                        margin: EdgeInsets.all(5),
+                        child: Icon(
+                          Provider.of<Lanprovider>(context, listen: false)
+                                  .islogin
+                              ? Icons.logout
+                              : Icons.login,
+                          size: 35,
+                        )),
+                  )
                 ],
                 backgroundColor: Theme.of(context).primaryColor,
                 bottom: TabBar(

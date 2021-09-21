@@ -65,6 +65,11 @@ class _DuadetailsState extends State<Duadetails> {
     Navigator.pop(context);
   }
 
+ String getDeviceType() {
+    final data = MediaQueryData.fromWindow(WidgetsBinding.instance.window);
+    return data.size.shortestSide < 600 ? 'phone' : 'tablet';
+  }
+  
   @override
   Widget build(BuildContext context) {
     Data azkar = ModalRoute.of(context).settings.arguments as Data;
@@ -127,7 +132,7 @@ class _DuadetailsState extends State<Duadetails> {
                               border: Border.all(
                                   width: 2,
                                   color: Theme.of(context).accentColor)),
-                          height: 190,
+                          height:   getDeviceType() == 'phone' ? 190:300,
                           child: CachedNetworkImage(
                             imageUrl: Provider.of<Azkarprovider>(context)
                                 .categoriess
@@ -167,7 +172,7 @@ class _DuadetailsState extends State<Duadetails> {
                                                   color: Theme.of(context)
                                                       .accentColor,
                                                   letterSpacing: .5,
-                                                  fontSize: 14),
+                                                  fontSize:  getDeviceType() == 'phone' ? 16:26),
                                             ),
                                           ),
                                         ),
@@ -189,7 +194,7 @@ class _DuadetailsState extends State<Duadetails> {
                                                   color: Theme.of(context)
                                                       .accentColor,
                                                   letterSpacing: .5,
-                                                  fontSize: 14),
+                                                  fontSize: getDeviceType() == 'phone' ?16:26),
                                             ),
                                           ),
                                         ),
@@ -211,7 +216,7 @@ class _DuadetailsState extends State<Duadetails> {
                                                   color: Theme.of(context)
                                                       .accentColor,
                                                   letterSpacing: .5,
-                                                  fontSize: 14),
+                                                  fontSize:  getDeviceType() == 'phone' ? 16:26),
                                             ),
                                           ),
                                         ),
@@ -366,7 +371,7 @@ class _DuadetailsState extends State<Duadetails> {
                           height: MediaQuery.of(context).size.height * 0.04,
                         ),
                         Container(
-                          height: 40,
+                          height: getDeviceType() == 'phone' ? 40:50,
                           margin: EdgeInsets.symmetric(
                                   horizontal:
                                       MediaQuery.of(context).size.width * 0.3)

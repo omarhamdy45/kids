@@ -33,6 +33,12 @@ class _DuaasState extends State<Duaas> {
     // TODO: implement initState
     super.initState();
     firstrun = true;
+    //  print(getDeviceType());
+  }
+
+  String getDeviceType() {
+    final data = MediaQueryData.fromWindow(WidgetsBinding.instance.window);
+    return data.size.shortestSide < 600 ? 'phone' : 'tablet';
   }
 
   @override
@@ -80,7 +86,6 @@ class _DuaasState extends State<Duaas> {
 
   @override
   Widget build(BuildContext context) {
-    print(distinctIds.length);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -162,12 +167,15 @@ class _DuaasState extends State<Duaas> {
                                             arguments: azakar);
                                   },
                                   child: Container(
-                                    height: 170,
+                                    height:
+                                        getDeviceType() == 'phone' ? 190 : 292,
                                     margin: EdgeInsets.all(10),
                                     child: Column(
                                       children: [
                                         Container(
-                                            height: 118,
+                                            height: getDeviceType() == 'phone'
+                                                ? 118
+                                                : 220,
                                             child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(6),
@@ -189,7 +197,9 @@ class _DuaasState extends State<Duaas> {
                                           height: 5,
                                         ),
                                         Container(
-                                          height: 47,
+                                          height: getDeviceType() == 'phone'
+                                              ? 47
+                                              : 67,
                                           child: Text(
                                             distinctIds[index].title,
                                             maxLines: 2,
@@ -199,7 +209,10 @@ class _DuaasState extends State<Duaas> {
                                                   color: Theme.of(context)
                                                       .accentColor,
                                                   letterSpacing: .5,
-                                                  fontSize: 14),
+                                                  fontSize:
+                                                      getDeviceType() == 'phone'
+                                                          ? 14
+                                                          : 22),
                                             ),
                                           ),
                                         )

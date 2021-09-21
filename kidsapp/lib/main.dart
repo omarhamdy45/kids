@@ -1,6 +1,9 @@
 import 'dart:ui';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kidsapp/providers/Athan.dart';
 import 'package:kidsapp/providers/Namesofallah.dart';
 import 'package:kidsapp/providers/azkarprovider.dart';
@@ -11,11 +14,14 @@ import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/networkprovider.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
+import 'package:kidsapp/screens/aboutus.dart';
 import 'package:kidsapp/screens/azkar.dart';
 import 'package:kidsapp/screens/dialyhadith.dart';
 import 'package:kidsapp/screens/duaas.dart';
 import 'package:kidsapp/screens/favouritesquraan.dart';
 import 'package:kidsapp/screens/login.dart';
+import 'package:kidsapp/screens/privacy.dart';
+import 'package:kidsapp/screens/settings.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/screens/sours.dart';
 import 'package:kidsapp/screens/splash.dart';
@@ -27,10 +33,37 @@ import 'package:provider/provider.dart';
 
 import 'screens/login.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
+}
+
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title
+  'This channel is used for important notifications.', // description
+  importance: Importance.high,
+  playSound: true,
+  showBadge: true,
+  enableLights: true,
+  enableVibration: true,
+);
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
   runApp(
     MultiProvider(
       providers: [
@@ -76,6 +109,38 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  String token;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    var initialzationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettings =
+        InitializationSettings(android: initialzationSettingsAndroid);
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channel.description,
+                icon: android?.smallIcon,
+              ),
+            ));
+      }
+    });
+    getToken();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -84,7 +149,7 @@ class _MyAppState extends State<MyApp> {
           primaryColor: Color.fromRGBO(184, 95, 143, 1),
           accentColor: Color.fromRGBO(167, 85, 163, 1),
         ),
-        home:FutureBuilder(
+        home: FutureBuilder(
           future:
               Provider.of<Userprovider>(context, listen: false).isLoggedIn(),
           builder: (context, snapshot) {
@@ -93,12 +158,15 @@ class _MyAppState extends State<MyApp> {
             } else if (snapshot.data == true) {
               return Splash();
             } else {
-              return  Login();
+              return Login();
             }
           },
         ),
         routes: {
+          Privacy.route: (context) => Privacy(),
           Login.route: (context) => Login(),
+          Aboutus.route: (context) => Aboutus(),
+          Settings.route: (context) => Settings(),
           Salah.route: (context) => Salah(),
           Ramdan.route: (context) => Ramdan(),
           Duadetails.route: (context) => Duadetails(),
@@ -110,5 +178,13 @@ class _MyAppState extends State<MyApp> {
           Soura.route: (context) => Soura(),
           Favouritesquraanscreen.route: (context) => Favouritesquraanscreen(),
         });
+  }
+
+  getToken() async {
+    token = await FirebaseMessaging.instance.getToken();
+    setState(() {
+      token = token;
+    });
+    print(token);
   }
 }

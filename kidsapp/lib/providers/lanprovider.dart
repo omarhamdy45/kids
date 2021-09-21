@@ -22,6 +22,12 @@ class Lanprovider with ChangeNotifier {
   int counter3 = 0;
   bool islevel = true;
   bool isguz2 = true;
+  bool isfavourite = false;
+  
+  changefavourite(bool lan) async {
+    isfavourite = lan;
+    notifyListeners();
+  }
 
   changeLanguage(bool lan) async {
     isenglish = lan;
@@ -35,6 +41,7 @@ class Lanprovider with ChangeNotifier {
     isenglish = prefs.getBool("isenglish") ?? true;
     notifyListeners();
   }
+
   changeLoggedin(bool lan) async {
     islogin = lan;
     //notifyListeners();

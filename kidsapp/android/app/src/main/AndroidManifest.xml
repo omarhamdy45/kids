@@ -8,7 +8,7 @@
   <!-- Optional, you'll have to check this permission by yourself. --> 
   
    <application
-  
+        android:name=".Application"  
         android:label="Islamic Treasures"
         android:usesCleartextTraffic="true" 
         android:networkSecurityConfig="@xml/network_config"
@@ -49,5 +49,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+             <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+  android:value="high_importance_channel" />
     </application>
 </manifest>

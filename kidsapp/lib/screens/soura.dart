@@ -98,30 +98,27 @@ class _SouraState extends State<Soura> {
                 .sour
                 .data[arg[0] - 1]
                 .number);
-    if (Provider.of<Lanprovider>(context, listen: false)
-        .islogin){
+    if (Provider.of<Lanprovider>(context, listen: false).islogin) {
+      if (Dbhandler.instance.sourastatuscode == 200) {
+        Soura.isrecorded = Provider.of<Quraanprovider>(context, listen: false)
+            .sourarecord
+            .isFound;
 
-        
-         if (Dbhandler.instance.sourastatuscode == 200) {
-      Soura.isrecorded = Provider.of<Quraanprovider>(context, listen: false)
-          .sourarecord
-          .isFound;
-
-      for (int i = 0;
-          i <
-              Provider.of<Quraanprovider>(context, listen: false)
-                  .ayacheak
-                  .result
-                  .length;
-          i++) {
-        ayasaved.add(Provider.of<Quraanprovider>(context, listen: false)
-            .ayacheak
-            .result[i]
-            .numberOfVerse);
-        int b = ayasaved.elementAt(i);
-        demoData[b - 1].checked = true;
+        for (int i = 0;
+            i <
+                Provider.of<Quraanprovider>(context, listen: false)
+                    .ayacheak
+                    .result
+                    .length;
+            i++) {
+          ayasaved.add(Provider.of<Quraanprovider>(context, listen: false)
+              .ayacheak
+              .result[i]
+              .numberOfVerse);
+          int b = ayasaved.elementAt(i);
+          demoData[b - 1].checked = true;
+        }
       }
-         }
     }
 
     if (!mounted) return;
@@ -137,13 +134,13 @@ class _SouraState extends State<Soura> {
     player2 = AudioPlayer();
     // player3 = AudioPlayer();
     finsh = false;
-    AudioRecorder.dialy = false;
     playlist = false;
     firstrun = true;
     play = false;
     ayaplayed = false;
     fromplaylist = false;
-      Dialyhadith.isrecorded=false;
+    AudioRecorder.dialy = false;
+    Dialyhadith.isrecorded = false;
   }
 
   void stop() async {
@@ -239,52 +236,55 @@ class _SouraState extends State<Soura> {
                                           ))),
                                 ),
                                 GestureDetector(
-                                  onTap: () async {
-                                    setState(() {
-                                      Provider.of<Quraanprovider>(context,
-                                                  listen: false)
-                                              .quranfavourite
-                                              .result =
-                                          !Provider.of<Quraanprovider>(context,
-                                                  listen: false)
-                                              .quranfavourite
-                                              .result;
-                                    });
-                                    Dbhandler.instance.quraanfavourite(
+                                    onTap: () async {
+                                      setState(() {
                                         Provider.of<Quraanprovider>(context,
-                                                listen: false)
-                                            .sour
-                                            .data[arg[0] - 1]
-                                            .number
-                                            .toString(),
-                                        arg[1].toString());
-                                  },
-                                  child: firstrun
-                                      ? Container()
-                                      : Dbhandler.instance.sourastatuscode !=
-                                              200
-                                          ? Container(
-                                              height: double.infinity,
-                                              child: Image.asset(
-                                                  'assets/images/error.jpg'),
-                                            )
-                                          :
-                                          Provider.of<Lanprovider>(context, listen: false).islogin?
-                                           Provider.of<Quraanprovider>(context,
-                                                      listen: false)
-                                                  .quranfavourite
-                                                  .result
-                                              ? Icon(
-                                                  Icons.favorite,
-                                                  size: 35,
-                                                  color: Colors.white,
-                                                )
-                                              : Icon(
-                                                  Icons.favorite_border,
-                                                  size: 35,
-                                                  color: Colors.white,
-                                                ):Container()
-                                )
+                                                    listen: false)
+                                                .quranfavourite
+                                                .result =
+                                            !Provider.of<Quraanprovider>(
+                                                    context,
+                                                    listen: false)
+                                                .quranfavourite
+                                                .result;
+                                      });
+                                      Dbhandler.instance.quraanfavourite(
+                                          Provider.of<Quraanprovider>(context,
+                                                  listen: false)
+                                              .sour
+                                              .data[arg[0] - 1]
+                                              .number
+                                              .toString(),
+                                          arg[1].toString());
+                                    },
+                                    child: firstrun
+                                        ? Container()
+                                        : Dbhandler.instance.sourastatuscode !=
+                                                200
+                                            ? Container(
+                                                height: double.infinity,
+                                                child: Image.asset(
+                                                    'assets/images/error.jpg'),
+                                              )
+                                            : Provider.of<Lanprovider>(context,
+                                                        listen: false)
+                                                    .islogin
+                                                ? Provider.of<Quraanprovider>(
+                                                            context,
+                                                            listen: false)
+                                                        .quranfavourite
+                                                        .result
+                                                    ? Icon(
+                                                        Icons.favorite,
+                                                        size: 35,
+                                                        color: Colors.white,
+                                                      )
+                                                    : Icon(
+                                                        Icons.favorite_border,
+                                                        size: 35,
+                                                        color: Colors.white,
+                                                      )
+                                                : Container())
                               ],
                             )),
                         Container(
