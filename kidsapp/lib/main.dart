@@ -152,7 +152,7 @@ class _MyAppState extends State<MyApp> {
                 channel.description,
                 icon: android?.smallIcon,
                 largeIcon:
-                    DrawableResourceAndroidBitmap('@mipmap/ic_largeIcon'),
+                    DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
                 playSound: true,
                 importance: Importance.high,
                 channelShowBadge: true,
@@ -176,6 +176,7 @@ class _MyAppState extends State<MyApp> {
       criticalAlert: false,
       provisional: false,
       sound: true,
+      
     );
   }
 
