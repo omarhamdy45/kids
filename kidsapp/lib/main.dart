@@ -38,14 +38,30 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
 
-  print("Handling a background message: ${message.messageId}");
+  flutterLocalNotificationsPlugin.show(
+      message.data.hashCode,
+      message.data['title'],
+      message.data['body'],
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          channel.description,
+          largeIcon: DrawableResourceAndroidBitmap('@mipmap/ic_largeIcon'),
+          playSound: true,
+          importance: Importance.high,
+          channelShowBadge: true,
+        ),
+      ));
 }
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title
-  'This channel is used for important notifications.', // description
+  'This channel is used for important notifications.',
+
   importance: Importance.high,
+
   playSound: true,
   showBadge: true,
   enableLights: true,
@@ -110,6 +126,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String token;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -134,11 +151,32 @@ class _MyAppState extends State<MyApp> {
                 channel.name,
                 channel.description,
                 icon: android?.smallIcon,
+                largeIcon:
+                    DrawableResourceAndroidBitmap('@mipmap/ic_largeIcon'),
+                playSound: true,
+                importance: Importance.high,
+                channelShowBadge: true,
               ),
             ));
       }
     });
     getToken();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
   }
 
   @override
