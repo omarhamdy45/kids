@@ -37,7 +37,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
-
+  AndroidNotification android = message.notification?.android;
   flutterLocalNotificationsPlugin.show(
       message.data.hashCode,
       message.data['title'],
@@ -47,8 +47,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
           channel.id,
           channel.name,
           channel.description,
-          largeIcon: DrawableResourceAndroidBitmap('@mipmap/ic_largeIcon'),
           playSound: true,
+          priority: Priority.high,
+          icon: android.smallIcon,
           importance: Importance.high,
           channelShowBadge: true,
         ),
@@ -59,9 +60,7 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title
   'This channel is used for important notifications.',
-
   importance: Importance.high,
-
   playSound: true,
   showBadge: true,
   enableLights: true,
@@ -80,6 +79,7 @@ void main() async {
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
+      
   runApp(
     MultiProvider(
       providers: [
@@ -140,6 +140,7 @@ class _MyAppState extends State<MyApp> {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification notification = message.notification;
       AndroidNotification android = message.notification?.android;
+
       if (notification != null && android != null) {
         flutterLocalNotificationsPlugin.show(
             notification.hashCode,
@@ -150,9 +151,7 @@ class _MyAppState extends State<MyApp> {
                 channel.id,
                 channel.name,
                 channel.description,
-                icon: android?.smallIcon,
-                largeIcon:
-                    DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+                icon: android.smallIcon,
                 playSound: true,
                 importance: Importance.high,
                 channelShowBadge: true,
@@ -176,7 +175,6 @@ class _MyAppState extends State<MyApp> {
       criticalAlert: false,
       provisional: false,
       sound: true,
-      
     );
   }
 

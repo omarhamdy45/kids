@@ -87,7 +87,7 @@ class _DialyhadithState extends State<Dialyhadith> {
                           child: Row(
                             children: [
                               Icon(
-                                Icons.arrow_back_outlined,
+                                Icons.arrow_back_ios,
                                 size: 35,
                               )
                             ],

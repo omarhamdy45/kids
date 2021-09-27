@@ -16,7 +16,7 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-  textDirection: Provider.of<Lanprovider>(context, listen: false).isenglish
+      textDirection: Provider.of<Lanprovider>(context, listen: false).isenglish
           ? TextDirection.ltr
           : TextDirection.rtl,
       child: Scaffold(
@@ -25,8 +25,33 @@ class Settings extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
           child: ListView(
             children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        //    mainAxisAlignment:MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            child: Icon(
+                              Icons.arrow_back_ios,
+                              size: 35,
+                              color: Colors.black,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
                 child: Container(
                   child: Text(
                     'Islamic Treasures',
@@ -69,7 +94,7 @@ class Settings extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                 ),
               ),
-                    ListTile(
+              ListTile(
                 onTap: () {
                   Navigator.push(
                     // or pushReplacement, if you need that
@@ -96,9 +121,10 @@ class Settings extends StatelessWidget {
               ),
               ListTile(
                 onTap: () {
-                  Provider.of<Lanprovider>(context, listen: false).changeLanguage(
-                      !Provider.of<Lanprovider>(context, listen: false)
-                          .isenglish);
+                  Provider.of<Lanprovider>(context, listen: false)
+                      .changeLanguage(
+                          !Provider.of<Lanprovider>(context, listen: false)
+                              .isenglish);
                 },
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -122,15 +148,12 @@ class Settings extends StatelessWidget {
                 ),
               ),
               ListTile(
-                onTap: () async{
-                    await Provider.of<Userprovider>(context,
-                                    listen: false)
-                                .clearuserdata();
-                            await Provider.of<Lanprovider>(context,
-                                    listen: false)
-                                .cleardata();
-                            Navigator.of(context)
-                                .pushReplacementNamed(Login.route);
+                onTap: () async {
+                  await Provider.of<Userprovider>(context, listen: false)
+                      .clearuserdata();
+                  await Provider.of<Lanprovider>(context, listen: false)
+                      .cleardata();
+                  Navigator.of(context).pushReplacementNamed(Login.route);
                 },
                 title: Text(
                   Provider.of<Lanprovider>(context).isenglish
@@ -144,7 +167,8 @@ class Settings extends StatelessWidget {
                 trailing: Icon(Icons.arrow_forward_ios),
                 leading: Icon(
                   Provider.of<Lanprovider>(context).islogin
-                      ?   Icons.logout:Icons.login,
+                      ? Icons.logout
+                      : Icons.login,
                   size: 35,
                   color: Theme.of(context).primaryColor,
                 ),

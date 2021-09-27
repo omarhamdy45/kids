@@ -57,6 +57,7 @@ class _HadithsectionState extends State<Hadithsection> {
               .dailyhadith
               .data);
           distinctIds = names.toSet().toList();
+           names.clear();
           demoData = List.generate(distinctIds.length, (i) {
             return ObjectClass(
               checked: false,
@@ -102,6 +103,7 @@ class _HadithsectionState extends State<Hadithsection> {
           distinctIds.addAll(Provider.of<Hadithprovider>(context, listen: false)
               .dailyhadith
               .data);
+              names.clear();
 
           demoData = List.generate(distinctIds.length, (i) {
             return ObjectClass(

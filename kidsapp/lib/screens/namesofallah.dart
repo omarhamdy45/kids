@@ -97,23 +97,23 @@ class _NamesofallahState extends State<Namesofallah> {
       _betterPlayerController =
           BetterPlayerController(betterPlayerConfiguration);
       _betterPlayerController.setupDataSource(dataSource);
-      if(  Provider.of<Lanprovider>(context, listen: false).islogin){
- for (int i = 0;
-          i <
+      if (Provider.of<Lanprovider>(context, listen: false).islogin) {
+        for (int i = 0;
+            i <
+                Provider.of<Namesofallahprovider>(context, listen: false)
+                    .hosnasaved
+                    .result
+                    .length;
+            i++) {
+          hosnasaved.add(
               Provider.of<Namesofallahprovider>(context, listen: false)
                   .hosnasaved
-                  .result
-                  .length;
-          i++) {
-        hosnasaved.add(Provider.of<Namesofallahprovider>(context, listen: false)
-            .hosnasaved
-            .result[i]
-            .hosnaId);
-        int b = hosnasaved.elementAt(i);
-        demoData[b - 1].checked = true;
+                  .result[i]
+                  .hosnaId);
+          int b = hosnasaved.elementAt(i);
+          demoData[b - 1].checked = true;
+        }
       }
-      }
-     
     }
 
     setState(() {
@@ -135,6 +135,7 @@ class _NamesofallahState extends State<Namesofallah> {
   void dispose() {
     player2.dispose();
     _betterPlayerController.videoPlayerController.dispose();
+    _scrollController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -246,25 +247,24 @@ class _NamesofallahState extends State<Namesofallah> {
                                 width: 10,
                               ),
                               GestureDetector(
-                                onTap: ()async {
-                                   !Provider.of<Lanprovider>(context,
-                                                      listen: false)
-                                                  .islogin
-                                              ? await showDialog(
-                                                  //  barrierDismissible: false, //
-                                                  context: context,
-                                                  builder: (_) {
-                                                    return AlertDialog(
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15)),
-                                                        content: Cheaklogin());
-                                                  }):
-                                  setState(() {
-                                    play = !play;
-                                  });
+                                onTap: () async {
+                                  !Provider.of<Lanprovider>(context,
+                                              listen: false)
+                                          .islogin
+                                      ? await showDialog(
+                                          //  barrierDismissible: false, //
+                                          context: context,
+                                          builder: (_) {
+                                            return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                                content: Cheaklogin());
+                                          })
+                                      : setState(() {
+                                          play = !play;
+                                        });
                                   play
                                       ? _betterPlayerController.play()
                                       : _betterPlayerController.pause();
@@ -308,24 +308,26 @@ class _NamesofallahState extends State<Namesofallah> {
                                             (BuildContext context, int index) {
                                           return GestureDetector(
                                             onTap: () async {
-                                               !Provider.of<Lanprovider>(context,
-                                                      listen: false)
-                                                  .islogin
-                                              ? await showDialog(
-                                                  //  barrierDismissible: false, //
-                                                  context: context,
-                                                  builder: (_) {
-                                                    return AlertDialog(
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15)),
-                                                        content: Cheaklogin());
-                                                  }):
-                                              await player2.setUrl(
-                                                (distinctIds[index].audio),
-                                              );
+                                              !Provider.of<Lanprovider>(context,
+                                                          listen: false)
+                                                      .islogin
+                                                  ? await showDialog(
+                                                      //  barrierDismissible: false, //
+                                                      context: context,
+                                                      builder: (_) {
+                                                        return AlertDialog(
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            15)),
+                                                            content:
+                                                                Cheaklogin());
+                                                      })
+                                                  : await player2.setUrl(
+                                                      (distinctIds[index]
+                                                          .audio),
+                                                    );
                                               await player2.play();
                                             },
                                             child: Container(
@@ -388,26 +390,28 @@ class _NamesofallahState extends State<Namesofallah> {
                                                                 .primaryColor,
                                                             onChanged: (bool
                                                                 newValue) async {
-                                                                   !Provider.of<Lanprovider>(context,
-                                                      listen: false)
-                                                  .islogin
-                                              ? await showDialog(
-                                                  //  barrierDismissible: false, //
-                                                  context: context,
-                                                  builder: (_) {
-                                                    return AlertDialog(
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15)),
-                                                        content: Cheaklogin());
-                                                  }):
-                                                              setState(() {
-                                                                demoData[index]
-                                                                        .checked =
-                                                                    newValue;
-                                                              });
+                                                              !Provider.of<Lanprovider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .islogin
+                                                                  ? await showDialog(
+                                                                      //  barrierDismissible: false, //
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (_) {
+                                                                        return AlertDialog(
+                                                                            shape:
+                                                                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                                                            content: Cheaklogin());
+                                                                      })
+                                                                  : setState(
+                                                                      () {
+                                                                      demoData[index]
+                                                                              .checked =
+                                                                          newValue;
+                                                                    });
                                                               if (demoData[
                                                                       index]
                                                                   .checked)
