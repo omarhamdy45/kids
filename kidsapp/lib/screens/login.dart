@@ -164,7 +164,7 @@ class _LoginState extends State<Login> {
                                   ),
                                 ),
                                  validator: (value) {
-                                if (EmailValidator.validate(email.text)) {
+                               if (email.text.length !=0) {
                                   return null;
                                 }
                                 return ' Invalid Email ';
