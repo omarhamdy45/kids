@@ -67,6 +67,7 @@ dependencies:
   firebase_messaging: any
   firebase_core: ^1.6.0
   flutter_local_notifications: ^8.2.0
+  email_validator: ^2.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

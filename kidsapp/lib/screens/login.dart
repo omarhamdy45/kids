@@ -5,7 +5,7 @@ import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/Home.dart';
 import 'package:kidsapp/widgets/background.dart';
-
+import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
@@ -163,6 +163,13 @@ class _LoginState extends State<Login> {
                                     //   borderRadius: BorderRadius.all(),
                                   ),
                                 ),
+                                 validator: (value) {
+                                if (EmailValidator.validate(email.text)) {
+                                  return null;
+                                }
+                                return ' Invalid Email ';
+                              },
+                             
                                 onFieldSubmitted: (value) {
                                   passwordnode.requestFocus();
                                 },
@@ -203,7 +210,14 @@ class _LoginState extends State<Login> {
                                         width: 1, color: Colors.white),
                                     //   borderRadius: BorderRadius.all(),
                                   ),
+                                  
                                 ),
+                                  validator: (value) {
+                                if (password.text.length > 5) {
+                                  return null;
+                                }
+                                return 'Password must contain 6 charcters at least ';
+                              },
                                 textInputAction: TextInputAction.done,
                                 focusNode: passwordnode,
                                 keyboardType: TextInputType.emailAddress,
