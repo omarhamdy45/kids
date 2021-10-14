@@ -173,7 +173,8 @@ class _SouraState extends State<Soura> {
   Widget build(BuildContext context) {
     List<dynamic> arg =
         ModalRoute.of(context).settings.arguments as List<dynamic>;
-    print(arg);
+    print(arg[0]);
+    print(arg[1]);
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -331,27 +332,14 @@ class _SouraState extends State<Soura> {
                                       for (int i = audios.first - 1;
                                           i < audios.last;
                                           i++) {
-                                        final b = Provider.of<Quraanprovider>(
-                                                    context,
-                                                    listen: false)
-                                                .sour
-                                                .data[arg[0] - 1]
-                                                .number *
-                                            1000;
-                                        final c = b.toString();
-                                        if (c.length == 4) {
-                                          ayaaudio =
-                                              '00' + (b + i + 1).toString();
-                                        }
-                                        if (c.length == 5) {
-                                          ayaaudio =
-                                              '0' + (b + i + 1).toString();
-                                        }
-                                        if (c.length == 6) {
-                                          ayaaudio = (b + i + 1).toString();
-                                        }
+                                        await Provider.of<Quraanprovider>(
+                                                context,
+                                                listen: false)
+                                            .fetchayaaudio(arg[1], arg[0], i+1);
                                         audioss.add(
-                                            'https://verse.mp3quran.net/arabic/mishary_alafasy/128/$ayaaudio.mp3');
+                                             Provider.of<Quraanprovider>(
+                                                context,
+                                                listen: false).ayaaudio.audio);
                                       }
                                       print(audioss);
 
@@ -365,10 +353,6 @@ class _SouraState extends State<Soura> {
                                         ),
                                         // Playback will be prepared to start from track1.mp3
                                         initialIndex: 0,
-
-                                        // default
-                                        // Playback will be prepared to start from position zero.
-                                        // initialPosition: Duration.zero, // default
                                       );
 
                                       await player2.play();
@@ -545,6 +529,7 @@ class _SouraState extends State<Soura> {
                                                               play = true;
                                                               audios.clear();
                                                             });
+                                                            /*
                                                             final b = Provider.of<
                                                                             Quraanprovider>(
                                                                         context,
@@ -574,11 +559,29 @@ class _SouraState extends State<Soura> {
                                                                       1)
                                                                   .toString();
                                                             }
-
+                                                            print(ayaaudio);
+*/
+                                                              await Provider.of<Quraanprovider>(
+                                                context,
+                                                listen: false)
+                                            .fetchayaaudio(arg[1], arg[0], index+1);
+                                                            print(Provider.of<
+                                                                        Quraanprovider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .ayaaudio
+                                                                .audio);
                                                             try {
                                                               await player2
                                                                   .setUrl(
-                                                                ('https://verse.mp3quran.net/arabic/mishary_alafasy/128/$ayaaudio.mp3'),
+                                                                (Provider.of<
+                                                                            Quraanprovider>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .ayaaudio
+                                                                    .audio),
                                                               );
                                                               await player2
                                                                   .play();

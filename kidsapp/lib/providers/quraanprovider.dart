@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:kidsapp/models/Allrecord.dart';
+import 'package:kidsapp/models/ayaaudio.dart';
 import 'package:kidsapp/models/ayacheak.dart';
 import 'package:kidsapp/models/ayah.dart';
 import 'package:kidsapp/models/ayasaves.dart';
@@ -24,6 +25,7 @@ class Quraanprovider with ChangeNotifier {
   Quraanlevels levles;
   Sourarecord sourarecord;
   Allrecord allrecord;
+   Ayaaudio ayaaudio;
   Future<void> fetchsour() async {
     try {
       sour = await Dbhandler.instance.getsour();
@@ -101,6 +103,13 @@ class Quraanprovider with ChangeNotifier {
   Future<void> fetchallrecord(int juzid, int souraid) async {
     try {
       allrecord = await Dbhandler.instance.getallrecord(juzid, souraid);
+    } catch (eroor) {
+      print(eroor);
+    }
+  }
+  Future<void> fetchayaaudio(int juzid, int souraid,int ayaid) async {
+    try {
+      ayaaudio= await Dbhandler.instance.ayaaudio(juzid, souraid,ayaid);
     } catch (eroor) {
       print(eroor);
     }

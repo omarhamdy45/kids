@@ -14,6 +14,7 @@ import 'package:kidsapp/models/Homedata.dart';
 import 'package:kidsapp/models/Hosnasave.dart';
 import 'package:kidsapp/models/Salahsummry.dart';
 import 'package:kidsapp/models/Top_student.dart';
+import 'package:kidsapp/models/ayaaudio.dart';
 import 'package:kidsapp/models/ayacheak.dart';
 import 'package:kidsapp/models/ayah.dart';
 import 'package:kidsapp/models/ayasaves.dart';
@@ -779,5 +780,18 @@ class Dbhandler {
     Response response = await _dio.get(url);
     homestatuscode = response.statusCode;
     return Hadithbyid.fromJson(response.data);
+  }
+
+  Future<Ayaaudio> ayaaudio(int guzid, int souraid, int ayaid) async {
+    String url = '$mainurl/quran_audio';
+    final String tokenn = Userprovider.sd;
+
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+    _dio.options.headers["Accept"] = "application/json";
+    Response response = await _dio.post(
+      url,
+      data: {'juza': guzid, 'quran_number': souraid, 'aya': ayaid},
+    );
+    return Ayaaudio.fromJson(response.data);
   }
 }
