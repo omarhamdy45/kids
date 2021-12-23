@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
+import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/dialyhadith.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/widgets/Controlsbuttons.dart';
@@ -294,24 +295,25 @@ class _MyApppState extends State<MyAppp> {
                                           });
                                           */
                                                   if (Dialyhadith.isrecorded) {
-                                                    showDialog(
-                                                        //  barrierDismissible: false, //
-                                                        context: context,
-                                                        builder: (_) {
-                                                          return WillPopScope(
-                                                              onWillPop:
-                                                                  _onWillPopup,
-                                                              child: AlertDialog(
-                                                                  shape: RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              15)),
-                                                                  content: Addhadithrecord(
-                                                                      this
-                                                                          .widget
-                                                                          .hadithid,
-                                                                      path)));
-                                                        });
+                                                
+                                                      showDialog(
+                                                          //  barrierDismissible: false, //
+                                                          context: context,
+                                                          builder: (_) {
+                                                            return WillPopScope(
+                                                                onWillPop:
+                                                                    _onWillPopup,
+                                                                child: AlertDialog(
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                15)),
+                                                                    content: Addhadithrecord(
+                                                                        this
+                                                                            .widget
+                                                                            .hadithid,
+                                                                        path)));
+                                                          });
                                                   } else {
                                                     setState(() {
                                                       loading = true;

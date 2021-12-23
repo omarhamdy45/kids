@@ -19,6 +19,7 @@ import 'package:kidsapp/models/ayacheak.dart';
 import 'package:kidsapp/models/ayah.dart';
 import 'package:kidsapp/models/ayasaves.dart';
 import 'package:kidsapp/models/catgoriess.dart';
+import 'package:kidsapp/models/cheakactive.dart';
 import 'package:kidsapp/models/dialyhadith.dart';
 import 'package:kidsapp/models/favouritehadith.dart';
 import 'package:kidsapp/models/hadithlevel.dart';
@@ -30,6 +31,7 @@ import 'package:kidsapp/models/sourarecord.dart';
 import 'package:kidsapp/models/user.dart';
 import 'package:kidsapp/models/vedio.dart';
 import 'package:kidsapp/providers/userprovider.dart';
+import 'package:kidsapp/screens/signup.dart';
 import 'dart:convert' as convert;
 import 'Namesofallah.dart';
 import 'sourafavourite.dart';
@@ -135,6 +137,24 @@ class Dbhandler {
     print(response.data);
     print(response.statusCode);
     return User.fromjson(response.data);
+  }
+
+  Future<User> Signup(String username, String password, String cpassword,
+      String phone, String email) async {
+    String url = '$mainurl/user';
+    Response response = (await _dio.post(
+      url,
+      data: {
+        'name': username,
+        'password': password,
+        'c_password': cpassword,
+        'phone': phone,
+        'email': email,
+      },
+    ));
+    print(response.data);
+    print(response.statusCode);
+    return User.fromjsonn(response.data);
   }
 
   Future<void> azkarread(String status, String categoryid) async {
@@ -775,6 +795,12 @@ class Dbhandler {
     return Topstudents.fromJson(response.data);
   }
 
+  Future<Topstudents> gettopexternal() async {
+    String url = '$mainurl/topStudentExternal';
+    Response response = await _dio.get(url);
+    return Topstudents.fromJson(response.data);
+  }
+
   Future<Hadithbyid> getspecifichadith(int id) async {
     String url = '$mainurl/dailyhadith/$id';
     Response response = await _dio.get(url);
@@ -793,5 +819,16 @@ class Dbhandler {
       data: {'juza': guzid, 'quran_number': souraid, 'aya': ayaid},
     );
     return Ayaaudio.fromJson(response.data);
+  }
+
+  Future<Active> checkActivity() async {
+    String url = '$mainurl/chechActivity';
+    final String tokenn = Userprovider.sd;
+    _dio.options.headers["Authorization"] = "Bearer $tokenn";
+
+    Response response = await _dio.get(url);
+
+    print(response.data);
+    return Active.fromJson(response.data);
   }
 }

@@ -7,22 +7,18 @@ import 'package:url_launcher/url_launcher.dart';
 
 class Aboutus extends StatelessWidget {
   static const String route = '/Aboutus';
+  Future<void> _launched;
 
-  _launchURL(String url) async {
-    //  String url = 'https://api.whatsapp.com/send?phone=$num';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  makingwhatsapp(String num) async {
-    String url = 'https://api.whatsapp.com/send?phone=$num';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
+  Future<void> makingwhatsapp(
+    String num,
+  ) async {
+    if (!await launch(
+      'https://api.whatsapp.com/send?phone=$num',
+      forceSafariVC: false,
+      forceWebView: false,
+      headers: <String, String>{'my_header_key': 'my_header_value'},
+    )) {
+      throw 'Could not launch $num';
     }
   }
 
@@ -38,6 +34,17 @@ class Aboutus extends StatelessWidget {
     final Uri _emailLaunchUri =
         Uri(scheme: 'mailto', path: url, queryParameters: {'subject': ' '});
     launch(_emailLaunchUri.toString());
+  }
+
+  Future<void> _launchInBrowser(String url) async {
+    if (!await launch(
+      url,
+      forceSafariVC: false,
+      forceWebView: false,
+      headers: <String, String>{'my_header_key': 'my_header_value'},
+    )) {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
@@ -69,7 +76,6 @@ class Aboutus extends StatelessWidget {
                 'Contact Us If you have any questions about this Policy, You can contact us: ',
                 style: GoogleFonts.roboto(
                   fontSize: 18,
-                 
                 ),
               ),
               SizedBox(
@@ -81,10 +87,7 @@ class Aboutus extends StatelessWidget {
                 },
                 child: Text(
                   '• By email: info@royaltechni.com ',
-                  style: GoogleFonts.roboto(
-                    fontSize: 18,
-                     color: Colors.blue
-                  ),
+                  style: GoogleFonts.roboto(fontSize: 18, color: Colors.blue),
                 ),
               ),
               SizedBox(
@@ -92,29 +95,23 @@ class Aboutus extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  _makePhoneCall('https://www.royaltechni.com');
+                  _launched = _launchInBrowser('https://www.royaltechni.com');
                 },
                 child: Text(
                   '• By visiting this page on our website: https://www.royaltechni.com ',
-                  style: GoogleFonts.roboto(
-                    fontSize: 18,
-                     color: Colors.blue
-                  ),
+                  style: GoogleFonts.roboto(fontSize: 18, color: Colors.blue),
                 ),
               ),
               SizedBox(
                 height: 10,
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   _makePhoneCall('tel:971553114946');
                 },
                 child: Text(
                   '• By phone number: +971553114946 ',
-                  style: GoogleFonts.roboto(
-                    fontSize: 18,
-                     color: Colors.blue
-                  ),
+                  style: GoogleFonts.roboto(fontSize: 18, color: Colors.blue),
                 ),
               ),
               SizedBox(
@@ -127,7 +124,7 @@ class Aboutus extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: 5),
                     child: GestureDetector(
                       onTap: () async {
-                        await _launchURL(
+                        _launched = _launchInBrowser(
                             'https://www.facebook.com/Royaltechni/');
                       },
                       child: CircleAvatar(
@@ -158,7 +155,7 @@ class Aboutus extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      await _launchURL(
+                      _launched = _launchInBrowser(
                           'https://instagram.com/royal_techni?utm_medium=copy_link');
                     },
                     child: Container(

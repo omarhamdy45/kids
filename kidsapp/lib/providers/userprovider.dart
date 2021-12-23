@@ -5,6 +5,7 @@ import 'package:hijri/hijri_calendar.dart';
 import 'package:kidsapp/models/Homedata.dart';
 import 'package:kidsapp/models/Salahsummry.dart';
 import 'package:kidsapp/models/Top_student.dart';
+import 'package:kidsapp/models/cheakactive.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/models/location.dart';
 import 'package:kidsapp/models/score.dart';
@@ -28,7 +29,11 @@ class Userprovider with ChangeNotifier {
   Homedata homedata;
   Topstudents topstudents;
   Topstudents topclassstudents;
+  Topstudents topexternal;
   LocationPermission permission;
+  Active user;
+  bool active = true;
+  bool role = false;
 
   Future<Score> fetchscore() async {
     try {
@@ -59,6 +64,18 @@ class Userprovider with ChangeNotifier {
       return null;
     } catch (error) {
       return 'errorrrrrrr';
+    }
+  }
+
+  Future<String> signup(String username, String password, String cpassword,
+      String phone, String email) async {
+    try {
+      currentUser = await Dbhandler.instance
+          .Signup(username, password, cpassword, phone, email);
+      await saverUserData();
+      return null;
+    } catch (error) {
+      print(error);
     }
   }
 
@@ -126,5 +143,31 @@ class Userprovider with ChangeNotifier {
     } catch (error) {
       print('error');
     }
+  }
+
+  Future<void> fetchtopexternal() async {
+    try {
+      topexternal = await Dbhandler.instance.gettopexternal();
+    } catch (error) {
+      print('error');
+    }
+  }
+
+  Future<void> checkActivity() async {
+    try {
+      user = await Dbhandler.instance.checkActivity();
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  changeactive(bool lan) async {
+    active = lan;
+    notifyListeners();
+  }
+
+  changerole(bool lan) async {
+    role = lan;
+    notifyListeners();
   }
 }

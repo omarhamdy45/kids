@@ -6,6 +6,8 @@ class User {
 
   User.fromjson(dynamic json)
       : this.token = json['success']['token'];
+       User.fromjsonn(dynamic json)
+      : this.token = json['token']['token'];
      
   User.fromPrefs(SharedPreferences prefs)
       : this.token = prefs.get('token'),

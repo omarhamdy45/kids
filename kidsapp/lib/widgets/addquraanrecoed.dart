@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
+import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -33,73 +34,82 @@ class _ADdredcordState extends State<Addquraanrecord> {
       height: 200,
       child: Column(children: [
         loading1
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : Container(
-                margin: EdgeInsets.only(top: 15),
-                width: 220,
-                height: 45,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      Color.fromRGBO(34, 196, 228, 1),
-                    ),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                  ),
-                  onPressed: () async {
-                    setState(() {
-                      loading1 = true;
-                    });
-                    await Dbhandler.instance.sourarecrod(File(this.widget.path),
-                        this.widget.juzid, this.widget.souraid, 'yes');
-                    if (Dbhandler.instance.sourarecord == 200) {
-                      return Alert(
-                        context: context,
-                        type: AlertType.success,
-                        title: 'Sent Successfully Well Done!',
-                        closeFunction: () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
-                        },
-                        buttons: [
-                          DialogButton(
-                            child: Text(
-                              "Done",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                loading1 = false;
-                              });
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Container(
+                    margin: EdgeInsets.only(top: 15),
+                    width: 220,
+                    height: 45,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          Color.fromRGBO(34, 196, 228, 1),
+                        ),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          loading1 = true;
+                        });
+                        await Dbhandler.instance.sourarecrod(
+                            File(this.widget.path),
+                            this.widget.juzid,
+                            this.widget.souraid,
+                            'yes');
+                        if (Dbhandler.instance.sourarecord == 200) {
+                          return Alert(
+                            context: context,
+                            type: AlertType.success,
+                            title: 'Sent Successfully Well Done!',
+                            closeFunction: () {
                               Navigator.of(context).pop();
                               Navigator.of(context).pop();
                             },
-                            color: Color.fromRGBO(0, 179, 134, 1.0),
-                            radius: BorderRadius.circular(0.0),
-                          ),
-                        ],
-                      ).show();
-                    } else {
-                      setState(() {
-                        loading1 = false;
-                      });
+                            buttons: [
+                              DialogButton(
+                                child: Text(
+                                  "Done",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    loading1 = false;
+                                  });
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                },
+                                color: Color.fromRGBO(0, 179, 134, 1.0),
+                                radius: BorderRadius.circular(0.0),
+                              ),
+                            ],
+                          ).show();
+                        } else {
+                          setState(() {
+                            loading1 = false;
+                          });
 
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: Text(
-                    Provider.of<Lanprovider>(context, listen: false).isenglish
-                        ? 'Update The Last Record'
-                        : 'تحديث التسجيل الأخير',
-                    style: TextStyle(fontSize: 15),
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      child: Text(
+                        Provider.of<Lanprovider>(context, listen: false)
+                                .isenglish
+                            ? 'Update The Last Record'
+                            : 'تحديث التسجيل الأخير',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                   Provider.of<Userprovider>(context, listen: false).user.role ==
+                'external'
+            ? Container()
+            :
         loading2
             ? Center(
                 child: Padding(

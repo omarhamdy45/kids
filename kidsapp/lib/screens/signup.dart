@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:email_validator/email_validator.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/userprovider.dart';
 import 'package:kidsapp/screens/Home.dart';
-import 'package:kidsapp/screens/signup.dart';
-import 'package:kidsapp/screens/soura.dart';
+import 'package:kidsapp/screens/login.dart';
 import 'package:kidsapp/widgets/background.dart';
 import 'package:kidsapp/widgets/navigation.dart';
 
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
-class Login extends StatefulWidget {
-  static const String route = 'login';
+class Signup extends StatefulWidget {
+  static const String route = 'Signup';
   @override
-  _LoginState createState() => _LoginState();
+  _SignupState createState() => _SignupState();
 }
 
-class _LoginState extends State<Login> {
+class _SignupState extends State<Signup> {
   bool login;
   bool hidepassword, hideconfirmpassword;
-  TextEditingController password, email;
+  TextEditingController password, username, cpassword, phone, email;
   GlobalKey<FormState> form;
   FocusNode passwordnode;
+  FocusNode cpasswordnode;
+  FocusNode phonenode;
+  FocusNode emailnode;
   bool loading;
   GlobalKey<ScaffoldState> scaffold;
 
@@ -37,9 +40,16 @@ class _LoginState extends State<Login> {
     hideconfirmpassword = true;
     form = GlobalKey<FormState>();
     passwordnode = FocusNode();
+    cpasswordnode = FocusNode();
+    emailnode = FocusNode();
+    phonenode = FocusNode();
+
     loading = false;
-    email = TextEditingController();
+    username = TextEditingController();
     password = TextEditingController();
+    cpassword = TextEditingController();
+    phone = TextEditingController();
+    email = TextEditingController();
   }
 
   @override
@@ -47,6 +57,9 @@ class _LoginState extends State<Login> {
     // TODO: implement dispose
     super.dispose();
     passwordnode.dispose();
+    emailnode.dispose();
+    cpasswordnode.dispose();
+    phonenode.dispose();
   }
 
   void validatetologin() async {
@@ -55,23 +68,45 @@ class _LoginState extends State<Login> {
         loading = true;
       });
 
-      Userprovider.username = email.text;
+      Userprovider.username = username.text;
       String error = await Provider.of<Userprovider>(context, listen: false)
-          .signInn(email.text, password.text);
+          .signup(username.text, password.text, cpassword.text, phone.text,
+              email.text);
 
       if (error != null) {
         // ignore: deprecated_member_use
         scaffold.currentState.showSnackBar(SnackBar(
-          content: Text('invalid username'),
+          content: Text('invalid email'),
           backgroundColor: Colors.red[600],
         ));
+
         setState(() {
           loading = false;
         });
       } else {
         Provider.of<Lanprovider>(context, listen: false).changeLoggedin(true);
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => Home()));
+        setState(() {
+          loading = false;
+        });
+        Alert(
+          context: context,
+          type: AlertType.success,
+          title: "Congratulations",
+          desc:
+              "You have signed up successfully to Islamic Treasures. Your free trial for one week",
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Ok",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (BuildContext context) => Home())),
+              color: Color.fromRGBO(0, 179, 134, 1.0),
+              radius: BorderRadius.circular(0.0),
+            ),
+          ],
+        ).show();
       }
     }
   }
@@ -99,20 +134,6 @@ class _LoginState extends State<Login> {
                   child: Column(
                     //  mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        margin: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.07),
-                        child: Text(
-                          'Islamic Treasures',
-                          style: GoogleFonts.roboto(
-                            textStyle: TextStyle(
-                                color: Colors.white,
-                                letterSpacing: .5,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 40),
-                          ),
-                        ),
-                      ),
                       Center(
                         child: Container(
                           margin: EdgeInsets.only(
@@ -136,7 +157,7 @@ class _LoginState extends State<Login> {
                           child: Column(
                             children: [
                               TextFormField(
-                                controller: email,
+                                controller: username,
                                 style: TextStyle(color: Colors.black),
                                 decoration: InputDecoration(
                                   contentPadding: new EdgeInsets.symmetric(
@@ -164,14 +185,14 @@ class _LoginState extends State<Login> {
                                     //   borderRadius: BorderRadius.all(),
                                   ),
                                 ),
-                                 validator: (value) {
-                                  if (email.text.length !=0) {
-                                    return null;
-                                  }
-                                  return 'empty email ';
-                                },
                                 onFieldSubmitted: (value) {
                                   passwordnode.requestFocus();
+                                },
+                                validator: (value) {
+                                  if (username.text.length > 0) {
+                                    return null;
+                                  }
+                                  return 'empty username ';
                                 },
                                 textInputAction: TextInputAction.next,
                                 keyboardType: TextInputType.emailAddress,
@@ -211,19 +232,159 @@ class _LoginState extends State<Login> {
                                     //   borderRadius: BorderRadius.all(),
                                   ),
                                 ),
-                                 validator: (value) {
-                                  if (password.text.length !=0) {
+                                onFieldSubmitted: (value) {
+                                  cpasswordnode.requestFocus();
+                                },
+                                validator: (value) {
+                                  if (password.text.length > 5) {
                                     return null;
                                   }
-                                  return 'empty password ';
+                                  return 'Password must contain 6 charcters at least ';
                                 },
-                                textInputAction: TextInputAction.done,
+                                textInputAction: TextInputAction.next,
                                 focusNode: passwordnode,
                                 keyboardType: TextInputType.emailAddress,
                               ),
                               SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * 0.015,
+                              ),
+                              TextFormField(
+                                controller: cpassword,
+                                maxLines: 1,
+                                obscureText: true,
+                                style: TextStyle(color: Colors.black),
+                                decoration: InputDecoration(
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 1.0, horizontal: 8.0),
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  errorStyle:
+                                      TextStyle(color: Colors.redAccent[900]),
+                                  hintText: '  confirm password',
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
+
+                                    borderSide: BorderSide(
+                                        width: 1, color: Colors.white),
+                                    //   borderRadius: BorderRadius.all(),
+                                  ),
+                                ),
+                                onFieldSubmitted: (value) {
+                                  phonenode.requestFocus();
+                                },
+                                validator: (value) {
+                                  if (cpassword.text == password.text) {
+                                    return null;
+                                  }
+                                  return 'Passwords do NOT match ';
+                                },
+                                textInputAction: TextInputAction.next,
+                                focusNode: cpasswordnode,
+                                keyboardType: TextInputType.emailAddress,
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.015,
+                              ),
+                              TextFormField(
+                                controller: phone,
+                                maxLines: 1,
+                                obscureText: false,
+                                style: TextStyle(color: Colors.black),
+                                decoration: InputDecoration(
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 1.0, horizontal: 8.0),
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  errorStyle:
+                                      TextStyle(color: Colors.redAccent[900]),
+                                  hintText: '  phone',
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
+
+                                    borderSide: BorderSide(
+                                        width: 1, color: Colors.white),
+                                    //   borderRadius: BorderRadius.all(),
+                                  ),
+                                ),
+                                onFieldSubmitted: (value) {
+                                  emailnode.requestFocus();
+                                },
+                                  validator: (value) {
+                                if (phone.text.length > 5) {
+                                  return null;
+                                }
+                                return 'invalid number ';
+                              },
+                                textInputAction: TextInputAction.next,
+                                focusNode: phonenode,
+                                keyboardType: TextInputType.number,
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.015,
+                              ),
+                              TextFormField(
+                                controller: email,
+                                maxLines: 1,
+                                obscureText: false,
+                                style: TextStyle(color: Colors.black),
+                                decoration: InputDecoration(
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 1.0, horizontal: 8.0),
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  errorStyle:
+                                      TextStyle(color: Colors.redAccent[900]),
+                                  hintText: ' email',
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
+
+                                    borderSide: BorderSide(
+                                        width: 1, color: Colors.white),
+                                    //   borderRadius: BorderRadius.all(),
+                                  ),
+                                ),
+                                  validator: (value) {
+                                if (EmailValidator.validate(email.text)) {
+                                  return null;
+                                }
+                                return 'invalid email ';
+                              },
+                                textInputAction: TextInputAction.done,
+                                focusNode: emailnode,
+                                keyboardType: TextInputType.emailAddress,
                               ),
                               Align(
                                   alignment: Alignment.centerRight,
@@ -292,7 +453,7 @@ class _LoginState extends State<Login> {
                                             Provider.of<Lanprovider>(context,
                                                         listen: true)
                                                     .isenglish
-                                                ? 'Login'
+                                                ? 'Sign up'
                                                 : 'تسجيل الدخول',
                                             style:
                                                 TextStyle(color: Colors.grey),
@@ -301,65 +462,26 @@ class _LoginState extends State<Login> {
                               SizedBox(
                                 height: 15,
                               ),
-                              /*
-                              Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.symmetric(
-                                    horizontal:
-                                        MediaQuery.of(context).size.width *
-                                            0.2),
-                                height: 40,
-                                child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        )),
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Colors.white)),
-                                    onPressed: () async {
-                                      Provider.of<Lanprovider>(context,
-                                              listen: false)
-                                          .changeLoggedin(false);
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  Home()));
-                                    },
-                                    child: Text(
-                                      Provider.of<Lanprovider>(context,
-                                                  listen: true)
-                                              .isenglish
-                                          ? 'Skip'
-                                          : ' تخطى',
-                                      style: TextStyle(color: Colors.grey),
-                                    )),
-                              )
-                              */
                               Row(
                                 children: [
                                   Text(
-                                    'Don\'t have an account?',
+                                    ' Have an account?',
                                     style: GoogleFonts.roboto(
                                         fontSize: 16, color: Colors.grey),
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                       Navigator.pushReplacement(
-                                      // or pushReplacement, if you need that
-                                      context,
-                                      FadeInRoute(
-                                          routeName: Signup.route,
-                                          page: Signup(),
-                                         ),
-                                    );
-                                     
+                                      Navigator.push(
+                                        // or pushReplacement, if you need that
+                                        context,
+                                        FadeInRoute(
+                                          routeName: Login.route,
+                                          page: Login(),
+                                        ),
+                                      );
                                     },
-                                    child: Text('Sign up', style: GoogleFonts.roboto(
+                                    child: Text('Login',
+                                        style: GoogleFonts.roboto(
                                             fontSize: 16,
                                             color: Colors.blue,
                                             fontWeight: FontWeight.bold)),

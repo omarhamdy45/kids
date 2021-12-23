@@ -16,6 +16,10 @@ import 'package:kidsapp/widgets/topcard.dart';
 import 'package:kidsapp/widgets/topclasshadith.dart';
 import 'package:kidsapp/widgets/topclassquraan.dart';
 import 'package:kidsapp/widgets/topclasssalah.dart';
+import 'package:kidsapp/widgets/topexternalazkar.dart';
+import 'package:kidsapp/widgets/topexternalhafith.dart';
+import 'package:kidsapp/widgets/topexternalquraan.dart';
+import 'package:kidsapp/widgets/topexternalsalah.dart';
 import 'package:kidsapp/widgets/tophadithcard.dart';
 import 'package:kidsapp/widgets/topslahacard.dart';
 import 'package:provider/provider.dart';
@@ -66,6 +70,12 @@ class _HomescreenState extends State<Homescreen> {
     await Provider.of<Userprovider>(context, listen: false).topclassstudent();
     await Provider.of<Userprovider>(context, listen: false).getusername();
     await Provider.of<Userprovider>(context, listen: false).fetchscore();
+    if (Provider.of<Userprovider>(context, listen: false).user.role ==
+        'external') {
+      await Provider.of<Userprovider>(context, listen: false)
+          .fetchtopexternal();
+      Provider.of<Userprovider>(context, listen: false).changerole(true);
+    }
     setState(() {
       firstrun = false;
     });
@@ -691,68 +701,191 @@ class _HomescreenState extends State<Homescreen> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                    Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 10),
-                                      child: Center(
-                                        child: ToggleButtons(
-                                          constraints: BoxConstraints(
-                                              minHeight: 60,
-                                              minWidth: (MediaQuery.of(context)
-                                                          .size
-                                                          .width -
-                                                      30) /
-                                                  2),
-                                          borderColor: Colors.grey[300],
-                                          fillColor:
-                                              Theme.of(context).primaryColor,
-                                          borderWidth: 2,
-                                          selectedBorderColor:
-                                              Theme.of(context).primaryColor,
-                                          selectedColor: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          children: <Widget>[
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                Provider.of<Lanprovider>(
-                                                            context,
-                                                            listen: false)
-                                                        .isenglish
-                                                    ? 'School'
-                                                    : 'في المدرسة',
-                                                style: TextStyle(fontSize: 16),
+                                    Provider.of<Userprovider>(context,
+                                                listen: false)
+                                            .role
+                                        ? Container()
+                                        : Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            child: Center(
+                                              child: ToggleButtons(
+                                                constraints: BoxConstraints(
+                                                    minHeight: 60,
+                                                    minWidth:
+                                                        (MediaQuery.of(context)
+                                                                    .size
+                                                                    .width -
+                                                                30) /
+                                                            2),
+                                                borderColor: Colors.grey[300],
+                                                fillColor: Theme.of(context)
+                                                    .primaryColor,
+                                                borderWidth: 2,
+                                                selectedBorderColor:
+                                                    Theme.of(context)
+                                                        .primaryColor,
+                                                selectedColor: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      Provider.of<Lanprovider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isenglish
+                                                          ? 'School'
+                                                          : 'في المدرسة',
+                                                      style: TextStyle(
+                                                          fontSize: 16),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      Provider.of<Lanprovider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isenglish
+                                                          ? 'CLASS'
+                                                          : 'في الصف',
+                                                      style: TextStyle(
+                                                          fontSize: 16),
+                                                    ),
+                                                  ),
+                                                ],
+                                                onPressed: (int index) {
+                                                  setState(() {
+                                                    for (int i = 0;
+                                                        i < isSelected.length;
+                                                        i++) {
+                                                      isSelected[i] =
+                                                          i == index;
+                                                    }
+                                                  });
+                                                },
+                                                isSelected: isSelected,
                                               ),
                                             ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                Provider.of<Lanprovider>(
-                                                            context,
-                                                            listen: false)
-                                                        .isenglish
-                                                    ? 'CLASS'
-                                                    : 'في الصف',
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                            ),
-                                          ],
-                                          onPressed: (int index) {
-                                            setState(() {
-                                              for (int i = 0;
-                                                  i < isSelected.length;
-                                                  i++) {
-                                                isSelected[i] = i == index;
-                                              }
-                                            });
-                                          },
-                                          isSelected: isSelected,
-                                        ),
-                                      ),
-                                    ),
+                                          ),
+                                           Provider.of<Userprovider>(context,
+                                                listen: false)
+                                            .role?Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Provider.of<Userprovider>(context,
+                                                          listen: false)
+                                                      .topexternal
+                                                      .quran
+                                                      .isNotEmpty
+                                                  ? Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 10),
+                                                      child: Text(
+                                                        Provider.of<Lanprovider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .isenglish
+                                                            ? 'Qur\'an Champions'
+                                                            : ' المتصدرين في القرآن الكريم ',
+                                                        style:
+                                                            GoogleFonts.roboto(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                      ))
+                                                  : Container(),
+                                              Topexternalquraancard(),
+                                              Provider.of<Userprovider>(context,
+                                                          listen: false)
+                                                      .topexternal
+                                                      .azkar
+                                                      .isNotEmpty
+                                                  ? Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 10),
+                                                      child: Text(
+                                                        Provider.of<Lanprovider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .isenglish
+                                                            ? 'Thikr Champions'
+                                                            : ' المتصدرين في الأذكار اليومية',
+                                                        style:
+                                                            GoogleFonts.roboto(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                      ))
+                                                  : Container(),
+                                              Topexternalazkarcard(),
+                                              Provider.of<Userprovider>(context,
+                                                          listen: false)
+                                                      .topexternal
+                                                      .hadith
+                                                      .isNotEmpty
+                                                  ? Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 10),
+                                                      child: Text(
+                                                        Provider.of<Lanprovider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .isenglish
+                                                            ? 'Hadith Champions'
+                                                            : '  المتصدرين في الحديث الشريف',
+                                                        style:
+                                                            GoogleFonts.roboto(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                      ))
+                                                  : Container(),
+                                              Topexternalhadithcard(),
+                                              Provider.of<Userprovider>(context,
+                                                          listen: false)
+                                                      .topexternal
+                                                      .salah
+                                                      .isNotEmpty
+                                                  ? Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 10),
+                                                      child: Text(
+                                                        Provider.of<Lanprovider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .isenglish
+                                                            ? 'Salah Champions'
+                                                            : ' المتصدرين في آداء الصلاة',
+                                                        style:
+                                                            GoogleFonts.roboto(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                      ))
+                                                  : Container(),
+                                              Topexternalsalahcard()
+                                            ],
+                                          ):
                                     isSelected[0]
                                         ? Column(
                                             crossAxisAlignment:

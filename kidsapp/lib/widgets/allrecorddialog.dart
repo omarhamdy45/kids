@@ -4,7 +4,8 @@ import 'package:kidsapp/models/db.dart';
 import 'package:kidsapp/providers/lanprovider.dart';
 import 'package:kidsapp/providers/networkprovider.dart';
 import 'package:kidsapp/providers/quraanprovider.dart';
-import 'package:kidsapp/screens/namesofallah.dart';
+import 'package:kidsapp/screens/namesofallah.dart' as namesofallah;
+import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/widgets/iconplay.dart';
 
 import 'package:provider/provider.dart';
@@ -184,6 +185,12 @@ class _AllrecorddialogState extends State<Allrecordquraandialog> {
                                                   setState(() {
                                                     demoData[index].checked =
                                                         false;
+                                                        if( Provider.of<Quraanprovider>(context, listen: false)
+                        .allrecord
+                        .records
+                        .isEmpty){
+                          Soura.isrecorded=false;
+                        }
                                                   });
                                                 },
                                                 child: Text(

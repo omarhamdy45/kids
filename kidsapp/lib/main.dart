@@ -22,6 +22,7 @@ import 'package:kidsapp/screens/favouritesquraan.dart';
 import 'package:kidsapp/screens/login.dart';
 import 'package:kidsapp/screens/privacy.dart';
 import 'package:kidsapp/screens/settings.dart';
+import 'package:kidsapp/screens/signup.dart';
 import 'package:kidsapp/screens/soura.dart';
 import 'package:kidsapp/screens/sours.dart';
 import 'package:kidsapp/screens/splash.dart';
@@ -135,7 +136,6 @@ class _MyAppState extends State<MyApp> {
         AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettings =
         InitializationSettings(android: initialzationSettingsAndroid);
-
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification notification = message.notification;
@@ -213,6 +213,7 @@ class _MyAppState extends State<MyApp> {
           Dialyhadith.route: (context) => Dialyhadith(),
           Surz.route: (context) => Surz(),
           Soura.route: (context) => Soura(),
+           Signup.route: (context) => Signup(),
           Favouritesquraanscreen.route: (context) => Favouritesquraanscreen(),
         });
   }

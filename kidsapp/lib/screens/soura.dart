@@ -335,13 +335,15 @@ class _SouraState extends State<Soura> {
                                         await Provider.of<Quraanprovider>(
                                                 context,
                                                 listen: false)
-                                            .fetchayaaudio(arg[1], arg[0], i+1);
-                                        audioss.add(
-                                             Provider.of<Quraanprovider>(
+                                            .fetchayaaudio(
+                                                arg[1], arg[0], i + 1);
+                                        audioss.add(Provider.of<Quraanprovider>(
                                                 context,
-                                                listen: false).ayaaudio.audio);
+                                                listen: false)
+                                            .ayaaudio
+                                            .audio);
                                       }
-                                      print(audioss);
+                                    
 
                                       audioss = audioss.toSet().toList();
                                       await player2.setAudioSource(
@@ -504,7 +506,12 @@ class _SouraState extends State<Soura> {
                                                             .data[arg[0] - 1]
                                                             .number
                                                             .toString();
-                                                        index += arg[2];
+                                                        if (arg[2] == 0) {
+                                                          index += arg[2];
+                                                        }
+                                                        else{
+                                                           index += arg[2]-1;
+                                                        }
 
                                                         //index = arg[2];
                                                         return Center(
@@ -561,10 +568,15 @@ class _SouraState extends State<Soura> {
                                                             }
                                                             print(ayaaudio);
 */
-                                                              await Provider.of<Quraanprovider>(
-                                                context,
-                                                listen: false)
-                                            .fetchayaaudio(arg[1], arg[0], index+1);
+                                                            await Provider.of<
+                                                                        Quraanprovider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .fetchayaaudio(
+                                                                    arg[1],
+                                                                    arg[0],
+                                                                    index + 1);
                                                             print(Provider.of<
                                                                         Quraanprovider>(
                                                                     context,
